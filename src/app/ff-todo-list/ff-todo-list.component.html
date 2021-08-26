@@ -41,15 +41,11 @@
 			</div>
 			<div *ngIf="todo_list[idx].length">
 				<div *ngFor="let todo of todo_list[idx] | keyvalue">
-					<!-- >
-					<app-ff-todo-card content="{{todo}}"
-							  tasksortfield="task_sorting_field[idx]" tasksortdir="task_sorting_direction[idx]"></tsz-card>
-					<-->
+					<app-ff-todo-card [contentStr]="todo.value | json"
+							  [tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-card>
 				</div>
 			</div>
-			<!-- >
-			<app-ff-todo-list-empty *ngIf="!todo_list[$index].length"></app-ff-todo-list-empty>
-            <-->
+			<app-ff-todo-list-empty *ngIf="!todo_list[idx].length"></app-ff-todo-list-empty>
 		</div>
 	</div>
 </div>
