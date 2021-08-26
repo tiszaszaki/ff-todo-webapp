@@ -1,5 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
+export class Task {
+  public id: number;
+  public name: String;
+  public done: Boolean;
+
+  constructor() {
+    this.id = 0;
+    this.name = '';
+    this.done = false;
+  }
+};
+
 export class Todo {
   public id: number;
   public name: String;
@@ -7,7 +19,9 @@ export class Todo {
   public phase: Number;
   public datemodified?: Date;
   public datecreated?: Date;
-
+  
+  public tasks?: Array<Task>;
+  
   constructor() {
     this.id = 0;
     this.name = '';
@@ -37,6 +51,20 @@ export class FfTodoListComponent implements OnInit {
       this.task_sorting_field.push('');
       this.task_sorting_direction.push(false);
     }
+  }
+
+  updateSortingRelatedOptions(idx : number) {
+    
+  }
+
+  resetTodoSorting(idx : number) {
+    this.todo_sorting_field[idx] = '';
+    this.todo_sorting_direction[idx] = false;
+  }
+
+  resetTaskSorting(idx : number) {
+    this.task_sorting_field[idx] = '';
+    this.task_sorting_direction[idx] = false;
   }
 
   todo_list: Array<Array<Todo>> = [];

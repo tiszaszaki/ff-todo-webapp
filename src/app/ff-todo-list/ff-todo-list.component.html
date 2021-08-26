@@ -1,29 +1,29 @@
 <div class="table mt-3">
 	<div class="row border border-3 border-secondary rounded">
 		<div class="col" *ngFor="let phase of phase_labels; let idx=index">
-			<h1 class="mt-1 mb-3">{{phase}}</h1>
+			<h2 class="mt-1 mb-3">{{phase}}</h2>
 
 			<div class="border border-secondary rounded mt-2" *ngIf="todo_list[idx].length">
-				<div class="mb-3">Sorting of Todos in '{{phase}}' phase:</div>
+				<h6 class="mb-3">Sorting of Todos:</h6>
 				<div class="mb-2">
 					<select class="form-select" *ngModel="todo_sorting_field[idx]"
 							data-toggle="tooltip" data-placement="bottom" title="Todo sorting field">
 						<option *ngFor="let field of todoSortingFields | keyvalue" ng-value="field.key"
-								ng-click="updateSortingRelatedOptions(idx)">{{ field.value }}</option>
+								(click)="updateSortingRelatedOptions(idx)">{{ field.value }}</option>
 					</select>
 				</div>
 				<div class="d-flex justify-content-between">
 					<div data-toggle="tooltip" data-placement="bottom" title="Todo sorting direction">
 						<input class="form-check-input" type="checkbox" id="todo_sorting_direction"
-							   ng-model="todo_sorting_direction[$index]">
+							   *ngModel="todo_sorting_direction[idx]">
 						<label for="todo_sorting_direction">Descending</label>
 					</div>
-					<button type="button" class="btn btn-warning" ng-click="resetTodoSorting($index)">Reset Todo Sorting</button>
+					<button type="button" class="btn btn-warning" (click)="resetTodoSorting(idx)">Reset</button>
 				</div>
 			</div>
 
 			<div class="border border-secondary rounded mt-2" *ngIf="task_count[idx]">
-				<div class="mb-3">Sorting of Tasks in '{{phase}}' phase:</div>
+				<div class="mb-3">Sorting of Tasks:</div>
 				<div class="mb-2">
 					<select class="form-select" ng-model="task_sorting_field[idx]"
 							data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
@@ -33,10 +33,10 @@
 				<div class="d-flex justify-content-between">
 					<div data-toggle="tooltip" data-placement="bottom" title="Task sorting direction">
 						<input class="form-check-input" type="checkbox" id="task_sorting_direction"
-							   ng-model="task_sorting_direction[$index]">
+							   *ngModel="task_sorting_direction[idx]">
 						<label for="task_sorting_direction">Descending</label>
 					</div>
-					<button type="button" class="btn btn-warning" ng-click="resetTaskSorting($index)">Reset Task Sorting</button>
+					<button type="button" class="btn btn-warning" (click)="resetTaskSorting(idx)">Reset Task Sorting</button>
 				</div>
 			</div>
 			<div *ngIf="todo_list[idx].length">
