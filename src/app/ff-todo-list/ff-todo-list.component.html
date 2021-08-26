@@ -1,60 +1,59 @@
 <div class="table mt-3">
 	<div class="row border border-3 border-secondary rounded">
-		<div class="col" ng-repeat="phase in phase_labels">
-			<h1 class="display-5 mt-1 mb-3">{{phase}}</h1>
+		<div class="col" *ngFor="let phase of phase_labels; let idx=index">
+			<h1 class="mt-1 mb-3">{{phase}}</h1>
 
-			<div class="border border-secondary rounded mt-2" ng-if="todo_list[$index].length">
+			<div class="border border-secondary rounded mt-2" *ngIf="todo_list[idx].length">
 				<div class="mb-3">Sorting of Todos in '{{phase}}' phase:</div>
 				<div class="mb-2">
-					<select class="form-select" ng-model="todo_sorting_field[$index]"
+					<select class="form-select" *ngModel="todo_sorting_field[idx]"
 							data-toggle="tooltip" data-placement="bottom" title="Todo sorting field">
-						<option ng-repeat="(todoFieldName,todoFieldDisp) in todoSortingFields" ng-value="todoFieldName"
-								ng-click="updateSortingRelatedOptions($index)">{{ todoFieldDisp }}</option>
+						<option *ngFor="let field of todoSortingFields | keyvalue" ng-value="field.key"
+								ng-click="updateSortingRelatedOptions(idx)">{{ field.value }}</option>
 					</select>
 				</div>
 				<div class="d-flex justify-content-between">
 					<div data-toggle="tooltip" data-placement="bottom" title="Todo sorting direction">
-						<input class="form-check-input" type="checkbox" id="todo_sorting_direction_{{ $index }}"
+						<input class="form-check-input" type="checkbox" id="todo_sorting_direction"
 							   ng-model="todo_sorting_direction[$index]">
-						<label for="todo_sorting_direction_{{ $index }}">Descending</label>
+						<label for="todo_sorting_direction">Descending</label>
 					</div>
 					<button type="button" class="btn btn-warning" ng-click="resetTodoSorting($index)">Reset Todo Sorting</button>
 				</div>
 			</div>
 
-			<div class="border border-secondary rounded mt-2" ng-if="task_count[$index]">
+			<div class="border border-secondary rounded mt-2" *ngIf="task_count[idx]">
 				<div class="mb-3">Sorting of Tasks in '{{phase}}' phase:</div>
 				<div class="mb-2">
-					<select class="form-select" ng-model="task_sorting_field[$index]"
+					<select class="form-select" ng-model="task_sorting_field[idx]"
 							data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-						<option ng-repeat="(taskFieldName,taskFieldDisp) in taskSortingFields" ng-value="taskFieldName">{{ taskFieldDisp }}</option>
+						<option *ngFor="let field of taskSortingFields | keyvalue" ng-value="field.key">{{ field.value }}</option>
 					</select>
 				</div>
 				<div class="d-flex justify-content-between">
 					<div data-toggle="tooltip" data-placement="bottom" title="Task sorting direction">
-						<input class="form-check-input" type="checkbox" id="task_sorting_direction_{{ $index }}"
+						<input class="form-check-input" type="checkbox" id="task_sorting_direction"
 							   ng-model="task_sorting_direction[$index]">
-						<label for="task_sorting_direction_{{ $index }}">Descending</label>
+						<label for="task_sorting_direction">Descending</label>
 					</div>
 					<button type="button" class="btn btn-warning" ng-click="resetTaskSorting($index)">Reset Task Sorting</button>
 				</div>
 			</div>
-
-            <!-- >
-			<div ng-if="todo_list[$index].length">
-				<div ng-repeat="todo in todo_list[$index] | orderBy:todo_sorting_field[$index]:todo_sorting_direction[$index]">
-					<tsz-card content="{{todo}}"
-							  tasksortfield="task_sorting_field[$index]" tasksortdir="task_sorting_direction[$index]"></tsz-card>
+			<div *ngIf="todo_list[idx].length">
+				<div *ngFor="let todo of todo_list[idx] | keyvalue">
+					<!-- >
+					<app-ff-todo-card content="{{todo}}"
+							  tasksortfield="task_sorting_field[idx]" tasksortdir="task_sorting_direction[idx]"></tsz-card>
+					<-->
 				</div>
 			</div>
-            <-->
 			<!-- >
-            <tsz-todo-emptiness-indicator ng-if="!todo_list[$index].length"></tsz-todo-emptiness-indicator>
+			<app-ff-todo-list-empty *ngIf="!todo_list[$index].length"></app-ff-todo-list-empty>
             <-->
 		</div>
 	</div>
 </div>
-<div class="d-grid gap-2 w-25 my-2" ng-if="!readonlyTodo">
+<div class="d-grid gap-2 w-25 my-2" *ngIf="!readonlyTodo">
 	<button type="button" class="btn btn-primary" ng-click="addTodo()"
 			data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
 		<i class="fas fa-plus"></i>
