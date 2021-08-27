@@ -1,16 +1,16 @@
 <div class="table mt-3">
 	<div class="row border border-3 border-secondary rounded">
-		<div class="col" *ngFor="let phase of phase_labels; let idx=index">
-			<h2 class="mt-1 mb-3">{{phase}}</h2>
+		<div class="col" *ngFor="let todo_phase of todo_list; let idx=index">
+			<h2 class="mt-1 mb-3">{{phase_labels[idx]}}</h2>
 
-			<app-ff-todo-sorting-form [todo_list_count]="todo_list[idx].length"></app-ff-todo-sorting-form>
+			<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"></app-ff-todo-sorting-form>
 
 			<div class="border border-secondary rounded mt-2" *ngIf="task_count[idx]">
 				<div class="mb-3">Sorting of Tasks:</div>
 				<div class="mb-2">
-					<select class="form-select" ng-model="task_sorting_field[idx]"
+					<select class="form-select" *ngModel="task_sorting_field[idx]"
 							data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-						<option *ngFor="let field of taskSortingFields | keyvalue" ng-value="field.key">{{ field.value }}</option>
+						<option *ngFor="let field of taskSortingFields | keyvalue" ngValue="field.key">{{ field.value }}</option>
 					</select>
 				</div>
 				<div class="d-flex justify-content-between">
@@ -22,13 +22,13 @@
 					<button type="button" class="btn btn-warning" (click)="resetTaskSorting(idx)">Reset Task Sorting</button>
 				</div>
 			</div>
-			<div *ngIf="todo_list[idx].length">
-				<div *ngFor="let todo of todo_list[idx]">
-					<app-ff-todo-card [content]="todo"
+			<div *ngIf="todo_phase.length">
+				<div *ngFor="let todo of todo_phase">
+					<app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
 							  [tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-card>
 				</div>
 			</div>
-			<app-ff-todo-list-empty *ngIf="!todo_list[idx].length"></app-ff-todo-list-empty>
+			<app-ff-todo-list-empty *ngIf="!todo_phase.length"></app-ff-todo-list-empty>
 		</div>
 	</div>
 </div>

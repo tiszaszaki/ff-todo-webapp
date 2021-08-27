@@ -21,6 +21,7 @@ export class FfTodoListComponent implements OnInit {
       this.task_sorting_field.push('');
       this.task_sorting_direction.push(false);
     }
+    this.phaseNum = this.phase_labels.length;
   }
 
   updateSortingRelatedOptions(idx : number) {
@@ -57,7 +58,14 @@ export class FfTodoListComponent implements OnInit {
 
   phase_labels = ['Backlog', 'In progress', 'Done'];
 
+  phaseNum!: number;
+
   readonlyTodo = false;
+  readonlyTask = false;
+
+  showDescriptionLength = true;
+  showTaskCount = true;
+  showDateCreated = true;
 
   getTodos(): void {
     this.todoServ.getTodos()
@@ -82,9 +90,11 @@ export class FfTodoListComponent implements OnInit {
   }
 
   addTodo() {
+    console.log('Trying to add a new Todo...');
   }
 
   removeAllTodos() {
+    console.log('Trying to remove all Todos from the board...');
   }
 
   ngOnInit(): void {

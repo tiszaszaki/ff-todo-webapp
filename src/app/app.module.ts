@@ -13,6 +13,7 @@ import { FfTodoCardComponent } from './ff-todo-card/ff-todo-card.component';
 import { FfTodoListEmptyComponent } from './ff-todo-list-empty/ff-todo-list-empty.component';
 import { FfTodoSortingFormComponent } from './ff-todo-sorting-form/ff-todo-sorting-form.component';
 import { FfTodoTaskListEmptyComponent } from './ff-todo-task-list-empty/ff-todo-task-list-empty.component';
+import { FfTodoCardInvalidComponent } from './ff-todo-card-invalid/ff-todo-card-invalid.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FfTodoTaskListEmptyComponent } from './ff-todo-task-list-empty/ff-todo-
     FfTodoCardComponent,
     FfTodoListEmptyComponent,
     FfTodoSortingFormComponent,
-    FfTodoTaskListEmptyComponent
+    FfTodoTaskListEmptyComponent,
+    FfTodoCardInvalidComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule,
