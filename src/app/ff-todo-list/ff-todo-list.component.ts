@@ -1,21 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface Task {
-  id: number;
-  name: String;
-  done: Boolean;
-};
-
-export interface Todo {
-  id: number;
-  name: String;
-  description: String;
-  phase: Number;
-  datemodified?: Date;
-  datecreated?: Date;
-  
-  tasks?: Array<Task>; 
-};
+import { FfTodoServiceService } from '../ff-todo-service.service';
+import { Todo } from '../todo';
 
 @Component({
   selector: 'app-ff-todo-list',
@@ -24,7 +9,7 @@ export interface Todo {
 })
 export class FfTodoListComponent implements OnInit {
 
-  constructor() {
+  constructor(private todoServ: FfTodoServiceService) {
     for (let phase of this.phase_labels)
     {
       this.todo_list.push([]);
@@ -53,14 +38,15 @@ export class FfTodoListComponent implements OnInit {
   }
 
   todo_count: number = 0;
-  todo_list: Array<Array<Todo>> = [];
-  task_count: Array<Number> = [];
+  todo_records: Todo[] = [];
+  todo_list: Todo[][] = [];
+  task_count: number[] = [];
 
-  todo_sorting_field: Array<string> = [];
-  todo_sorting_direction: Array<Boolean> = [];
+  todo_sorting_field: string[] = [];
+  todo_sorting_direction: Boolean[] = [];
 
-  task_sorting_field: Array<string> = [];
-  task_sorting_direction: Array<Boolean> = [];
+  task_sorting_field: string[] = [];
+  task_sorting_direction: Boolean[] = [];
 
   customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
@@ -73,6 +59,28 @@ export class FfTodoListComponent implements OnInit {
 
   readonlyTodo = false;
 
+  getTodos(): void {
+    this.todoServ.getTodos()
+    .subscribe(records => {
+      this.todo_records = records;
+      for (let todo of this.todo_records)
+      {
+        let taskCount=0;
+        if (todo.tasks)
+        {
+          taskCount = todo.tasks.length;
+        }
+        this.todo_list[todo.phase].push(todo);
+        this.task_count[todo.phase] += taskCount;
+      }
+      for (let todo_phase of this.todo_list)
+      {
+        this.todo_count += todo_phase.length;
+      }
+      console.log(this.todo_list);
+    });
+  }
+
   addTodo() {
   }
 
@@ -80,16 +88,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.todo_list[0].push(
-      {id:0, name:'Sonic', description:'Fejlesztése', phase:0},
-      {id:1, name:'Munkám', description:'Folyamatban', phase:1}
-    );
-    for (let todo of this.todo_list[0])
-    {
-      todo.datecreated = new Date();
-      todo.datemodified = new Date();
-    }
-    this.todo_count += this.todo_list[0].length;
+    this.getTodos();
   }
 
 }

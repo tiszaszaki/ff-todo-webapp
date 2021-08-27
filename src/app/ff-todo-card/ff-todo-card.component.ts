@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NumberValueAccessor } from '@angular/forms';
-import { Todo } from '../ff-todo-list/ff-todo-list.component';
+import { Todo } from '../todo';
 
 @Component({
   selector: 'app-ff-todo-card',
@@ -23,12 +22,12 @@ export class FfTodoCardComponent implements OnInit {
   todo_expand_status: Boolean = true;
 
   descriptionLength!: Number;
-  tasks!: Array<Task>;
+  tasks!: Task[];
   taskCount!: Number;
 
   ngOnInit(): void {
     this.descriptionLength = this.content.description.length;
-    if (this.content.tasks !== undefined)
+    if (this.content.tasks)
     {
       this.tasks = Object.assign(this.tasks, this.content.tasks);
     }
@@ -37,7 +36,6 @@ export class FfTodoCardComponent implements OnInit {
       this.tasks = new Array<Task>()
     }
     this.taskCount = this.tasks.length;
-    console.log(this.taskCount);
   }
 
 }
