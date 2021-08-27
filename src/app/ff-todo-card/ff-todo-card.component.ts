@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NumberValueAccessor } from '@angular/forms';
 import { Todo } from '../ff-todo-list/ff-todo-list.component';
 
 @Component({
@@ -9,30 +10,34 @@ import { Todo } from '../ff-todo-list/ff-todo-list.component';
 export class FfTodoCardComponent implements OnInit {
 
   constructor() {
-    this.content = JSON.parse(this.contentStr);
-
-    this.isCardValid = true;
-
-    this.todo_expand_status = false;
-
-    this.descriptionLength = this.content.description.length;
   }
 
-  @Input() contentStr: string = '';
-  @Input() tasksortfield: string = '';
-  @Input() tasksortdir: Boolean = false;
+  @Input() content!: Todo;
+  @Input() tasksortfield?: string;
+  @Input() tasksortdir?: Boolean;
 
-  @Input() customDateFormat: string = '';
+  @Input() customDateFormat?: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
-  isCardValid: Boolean;
+  isCardValid: Boolean = true;
 
-  todo_expand_status: Boolean;
+  todo_expand_status: Boolean = true;
 
-  descriptionLength: Number;
-
-  content: Todo = new Todo();
+  descriptionLength!: Number;
+  tasks!: Array<Task>;
+  taskCount!: Number;
 
   ngOnInit(): void {
+    this.descriptionLength = this.content.description.length;
+    if (this.content.tasks !== undefined)
+    {
+      this.tasks = Object.assign(this.tasks, this.content.tasks);
+    }
+    else
+    {
+      this.tasks = new Array<Task>()
+    }
+    this.taskCount = this.tasks.length;
+    console.log(this.taskCount);
   }
 
 }

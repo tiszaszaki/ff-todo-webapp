@@ -1,35 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
-export class Task {
-  public id: number;
-  public name: String;
-  public done: Boolean;
-
-  constructor() {
-    this.id = 0;
-    this.name = '';
-    this.done = false;
-  }
+export interface Task {
+  id: number;
+  name: String;
+  done: Boolean;
 };
 
-export class Todo {
-  public id: number;
-  public name: String;
-  public description: String;
-  public phase: Number;
-  public datemodified?: Date;
-  public datecreated?: Date;
+export interface Todo {
+  id: number;
+  name: String;
+  description: String;
+  phase: Number;
+  datemodified?: Date;
+  datecreated?: Date;
   
-  public tasks?: Array<Task>;
-  
-  constructor() {
-    this.id = 0;
-    this.name = '';
-    this.description = '';
-    this.phase = 0;
-    this.datemodified = new Date();
-    this.datecreated = new Date();
-  }
+  tasks?: Array<Task>; 
 };
 
 @Component({
@@ -67,6 +52,7 @@ export class FfTodoListComponent implements OnInit {
     this.task_sorting_direction[idx] = false;
   }
 
+  todo_count: number = 0;
   todo_list: Array<Array<Todo>> = [];
   task_count: Array<Number> = [];
 
@@ -78,15 +64,6 @@ export class FfTodoListComponent implements OnInit {
 
   customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
-  todoSortingFields = [
-    ['name', 'Todo name'],
-    ['description', 'Todo description'],
-    ['descriptionLength', 'Todo description length'],
-    ['taskCount', 'Task count in Todo'],
-    ['dateCreated', 'Date of Todo created'],
-    ['dateModified', 'Date of Todo updated']
-  ];
-
   taskSortingFields = [
     ['name', 'Task name'],
     ['done', 'Task checked']
@@ -96,11 +73,23 @@ export class FfTodoListComponent implements OnInit {
 
   readonlyTodo = false;
 
+  addTodo() {
+  }
+
+  removeAllTodos() {
+  }
+
   ngOnInit(): void {
     this.todo_list[0].push(
       {id:0, name:'Sonic', description:'Fejlesztése', phase:0},
       {id:1, name:'Munkám', description:'Folyamatban', phase:1}
     );
+    for (let todo of this.todo_list[0])
+    {
+      todo.datecreated = new Date();
+      todo.datemodified = new Date();
+    }
+    this.todo_count += this.todo_list[0].length;
   }
 
 }
