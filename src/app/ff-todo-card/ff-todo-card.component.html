@@ -17,16 +17,13 @@
             <li class="list-group-item">
 				<button class="btn btn-secondary mb-3" type="button" (click)="toggleCollapse()"
 						data-toggle="tooltip" data-placement="bottom" title="Toggle Task list">
-						<!-- >data-bs-toggle="collapse" data-bs-target="#task-list-{{content.id}}-collapse"<-->
 					<i *ngIf="todo_expand_status" class="fas fa-folder-minus"></i>
 					<i *ngIf="!todo_expand_status" class="fas fa-folder-plus"></i>
 				</button>
-				<div id="task-list-{{content.id}}-collapse" class="collapse">
+				<div>
 					<ul class="list-group border border-primary"
 							data-toggle="tooltip" data-placement="bottom" title="Task list">
-						<li class="list-group-item d-flex justify-content-between">Task</li>
-						<li class="list-group-item d-flex justify-content-between" ngIf="taskCount"
-								*ngFor="let task of tasks">
+						<li class="list-group-item d-flex justify-content-between" *ngFor="let task of tasks">
 							<div>
 								<span *ngIf="!readonlyTodo && !readonlyTask">
 									<button type="button" class="btn btn-primary btn-sm text-end" (click)="editTask(task)"
@@ -43,6 +40,7 @@
 								<span>{{ task.name }}</span>
 								<-->
 							</div>
+							<div>{{ task | json }}</div>
 							<input class="form-check-input" type="checkbox" ngChecked="task.done"
 								   data-toggle="tooltip" data-placement="bottom" title="Check Task"
 								   (click)="checkTask(task)" *ngIf="!readonlyTodo && !readonlyTask">

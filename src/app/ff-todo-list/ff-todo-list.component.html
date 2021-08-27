@@ -1,27 +1,12 @@
 <div class="table mt-3">
 	<div class="row border border-3 border-secondary rounded">
-		<div class="col" *ngFor="let todo_phase of todo_list; let idx=index">
+		<div class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 			<h2 class="mt-1 mb-3">{{phase_labels[idx]}}</h2>
 
 			<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"></app-ff-todo-sorting-form>
 
-			<div class="border border-secondary rounded mt-2" *ngIf="task_count[idx]">
-				<div class="mb-3">Sorting of Tasks:</div>
-				<div class="mb-2">
-					<select class="form-select" *ngModel="task_sorting_field[idx]"
-							data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-						<option *ngFor="let field of taskSortingFields | keyvalue" ngValue="field.key">{{ field.value }}</option>
-					</select>
-				</div>
-				<div class="d-flex justify-content-between">
-					<div data-toggle="tooltip" data-placement="bottom" title="Task sorting direction">
-						<input class="form-check-input" type="checkbox" id="task_sorting_direction"
-							   *ngModel="task_sorting_direction[idx]">
-						<label for="task_sorting_direction">Descending</label>
-					</div>
-					<button type="button" class="btn btn-warning" (click)="resetTaskSorting(idx)">Reset Task Sorting</button>
-				</div>
-			</div>
+			<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"></app-ff-todo-task-sorting-form>
+
 			<div *ngIf="todo_phase.length">
 				<div *ngFor="let todo of todo_phase">
 					<app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"

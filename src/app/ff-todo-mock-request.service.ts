@@ -9,7 +9,7 @@ import { Todo } from './todo';
 @Injectable({
   providedIn: 'root'
 })
-export class FfTodoServiceService {
+export class FfTodoMockRequestService {
 
   private baseurl = 'ff-todo/todo/';
 

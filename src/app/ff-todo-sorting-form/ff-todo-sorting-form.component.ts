@@ -15,12 +15,12 @@ export class FfTodoSortingFormComponent implements OnInit {
   @Input() todo_list_count!: number;
 
   todoSortingFields = [
-    ['name', 'Todo name'],
-    ['description', 'Todo description'],
-    ['descriptionLength', 'Todo description length'],
-    ['taskCount', 'Task count in Todo'],
-    ['dateCreated', 'Date of Todo created'],
-    ['dateModified', 'Date of Todo updated']
+    {name: 'name', display: 'Todo name'},
+    {name: 'description', display: 'Todo description'},
+    {name: 'descriptionLength', display: 'Todo description length'},
+    {name: 'taskCount', display: 'Task count in Todo'},
+    {name: 'dateCreated', display: 'Date of Todo created'},
+    {name: 'dateModified', display: 'Date of Todo updated'}
   ];
 
   resetTodoSorting() {

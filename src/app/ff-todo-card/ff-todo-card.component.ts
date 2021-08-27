@@ -33,7 +33,7 @@ export class FfTodoCardComponent implements OnInit {
   phaseLeftExists!: Boolean;
   phaseRightExists!: Boolean;
 
-  todo_expand_status: Boolean = true;
+  todo_expand_status: Boolean = false;
 
   descriptionLength!: Number;
   tasks!: Task[];
@@ -54,16 +54,13 @@ export class FfTodoCardComponent implements OnInit {
     this.descriptionLength = this.content.description.length;
 
     if (this.content.tasks)
-    if (this.content.tasks.length)
     {
-      this.tasks = Object.assign(this.tasks, this.content.tasks);
+      this.taskCount = this.content.tasks.length;
     }
     else
     {
-      this.tasks = [];
+      this.taskCount = 0;
     }
-
-    this.taskCount = this.tasks.length;
   }
 
   addTask() {

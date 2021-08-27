@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FfTodoServiceService } from '../ff-todo-service.service';
+import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { Todo } from '../todo';
 
 @Component({
@@ -9,7 +9,7 @@ import { Todo } from '../todo';
 })
 export class FfTodoListComponent implements OnInit {
 
-  constructor(private todoServ: FfTodoServiceService) {
+  constructor(private todoServ: FfTodoMockRequestService) {
     for (let phase of this.phase_labels)
     {
       this.todo_list.push([]);
@@ -51,11 +51,6 @@ export class FfTodoListComponent implements OnInit {
 
   customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
-  taskSortingFields = [
-    ['name', 'Task name'],
-    ['done', 'Task checked']
-  ];
-
   phase_labels = ['Backlog', 'In progress', 'Done'];
 
   phaseNum!: number;
@@ -85,7 +80,6 @@ export class FfTodoListComponent implements OnInit {
       {
         this.todo_count += todo_phase.length;
       }
-      console.log(this.todo_list);
     });
   }
 
