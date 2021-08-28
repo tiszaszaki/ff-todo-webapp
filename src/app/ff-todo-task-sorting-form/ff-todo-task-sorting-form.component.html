@@ -1,16 +1,21 @@
 <div class="border border-secondary rounded p-2" *ngIf="task_list_count">
     <div class="mb-3">Sorting of Tasks:</div>
-    <div class="mb-2">
-        <select class="form-select"
-                data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-            <option *ngFor="let field of taskSortingFields" [value]="field.name">{{ field.display }}</option>
-        </select>
-    </div>
-    <div class="d-flex justify-content-between">
-        <div data-toggle="tooltip" data-placement="bottom" title="Task sorting direction">
-            <input class="form-check-input" type="checkbox" id="task_sorting_direction">
-            <label for="task_sorting_direction">Descending</label>
+    <div class="form-group">
+        <div class="mb-2">
+            <select class="form-select form-control" [(ngModel)]="tasksortfield" name="field"
+                    data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
+                <option *ngFor="let field of taskSortingFields" [value]="field.name">{{ field.display }}</option>
+            </select>
         </div>
-        <button type="button" class="btn btn-warning" (click)="resetTaskSorting()">Reset</button>
+    </div>
+    <div class="form-group">
+        <div class="d-flex justify-content-between">
+            <div data-toggle="tooltip" data-placement="bottom" title="Task sorting direction">
+                <input class="form-check-input form-control" type="checkbox" id="task_sorting_direction"
+                        [(ngModel)]="tasksortdir" name="direction">
+                <label for="task_sorting_direction">Descending</label>
+            </div>
+            <button type="button" class="btn btn-warning" (click)="resetTaskSorting()">Reset</button>
+        </div>
     </div>
 </div>

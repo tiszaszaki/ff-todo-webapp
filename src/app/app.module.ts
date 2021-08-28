@@ -3,9 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+// Imports for mocking data
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-
 import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
+
+// MDB Angular Free
+import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angular-bootstrap-md';
 
 import { AppComponent } from './app.component';
 import { FfTodoListComponent } from './ff-todo-list/ff-todo-list.component';
@@ -18,9 +21,7 @@ import { FfTodoTaskSortingFormComponent } from './ff-todo-task-sorting-form/ff-t
 import { FfTodoTaskListComponent } from './ff-todo-task-list/ff-todo-task-list.component';
 import { TiszaSzakiSortPipe } from './tsz-sort.pipe';
 import { FfTodoAddTodoFormComponent } from './ff-todo-add-todo-form/ff-todo-add-todo-form.component';
-
-// MDB Angular Free
-import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angular-bootstrap-md'
+import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-list-per-phase.component'
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angula
     FfTodoTaskSortingFormComponent,
     FfTodoTaskListComponent,
     TiszaSzakiSortPipe,
-    FfTodoAddTodoFormComponent
+    FfTodoAddTodoFormComponent,
+    FfTodoListPerPhaseComponent
   ],
   imports: [
     ModalModule, TooltipModule, PopoverModule, ButtonsModule,

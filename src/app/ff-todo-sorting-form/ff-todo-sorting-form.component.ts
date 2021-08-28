@@ -28,6 +28,8 @@ export class FfTodoSortingFormComponent implements OnInit {
   ];
 
   resetTodoSorting() {
+    this.todosortfield = '';
+    this.todosortdir = false;
   }
 
   ngOnInit(): void {

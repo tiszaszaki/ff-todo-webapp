@@ -21,6 +21,8 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
   ];
 
   resetTaskSorting() {
+    this.tasksortfield = '';
+    this.tasksortdir = false;
   }
 
   ngOnInit(): void {

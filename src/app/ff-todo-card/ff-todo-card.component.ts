@@ -71,7 +71,7 @@ export class FfTodoCardComponent implements OnInit {
     this.readonlyTodo = (this._readonlyTodo ? this._readonlyTodo : false);
     this.readonlyTask = (this._readonlyTask ? this._readonlyTask : false);
 
-    this.readonlyTask &&= this.readonlyTodo;
+    this.readonlyTask ||= this.readonlyTodo;
   }
 
   addTask() {

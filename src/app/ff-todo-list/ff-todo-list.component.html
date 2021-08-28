@@ -15,17 +15,14 @@
 			</td>
 		</tr>
 		<tr class="row border border-2 border-secondary">
-			<td class="col border border-secondary"
-					*ngFor="let todo_phase of todo_list; let idx=index">
-				<div *ngIf="todo_phase.length">
-					<div *ngFor="let todo of todo_phase | tszSort:todo_sorting_field[idx]:todo_sorting_direction[idx]">
-						<app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
-								[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-card>
-					</div>
-				</div>
-				<app-ff-todo-list-empty *ngIf="!todo_phase.length"></app-ff-todo-list-empty>
+			<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
+				<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum"
+						[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask"
+						[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
+						[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]">
+				</app-ff-todo-list-per-phase>
 			</td>
-		</tr>
+		<tr>
 	</tbody>
 </table>
 <div class="d-grid gap-2 w-25 my-2" *ngIf="!readonlyTodo">
@@ -35,7 +32,7 @@
 	</button>
 	<button type="button" class="btn btn-danger btn-sm" (click)="removeAllTodos()"
 			data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
-			ngDisabled="!todo_count">
+			[disabled]="!todo_count">
 		<i class="fas fa-broom"></i>
 	</button>
 </div>

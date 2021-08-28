@@ -19,10 +19,11 @@
 						[tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir"></app-ff-todo-task-list>
             </li>
             <li class="list-group-item" *ngIf="!readonlyTodo">
-				<div class="d-flex justify-content-between">
+				<div class="d-flex flex-column justify-content-between w-25">
 					<div class="btn-group" role="group">
 						<button type="button" class="btn btn-primary btn-sm text-end" (click)="addTask()"
-								data-toggle="tooltip" data-placement="bottom" title="Add new Task">
+								data-toggle="tooltip" data-placement="bottom" title="Add new Task"
+								[disabled]="readonlyTask">
 							<i class="fas fa-plus"></i>
 						</button>
 						<button type="button" class="btn btn-primary btn-sm text-end" (click)="editTodo()"
@@ -30,25 +31,25 @@
 							<i class="fas fa-pencil-alt"></i>
 						</button>
 					</div>
-					<div class="btn-group" role="group">
+					<div class="btn-group mt-1" role="group">
 						<button type="button" class="btn btn-danger btn-sm text-end" (click)="removeTodo()"
 								data-toggle="tooltip" data-placement="bottom" title="Remove Todo">
 							<i class="fas fa-trash-alt"></i>
 						</button>
 						<button type="button" class="btn btn-danger btn-sm text-end" (click)="removeAllTasks()"
-								data-toggle="tooltip" data-placement="bottom" title="Remove All Tasks" ngDisabled="!taskCount">
+								data-toggle="tooltip" data-placement="bottom" title="Remove All Tasks" [disabled]="readonlyTask || !taskCount">
 							<i class="fas fa-broom"></i>
 						</button>
 					</div>
-					<div class="btn-group" role="group">
+					<div class="btn-group mt-1" role="group">
 						<button type="button" class="btn btn-primary btn-sm text-end" (click)="shiftTodoLeft()"
 								data-toggle="tooltip" data-placement="bottom" title="Shift Todo to the left"
-								ngDisabled="!phaseLeftExists">
+								[disabled]="!phaseLeftExists">
 							<i class="fas fa-arrow-left"></i>
 						</button>
 						<button type="button" class="btn btn-primary btn-sm text-end" (click)="shiftTodoRight()"
 								data-toggle="tooltip" data-placement="bottom" title="Shift Todo to the right"
-								ngDisabled="!phaseRightExists">
+								[disabled]="!phaseRightExists">
 							<i class="fas fa-arrow-right"></i>
 						</button>
 					</div>
