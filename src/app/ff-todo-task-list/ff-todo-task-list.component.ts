@@ -13,8 +13,8 @@ export class FfTodoTaskListComponent implements OnInit {
   @Input('tasks') tasklistString! : string;
   @Input() taskCount!: Number;
 
-  @Input() tasksortfield?: string;
-  @Input() tasksortdir?: Boolean;
+  @Input() tasksortfield!: string;
+  @Input() tasksortdir!: Boolean;
 
   @Input() readonlyTask?: Boolean = false;
   @Input() showTaskCount?: Boolean = true;

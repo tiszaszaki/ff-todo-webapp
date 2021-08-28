@@ -16,6 +16,11 @@ import { FfTodoTaskListEmptyComponent } from './ff-todo-task-list-empty/ff-todo-
 import { FfTodoCardInvalidComponent } from './ff-todo-card-invalid/ff-todo-card-invalid.component';
 import { FfTodoTaskSortingFormComponent } from './ff-todo-task-sorting-form/ff-todo-task-sorting-form.component';
 import { FfTodoTaskListComponent } from './ff-todo-task-list/ff-todo-task-list.component';
+import { TiszaSzakiSortPipe } from './tsz-sort.pipe';
+import { FfTodoAddTodoFormComponent } from './ff-todo-add-todo-form/ff-todo-add-todo-form.component';
+
+// MDB Angular Free
+import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angular-bootstrap-md'
 
 @NgModule({
   declarations: [
@@ -27,9 +32,12 @@ import { FfTodoTaskListComponent } from './ff-todo-task-list/ff-todo-task-list.c
     FfTodoTaskListEmptyComponent,
     FfTodoCardInvalidComponent,
     FfTodoTaskSortingFormComponent,
-    FfTodoTaskListComponent
+    FfTodoTaskListComponent,
+    TiszaSzakiSortPipe,
+    FfTodoAddTodoFormComponent
   ],
   imports: [
+    ModalModule, TooltipModule, PopoverModule, ButtonsModule,
     BrowserModule, FormsModule, HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: 'ff-todo/' })
   ],

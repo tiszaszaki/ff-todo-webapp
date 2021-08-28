@@ -1,24 +1,35 @@
-<div class="table mt-3">
-	<div class="row border border-3 border-secondary rounded">
-		<div class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-			<h2 class="mt-1 mb-3">{{phase_labels[idx]}}</h2>
+<table class="table mt-3">
+	<tbody>
+		<tr class="row border border-2 border-secondary">
+			<td class="col border border-secondary" *ngFor="let phase of phase_labels">
+				<h2 class="mt-1 mb-3">{{phase}}</h2>
+			</td>
+		</tr>
+		<tr class="row border border-2 border-secondary" *ngIf="todo_count">
+			<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
+				<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"
+						[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"></app-ff-todo-sorting-form>
 
-			<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"></app-ff-todo-sorting-form>
-
-			<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"></app-ff-todo-task-sorting-form>
-
-			<div *ngIf="todo_phase.length">
-				<div *ngFor="let todo of todo_phase">
-					<app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
-							  [tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-card>
+				<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"
+						[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-task-sorting-form>
+			</td>
+		</tr>
+		<tr class="row border border-2 border-secondary">
+			<td class="col border border-secondary"
+					*ngFor="let todo_phase of todo_list; let idx=index">
+				<div *ngIf="todo_phase.length">
+					<div *ngFor="let todo of todo_phase | tszSort:todo_sorting_field[idx]:todo_sorting_direction[idx]">
+						<app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
+								[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-card>
+					</div>
 				</div>
-			</div>
-			<app-ff-todo-list-empty *ngIf="!todo_phase.length"></app-ff-todo-list-empty>
-		</div>
-	</div>
-</div>
+				<app-ff-todo-list-empty *ngIf="!todo_phase.length"></app-ff-todo-list-empty>
+			</td>
+		</tr>
+	</tbody>
+</table>
 <div class="d-grid gap-2 w-25 my-2" *ngIf="!readonlyTodo">
-	<button type="button" class="btn btn-primary" (click)="addTodo()"
+	<button type="button" class="btn btn-primary"
 			data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
 		<i class="fas fa-plus"></i>
 	</button>
@@ -27,4 +38,7 @@
 			ngDisabled="!todo_count">
 		<i class="fas fa-broom"></i>
 	</button>
+</div>
+<div>
+	<app-ff-todo-add-todo-form></app-ff-todo-add-todo-form>
 </div>

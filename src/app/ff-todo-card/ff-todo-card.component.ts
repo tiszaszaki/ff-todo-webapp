@@ -15,8 +15,8 @@ export class FfTodoCardComponent implements OnInit {
   @Input() content!: Todo;
   @Input() phaseNum!: number;
 
-  @Input() tasksortfield?: string = '';
-  @Input() tasksortdir?: Boolean = false;
+  @Input() tasksortfield!: string;
+  @Input() tasksortdir!: Boolean;
 
   @Input() customDateFormat?: string = 'yyyy-MM-dd hh:mm:ss.sss';
 

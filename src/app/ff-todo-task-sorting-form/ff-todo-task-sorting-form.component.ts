@@ -9,12 +9,13 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
 
   constructor() { }
 
-  @Input() task_sorting_field?: string = '';
-  @Input() task_sorting_direction?: Boolean = false;
+  @Input() tasksortfield!: string;
+  @Input() tasksortdir!: Boolean;
 
   @Input() task_list_count!: number;
 
   taskSortingFields = [
+    {name: '', display: '(unsorted)'},
     {name: 'name', display: 'Task name'},
     {name: 'done', display: 'Task checked'}
   ];

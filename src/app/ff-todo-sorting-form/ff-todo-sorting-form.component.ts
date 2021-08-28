@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ff-todo-sorting-form',
@@ -9,12 +9,16 @@ export class FfTodoSortingFormComponent implements OnInit {
 
   constructor() { }
 
-  @Input() todo_sorting_field?: string = '';
-  @Input() todo_sorting_direction?: Boolean = false;
+  @Input() todosortfield!: string;
+  @Input() todosortdir!: Boolean | string;
+
+  @Output() todosortfieldChange = new EventEmitter<string>();
+  @Output() todosortdirChange = new EventEmitter<string>();
 
   @Input() todo_list_count!: number;
 
   todoSortingFields = [
+    {name: '', display: '(unsorted)'},
     {name: 'name', display: 'Todo name'},
     {name: 'description', display: 'Todo description'},
     {name: 'descriptionLength', display: 'Todo description length'},

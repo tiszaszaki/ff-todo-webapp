@@ -28,4 +28,22 @@ export class FfTodoMockRequestService {
         })
     );
   }
+
+  addTodo(todo: Todo): Observable<Todo> {
+    todo.id = -1;
+    return this.http.post<Todo>(this.baseurl, todo).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    )
+  }
+
+  editTodo(patchedTodo: Todo): Observable<any> {
+    return this.http.put(this.baseurl + patchedTodo.id, patchedTodo);
+  }
+
+  removeTodo(id: number): Observable<any> {
+    return this.http.delete(this.baseurl + id);
+  }
 }

@@ -3,7 +3,7 @@
     <div class="mb-2">
         <select class="form-select"
                 data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-            <option *ngFor="let field of taskSortingFields" ngValue="field.name">{{ field.display }}</option>
+            <option *ngFor="let field of taskSortingFields" [value]="field.name">{{ field.display }}</option>
         </select>
     </div>
     <div class="d-flex justify-content-between">

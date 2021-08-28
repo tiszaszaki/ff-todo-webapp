@@ -22,6 +22,7 @@ export class FfTodoListComponent implements OnInit {
       this.task_sorting_direction.push(false);
     }
     this.phaseNum = this.phase_labels.length;
+    this.descriptionMaxLength = 1024;
   }
 
   updateSortingRelatedOptions(idx : number) {
@@ -54,6 +55,7 @@ export class FfTodoListComponent implements OnInit {
   phase_labels = ['Backlog', 'In progress', 'Done'];
 
   phaseNum!: number;
+  descriptionMaxLength! : number;
 
   readonlyTodo = false;
   readonlyTask = false;
@@ -83,8 +85,9 @@ export class FfTodoListComponent implements OnInit {
     });
   }
 
-  addTodo() {
+  addTodo(todo : Todo) {
     console.log('Trying to add a new Todo...');
+    this.todoServ.addTodo(todo);
   }
 
   removeAllTodos() {

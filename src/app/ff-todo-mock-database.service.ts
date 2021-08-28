@@ -28,14 +28,22 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
     const todo : Todo[] = [
       {id:0, name:'Sonic', description:'Fejlesztése', phase:0},
       {id:1, name:'Álláskeresés', description:'Folyamatban', phase:1},
-      {id:2, name:'Nevem', description:'Kiíratása', phase:2}
+      {id:2, name:'Nevem', description:'Kiíratása', phase:2},
+      {id:3, name:'J', description:'Nevem betűje', phase:0},
+      {id:4, name:'a', description:'Nevem betűje', phase:0},
+      {id:5, name:'n', description:'Nevem betűje', phase:0},
+      {id:6, name:'c', description:'Nevem betűje', phase:0},
+      {id:7, name:'s', description:'Nevem betűje', phase:0},
+      {id:8, name:'i', description:'Nevem betűje', phase:0}
     ];
     let idx=0;
     for (let t of todo)
     {
+      var taskList = tasksForTodo[idx];
       t.datecreated = t.datemodified = new Date();
       t.tasks = [];
-      for (let task of tasksForTodo[idx])
+      if (!taskList) taskList = [];
+      for (let task of taskList)
       {
         t.tasks.push(JSON.parse(JSON.stringify(task)));
       }

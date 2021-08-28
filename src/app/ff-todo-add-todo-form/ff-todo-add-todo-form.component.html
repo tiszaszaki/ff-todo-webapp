@@ -1,0 +1,51 @@
+<button type="button" mdbBtn color="default" [rounded]="true" data-toggle="modal" data-target="#basicExample"
+  mdbWavesEffect>Launch Add Todo Modal</button>
+<!-- >
+<div mdbModal #frame="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <mdb-icon fas icon="envelope" class="prefix grey-text"></mdb-icon>
+                    <input type="text" id="todoForm-name" [formControl]="controlAddTodoNameForm" class="form-control"
+                            mdbInput mdbValidate>
+                    <label for="todoForm-name">Todo name</label>
+                    <mdb-error *ngIf="controlAddTodoNameForm.invalid && (controlAddTodoNameForm.dirty || controlAddTodoNameForm.touched)">
+                        Name invalid
+                    </mdb-error>
+                    <mdb-success *ngIf="controlAddTodoNameForm.valid && (controlAddTodoNameForm.dirty || controlAddTodoNameForm.touched)">
+                        Name valid
+                    </mdb-success>
+                </div>
+
+                <div class="md-form mb-4">
+                    <mdb-icon fas icon="lock" class="prefix grey-text"></mdb-icon>
+                    <textarea type="text" id="todoForm-description" [formControl]="controlAddTodoDescriptionForm" class="form-control"
+                            mdbInput mdbValidate>
+                    <label for="todoForm-description">Todo description</label>
+                    <mdb-error
+                        *ngIf="controlAddTodoDescriptionForm.invalid && (controlAddTodoDescriptionForm.dirty || controlAddTodoDescriptionForm.touched)">
+                        Description invalid
+                    </mdb-error>
+                    <mdb-success
+                        *ngIf="controlAddTodoDescriptionForm.valid && (controlAddTodoDescriptionForm.dirty || controlAddTodoDescriptionForm.touched)">
+                        Description valid
+                    </mdb-success>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+                <button mdbBtn color="default" class="waves-light" mdbWavesEffect>Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+<-->
