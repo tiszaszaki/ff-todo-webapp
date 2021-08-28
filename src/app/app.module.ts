@@ -21,7 +21,9 @@ import { FfTodoTaskSortingFormComponent } from './ff-todo-task-sorting-form/ff-t
 import { FfTodoTaskListComponent } from './ff-todo-task-list/ff-todo-task-list.component';
 import { TiszaSzakiSortPipe } from './tsz-sort.pipe';
 import { FfTodoAddTodoFormComponent } from './ff-todo-add-todo-form/ff-todo-add-todo-form.component';
-import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-list-per-phase.component'
+import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-list-per-phase.component';
+import { FfTodoHeaderComponent } from './ff-todo-header/ff-todo-header.component';
+import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component'
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-li
     FfTodoTaskListComponent,
     TiszaSzakiSortPipe,
     FfTodoAddTodoFormComponent,
-    FfTodoListPerPhaseComponent
+    FfTodoListPerPhaseComponent,
+    FfTodoHeaderComponent,
+    FfTodoFooterComponent
   ],
   imports: [
     ModalModule, TooltipModule, PopoverModule, ButtonsModule,
