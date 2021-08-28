@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Task } from '../task';
 import { Todo } from '../todo';
 
 @Component({
@@ -14,18 +15,21 @@ export class FfTodoCardComponent implements OnInit {
   @Input() content!: Todo;
   @Input() phaseNum!: number;
 
-  @Input() tasksortfield?: string;
-  @Input() tasksortdir?: Boolean;
+  @Input() tasksortfield?: string = '';
+  @Input() tasksortdir?: Boolean = false;
 
   @Input() customDateFormat?: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
-  @Input() readonlyTodo?: Boolean = false;
-  @Input() readonlyTask?: Boolean = false;
+  @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
+  @Input('readonlyTask') _readonlyTask?: Boolean = false;
 
   @Input() showDescriptionLength?: Boolean = true;
   @Input() showTaskCount?: Boolean = true;
   @Input() showDateCreated?: Boolean = true;
-  
+
+  readonlyTodo!: Boolean;
+  readonlyTask!: Boolean;
+
   contentStr!: string;
 
   isCardValid: boolean = true;
@@ -33,10 +37,9 @@ export class FfTodoCardComponent implements OnInit {
   phaseLeftExists!: Boolean;
   phaseRightExists!: Boolean;
 
-  todo_expand_status: Boolean = false;
-
   descriptionLength!: Number;
-  tasks!: Task[];
+
+  tasklistStr! : string;
   taskCount!: Number;
 
   ngOnInit(): void {
@@ -59,8 +62,16 @@ export class FfTodoCardComponent implements OnInit {
     }
     else
     {
+      this.content.tasks = [];
       this.taskCount = 0;
     }
+
+    this.tasklistStr = JSON.stringify(this.content.tasks);
+
+    this.readonlyTodo = (this._readonlyTodo ? this._readonlyTodo : false);
+    this.readonlyTask = (this._readonlyTask ? this._readonlyTask : false);
+
+    this.readonlyTask &&= this.readonlyTodo;
   }
 
   addTask() {
@@ -82,28 +93,5 @@ export class FfTodoCardComponent implements OnInit {
   }
   shiftTodoRight() {
     console.log(`Trying to shift right this Todo (${this.contentStr})...`);
-  }
-
-  editTask(t : Task)
-  {
-    let taskStr=JSON.stringify(t);
-    console.log(`Trying to edit this Task (${taskStr})...`);
-  }
-
-  removeTask(t : Task)
-  {   
-    let taskStr=JSON.stringify(t);
-    console.log(`Trying to remove this Task (${taskStr})...`);
-  }
-
-  checkTask(t : Task)
-  {
-    let taskStr=JSON.stringify(t);
-    console.log(`Trying to check this Task (${taskStr})...`);
-  }
-
-  toggleCollapse()
-  {
-    this.todo_expand_status = !this.todo_expand_status;
   }
 }
