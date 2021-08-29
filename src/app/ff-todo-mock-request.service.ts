@@ -19,6 +19,16 @@ export class FfTodoMockRequestService {
 
   constructor(private http: HttpClient) { }
 
+  getTodo(id : number) : Observable<Todo> {
+    return this.http.get<Todo>(this.baseurl + id)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
   getTodos() : Observable<Todo[]> {
     return this.http.get<Todo[]>(this.baseurl)
       .pipe(
@@ -31,7 +41,8 @@ export class FfTodoMockRequestService {
 
   addTodo(todo: Todo): Observable<Todo> {
     todo.id = -1;
-    return this.http.post<Todo>(this.baseurl, todo).pipe(
+    return this.http.post<Todo>(this.baseurl, todo, this.httpOptions).pipe(
+      tap((newTodo: Todo) => console.log(`Added new todo: ${todo}`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
         return throwError(error);
@@ -39,7 +50,7 @@ export class FfTodoMockRequestService {
     )
   }
 
-  editTodo(patchedTodo: Todo): Observable<any> {
+  editTodo(id : number, patchedTodo: Todo): Observable<any> {
     return this.http.put(this.baseurl + patchedTodo.id, patchedTodo);
   }
 

@@ -1,4 +1,27 @@
 <div class="content" role="main">
+	<div class="d-grid gap-2 w-25 my-2" *ngIf="!readonlyTodo">
+		<button type="button" class="btn btn-primary" (click)="prepareAddTodoForm()"
+				data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
+			<i class="fas fa-plus"></i>
+		</button>
+		<button type="button" class="btn btn-primary" (click)="prepareEditTodoForm(0)"
+				data-toggle="tooltip" data-placement="bottom" title="Edit new Todo">
+			<i class="fas fa-pencil-alt"></i>
+		</button>
+		<button type="button" class="btn btn-danger btn-sm" (click)="removeAllTodos()"
+				data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
+				[disabled]="!todo_count">
+			<i class="fas fa-broom"></i>
+		</button>
+	</div>
+	<div>
+		<app-ff-todo-add-todo-form [mode]="2" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
+				[descriptionMaxLength]="descriptionMaxLength">
+		</app-ff-todo-add-todo-form>
+		<app-ff-todo-add-todo-form [mode]="EDIT_TODO" [data]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
+				[descriptionMaxLength]="descriptionMaxLength">
+		</app-ff-todo-add-todo-form>
+	</div>
 	<table class="table mt-3">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
@@ -18,7 +41,7 @@
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum"
-							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask"
+							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]">
 					</app-ff-todo-list-per-phase>
@@ -26,18 +49,4 @@
 			<tr>
 		</tbody>
 	</table>
-	<div class="d-grid gap-2 w-25 my-2" *ngIf="!readonlyTodo">
-		<button type="button" class="btn btn-primary"
-				data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
-			<i class="fas fa-plus"></i>
-		</button>
-		<button type="button" class="btn btn-danger btn-sm" (click)="removeAllTodos()"
-				data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
-				[disabled]="!todo_count">
-			<i class="fas fa-broom"></i>
-		</button>
-	</div>
-	<div>
-		<app-ff-todo-add-todo-form></app-ff-todo-add-todo-form>
-	</div>
 </div>

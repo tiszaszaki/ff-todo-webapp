@@ -14,7 +14,7 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
         {id:1, name:'Főharcok', done:false},
       ],
       [
-//        {id:2, name:'MÁV', done:false},
+        {id:2, name:'MÁV', done:false},
       ],
       [
         {id:3, name:'J', done:false},
@@ -53,8 +53,10 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
     return {todo};
   }
 
+  id0 : number = 0;
+
   genId(todolist: Todo[]): number {
-    return todolist.length > 0 ? Math.max(...todolist.map(todo => todo.id)) + 1 : 0;
+    return todolist.length > 0 ? Math.max(...todolist.map(todo => todo.id)) + 1 : this.id0;
   }
 
   constructor() { }

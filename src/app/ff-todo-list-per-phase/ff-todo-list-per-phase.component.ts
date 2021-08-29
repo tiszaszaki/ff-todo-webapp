@@ -13,13 +13,15 @@ export class FfTodoListPerPhaseComponent implements OnInit {
   @Input() content! : Todo[];
   @Input() phaseNum!: number;
 
+  @Input() customDateFormat!: string;
+
   @Input() readonlyTodo!: Boolean;
   @Input() readonlyTask!: Boolean;
 
-  @Input() todosortfield!: string;
+  @Input() todosortfield!: String;
   @Input() todosortdir!: Boolean;
 
-  @Input() tasksortfield!: string;
+  @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
 
   ngOnInit(): void {

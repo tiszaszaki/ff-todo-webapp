@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { Todo } from '../todo';
+import { TodoOperator } from '../todo-operator';
 
 @Component({
   selector: 'app-ff-todo-list',
@@ -23,6 +24,8 @@ export class FfTodoListComponent implements OnInit {
     }
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
+
+    this.todoSelected = new Todo();
   }
 
   updateSortingRelatedOptions(idx : number) {
@@ -39,15 +42,20 @@ export class FfTodoListComponent implements OnInit {
     this.task_sorting_direction[idx] = false;
   }
 
+  addTodoFormShown: Boolean = false;
+  editTodoFormShown: Boolean = false;
+
   todo_count: number = 0;
   todo_records: Todo[] = [];
   todo_list: Todo[][] = [];
   task_count: number[] = [];
 
-  todo_sorting_field: string[] = [];
+  todoSelected!: Todo;
+
+  todo_sorting_field: String[] = [];
   todo_sorting_direction: Boolean[] = [];
 
-  task_sorting_field: string[] = [];
+  task_sorting_field: String[] = [];
   task_sorting_direction: Boolean[] = [];
 
   customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
@@ -63,6 +71,15 @@ export class FfTodoListComponent implements OnInit {
   showDescriptionLength = true;
   showTaskCount = true;
   showDateCreated = true;
+
+  ADD_TODO = TodoOperator.ADD;
+  EDIT_TODO = TodoOperator.EDIT;
+
+  getTodo(id : number): Todo {
+    var result : Todo = new Todo();
+    this.todoServ.getTodo(id).subscribe(todo => { result = todo; });
+    return result;
+  }
 
   getTodos(): void {
     this.todoServ.getTodos()
@@ -85,9 +102,13 @@ export class FfTodoListComponent implements OnInit {
     });
   }
 
-  addTodo(todo : Todo) {
-    console.log('Trying to add a new Todo...');
-    this.todoServ.addTodo(todo);
+  prepareAddTodoForm() {
+    this.addTodoFormShown = !this.addTodoFormShown;
+  }
+
+  prepareEditTodoForm(id : number) {
+    this.editTodoFormShown = !this.editTodoFormShown;
+    this.todoSelected = this.getTodo(id);
   }
 
   removeAllTodos() {

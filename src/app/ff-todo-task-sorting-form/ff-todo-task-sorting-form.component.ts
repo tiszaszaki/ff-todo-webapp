@@ -9,7 +9,7 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
 
   constructor() { }
 
-  @Input() tasksortfield!: string;
+  @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
 
   @Input() task_list_count!: number;

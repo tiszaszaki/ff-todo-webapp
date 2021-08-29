@@ -10,10 +10,10 @@ export class FfTodoTaskListComponent implements OnInit {
 
   constructor() { }
 
-  @Input('tasks') tasklistString! : string;
+  @Input('tasks') tasklistString! : String;
   @Input() taskCount!: Number;
 
-  @Input() tasksortfield!: string;
+  @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
 
   @Input() readonlyTask?: Boolean = false;
@@ -24,7 +24,7 @@ export class FfTodoTaskListComponent implements OnInit {
   tasklist_expand_status: Boolean = false;
 
   ngOnInit(): void {
-    this.tasks = JSON.parse(this.tasklistString);
+    this.tasks = JSON.parse(this.tasklistString as string);
   }
 
   editTask(t : Task)

@@ -8,7 +8,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
 
 // MDB Angular Free
-import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angular-bootstrap-md';
+//import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angular-bootstrap-md';
 
 import { AppComponent } from './app.component';
 import { FfTodoListComponent } from './ff-todo-list/ff-todo-list.component';
@@ -23,7 +23,8 @@ import { TiszaSzakiSortPipe } from './tsz-sort.pipe';
 import { FfTodoAddTodoFormComponent } from './ff-todo-add-todo-form/ff-todo-add-todo-form.component';
 import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-list-per-phase.component';
 import { FfTodoHeaderComponent } from './ff-todo-header/ff-todo-header.component';
-import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component'
+import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component';
+import { FfTodoFormInvalidComponent } from './ff-todo-form-invalid/ff-todo-form-invalid.component'
 
 @NgModule({
   declarations: [
@@ -40,10 +41,11 @@ import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component
     FfTodoAddTodoFormComponent,
     FfTodoListPerPhaseComponent,
     FfTodoHeaderComponent,
-    FfTodoFooterComponent
+    FfTodoFooterComponent,
+    FfTodoFormInvalidComponent
   ],
   imports: [
-    ModalModule, TooltipModule, PopoverModule, ButtonsModule,
+    //ModalModule, TooltipModule, PopoverModule, ButtonsModule,
     BrowserModule, FormsModule, HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: 'ff-todo/' })
   ],

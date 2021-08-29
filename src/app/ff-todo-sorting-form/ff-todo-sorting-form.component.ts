@@ -9,11 +9,11 @@ export class FfTodoSortingFormComponent implements OnInit {
 
   constructor() { }
 
-  @Input() todosortfield!: string;
-  @Input() todosortdir!: Boolean | string;
+  @Input() todosortfield!: String;
+  @Input() todosortdir!: Boolean;
 
-  @Output() todosortfieldChange = new EventEmitter<string>();
-  @Output() todosortdirChange = new EventEmitter<string>();
+  @Output() todosortfieldChange = new EventEmitter<String>();
+  @Output() todosortdirChange = new EventEmitter<Boolean>();
 
   @Input() todo_list_count!: number;
 

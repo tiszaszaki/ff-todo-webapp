@@ -9,7 +9,7 @@ export class FfTodoHeaderComponent implements OnInit {
 
   constructor() { }
 
-  @Input() title! : string;
+  @Input() title! : String;
 
   ngOnInit(): void {
   }

@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TiszaSzakiSortPipe implements PipeTransform {
 
-  transform(array: any, field: string, reversed: Boolean): any[] {
+  transform(array: any, field: String, reversed: Boolean): any[] {
     if (!Array.isArray(array)) {
       return [array];
     }
@@ -14,12 +14,17 @@ export class TiszaSzakiSortPipe implements PipeTransform {
     {
       array.sort((a: any, b: any) => {
         var res;
-        if (a[field] < b[field]) {
-          res = -1;
-        } else if (a[field] > b[field]) {
-          res = 1;
-        } else {
-          res = 0;
+        if ((a instanceof String) && (b instanceof String)) {
+          res = a.localeCompare(b as string);
+        }
+        else {
+          if (a[field as string] < b[field as string]) {
+            res = -1;
+          } else if (a[field as string] > b[field as string]) {
+            res = 1;
+          } else {
+            res = 0;
+          }
         }
         res *= (reversed ? -1 : 1);
         return res;

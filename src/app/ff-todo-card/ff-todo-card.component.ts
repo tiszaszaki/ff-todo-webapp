@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { Todo } from '../todo';
 
@@ -15,10 +16,10 @@ export class FfTodoCardComponent implements OnInit {
   @Input() content!: Todo;
   @Input() phaseNum!: number;
 
-  @Input() tasksortfield!: string;
+  @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
 
-  @Input() customDateFormat?: string = 'yyyy-MM-dd hh:mm:ss.sss';
+  @Input() customDateFormat!: string;
 
   @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
   @Input('readonlyTask') _readonlyTask?: Boolean = false;
@@ -30,17 +31,20 @@ export class FfTodoCardComponent implements OnInit {
   readonlyTodo!: Boolean;
   readonlyTask!: Boolean;
 
-  contentStr!: string;
+  contentStr!: String;
 
-  isCardValid: boolean = true;
+  isCardValid: Boolean = true;
 
   phaseLeftExists!: Boolean;
   phaseRightExists!: Boolean;
 
   descriptionLength!: Number;
 
-  tasklistStr! : string;
+  tasklistStr! : String;
   taskCount!: Number;
+
+  LEFT = ShiftDirection.LEFT;
+  RIGHT = ShiftDirection.RIGHT;
 
   ngOnInit(): void {
     this.contentStr = JSON.stringify(this.content);
@@ -88,10 +92,8 @@ export class FfTodoCardComponent implements OnInit {
     console.log(`Trying to clear Task list for this Todo (${this.contentStr})...`);
   }
 
-  shiftTodoLeft() {
-    console.log(`Trying to shift left this Todo (${this.contentStr})...`);
-  }
-  shiftTodoRight() {
-    console.log(`Trying to shift right this Todo (${this.contentStr})...`);
+  shiftTodo(dir : ShiftDirection) {
+    let shiftDirStr = new Map([[-1,'left'],[1,'right']]);
+    console.log(`Trying to shift ${shiftDirStr.get(dir)} this Todo (${this.contentStr})...`);
   }
 }
