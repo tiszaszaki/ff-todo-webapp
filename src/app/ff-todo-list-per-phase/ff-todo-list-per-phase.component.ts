@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Todo } from '../todo';
 
 @Component({
@@ -23,6 +23,8 @@ export class FfTodoListPerPhaseComponent implements OnInit {
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
+
+  @Output() editTodoEvent = new EventEmitter<number>();
 
   ngOnInit(): void {
   }

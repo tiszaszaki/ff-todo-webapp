@@ -24,8 +24,6 @@ export class FfTodoListComponent implements OnInit {
     }
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
-
-    this.todoSelected = new Todo();
   }
 
   updateSortingRelatedOptions(idx : number) {
@@ -44,6 +42,7 @@ export class FfTodoListComponent implements OnInit {
 
   addTodoFormShown: Boolean = false;
   editTodoFormShown: Boolean = false;
+  removeAllTodosFormShown: Boolean = false;
 
   todo_count: number = 0;
   todo_records: Todo[] = [];
@@ -74,11 +73,10 @@ export class FfTodoListComponent implements OnInit {
 
   ADD_TODO = TodoOperator.ADD;
   EDIT_TODO = TodoOperator.EDIT;
+  REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
 
-  getTodo(id : number): Todo {
-    var result : Todo = new Todo();
-    this.todoServ.getTodo(id).subscribe(todo => { result = todo; });
-    return result;
+  getTodo(id : number) {
+    return this.todoServ.getTodo(id);
   }
 
   getTodos(): void {
@@ -106,13 +104,36 @@ export class FfTodoListComponent implements OnInit {
     this.addTodoFormShown = !this.addTodoFormShown;
   }
 
+  addTodo(todo : Todo) {
+    if (!todo.description)
+    {
+      todo.description = '';
+    }
+    console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
+  }
+
+  updateTodo(todo : Todo) {
+    let id = todo.id;
+    if (!todo.description)
+    {
+      todo.description = '';
+    }
+    console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
+  }
+
   prepareEditTodoForm(id : number) {
-    this.editTodoFormShown = !this.editTodoFormShown;
-    this.todoSelected = this.getTodo(id);
+    this.getTodo(id).subscribe(todo => {
+      this.todoSelected = todo;
+      this.editTodoFormShown = !this.editTodoFormShown;
+    });
+  }
+
+  prepareRemovingAllTodos() {
+    this.removeAllTodosFormShown = !this.removeAllTodosFormShown;
   }
 
   removeAllTodos() {
-    console.log('Trying to remove all Todos from the board...');
+    console.log(`Trying to remove all Todos from the board...`);
   }
 
   ngOnInit(): void {

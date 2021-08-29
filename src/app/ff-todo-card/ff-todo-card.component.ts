@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ShiftDirection } from '../shift-direction';
-import { Task } from '../task';
 import { Todo } from '../todo';
 
 @Component({
@@ -27,6 +26,8 @@ export class FfTodoCardComponent implements OnInit {
   @Input() showDescriptionLength?: Boolean = true;
   @Input() showTaskCount?: Boolean = true;
   @Input() showDateCreated?: Boolean = true;
+
+  @Output() editTodoEvent = new EventEmitter<number>();
 
   readonlyTodo!: Boolean;
   readonlyTask!: Boolean;
@@ -83,6 +84,7 @@ export class FfTodoCardComponent implements OnInit {
   }
   editTodo() {
     console.log(`Trying to edit this Todo (${this.contentStr})...`);
+    this.editTodoEvent.emit(this.content.id);
   }
 
   removeTodo() {

@@ -4,23 +4,23 @@
 				data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
 			<i class="fas fa-plus"></i>
 		</button>
-		<button type="button" class="btn btn-primary" (click)="prepareEditTodoForm(0)"
-				data-toggle="tooltip" data-placement="bottom" title="Edit new Todo">
-			<i class="fas fa-pencil-alt"></i>
-		</button>
-		<button type="button" class="btn btn-danger btn-sm" (click)="removeAllTodos()"
+		<button type="button" class="btn btn-danger btn-sm" (click)="prepareRemovingAllTodos()"
 				data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
 				[disabled]="!todo_count">
 			<i class="fas fa-broom"></i>
 		</button>
 	</div>
 	<div>
-		<app-ff-todo-add-todo-form [mode]="2" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength">
-		</app-ff-todo-add-todo-form>
-		<app-ff-todo-add-todo-form [mode]="EDIT_TODO" [data]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength">
-		</app-ff-todo-add-todo-form>
+		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
+				[descriptionMaxLength]="descriptionMaxLength"
+				(submitDataEvent)="addTodo($event)">
+		</app-ff-todo-generic-todo-form>
+		<app-ff-todo-generic-todo-form [mode]="EDIT_TODO" [(data)]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
+				[descriptionMaxLength]="descriptionMaxLength"
+				(submitDataEvent)="updateTodo($event)">
+		</app-ff-todo-generic-todo-form>
+		<app-ff-todo-generic-todo-form [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
+				(submitEvent)="removeAllTodos()"></app-ff-todo-generic-todo-form>
 	</div>
 	<table class="table mt-3">
 		<tbody>
@@ -43,7 +43,8 @@
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum"
 							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
-							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]">
+							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
+							(editTodoEvent)="prepareEditTodoForm($event)">
 					</app-ff-todo-list-per-phase>
 				</td>
 			<tr>

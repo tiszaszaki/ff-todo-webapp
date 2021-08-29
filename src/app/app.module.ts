@@ -20,7 +20,7 @@ import { FfTodoCardInvalidComponent } from './ff-todo-card-invalid/ff-todo-card-
 import { FfTodoTaskSortingFormComponent } from './ff-todo-task-sorting-form/ff-todo-task-sorting-form.component';
 import { FfTodoTaskListComponent } from './ff-todo-task-list/ff-todo-task-list.component';
 import { TiszaSzakiSortPipe } from './tsz-sort.pipe';
-import { FfTodoAddTodoFormComponent } from './ff-todo-add-todo-form/ff-todo-add-todo-form.component';
+import { FfTodoGenericTodoFormComponent } from './ff-todo-generic-todo-form/ff-todo-generic-todo-form.component';
 import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-list-per-phase.component';
 import { FfTodoHeaderComponent } from './ff-todo-header/ff-todo-header.component';
 import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component';
@@ -38,7 +38,7 @@ import { FfTodoFormInvalidComponent } from './ff-todo-form-invalid/ff-todo-form-
     FfTodoTaskSortingFormComponent,
     FfTodoTaskListComponent,
     TiszaSzakiSortPipe,
-    FfTodoAddTodoFormComponent,
+    FfTodoGenericTodoFormComponent,
     FfTodoListPerPhaseComponent,
     FfTodoHeaderComponent,
     FfTodoFooterComponent,
