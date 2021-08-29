@@ -9,6 +9,10 @@
 				[disabled]="!todo_count">
 			<i class="fas fa-broom"></i>
 		</button>
+		<button type="button" class="btn btn-warning btn-sm" (click)="initTodoList(-1)"
+				data-toggle="tooltip" data-placement="bottom" title="Refresh Todo list">
+				<i class="fas fa-sync-alt"></i>
+		</button>
 	</div>
 	<div>
 		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"

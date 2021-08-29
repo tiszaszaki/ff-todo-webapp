@@ -17,7 +17,7 @@ export class FfTodoListComponent implements OnInit {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
-    this.getTodos();
+    this.getTodos(phase);
   }
 
   constructor(private todoServ: FfTodoMockRequestService) {
@@ -96,41 +96,69 @@ export class FfTodoListComponent implements OnInit {
     return this.todoServ.getTodo(id);
   }
 
-  getTodos(): void {
+  getTodos(phase: number): void {
     this.todoServ.getTodos()
     .subscribe(records => {
-      this.todo_count = 0;
       this.todo_records = records;
-      this.todo_list = [];
-      this.task_count = [];
-      this.todo_ids = [];
+      this.todo_count = 0;
 
-      for (let phase_str of this.phase_labels)
-      {
-        this.todo_list.push([]);
-        this.task_count.push(0);
-  
-        this.todo_sorting_field.push('');
-        this.todo_sorting_direction.push(false);
-  
-        this.task_sorting_field.push('');
-        this.task_sorting_direction.push(false);
+      if (phase < 0) {
+        this.todo_list = [];
+        this.task_count = [];
+        this.todo_ids = [];
       }
+
+      if (phase < 0) {
+        for (let todo_phase of this.phase_labels) {
+          this.todo_list.push([]);
+          this.task_count.push(0);
+    
+          this.todo_sorting_field.push('');
+          this.todo_sorting_direction.push(false);
+    
+          this.task_sorting_field.push('');
+          this.task_sorting_direction.push(false);
+        }
+      }
+      if ((phase >= 0) && (phase < this.phaseNum)) {
+        this.todo_list[phase] = [];
+        this.task_count[phase] = 0;
+
+        this.todo_sorting_field[phase] = '';
+        this.todo_sorting_direction[phase] = false;
+  
+        this.task_sorting_field[phase] = '';
+        this.task_sorting_direction[phase] = false;
+    }
   
       for (let todo of this.todo_records)
       {
         let taskCount=0;
+        let _phase=todo.phase;
         if (todo.tasks)
         {
           taskCount = todo.tasks.length;
         }
-        this.todo_list[todo.phase].push(todo);
-        this.task_count[todo.phase] += taskCount;
-        this.todo_ids.push(todo.id);
+        if ((phase < 0) || ((phase >= 0) && (phase < this.phaseNum) && (_phase == phase)))
+        {
+          this.todo_list[_phase].push(todo);
+          this.task_count[_phase] += taskCount;
+          this.todo_ids.push(todo.id);
+        }
       }
+     
       for (let todo_phase of this.todo_list)
       {
         this.todo_count += todo_phase.length;
+      }
+
+      if (phase < 0)
+      {
+        console.log('Filled Todo list in all phases.');
+      }
+      if ((phase >= 0) && (phase < this.phaseNum))
+      {
+        console.log(`Filled Todo list only in phase (${phase}).`);
       }
     });
   }
@@ -240,6 +268,7 @@ export class FfTodoListComponent implements OnInit {
 
   shiftTodo(todo : Todo, dir : ShiftDirection) {
     let id = todo.id;
+    let old_phase = todo.phase;
     let new_phase = todo.phase += dir;
     todo.phase = new_phase;
     console.log(`Trying to shift Todo with ID (${id})...`);
@@ -248,7 +277,7 @@ export class FfTodoListComponent implements OnInit {
       this.todoServ.editTodo(id, todo)
       .subscribe(_ => {
         console.log(`Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`);
-        this.initTodoList(todo.phase);
+        this.initTodoList(old_phase);
         this.initTodoList(new_phase);
       });
     }
