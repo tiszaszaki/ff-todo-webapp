@@ -16,7 +16,10 @@
             </li>
             <li class="list-group-item">
 				<app-ff-todo-task-list [tasks]="tasklistStr" [taskCount]="taskCount" [readonlyTask]="readonlyTask"
-						[tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir"></app-ff-todo-task-list>
+						[tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [todoId]="content.id"
+						(editTaskEvent)="editTaskEvent.emit($event)"
+						(checkTaskEvent)="checkTaskEvent.emit($event)"
+						(removeTaskEvent)="removeTaskEvent.emit($event)"></app-ff-todo-task-list>
             </li>
             <li class="list-group-item" *ngIf="!readonlyTodo">
 				<div class="d-flex flex-column justify-content-between w-25">

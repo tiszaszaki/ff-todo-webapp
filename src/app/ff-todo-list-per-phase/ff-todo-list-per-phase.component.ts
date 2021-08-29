@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Task } from '../task';
 import { Todo } from '../todo';
 
 @Component({
@@ -25,6 +26,17 @@ export class FfTodoListPerPhaseComponent implements OnInit {
   @Input() tasksortdir!: Boolean;
 
   @Output() editTodoEvent = new EventEmitter<number>();
+  @Output() removeTodoEvent = new EventEmitter<number>();
+
+  @Output() shiftLeftTodoEvent = new EventEmitter<Todo>();
+  @Output() shiftRightTodoEvent = new EventEmitter<Todo>();
+
+  @Output() addTaskEvent = new EventEmitter<number>();
+  @Output() removeAllTasksEvent = new EventEmitter<number>();
+
+  @Output() editTaskEvent = new EventEmitter<Task>();
+  @Output() checkTaskEvent = new EventEmitter<Task>();
+  @Output() removeTaskEvent = new EventEmitter<Task>();
 
   ngOnInit(): void {
   }

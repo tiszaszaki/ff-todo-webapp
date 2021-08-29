@@ -1,5 +1,7 @@
-export interface Task {
-    id: number;
-    name: String;
-    done: Boolean;
+export class Task {
+    public id!: number;
+    public name!: String;
+    public done!: Boolean;
+
+    public todoId?: number;
 }

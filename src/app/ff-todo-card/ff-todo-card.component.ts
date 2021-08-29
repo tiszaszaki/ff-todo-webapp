@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ShiftDirection } from '../shift-direction';
+import { Task } from '../task';
 import { Todo } from '../todo';
 
 @Component({
@@ -28,6 +29,17 @@ export class FfTodoCardComponent implements OnInit {
   @Input() showDateCreated?: Boolean = true;
 
   @Output() editTodoEvent = new EventEmitter<number>();
+  @Output() removeTodoEvent = new EventEmitter<number>();
+
+  @Output() shiftLeftTodoEvent = new EventEmitter<Todo>();
+  @Output() shiftRightTodoEvent = new EventEmitter<Todo>();
+
+  @Output() addTaskEvent = new EventEmitter<number>();
+  @Output() removeAllTasksEvent = new EventEmitter<number>();
+
+  @Output() editTaskEvent = new EventEmitter<Task>();
+  @Output() checkTaskEvent = new EventEmitter<Task>();
+  @Output() removeTaskEvent = new EventEmitter<Task>();
 
   readonlyTodo!: Boolean;
   readonlyTask!: Boolean;
@@ -81,6 +93,7 @@ export class FfTodoCardComponent implements OnInit {
 
   addTask() {
     console.log(`Trying to add a new Task for this Todo (${this.contentStr})...`);
+    this.addTaskEvent.emit(this.content.id);
   }
   editTodo() {
     console.log(`Trying to edit this Todo (${this.contentStr})...`);
@@ -88,14 +101,36 @@ export class FfTodoCardComponent implements OnInit {
   }
 
   removeTodo() {
-    console.log(`Trying to remove this Todo (${this.contentStr})...`);
+    this.removeTodoEvent.emit(this.content.id);
   }
   removeAllTasks() {
     console.log(`Trying to clear Task list for this Todo (${this.contentStr})...`);
+    this.removeAllTasksEvent.emit(this.content.id);
   }
 
   shiftTodo(dir : ShiftDirection) {
     let shiftDirStr = new Map([[-1,'left'],[1,'right']]);
     console.log(`Trying to shift ${shiftDirStr.get(dir)} this Todo (${this.contentStr})...`);
+    switch (dir)
+    {
+      case this.LEFT: this.shiftLeftTodoEvent.emit(this.content); break;
+      case this.RIGHT: this.shiftRightTodoEvent.emit(this.content); break;
+      default: break;
+    }
+  }
+
+  editTask(task : Task) {
+    let taskStr = JSON.stringify(task);
+    console.log(`Trying to edit this Task (${taskStr})...`);
+  }
+  checkTask(task : Task) {
+    let taskStr = JSON.stringify(task);
+    console.log(`Trying to check this Task (${taskStr})...`);
+    this.checkTaskEvent.emit(task);
+  }
+  removeTask(task : Task) {
+    let taskStr = JSON.stringify(task);
+    console.log(`Trying to check this Task (${taskStr})...`);
+    this.removeTaskEvent.emit(task);
   }
 }

@@ -13,14 +13,32 @@
 	<div>
 		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="descriptionMaxLength"
-				(submitDataEvent)="addTodo($event)">
+				(submitDataEvent)="addTodo($event)" (shownChange)="addTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form [mode]="EDIT_TODO" [(data)]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="descriptionMaxLength"
-				(submitDataEvent)="updateTodo($event)">
+				(submitDataEvent)="updateTodo($event)" (shownChange)="editTodoFormShown = $event">
+		</app-ff-todo-generic-todo-form>
+		<app-ff-todo-generic-todo-form [mode]="REMOVE_TODO" [(data)]="todoSelected" [(shown)]="removeTodoFormShown" [phase_labels]="phase_labels"
+				[descriptionMaxLength]="descriptionMaxLength"
+				(submitDataEvent)="removeTodo($event)" (shownChange)="removeTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
-				(submitEvent)="removeAllTodos()"></app-ff-todo-generic-todo-form>
+				(submitEvent)="removeAllTodos()" (shownChange)="removeAllTodosFormShown = $event"></app-ff-todo-generic-todo-form>
+	</div>
+	<div>
+		<app-ff-todo-generic-task-form [mode]="ADD_TASK" [todoId]="todoId" [(shown)]="addTaskFormShown"
+				(submitDataEvent)="addTask($event)" (shownChange)="addTaskFormShown = $event">
+		</app-ff-todo-generic-task-form>
+		<app-ff-todo-generic-task-form [mode]="EDIT_TASK" [todoId]="todoId" [data]="taskSelected" [(shown)]="editTaskFormShown"
+				(submitDataEvent)="updateTask($event)" (shownChange)="editTaskFormShown = $event">
+		</app-ff-todo-generic-task-form>
+		<app-ff-todo-generic-task-form [mode]="REMOVE_TASK" [todoId]="todoId" [data]="taskSelected" [(shown)]="removeTaskFormShown"
+				(submitDataEvent)="removeTask($event)" (shownChange)="removeTaskFormShown = $event">
+		</app-ff-todo-generic-task-form>
+		<app-ff-todo-generic-task-form [mode]="REMOVE_ALL_TASKS" [todoId]="todoId" [(shown)]="removeAllTasksFormShown"
+				(submitIdEvent)="removeAllTasks($event)" (shownChange)="removeAllTasksFormShown = $event">
+		</app-ff-todo-generic-task-form>
 	</div>
 	<table class="table mt-3">
 		<tbody>
@@ -44,7 +62,11 @@
 							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							(editTodoEvent)="prepareEditTodoForm($event)">
+							(editTodoEvent)="prepareEditTodoForm($event)" (removeTodoEvent)="prepareRemoveTodoForm($event)"
+							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"
+							(addTaskEvent)="prepareAddTaskForm($event)" (editTaskEvent)="prepareEditTaskForm($event)"
+							(checkTaskEvent)="checkTask($event)" (removeTaskEvent)="prepareRemoveTaskForm($event)"
+							(removeAllTasksEvent)="prepareRemoveAllTasksForm($event)">
 					</app-ff-todo-list-per-phase>
 				</td>
 			<tr>

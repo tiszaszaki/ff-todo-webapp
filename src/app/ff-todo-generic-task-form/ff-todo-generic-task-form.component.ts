@@ -1,39 +1,37 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Todo } from '../todo';
-import { TodoOperator } from '../todo-operator';
+import { Task } from '../task';
+import { TaskOperator } from '../task-operator';
 
 @Component({
-  selector: 'app-ff-todo-generic-todo-form',
-  templateUrl: './ff-todo-generic-todo-form.component.html',
-  styleUrls: ['./ff-todo-generic-todo-form.component.css']
+  selector: 'app-ff-todo-generic-task-form',
+  templateUrl: './ff-todo-generic-task-form.component.html',
+  styleUrls: ['./ff-todo-generic-task-form.component.css']
 })
-export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
-  @Input() mode!: TodoOperator;
+export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
+  @Input() mode!: TaskOperator;
 
-  @Input() data!: Todo;
-  @Output() dataChange = new EventEmitter<Todo>();
+  @Input() data!: Task;
+  @Output() dataChange = new EventEmitter<Task>();
+
+  @Input() todoId!: number;
 
   @Input() shown!: Boolean;
   @Output() shownChange = new EventEmitter<Boolean>();
 
-  @Input() phase_labels!: String[];
-  @Input() descriptionMaxLength!: number;
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
-  @Output() submitDataEvent = new EventEmitter<Todo>();
+  @Output() submitDataEvent = new EventEmitter<Task>();
 
-  model!: Todo;
+  model!: Task;
 
   formTitle!: String;
   confirmMessage!: String;
   confirmButtonCaption! : String;
 
   resetModel() {
-    this.model = new Todo();
+    this.model = new Task();
     this.model.name = '';
-    this.model.description = '';
-    this.model.phase = NaN;
+    this.model.done = false;
   }
 
   updateModel() {
@@ -55,28 +53,32 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     switch (this.mode)
     {
       case this.ADD: {
-        this.formTitle = 'Add a new Todo';
+        this.formTitle = `Add a new Task for Todo with ID #${this.todoId+1}`;
       } break;
       case this.EDIT: {
         if (this.data)
         {
           let id=this.data.id;
-          this.formTitle = `Edit Todo with ID #${id+1}`;
+          this.formTitle = `Edit Task with ID #${id+1}`;
         }
       } break;
       case this.REMOVE: {
         if (this.data)
         {
           let id=this.data.id;
-          this.formTitle = `Remove Todo with ID #${id+1}`;
-          this.confirmMessage = `Are you sure to remove this Todo?`;
+          this.formTitle = `Remove Task with ID #${id+1}`;
+          this.confirmMessage = `Are you sure to remove this Task?`;
           this.confirmButtonCaption = 'Remove';
         }
       } break;
       case this.REMOVE_ALL: {
-        this.formTitle = 'Removing all Todos';
-        this.confirmMessage = 'Are you sure to remove all Todos from the board?';
-        this.confirmButtonCaption = 'Remove All';
+        if (this.todoId)
+        {
+          let id=this.todoId;
+          this.formTitle = `Remove all Tasks from Todo with ID #${id+1}`;
+          this.confirmMessage = `Are you sure to remove all Tasks?`;
+          this.confirmButtonCaption = 'Remove All';
+        }
       } break;
       default: { 
         this.formTitle = '';
@@ -87,16 +89,17 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   constructor() {
   }
 
-  ADD = TodoOperator.ADD;
-  EDIT = TodoOperator.EDIT;
-  REMOVE = TodoOperator.REMOVE;
-  REMOVE_ALL = TodoOperator.REMOVE_ALL;
+  ADD = TaskOperator.ADD;
+  EDIT = TaskOperator.EDIT;
+  REMOVE = TaskOperator.REMOVE;
+  CHECK = TaskOperator.CHECK;
+  REMOVE_ALL = TaskOperator.REMOVE_ALL;
 
   ngOnInit(): void {
     this.resetModel();
   }
 
-  isOperatorIncluded(...operators : TodoOperator[]) : boolean {
+  isOperatorIncluded(...operators : TaskOperator[]) : boolean {
     return (operators.find(op => op == this.mode) !== undefined);
   }
 
@@ -112,7 +115,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   }
 
   submitForm() {
-    if (this.isOperatorIncluded(this.ADD,this.EDIT,this.REMOVE))
+    if (this.isOperatorIncluded(this.ADD,this.EDIT,this.CHECK,this.REMOVE))
     {
       this.submitDataEvent.emit(this.model);
     }

@@ -2,7 +2,7 @@
     <div class="container border border-secondary rounded p-2">
         <h1>{{ formTitle }}</h1>
         <div *ngIf="isOperatorIncluded(ADD,EDIT)">
-            <form #todoForm="ngForm">
+            <form #taskForm="ngForm">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" required
@@ -13,27 +13,16 @@
                         Name is required
                     </div>
                 </div>
-            
+
                 <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description"
-                            [(ngModel)]="model.description" name="description">
+                    <label for="name">Checked</label>
+                    <input type="checkbox" class="form-check-input form-control" id="done"
+                            [(ngModel)]="model.done" name="done"
+                            #name="ngModel">
                 </div>
-            
-                <div class="form-group">
-                    <label for="power">Todo phase</label>
-                    <select class="form-control" id="phase" required
-                            [(ngModel)]="model.phase" name="phase"
-                            #power="ngModel">
-                    <option *ngFor="let phase of phase_labels; let idx=index" [value]="idx">{{ phase }}</option>
-                    </select>
-                    <div [hidden]="power.valid || power.pristine" class="alert alert-danger">
-                        Phase is required
-                    </div>
-                </div>
-            
+
                 <div>
-                    <button type="button" class="btn btn-primary" (click)="submitForm()" [disabled]="!todoForm.form.valid">Submit</button>
+                    <button type="button" class="btn btn-primary" (click)="submitForm()" [disabled]="!taskForm.form.valid">Submit</button>
                     <button type="button" class="btn btn-secondary" (click)="dismissForm()">Close</button>
                 </div>
             </form>
