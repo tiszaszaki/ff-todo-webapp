@@ -40,9 +40,8 @@ export class FfTodoMockRequestService {
   }
 
   addTodo(todo: Todo): Observable<Todo> {
-    todo.id = -1;
     return this.http.post<Todo>(this.baseurl, todo, this.httpOptions).pipe(
-      tap((newTodo: Todo) => console.log(`Added new todo: ${todo}`)),
+      tap((newTodo: Todo) => console.log(`Added new todo: ${JSON.stringify(newTodo)}`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
         return throwError(error);
@@ -51,10 +50,22 @@ export class FfTodoMockRequestService {
   }
 
   editTodo(id : number, patchedTodo: Todo): Observable<any> {
-    return this.http.put(this.baseurl + patchedTodo.id, patchedTodo);
+    return this.http.put(this.baseurl + patchedTodo.id, patchedTodo).pipe(
+      tap(_ => console.log(`Edited todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
 
   removeTodo(id: number): Observable<any> {
-    return this.http.delete(this.baseurl + id);
+    return this.http.delete(this.baseurl + id).pipe(
+      tap(_ => console.log(`Removed todo with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
 }

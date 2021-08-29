@@ -53,6 +53,8 @@ export class FfTodoListComponent implements OnInit {
   todo_list!: Todo[][];
   task_count!: number[];
 
+  todo_ids!: number[];
+
   todoSelected!: Todo;
   taskSelected!: Task;
   todoId!: number;
@@ -101,6 +103,7 @@ export class FfTodoListComponent implements OnInit {
       this.todo_records = records;
       this.todo_list = [];
       this.task_count = [];
+      this.todo_ids = [];
 
       for (let phase_str of this.phase_labels)
       {
@@ -123,6 +126,7 @@ export class FfTodoListComponent implements OnInit {
         }
         this.todo_list[todo.phase].push(todo);
         this.task_count[todo.phase] += taskCount;
+        this.todo_ids.push(todo.id);
       }
       for (let todo_phase of this.todo_list)
       {
@@ -210,30 +214,62 @@ export class FfTodoListComponent implements OnInit {
 
   addTodo(todo : Todo) {
     console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
-    this.initTodoList(todo.phase);
+    this.todoServ.addTodo(todo)
+    .subscribe(response => {
+      this.initTodoList(todo.phase);
+    });
   }
 
   updateTodo(todo : Todo) {
     let id = todo.id;
     console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
-    this.initTodoList(todo.phase);
+    this.todoServ.editTodo(id, todo)
+    .subscribe(_ => {
+      this.initTodoList(todo.phase);
+    });
   }
 
   removeTodo(todo : Todo) {
     let id = todo.id;
     console.log(`Trying to remove Todo with ID (${id})...`);
-    this.initTodoList(todo.phase);
+    this.todoServ.removeTodo(id)
+    .subscribe(_ => {
+      this.initTodoList(todo.phase);
+    });
   }
 
   shiftTodo(todo : Todo, dir : ShiftDirection) {
     let id = todo.id;
+    let new_phase = todo.phase += dir;
+    todo.phase = new_phase;
     console.log(`Trying to shift Todo with ID (${id})...`);
-    this.initTodoList(todo.phase);
+    if ((new_phase >= 0) && (new_phase < this.phaseNum))
+    {
+      this.todoServ.editTodo(id, todo)
+      .subscribe(_ => {
+        console.log(`Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`);
+        this.initTodoList(todo.phase);
+        this.initTodoList(new_phase);
+      });
+    }
   }
 
   removeAllTodos() {
     console.log(`Trying to remove all Todos from the board...`);
-    this.initTodoList(-1);
+    while (this.todo_ids.length > 0)
+    {
+      let id=this.todo_ids.pop();
+      if (id === undefined)
+      {
+        id = -1;
+      }
+      this.todoServ.removeTodo(id)
+      .subscribe(_ => {
+        if (this.todo_ids.length == 0)
+          console.log(`Successfully removed all Todos from the board...`);
+          this.initTodoList(-1);
+      });
+    }
   }
 
   addTask(task : Task) {
@@ -243,24 +279,27 @@ export class FfTodoListComponent implements OnInit {
     });
   }
 
-  updateTask(task : Task) {
-    let id = task.id;
-    let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
-    console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(task)}) for Todo with ID (${this.todoId})...`);
+  updateTask(patchedTask : Task) {
+    let id = patchedTask.id;
+    let tempTodoId = ((patchedTask.todoId !== undefined) ? patchedTask.todoId : -1);
+    delete patchedTask.todoId;
+    console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
     this.initTodoList(tempTodoId);
   }
 
   checkTask(task : Task) {
     let id = task.id;
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
-    console.log(`Trying to check Task with ID (${id}) for Todo with ID (${this.todoId})...`);
+    delete task.todoId;
+    console.log(`Trying to check Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
     this.initTodoList(tempTodoId);
   }
 
   removeTask(task : Task) {
     let id = task.id;
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
-    console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${this.todoId})...`);
+    delete task.todoId;
+    console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
     this.initTodoList(tempTodoId);
   }
 

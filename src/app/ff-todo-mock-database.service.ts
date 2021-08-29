@@ -53,10 +53,10 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
     return {todo};
   }
 
-  id0 : number = 0;
-
   genId(todolist: Todo[]): number {
-    return todolist.length > 0 ? Math.max(...todolist.map(todo => todo.id)) + 1 : this.id0;
+    let id0 : number = 0;
+    console.log("List length: " + todolist.length);
+    return ((todolist.length > 0) ? (Math.max(...todolist.map(todo => todo.id)) + 1) : id0);
   }
 
   constructor() { }
