@@ -4,7 +4,8 @@
         <div class="mb-2">
             <select class="form-select form-control" [(ngModel)]="tasksortfield" name="field"
                     data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-                <option *ngFor="let field of taskSortingFields" [value]="field.name">{{ field.display }}</option>
+                <option *ngFor="let field of taskSortingFields" [value]="field.name"
+                        (click)="tasksortfieldChange.emit(tasksortfield)">{{ field.display }}</option>
             </select>
         </div>
     </div>
@@ -12,7 +13,7 @@
         <div class="d-flex justify-content-between">
             <div data-toggle="tooltip" data-placement="bottom" title="Task sorting direction">
                 <input class="form-check-input form-control" type="checkbox" id="task_sorting_direction"
-                        [(ngModel)]="tasksortdir" name="direction">
+                        [(ngModel)]="tasksortdir" name="direction" (click)="tasksortdirChange.emit(tasksortdir)">
                 <label for="task_sorting_direction">Descending</label>
             </div>
             <button type="button" class="btn btn-warning" (click)="resetTaskSorting()">Reset</button>

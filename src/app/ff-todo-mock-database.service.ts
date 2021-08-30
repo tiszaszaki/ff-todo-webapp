@@ -8,22 +8,18 @@ import { Todo } from './todo';
 })
 export class FfTodoMockDatabaseService implements InMemoryDbService {
   createDb() {
-    const tasksForTodo : Task[][] = [
-      [
-        {id:0, name:'3D mélyvíz', done:false},
-        {id:1, name:'Főharcok', done:false},
-      ],
-      [
-        {id:2, name:'MÁV', done:false},
-      ],
-      [
-        {id:3, name:'J', done:false},
-        {id:4, name:'a', done:false},
-        {id:5, name:'n', done:false},
-        {id:6, name:'c', done:false},
-        {id:7, name:'s', done:false},
-        {id:8, name:'i', done:false}
-      ]
+    const tasks : Task[] = [
+      {todoId:0, id:0, name:'3D mélyvíz', done:false},
+      {todoId:0, id:1, name:'Főharcok', done:false},
+
+      {todoId:1, id:2, name:'MÁV', done:false},
+
+      {todoId:2, id:3, name:'J', done:false},
+      {todoId:2, id:4, name:'a', done:false},
+      {todoId:2, id:5, name:'n', done:false},
+      {todoId:2, id:6, name:'c', done:false},
+      {todoId:2, id:7, name:'s', done:false},
+      {todoId:2, id:8, name:'i', done:false}
     ];
     const todo : Todo[] = [
       {id:0, name:'Sonic', description:'Fejlesztése', phase:0},
@@ -39,18 +35,23 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
     let idx=0;
     for (let t of todo)
     {
-      var taskList = tasksForTodo[idx];
       t.datecreated = t.datemodified = new Date();
       t.tasks = [];
-      if (!taskList) taskList = [];
-      for (let task of taskList)
+      for (let task of tasks)
       {
-        t.tasks.push(JSON.parse(JSON.stringify(task)));
+        let todoId=((task.todoId !== undefined) ? task.todoId : -1);
+        let unmarkedTask=task;
+
+        delete unmarkedTask.todoId;
+
+        if (todoId == t.id)
+        {
+          t.tasks.push(JSON.parse(JSON.stringify(unmarkedTask)));
+        }
       }
-      idx++;
     }
 
-    return {todo};
+    return {todo, task: tasks};
   }
 
   genId(todolist: Todo[]): number {

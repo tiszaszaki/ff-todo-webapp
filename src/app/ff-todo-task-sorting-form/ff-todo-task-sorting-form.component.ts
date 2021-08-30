@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ff-todo-task-sorting-form',
@@ -7,10 +7,15 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class FfTodoTaskSortingFormComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    this.resetTaskSorting();
+  }
 
-  @Input() tasksortfield!: String;
-  @Input() tasksortdir!: Boolean;
+  tasksortfield!: String;
+  tasksortdir!: Boolean;
+
+  @Output() tasksortfieldChange = new EventEmitter<String>();
+  @Output() tasksortdirChange = new EventEmitter<Boolean>();
 
   @Input() task_list_count!: number;
 
@@ -23,6 +28,9 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
   resetTaskSorting() {
     this.tasksortfield = '';
     this.tasksortdir = false;
+
+    this.tasksortfieldChange.emit(this.tasksortfield);
+    this.tasksortdirChange.emit(this.tasksortdir);
   }
 
   ngOnInit(): void {

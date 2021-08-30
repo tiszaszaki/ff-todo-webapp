@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
+import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
@@ -20,12 +21,39 @@ export class FfTodoListComponent implements OnInit {
     this.getTodos(phase);
   }
 
-  constructor(private todoServ: FfTodoMockRequestService) {
+  restoreTodoList() {
+    console.log('Trying to restore all Todos...');
+    // TODO: implement restoring Todos
+    /*
+    this.todoServ.resetTodos()
+    .subscribe(_ => {
+      this.initTodoList(-1);
+    });
+    */
+  }
+
+  constructor(private todoServ: FfTodoRealRequestService) {
     this.initTodoList(-1);
   }
 
-  updateSortingRelatedOptions(idx : number) {
-    
+  updateTodoSortingField(idx : number, fieldName: String) {
+    this.todo_sorting_field[idx] = fieldName;
+    console.log(`updateTodoSortingField(${idx}): "${fieldName}"`);
+  }
+
+  updateTodoSortingDirection(idx : number, dir: Boolean) {
+    this.todo_sorting_direction[idx] = dir;
+    console.log(`updateTodoSortingDirection(${idx}): ${dir}`);
+  }
+
+  updateTaskSortingField(idx : number, fieldName: String) {
+    this.task_sorting_field[idx] = fieldName;
+    console.log(`updateTaskSortingField(${idx}): "${fieldName}"`);
+  }
+
+  updateTaskSortingDirection(idx : number, dir: Boolean) {
+    this.task_sorting_direction[idx] = dir;
+    console.log(`updateTaskSortingDirection(${idx}): ${dir}`);
   }
 
   resetTodoSorting(idx : number) {
@@ -121,6 +149,8 @@ export class FfTodoListComponent implements OnInit {
         }
       }
       if ((phase >= 0) && (phase < this.phaseNum)) {
+        delete this.todo_list[phase];
+        
         this.todo_list[phase] = [];
         this.task_count[phase] = 0;
 
@@ -284,7 +314,6 @@ export class FfTodoListComponent implements OnInit {
   }
 
   removeAllTodos() {
-    console.log(`Trying to remove all Todos from the board...`);
     while (this.todo_ids.length > 0)
     {
       let id=this.todo_ids.pop();

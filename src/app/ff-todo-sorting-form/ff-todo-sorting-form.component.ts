@@ -7,10 +7,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class FfTodoSortingFormComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    this.resetTodoSorting();
+  }
 
-  @Input() todosortfield!: String;
-  @Input() todosortdir!: Boolean;
+  todosortfield!: String;
+  todosortdir!: Boolean;
 
   @Output() todosortfieldChange = new EventEmitter<String>();
   @Output() todosortdirChange = new EventEmitter<Boolean>();
@@ -30,6 +32,9 @@ export class FfTodoSortingFormComponent implements OnInit {
   resetTodoSorting() {
     this.todosortfield = '';
     this.todosortdir = false;
+
+    this.todosortfieldChange.emit(this.todosortfield);
+    this.todosortdirChange.emit(this.todosortdir);
   }
 
   ngOnInit(): void {

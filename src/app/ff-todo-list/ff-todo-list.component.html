@@ -13,6 +13,10 @@
 				data-toggle="tooltip" data-placement="bottom" title="Refresh Todo list">
 				<i class="fas fa-sync-alt"></i>
 		</button>
+		<button type="button" class="btn btn-warning btn-sm" (click)="restoreTodoList()"
+				data-toggle="tooltip" data-placement="bottom" title="Restore Todo list">
+				<i class="fas fa-trash-restore-alt"></i>
+		</button>
 	</div>
 	<div>
 		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
@@ -54,10 +58,12 @@
 			<tr class="row border border-2 border-secondary" *ngIf="todo_count">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"
-							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"></app-ff-todo-sorting-form>
+							(todosortfieldChange)="updateTodoSortingField(idx, $event)"
+							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"></app-ff-todo-sorting-form>
 
 					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"
-							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"></app-ff-todo-task-sorting-form>
+							(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
+							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"></app-ff-todo-task-sorting-form>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary">

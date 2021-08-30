@@ -21,13 +21,13 @@
                 </div>
             
                 <div class="form-group">
-                    <label for="power">Todo phase</label>
+                    <label for="phase">Todo phase</label>
                     <select class="form-control" id="phase" required
                             [(ngModel)]="model.phase" name="phase"
-                            #power="ngModel">
+                            #phase="ngModel">
                     <option *ngFor="let phase of phase_labels; let idx=index" [value]="idx">{{ phase }}</option>
                     </select>
-                    <div [hidden]="power.valid || power.pristine" class="alert alert-danger">
+                    <div [hidden]="phase.valid || phase.pristine" class="alert alert-danger">
                         Phase is required
                     </div>
                 </div>

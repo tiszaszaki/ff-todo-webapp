@@ -4,7 +4,8 @@
         <div class="mb-2">
             <select class="form-select form-control" [(ngModel)]="todosortfield" name="field"
                     data-toggle="tooltip" data-placement="bottom" title="Todo sorting field">
-                <option *ngFor="let field of todoSortingFields" [value]="field.name">{{ field.display }}</option>
+                <option *ngFor="let field of todoSortingFields" [value]="field.name"
+                        (click)="todosortfieldChange.emit(todosortfield)">{{ field.display }}</option>
             </select>
         </div>
     </div>
@@ -12,7 +13,7 @@
         <div class="d-flex justify-content-between">
             <div data-toggle="tooltip" data-placement="bottom" title="Todo sorting direction">
                 <input class="form-check-input form-control" type="checkbox" id="todo_sorting_direction"
-                        [(ngModel)]="todosortdir" name="direction">
+                        [(ngModel)]="todosortdir" name="direction" (click)="todosortdirChange.emit(todosortdir)">
                 <label for="todo_sorting_direction">Descending</label>
             </div>
             <button type="button" class="btn btn-warning" (click)="resetTodoSorting()">Reset</button>
