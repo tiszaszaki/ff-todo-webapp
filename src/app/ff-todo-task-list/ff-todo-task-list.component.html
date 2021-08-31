@@ -19,7 +19,7 @@
                     </button>
                 </div>
                 <div>
-                    <input class="form-check-input" type="checkbox" ngChecked="task.done"
+                    <input class="form-check-input" type="checkbox" [ngModel]="task.done"
                             data-toggle="tooltip" data-placement="bottom" title="Check Task"
                             (click)="checkTask(task)" *ngIf="!readonlyTask" id="task_name">
                     <label for="task_name">

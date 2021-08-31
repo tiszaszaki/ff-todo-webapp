@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Todo } from './todo';
 import { Task } from './task';
@@ -87,12 +87,44 @@ export class FfTodoMockRequestService {
     );
   }
 
-  addTask(task: Task, todoId: number): Observable<Task> {
-    return new Observable<Task>();
+  getTasksFromTodo(todoId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(this.taskPath).pipe(
+      map((tasks : Task[]) => {
+        let filtered_tasks = [];
+        for (let task of tasks) {
+          if (task.todoId == todoId) {
+            filtered_tasks.push(task);
+          };
+        }
+        console.log(`Fetched ${filtered_tasks.length} Task(s)`);
+        return filtered_tasks;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
 
-  editTask(id: number, task: Task): Observable<any> {
-    return new Observable<any>();
+  addTask(task: Task, todoId: number): Observable<Task> {
+    task.todoId = todoId;
+    return this.http.post<Task>(this.taskPath, task, this.httpOptions).pipe(
+      tap((newTask: Task) => console.log(`Added new Task for Todo with ID (${todoId}): ${JSON.stringify(newTask)}`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    )
+  }
+
+  editTask(id: number, patchedTask: Task): Observable<any> {
+    return this.http.put(this.taskPath + patchedTask.id, patchedTask).pipe(
+      tap(_ => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
 
   checkTask(id: number): Observable<any> {
@@ -100,7 +132,13 @@ export class FfTodoMockRequestService {
   }
 
   removeTask(id: number): Observable<any> {
-    return new Observable<any>();
+    return this.http.delete(this.taskPath + id).pipe(
+      tap(_ => console.log(`Removed Task with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
   
 }

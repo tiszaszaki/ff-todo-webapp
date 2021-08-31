@@ -28,6 +28,7 @@ export class FfTodoListComponent implements OnInit {
   public task_count!: number[];
 
   private todo_ids!: number[];
+  private task_ids!: number[][];
 
   public todoSelected!: Todo;
   public taskSelected!: Task;
@@ -143,8 +144,10 @@ export class FfTodoListComponent implements OnInit {
       if (phase.length == 0) {
         this.todo_list = [];
         this.task_count = [];
-        this.todo_ids = [];
       }
+
+      this.todo_ids = [];
+      this.task_ids = [];
 
       if (phase.length == 0) {
         for (let todo_phase of this.phase_labels) {
@@ -175,49 +178,66 @@ export class FfTodoListComponent implements OnInit {
         }
       }
   
-      for (let todo of todo_records)
+      for (let todo_idx in todo_records)
       {
+        let todo=todo_records[todo_idx];
         let taskCountPerPhase=0;
 
-        if (todo.tasks)
-        {
-          taskCountPerPhase = todo.tasks.length;
-        }
+        this.todo_ids.push(todo.id);
+        this.task_ids.push([]);
 
-        todo.descriptionLength = todo.description.length;
-        todo.taskCount = taskCountPerPhase;
+        this.todoServ.getTasksFromTodo(todo.id)
+        .subscribe(tasks => {
+          todo.tasks = [];
+          for (let task of tasks)
+          {
+            delete task.todoId;
 
-        if (phase.length == 0)
-        {
-          let _phase = todo.phase;
-          this.todo_list[_phase].push(todo);
-          this.task_count[_phase] += taskCountPerPhase;
-          this.todo_ids.push(todo.id);
-        }
-        else
-        {
-          for (let _phase of phase) {
-            if ((_phase >= 0) && (_phase < this.phaseNum) && (todo.phase == _phase)) {
-              this.todo_list[_phase].push(todo);
-              this.task_count[_phase] += taskCountPerPhase;
-              this.todo_ids.push(todo.id);
+            this.task_ids[todo.id].push(task.id);
+
+            todo.tasks.push(JSON.parse(JSON.stringify(task)));
+          }
+
+          if (todo.tasks)
+          {
+            taskCountPerPhase = todo.tasks.length;
+          }
+  
+          todo.descriptionLength = todo.description.length;
+          todo.taskCount = taskCountPerPhase;
+  
+          if (phase.length == 0)
+          {
+            let _phase = todo.phase;
+            this.todo_list[_phase].push(todo);
+            this.task_count[_phase] += taskCountPerPhase;
+          }
+          else
+          {
+            for (let _phase of phase) {
+              if ((_phase >= 0) && (_phase < this.phaseNum) && (todo.phase == _phase)) {
+                this.todo_list[_phase].push(todo);
+                this.task_count[_phase] += taskCountPerPhase;
+              }
             }
           }
-        }
-      }
 
-      for (let todo_phase of this.todo_list)
-      {
-        this.todo_count += todo_phase.length;
-      }
-
-      if (phase.length == 0)
-      {
-        console.log('Filled Todo list in all phases.');
-      }
-      if (phase.length > 0)
-      {
-        console.log(`Tried to fill Todo list only in phases (${phase}).`);
+          if (Number.parseInt(todo_idx) == todo_records.length-1) {
+            for (let todo_phase of this.todo_list)
+            {
+              this.todo_count += todo_phase.length;
+            }
+      
+            if (phase.length == 0)
+            {
+              console.log('Filled Todo list in all phases.');
+            }
+            if (phase.length > 0)
+            {
+              console.log(`Tried to fill Todo list only in phases (${phase}).`);
+            }
+          }
+        });
       }
     });
   }
@@ -361,38 +381,61 @@ export class FfTodoListComponent implements OnInit {
 
   addTask(task : Task) {
     console.log(`Trying to add new Task (${JSON.stringify(task)}) for Todo with ID (${this.todoId})...`);
-    this.getTodo(this.todoId).subscribe(todo => {
-      this.initTodoList([todo.phase]);
+    this.todoServ.addTask(task, this.todoId)
+    .subscribe(task => {
+      this.todoServ.getTodo(this.todoId)
+      .subscribe(todo => { 
+        this.initTodoList([todo.phase]);
+      })
     });
   }
 
   updateTask(patchedTask : Task) {
     let id = patchedTask.id;
     let tempTodoId = ((patchedTask.todoId !== undefined) ? patchedTask.todoId : -1);
-    delete patchedTask.todoId;
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
-    this.initTodoList([tempTodoId]);
+    this.todoServ.editTask(id, patchedTask)
+    .subscribe(_=> {
+      this.initTodoList([tempTodoId]);
+    });
   }
 
   checkTask(task : Task) {
     let id = task.id;
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
-    delete task.todoId;
+    task.done = !task.done;
     console.log(`Trying to check Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
-    this.initTodoList([tempTodoId]);
+    this.updateTask(task);
   }
 
   removeTask(task : Task) {
     let id = task.id;
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
-    delete task.todoId;
     console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
-    this.initTodoList([tempTodoId]);
+    this.todoServ.removeTask(id)
+    .subscribe(_ => {
+      this.initTodoList([tempTodoId]);
+    });
   }
 
-  removeAllTasks(id : number) {
-    console.log(`Trying to remove all Task for Todo with ID (${id})...`);
-    this.initTodoList([]);
+  removeAllTasks(todoId: number) {
+    while (this.task_ids[todoId].length > 0)
+    {
+      let id=this.task_ids[todoId].pop();
+      if (id === undefined)
+      {
+        id = -1;
+      }
+      this.todoServ.removeTask(id)
+      .subscribe(_ => {
+        if (this.task_ids[todoId].length == 0)
+          console.log(`Successfully removed all Tasks from Todo with ID (${(id)})...`);
+          this.todoServ.getTodo(todoId)
+          .subscribe(todo => {
+            this.initTodoList([todo.phase]);
+          });
+      });
+    }
   }
 
   ngOnInit(): void {

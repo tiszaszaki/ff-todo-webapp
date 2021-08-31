@@ -78,15 +78,12 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
         }
       } break;
       case this.REMOVE_ALL: {
-        if (this.todoId)
-        {
-          let id=this.todoId;
-          this.formTitle = `Remove all Tasks from Todo with ID #${id+1}`;
-          this.confirmMessage = `Are you sure to remove all Tasks?`;
-          this.confirmButtonCaption = 'Remove All';
-        }
+        let id=this.todoId;
+        this.formTitle = `Remove all Tasks from Todo with ID #${id+1}`;
+        this.confirmMessage = `Are you sure to remove all Tasks?`;
+        this.confirmButtonCaption = 'Remove All';
       } break;
-      default: { 
+      default: {
         this.formTitle = '';
       } break;
     }
@@ -119,11 +116,11 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
     {
       this.submitDataEvent.emit(this.model);
     }
-    if (this.isOperatorIncluded())
-    {
-      this.submitIdEvent.emit(this.model.id);
-    }
     if (this.isOperatorIncluded(this.REMOVE_ALL))
+    {
+      this.submitIdEvent.emit(this.todoId);
+    }
+    if (this.isOperatorIncluded())
     {
       this.submitEvent.emit();
     }

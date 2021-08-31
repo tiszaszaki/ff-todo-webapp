@@ -32,10 +32,10 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
       {id:7, name:'s', description:'Nevem betűje', phase:0},
       {id:8, name:'i', description:'Nevem betűje', phase:0}
     ];
-    let idx=0;
     for (let t of todo)
     {
       t.datecreated = t.datemodified = new Date();
+      /*
       t.tasks = [];
       for (let task of tasks)
       {
@@ -48,6 +48,7 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
           t.tasks.push(JSON.parse(JSON.stringify(unmarkedTask)));
         }
       }
+      */
     }
 
     return {todo, task: tasks};
