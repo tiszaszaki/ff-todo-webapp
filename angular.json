@@ -75,6 +75,7 @@
             }
           },
           "options": {
+            "browserTarget": "ff-todo-webapp:build",
             "proxyConfig": "src/proxy.conf.json"
           },
           "defaultConfiguration": "development"

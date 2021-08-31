@@ -1,14 +1,7 @@
 {
-    "/ff-todo/todo": {
-        "target": "http://localhost:8080/fftodo/todo",
+    "/ff-todo/*": {
+        "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
-        "logLevel": "debug"
-    },
-    "/ff-todo/task": {
-        "target": "http://localhost:8080/fftodo/task",
-        "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     }
 }

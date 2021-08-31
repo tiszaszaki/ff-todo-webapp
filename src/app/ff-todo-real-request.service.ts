@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { Todo } from './todo';
 
 @Injectable({
@@ -18,7 +18,6 @@ export class FfTodoRealRequestService {
   httpOptions = {
     headers: new HttpHeaders({ 
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
     })
   };
 
