@@ -75,6 +75,15 @@ export class FfTodoListComponent implements OnInit {
   removeTaskFormShown: Boolean = false;
   removeAllTasksFormShown: Boolean = false;
 
+  checkIfNoFormShown() {
+    let result = true;
+    result &&= (!this.addTodoFormShown && !this.editTodoFormShown);
+    result &&= (!this.removeTodoFormShown && !this.removeAllTodosFormShown);
+    result &&= (!this.addTaskFormShown && !this.editTaskFormShown);
+    result &&= (!this.removeTaskFormShown && !this.removeAllTasksFormShown);
+    return result;
+  }
+
   todo_count!: number;
   todo_records!: Todo[];
   todo_list!: Todo[][];
@@ -200,7 +209,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareAddTodoForm() {
-    if (!this.addTodoFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for adding new Todo...`);
       this.addTodoFormShown = !this.addTodoFormShown;
@@ -208,7 +217,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareEditTodoForm(id : number) {
-    if (!this.editTodoFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for editing Todo...`);
       this.getTodo(id).subscribe(todo => {
@@ -220,7 +229,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareRemoveTodoForm(id : number) {
-    if (!this.removeTodoFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for removing Todo...`);
       this.getTodo(id).subscribe(todo => {
@@ -231,7 +240,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareRemovingAllTodos() {
-    if (!this.removeAllTodosFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for removing all Todos...`);
       this.removeAllTodosFormShown = !this.removeAllTodosFormShown;
@@ -239,7 +248,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareAddTaskForm(id : number) {
-    if (!this.addTaskFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for editing Task...`);
       this.todoId = id;
@@ -248,7 +257,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareEditTaskForm(markedTask : Task) {
-    if (!this.editTaskFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for editing Task...`);
       this.todoId = (markedTask.todoId ? markedTask.todoId : -1);
@@ -258,7 +267,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareRemoveTaskForm(markedTask : Task) {
-    if (!this.removeTaskFormShown)
+    if (this.checkIfNoFormShown())
     {
       let tempTodoId = (markedTask.todoId ? markedTask.todoId : -1);
       console.log(`Preparing form for removing Task...`);
@@ -269,7 +278,7 @@ export class FfTodoListComponent implements OnInit {
   }
 
   prepareRemoveAllTasksForm(id : number) {
-    if (!this.removeAllTasksFormShown)
+    if (this.checkIfNoFormShown())
     {
       console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
       this.todoId = id;
