@@ -6,5 +6,8 @@ export class Todo {
   public datemodified?: Date;
   public datecreated?: Date;
   
+  public descriptionLength?: number;
+  public taskCount?: number;
+
   tasks?: Task[];
 }

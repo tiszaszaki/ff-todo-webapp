@@ -42,10 +42,9 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
         let todoId=((task.todoId !== undefined) ? task.todoId : -1);
         let unmarkedTask=task;
 
-        delete unmarkedTask.todoId;
-
         if (todoId == t.id)
         {
+          delete unmarkedTask.todoId;
           t.tasks.push(JSON.parse(JSON.stringify(unmarkedTask)));
         }
       }
