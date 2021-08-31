@@ -41,23 +41,23 @@ export class FfTodoCardComponent implements OnInit {
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
 
-  readonlyTodo!: Boolean;
-  readonlyTask!: Boolean;
+  public readonlyTodo!: Boolean;
+  public readonlyTask!: Boolean;
 
-  contentStr!: String;
+  public contentStr!: String;
 
-  isCardValid: Boolean = true;
+  public isCardValid: Boolean = true;
 
-  phaseLeftExists!: Boolean;
-  phaseRightExists!: Boolean;
+  public phaseLeftExists!: Boolean;
+  public phaseRightExists!: Boolean;
 
-  descriptionLength!: Number;
+  public descriptionLength!: Number;
 
-  tasklistStr! : String;
-  taskCount!: Number;
+  public tasklistStr! : String;
+  public taskCount!: Number;
 
-  LEFT = ShiftDirection.LEFT;
-  RIGHT = ShiftDirection.RIGHT;
+  public readonly LEFT = ShiftDirection.LEFT;
+  public readonly RIGHT = ShiftDirection.RIGHT;
 
   ngOnInit(): void {
     this.contentStr = JSON.stringify(this.content);

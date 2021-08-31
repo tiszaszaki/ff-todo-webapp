@@ -7,23 +7,23 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class FfTodoTaskSortingFormComponent implements OnInit {
 
-  constructor() {
-    this.resetTaskSorting();
-  }
-
-  tasksortfield!: String;
-  tasksortdir!: Boolean;
-
   @Output() tasksortfieldChange = new EventEmitter<String>();
   @Output() tasksortdirChange = new EventEmitter<Boolean>();
 
   @Input() task_list_count!: number;
 
-  taskSortingFields = [
+  public tasksortfield!: String;
+  public tasksortdir!: Boolean;
+
+  public readonly taskSortingFields = [
     {name: '', display: '(unsorted)'},
     {name: 'name', display: 'Task name'},
     {name: 'done', display: 'Task checked'}
   ];
+
+  constructor() {
+    this.resetTaskSorting();
+  }
 
   resetTaskSorting() {
     this.tasksortfield = '';

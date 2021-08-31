@@ -10,12 +10,12 @@ import { Todo } from './todo';
 })
 export class FfTodoRealRequestService {
 
-  backendUrl!: string;
-  todoPath1!: string;
-  todoPath2!: string;
-  taskPath!: string;
+  private backendUrl!: string;
+  private todoPath1!: string;
+  private todoPath2!: string;
+  private taskPath!: string;
 
-  httpOptions = {
+  private httpOptions = {
     headers: new HttpHeaders({ 
       'Content-Type': 'application/json',
     })

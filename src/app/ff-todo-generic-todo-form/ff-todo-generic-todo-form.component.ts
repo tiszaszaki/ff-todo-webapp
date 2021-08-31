@@ -23,11 +23,16 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
 
-  model!: Todo;
+  public model!: Todo;
 
-  formTitle!: String;
-  confirmMessage!: String;
-  confirmButtonCaption! : String;
+  public formTitle!: String;
+  public confirmMessage!: String;
+  public confirmButtonCaption! : String;
+
+  public readonly ADD = TodoOperator.ADD;
+  public readonly EDIT = TodoOperator.EDIT;
+  public readonly REMOVE = TodoOperator.REMOVE;
+  public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
   resetModel() {
     this.model = new Todo();
@@ -86,11 +91,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
 
   constructor() {
   }
-
-  ADD = TodoOperator.ADD;
-  EDIT = TodoOperator.EDIT;
-  REMOVE = TodoOperator.REMOVE;
-  REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
   ngOnInit(): void {
     this.resetModel();

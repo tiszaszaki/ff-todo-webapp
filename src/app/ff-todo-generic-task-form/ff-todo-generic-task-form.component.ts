@@ -22,11 +22,17 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Task>();
 
-  model!: Task;
+  public model!: Task;
 
-  formTitle!: String;
-  confirmMessage!: String;
-  confirmButtonCaption! : String;
+  public formTitle!: String;
+  public confirmMessage!: String;
+  public confirmButtonCaption! : String;
+
+  public readonly ADD = TaskOperator.ADD;
+  public readonly EDIT = TaskOperator.EDIT;
+  public readonly REMOVE = TaskOperator.REMOVE;
+  public readonly CHECK = TaskOperator.CHECK;
+  public readonly REMOVE_ALL = TaskOperator.REMOVE_ALL;
 
   resetModel() {
     this.model = new Task();
@@ -88,12 +94,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
 
   constructor() {
   }
-
-  ADD = TaskOperator.ADD;
-  EDIT = TaskOperator.EDIT;
-  REMOVE = TaskOperator.REMOVE;
-  CHECK = TaskOperator.CHECK;
-  REMOVE_ALL = TaskOperator.REMOVE_ALL;
 
   ngOnInit(): void {
     this.resetModel();

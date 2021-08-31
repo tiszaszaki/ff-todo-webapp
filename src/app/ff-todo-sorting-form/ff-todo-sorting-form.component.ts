@@ -7,19 +7,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class FfTodoSortingFormComponent implements OnInit {
 
-  constructor() {
-    this.resetTodoSorting();
-  }
-
-  todosortfield!: String;
-  todosortdir!: Boolean;
-
   @Output() todosortfieldChange = new EventEmitter<String>();
   @Output() todosortdirChange = new EventEmitter<Boolean>();
 
   @Input() todo_list_count!: number;
 
-  todoSortingFields = [
+  public todosortfield!: String;
+  public todosortdir!: Boolean;
+
+  public readonly todoSortingFields = [
     {name: '', display: '(unsorted)'},
     {name: 'name', display: 'Todo name'},
     {name: 'description', display: 'Todo description'},
@@ -28,6 +24,10 @@ export class FfTodoSortingFormComponent implements OnInit {
     {name: 'dateCreated', display: 'Date of Todo created'},
     {name: 'dateModified', display: 'Date of Todo updated'}
   ];
+
+  constructor() {
+    this.resetTodoSorting();
+  }
 
   resetTodoSorting() {
     this.todosortfield = '';

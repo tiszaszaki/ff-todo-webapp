@@ -8,8 +8,6 @@ import { Task } from '../task';
 })
 export class FfTodoTaskListComponent implements OnInit {
 
-  constructor() { }
-
   @Input() todoId!: number;
 
   @Input('tasks') tasklistString! : String;
@@ -25,9 +23,11 @@ export class FfTodoTaskListComponent implements OnInit {
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
 
-  tasks! : Task[];
+  public tasks! : Task[];
 
-  tasklist_expand_status: Boolean = false;
+  public tasklist_expand_status: Boolean = false;
+
+  constructor() { }
 
   ngOnInit(): void {
     this.tasks = JSON.parse(this.tasklistString as string);

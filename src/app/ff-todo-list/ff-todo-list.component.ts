@@ -13,7 +13,67 @@ import { TodoOperator } from '../todo-operator';
 })
 export class FfTodoListComponent implements OnInit {
 
-  initTodoList(phase: number) {
+  public addTodoFormShown: Boolean = false;
+  public editTodoFormShown: Boolean = false;
+  public removeTodoFormShown: Boolean = false;
+  public removeAllTodosFormShown: Boolean = false;
+
+  public addTaskFormShown: Boolean = false;
+  public editTaskFormShown: Boolean = false;
+  public removeTaskFormShown: Boolean = false;
+  public removeAllTasksFormShown: Boolean = false;
+
+  public todo_count!: number;
+  public todo_list!: Todo[][];
+  public task_count!: number[];
+
+  private todo_ids!: number[];
+
+  public todoSelected!: Todo;
+  public taskSelected!: Task;
+
+  public todoId!: number;
+
+  private oldPhase! : number;
+
+  public todo_sorting_field: String[] = [];
+  public todo_sorting_direction: Boolean[] = [];
+
+  public task_sorting_field: String[] = [];
+  public task_sorting_direction: Boolean[] = [];
+
+  public customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
+
+  public phase_labels = ['Backlog', 'In progress', 'Done'];
+
+  public phaseNum!: number;
+  public descriptionMaxLength! : number;
+
+  public readonlyTodo = false;
+  public readonlyTask = false;
+
+  public showDescriptionLength = true;
+  public showTaskCount = true;
+  public showDateCreated = true;
+
+  public readonly ADD_TODO = TodoOperator.ADD;
+  public readonly EDIT_TODO = TodoOperator.EDIT;
+  public readonly REMOVE_TODO = TodoOperator.REMOVE;
+  public readonly REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
+
+  public readonly ADD_TASK = TaskOperator.ADD;
+  public readonly EDIT_TASK = TaskOperator.EDIT;
+  public readonly REMOVE_TASK = TaskOperator.REMOVE;
+  public readonly REMOVE_ALL_TASKS = TaskOperator.REMOVE_ALL;
+
+  public readonly LEFT = ShiftDirection.LEFT;
+  public readonly RIGHT = ShiftDirection.RIGHT;
+
+  constructor(private todoServ: FfTodoMockRequestService) {
+    this.initTodoList([]);
+  }
+
+  initTodoList(phase: number[]) {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
@@ -26,13 +86,9 @@ export class FfTodoListComponent implements OnInit {
     /*
     this.todoServ.resetTodos()
     .subscribe(_ => {
-      this.initTodoList(-1);
+      this.initTodoList([]);
     });
     */
-  }
-
-  constructor(private todoServ: FfTodoMockRequestService) {
-    this.initTodoList(-1);
   }
 
   updateTodoSortingField(idx : number, fieldName: String) {
@@ -65,16 +121,6 @@ export class FfTodoListComponent implements OnInit {
     this.task_sorting_direction[idx] = false;
   }
 
-  addTodoFormShown: Boolean = false;
-  editTodoFormShown: Boolean = false;
-  removeTodoFormShown: Boolean = false;
-  removeAllTodosFormShown: Boolean = false;
-
-  addTaskFormShown: Boolean = false;
-  editTaskFormShown: Boolean = false;
-  removeTaskFormShown: Boolean = false;
-  removeAllTasksFormShown: Boolean = false;
-
   checkIfNoFormShown() {
     let result = true;
     result &&= (!this.addTodoFormShown && !this.editTodoFormShown);
@@ -84,69 +130,23 @@ export class FfTodoListComponent implements OnInit {
     return result;
   }
 
-  todo_count!: number;
-  todo_records!: Todo[];
-  todo_list!: Todo[][];
-  task_count!: number[];
-
-  todo_ids!: number[];
-
-  todoSelected!: Todo;
-  taskSelected!: Task;
-  todoId!: number;
-
-  oldPhase! : number;
-
-  todo_sorting_field: String[] = [];
-  todo_sorting_direction: Boolean[] = [];
-
-  task_sorting_field: String[] = [];
-  task_sorting_direction: Boolean[] = [];
-
-  customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
-
-  phase_labels = ['Backlog', 'In progress', 'Done'];
-
-  phaseNum!: number;
-  descriptionMaxLength! : number;
-
-  readonlyTodo = false;
-  readonlyTask = false;
-
-  showDescriptionLength = true;
-  showTaskCount = true;
-  showDateCreated = true;
-
-  ADD_TODO = TodoOperator.ADD;
-  EDIT_TODO = TodoOperator.EDIT;
-  REMOVE_TODO = TodoOperator.REMOVE;
-  REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
-
-  ADD_TASK = TaskOperator.ADD;
-  EDIT_TASK = TaskOperator.EDIT;
-  REMOVE_TASK = TaskOperator.REMOVE;
-  REMOVE_ALL_TASKS = TaskOperator.REMOVE_ALL;
-
-  LEFT = ShiftDirection.LEFT;
-  RIGHT = ShiftDirection.RIGHT;
-
   getTodo(id : number) {
     return this.todoServ.getTodo(id);
   }
 
-  getTodos(phase: number): void {
+  getTodos(phase: number[]): void {
     this.todoServ.getTodos()
     .subscribe(records => {
-      this.todo_records = records;
+      let todo_records = records;
       this.todo_count = 0;
 
-      if (phase < 0) {
+      if (phase.length == 0) {
         this.todo_list = [];
         this.task_count = [];
         this.todo_ids = [];
       }
 
-      if (phase < 0) {
+      if (phase.length == 0) {
         for (let todo_phase of this.phase_labels) {
           this.todo_list.push([]);
           this.task_count.push(0);
@@ -158,23 +158,26 @@ export class FfTodoListComponent implements OnInit {
           this.task_sorting_direction.push(false);
         }
       }
-      if ((phase >= 0) && (phase < this.phaseNum)) {
-        delete this.todo_list[phase];
-        
-        this.todo_list[phase] = [];
-        this.task_count[phase] = 0;
+      if (phase.length > 0) {
+        for (let _phase of phase) {
+          if ((_phase >= 0) && (_phase < this.phaseNum)) {
+            delete this.todo_list[_phase];
+            
+            this.todo_list[_phase] = [];
+            this.task_count[_phase] = 0;
 
-        this.todo_sorting_field[phase] = '';
-        this.todo_sorting_direction[phase] = false;
+            this.todo_sorting_field[_phase] = '';
+            this.todo_sorting_direction[_phase] = false;
+      
+            this.task_sorting_field[_phase] = '';
+            this.task_sorting_direction[_phase] = false;
+          }
+        }
+      }
   
-        this.task_sorting_field[phase] = '';
-        this.task_sorting_direction[phase] = false;
-    }
-  
-      for (let todo of this.todo_records)
+      for (let todo of todo_records)
       {
         let taskCountPerPhase=0;
-        let _phase=todo.phase;
 
         if (todo.tasks)
         {
@@ -184,11 +187,22 @@ export class FfTodoListComponent implements OnInit {
         todo.descriptionLength = todo.description.length;
         todo.taskCount = taskCountPerPhase;
 
-        if ((phase < 0) || ((phase >= 0) && (phase < this.phaseNum) && (_phase == phase)))
+        if (phase.length == 0)
         {
+          let _phase = todo.phase;
           this.todo_list[_phase].push(todo);
           this.task_count[_phase] += taskCountPerPhase;
           this.todo_ids.push(todo.id);
+        }
+        else
+        {
+          for (let _phase of phase) {
+            if ((_phase >= 0) && (_phase < this.phaseNum) && (todo.phase == _phase)) {
+              this.todo_list[_phase].push(todo);
+              this.task_count[_phase] += taskCountPerPhase;
+              this.todo_ids.push(todo.id);
+            }
+          }
         }
       }
 
@@ -197,13 +211,13 @@ export class FfTodoListComponent implements OnInit {
         this.todo_count += todo_phase.length;
       }
 
-      if (phase < 0)
+      if (phase.length == 0)
       {
         console.log('Filled Todo list in all phases.');
       }
-      if ((phase >= 0) && (phase < this.phaseNum))
+      if (phase.length > 0)
       {
-        console.log(`Filled Todo list only in phase (${phase}).`);
+        console.log(`Tried to fill Todo list only in phases (${phase}).`);
       }
     });
   }
@@ -290,7 +304,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
     this.todoServ.addTodo(todo)
     .subscribe(response => {
-      this.initTodoList(todo.phase);
+      this.initTodoList([todo.phase]);
     });
   }
 
@@ -299,8 +313,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
     this.todoServ.editTodo(id, todo)
     .subscribe(_ => {
-      this.initTodoList(this.oldPhase);
-      this.initTodoList(todo.phase);
+      this.initTodoList([this.oldPhase, todo.phase]);
     });
   }
 
@@ -309,14 +322,14 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to remove Todo with ID (${id})...`);
     this.todoServ.removeTodo(id)
     .subscribe(_ => {
-      this.initTodoList(todo.phase);
+      this.initTodoList([todo.phase]);
     });
   }
 
   shiftTodo(todo : Todo, dir : ShiftDirection) {
     let id = todo.id;
-    let new_phase = todo.phase += dir;
     this.oldPhase = todo.phase;
+    let new_phase = todo.phase += dir;
     todo.phase = new_phase;
     console.log(`Trying to shift Todo with ID (${id})...`);
     if ((new_phase >= 0) && (new_phase < this.phaseNum))
@@ -324,8 +337,7 @@ export class FfTodoListComponent implements OnInit {
       this.todoServ.editTodo(id, todo)
       .subscribe(_ => {
         console.log(`Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`);
-        this.initTodoList(this.oldPhase);
-        this.initTodoList(new_phase);
+        this.initTodoList([this.oldPhase, new_phase]);
       });
     }
   }
@@ -342,7 +354,7 @@ export class FfTodoListComponent implements OnInit {
       .subscribe(_ => {
         if (this.todo_ids.length == 0)
           console.log(`Successfully removed all Todos from the board...`);
-          this.initTodoList(-1);
+          this.initTodoList([]);
       });
     }
   }
@@ -350,7 +362,7 @@ export class FfTodoListComponent implements OnInit {
   addTask(task : Task) {
     console.log(`Trying to add new Task (${JSON.stringify(task)}) for Todo with ID (${this.todoId})...`);
     this.getTodo(this.todoId).subscribe(todo => {
-      this.initTodoList(todo.phase);
+      this.initTodoList([todo.phase]);
     });
   }
 
@@ -359,7 +371,7 @@ export class FfTodoListComponent implements OnInit {
     let tempTodoId = ((patchedTask.todoId !== undefined) ? patchedTask.todoId : -1);
     delete patchedTask.todoId;
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
-    this.initTodoList(tempTodoId);
+    this.initTodoList([tempTodoId]);
   }
 
   checkTask(task : Task) {
@@ -367,7 +379,7 @@ export class FfTodoListComponent implements OnInit {
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
     delete task.todoId;
     console.log(`Trying to check Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
-    this.initTodoList(tempTodoId);
+    this.initTodoList([tempTodoId]);
   }
 
   removeTask(task : Task) {
@@ -375,12 +387,12 @@ export class FfTodoListComponent implements OnInit {
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
     delete task.todoId;
     console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
-    this.initTodoList(tempTodoId);
+    this.initTodoList([tempTodoId]);
   }
 
   removeAllTasks(id : number) {
     console.log(`Trying to remove all Task for Todo with ID (${id})...`);
-    this.initTodoList(-1);
+    this.initTodoList([]);
   }
 
   ngOnInit(): void {
