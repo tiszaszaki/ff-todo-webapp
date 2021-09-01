@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Todo } from './todo';
@@ -42,6 +42,21 @@ export class FfTodoMockRequestService {
           console.error(error);
           return throwError(error);
         })
+    );
+  }
+
+  searchTodoByField(term: String, field: String): Observable<Todo[]> {
+    if (!term.trim() || !field.trim()) {
+      return of([]);
+    }
+    return this.http.get<Todo[]>(this.todoPath + `/?${field}=${term}`).pipe(
+      tap(todos => todos.length ?
+        console.log(`Found Todos matching "${term} (field: ${field})": ${JSON.stringify(todos)}`) :
+        console.log(`No Todos matching "${term} (field: ${field})"`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
     );
   }
 

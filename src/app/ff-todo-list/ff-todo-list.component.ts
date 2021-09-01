@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
@@ -43,6 +44,11 @@ export class FfTodoListComponent implements OnInit {
   public task_sorting_field: String[] = [];
   public task_sorting_direction: Boolean[] = [];
 
+  public todo_searching_term!: String;
+  public todo_searching_field!: String;
+
+  private searchSubmitted: Boolean = false;
+
   public customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
   public phase_labels = ['Backlog', 'In progress', 'Done'];
@@ -78,6 +84,9 @@ export class FfTodoListComponent implements OnInit {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
+    this.todo_searching_term = '';
+    this.todo_searching_field = '';
+
     this.getTodos(phase);
   }
 
@@ -90,6 +99,21 @@ export class FfTodoListComponent implements OnInit {
       this.initTodoList([]);
     });
     */
+  }
+
+  updateSearchSubmit(state: Boolean) {
+    this.searchSubmitted = state;
+    this.getTodos([]);
+  }
+
+  updateTodoSearchingTerm(term: String) {
+    this.todo_searching_term = term;
+    console.log(`updateTodoSearchingTerm: "${term}"`);
+  }
+
+  updateTodoSearchingField(fieldName: String) {
+    this.todo_searching_field = fieldName;
+    console.log(`updateTodoSearchingTerm: "${fieldName}"`);
   }
 
   updateTodoSortingField(idx : number, fieldName: String) {
@@ -136,8 +160,19 @@ export class FfTodoListComponent implements OnInit {
   }
 
   getTodos(phase: number[]): void {
-    this.todoServ.getTodos()
-    .subscribe(records => {
+    var todo_results: Observable<Todo[]>;
+
+    if (this.searchSubmitted && (this.todo_searching_field != ''))
+    {
+      console.log('Searching for Todos...');
+      todo_results = this.todoServ.searchTodoByField(this.todo_searching_term, this.todo_searching_field);
+    }
+    else
+    {
+      todo_results = this.todoServ.getTodos()
+    }
+
+    todo_results.subscribe(records => {
       let todo_records = records;
       this.todo_count = 0;
 
@@ -324,7 +359,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
     this.todoServ.addTodo(todo)
     .subscribe(response => {
-      this.initTodoList([todo.phase]);
+      this.getTodos([todo.phase]);
     });
   }
 
@@ -333,7 +368,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
     this.todoServ.editTodo(id, todo)
     .subscribe(_ => {
-      this.initTodoList([this.oldPhase, todo.phase]);
+      this.getTodos([this.oldPhase, todo.phase]);
     });
   }
 
@@ -342,7 +377,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to remove Todo with ID (${id})...`);
     this.todoServ.removeTodo(id)
     .subscribe(_ => {
-      this.initTodoList([todo.phase]);
+      this.getTodos([todo.phase]);
     });
   }
 
@@ -357,7 +392,7 @@ export class FfTodoListComponent implements OnInit {
       this.todoServ.editTodo(id, todo)
       .subscribe(_ => {
         console.log(`Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`);
-        this.initTodoList([this.oldPhase, new_phase]);
+        this.getTodos([this.oldPhase, new_phase]);
       });
     }
   }
@@ -385,7 +420,7 @@ export class FfTodoListComponent implements OnInit {
     .subscribe(task => {
       this.todoServ.getTodo(this.todoId)
       .subscribe(todo => { 
-        this.initTodoList([todo.phase]);
+        this.getTodos([todo.phase]);
       })
     });
   }
@@ -396,7 +431,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
     this.todoServ.editTask(id, patchedTask)
     .subscribe(_=> {
-      this.initTodoList([tempTodoId]);
+      this.getTodos([tempTodoId]);
     });
   }
 
@@ -414,7 +449,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
     this.todoServ.removeTask(id)
     .subscribe(_ => {
-      this.initTodoList([tempTodoId]);
+      this.getTodos([tempTodoId]);
     });
   }
 
@@ -432,7 +467,7 @@ export class FfTodoListComponent implements OnInit {
           console.log(`Successfully removed all Tasks from Todo with ID (${(id)})...`);
           this.todoServ.getTodo(todoId)
           .subscribe(todo => {
-            this.initTodoList([todo.phase]);
+            this.getTodos([todo.phase]);
           });
       });
     }

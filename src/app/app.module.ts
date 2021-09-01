@@ -25,7 +25,8 @@ import { FfTodoListPerPhaseComponent } from './ff-todo-list-per-phase/ff-todo-li
 import { FfTodoHeaderComponent } from './ff-todo-header/ff-todo-header.component';
 import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component';
 import { FfTodoFormInvalidComponent } from './ff-todo-form-invalid/ff-todo-form-invalid.component';
-import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-todo-generic-task-form.component'
+import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-todo-generic-task-form.component';
+import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-searching-form.component'
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-t
     FfTodoHeaderComponent,
     FfTodoFooterComponent,
     FfTodoFormInvalidComponent,
-    FfTodoGenericTaskFormComponent
+    FfTodoGenericTaskFormComponent,
+    FfTodoSearchingFormComponent
   ],
   imports: [
     //ModalModule, TooltipModule, PopoverModule, ButtonsModule,
