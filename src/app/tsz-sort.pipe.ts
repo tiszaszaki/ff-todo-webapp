@@ -13,19 +13,25 @@ export class TiszaSzakiSortPipe implements PipeTransform {
     if (field != "")
     {
       array.sort((a: any, b: any) => {
+        let a2=a[field as string];
+        let b2=b[field as string];
         var res;
-        if ((a instanceof String) && (b instanceof String)) {
-          res = a.localeCompare(b as string);
+
+        if ((typeof(a2) == 'string') && (typeof(b2) == 'string')) {
+          res = a2.toLowerCase().localeCompare(b2.toLowerCase() as string);
         }
         else {
-          if (a[field as string] < b[field as string]) {
+          if (a2 < b2) {
             res = -1;
-          } else if (a[field as string] > b[field as string]) {
+          } else if (a2 > b2) {
             res = 1;
           } else {
             res = 0;
           }
         }
+
+        console.log(`Compared ${JSON.stringify(a2)} with ${JSON.stringify(b2)}: ${res}`);
+
         res *= (reversed ? -1 : 1);
         return res;
       });

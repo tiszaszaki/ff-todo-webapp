@@ -21,43 +21,39 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
       {todoId:2, id:7, name:'s', done:false},
       {todoId:2, id:8, name:'i', done:false}
     ];
-    const todo : Todo[] = [
+    const todos : Todo[] = [
       {id:0, name:'Sonic', description:'Fejlesztése', phase:0},
       {id:1, name:'Álláskeresés', description:'Folyamatban', phase:1},
-      {id:2, name:'Nevem', description:'Kiíratása', phase:2},
-      {id:3, name:'J', description:'Nevem betűje', phase:0},
-      {id:4, name:'a', description:'Nevem betűje', phase:0},
-      {id:5, name:'n', description:'Nevem betűje', phase:0},
-      {id:6, name:'c', description:'Nevem betűje', phase:0},
-      {id:7, name:'s', description:'Nevem betűje', phase:0},
-      {id:8, name:'i', description:'Nevem betűje', phase:0}
+      {id:2, name:'Nevem', description:'Kiíratása', phase:2}
     ];
-    for (let t of todo)
-    {
-      t.datecreated = t.datemodified = new Date();
-      /*
-      t.tasks = [];
-      for (let task of tasks)
-      {
-        let todoId=((task.todoId !== undefined) ? task.todoId : -1);
-        let unmarkedTask=task;
 
-        if (todoId == t.id)
-        {
-          delete unmarkedTask.todoId;
-          t.tasks.push(JSON.parse(JSON.stringify(unmarkedTask)));
-        }
+    let genStr = 'FeketeJános';
+
+    for (var idx1 = 0; idx1 < genStr.length; idx1++) {
+      let c1 = genStr[idx1];
+      let id = this.genId(todos);
+      const todo: Todo = {id: id, name: c1, description: '', phase: 0};
+      todos.push(todo);
+
+      for (var idx2 = 0; idx2 <= idx1; idx2++)
+      {
+        let c2 = genStr[idx2];
+        const task: Task = {id: this.genId(tasks), name: c2, done: false, todoId: id};
+        tasks.push(task);
       }
-      */
     }
 
-    return {todo, task: tasks};
-  }
+    for (let t of todos)
+    {
+      t.datecreated = t.datemodified = new Date();
+    }
 
-  genId(todolist: Todo[]): number {
+    return {todo: todos, task: tasks};
+  } 
+
+  genId(anylist: any[]): number {
     let id0 : number = 0;
-    console.log("List length: " + todolist.length);
-    return ((todolist.length > 0) ? (Math.max(...todolist.map(todo => todo.id)) + 1) : id0);
+    return ((anylist.length > 0) ? (Math.max(...anylist.map(entity => entity.id)) + 1) : id0);
   }
 
   constructor() { }
