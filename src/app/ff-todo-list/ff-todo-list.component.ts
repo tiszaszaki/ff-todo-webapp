@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
+import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
@@ -221,58 +222,43 @@ export class FfTodoListComponent implements OnInit {
         this.todo_ids.push(todo.id);
         this.task_ids.push([]);
 
-        this.todoServ.getTasksFromTodo(todo.id)
-        .subscribe(tasks => {
-          todo.tasks = [];
-          for (let task of tasks)
-          {
-            delete task.todoId;
+        if (todo.tasks)
+        {
+          taskCountPerPhase = todo.tasks.length;
+        }
 
-            this.task_ids[todo.id].push(task.id);
+        todo.descriptionLength = todo.description.length;
+        todo.taskCount = taskCountPerPhase;
 
-            todo.tasks.push(JSON.parse(JSON.stringify(task)));
+        if (phase.length == 0)
+        {
+          let _phase = todo.phase;
+          this.todo_list[_phase].push(todo);
+          this.task_count[_phase] += taskCountPerPhase;
+        }
+        else
+        {
+          for (let _phase of phase) {
+            if ((_phase >= 0) && (_phase < this.phaseNum) && (todo.phase == _phase)) {
+              this.todo_list[_phase].push(todo);
+              this.task_count[_phase] += taskCountPerPhase;
+            }
           }
+        }
 
-          if (todo.tasks)
-          {
-            taskCountPerPhase = todo.tasks.length;
-          }
+        for (let todo_phase of this.todo_list)
+        {
+          this.todo_count += todo_phase.length;
+        }
   
-          todo.descriptionLength = todo.description.length;
-          todo.taskCount = taskCountPerPhase;
-  
-          if (phase.length == 0)
-          {
-            let _phase = todo.phase;
-            this.todo_list[_phase].push(todo);
-            this.task_count[_phase] += taskCountPerPhase;
-          }
-          else
-          {
-            for (let _phase of phase) {
-              if ((_phase >= 0) && (_phase < this.phaseNum) && (todo.phase == _phase)) {
-                this.todo_list[_phase].push(todo);
-                this.task_count[_phase] += taskCountPerPhase;
-              }
-            }
-          }
-
-          if (Number.parseInt(todo_idx) == todo_records.length-1) {
-            for (let todo_phase of this.todo_list)
-            {
-              this.todo_count += todo_phase.length;
-            }
-      
-            if (phase.length == 0)
-            {
-              console.log('Filled Todo list in all phases.');
-            }
-            if (phase.length > 0)
-            {
-              console.log(`Tried to fill Todo list only in phases (${phase}).`);
-            }
-          }
-        });
+        if (phase.length == 0)
+        {
+          console.log('Filled Todo list in all phases.');
+        }
+        if (phase.length > 0)
+        {
+          console.log(`Tried to fill Todo list only in phases (${phase}).`);
+        }
       }
     });
   }
@@ -429,7 +415,7 @@ export class FfTodoListComponent implements OnInit {
     let id = patchedTask.id;
     let tempTodoId = ((patchedTask.todoId !== undefined) ? patchedTask.todoId : -1);
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
-    this.todoServ.editTask(id, patchedTask)
+    this.todoServ.editTask(patchedTask)
     .subscribe(_=> {
       this.getTodos([tempTodoId]);
     });

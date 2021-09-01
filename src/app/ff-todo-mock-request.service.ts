@@ -37,7 +37,22 @@ export class FfTodoMockRequestService {
 
   getTodos() : Observable<Todo[]> {
     return this.http.get<Todo[]>(this.todoPath).pipe(
-        tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
+        map((todos : Todo[]) => {
+          for (let todo of todos)
+          {
+            this.getTasksFromTodo(todo.id).subscribe(tasks => {
+              todo.tasks = [];
+              for (let task of tasks)
+              {
+                todo.tasks.push(JSON.parse(JSON.stringify(task)));
+              }
+            });
+          }
+    
+          console.log(`Fetched ${todos.length} Todo(s)`);
+
+          return todos;
+        }),
         catchError((error: HttpErrorResponse) => {
           console.error(error);
           return throwError(error);
@@ -102,7 +117,7 @@ export class FfTodoMockRequestService {
     );
   }
 
-  getTasksFromTodo(todoId: number): Observable<Task[]> {
+  private getTasksFromTodo(todoId: number): Observable<Task[]> {
     return this.http.get<Task[]>(this.taskPath).pipe(
       map((tasks : Task[]) => {
         let filtered_tasks = [];
@@ -132,7 +147,7 @@ export class FfTodoMockRequestService {
     )
   }
 
-  editTask(id: number, patchedTask: Task): Observable<any> {
+  editTask(patchedTask: Task): Observable<any> {
     return this.http.put(this.taskPath + patchedTask.id, patchedTask).pipe(
       tap(_ => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
