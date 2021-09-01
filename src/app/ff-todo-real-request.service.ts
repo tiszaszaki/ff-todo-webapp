@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ShiftDirection } from './shift-direction';
@@ -51,6 +51,10 @@ export class FfTodoRealRequestService {
           return throwError(error);
         })
     );
+  }
+
+  searchTodoByField(term: String, field: String): Observable<Todo[]> {
+    return of([]);
   }
 
   addTodo(todo: Todo): Observable<Todo> {

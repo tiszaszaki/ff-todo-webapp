@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Todo } from './todo';
 import { Task } from './task';
+import { ShiftDirection } from './shift-direction';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +98,10 @@ export class FfTodoMockRequestService {
     );
   }
 
+  shiftTodo(id : number, dir: ShiftDirection): Observable<any> {
+    return of([]);
+  }
+
   removeTodo(id: number): Observable<any> {
     return this.http.delete(this.todoPath + id).pipe(
       tap(_ => console.log(`Removed Todo with ID (${id})`)),
@@ -158,7 +163,7 @@ export class FfTodoMockRequestService {
   }
 
   checkTask(id: number): Observable<any> {
-    return new Observable<any>();
+    return of([]);
   }
 
   removeTask(id: number): Observable<any> {
