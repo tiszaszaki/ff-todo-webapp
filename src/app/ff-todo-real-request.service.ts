@@ -28,7 +28,7 @@ export class FfTodoRealRequestService {
   };
 
   constructor(private http: HttpClient) {
-    this.backendUrl = 'ff-todo/';
+    this.backendUrl = 'http://localhost:8080/ff-todo/';
     this.todoPath = this.backendUrl + 'todo';
     this.taskPath = this.backendUrl + 'task';
   }

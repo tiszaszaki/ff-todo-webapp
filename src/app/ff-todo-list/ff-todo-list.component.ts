@@ -78,7 +78,7 @@ export class FfTodoListComponent implements OnInit {
   public readonly LEFT = ShiftDirection.LEFT;
   public readonly RIGHT = ShiftDirection.RIGHT;
 
-  constructor(private todoServ: FfTodoMockRequestService) {
+  constructor(private todoServ: FfTodoRealRequestService) {
     this.initTodoList([]);
   }
 

@@ -52,8 +52,8 @@ import { TiszaSzakiSearchPipe } from './tsz-search.pipe'
   ],
   imports: [
     //ModalModule, TooltipModule, PopoverModule, ButtonsModule,
-    BrowserModule, FormsModule, HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: 'ff-todo/' })
+    BrowserModule, FormsModule, HttpClientModule
+    //HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: 'ff-todo/' })
   ],
   providers: [],
   bootstrap: [AppComponent]
