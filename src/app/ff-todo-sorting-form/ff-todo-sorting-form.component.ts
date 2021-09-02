@@ -21,8 +21,8 @@ export class FfTodoSortingFormComponent implements OnInit {
     {name: 'description', display: 'Todo description'},
     {name: 'descriptionLength', display: 'Todo description length'},
     {name: 'taskCount', display: 'Task count in Todo'},
-    {name: 'dateCreated', display: 'Date of Todo created'},
-    {name: 'dateModified', display: 'Date of Todo updated'}
+    {name: 'datecreated', display: 'Date of Todo created'},
+    {name: 'datemodified', display: 'Date of Todo updated'}
   ];
 
   constructor() {

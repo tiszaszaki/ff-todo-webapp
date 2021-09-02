@@ -25,22 +25,16 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
 
       for (let elem of temp)
       {
-        let leftval: String;
+        let leftval, rightval = term;
         let lefttemp = elem[field as string];
-        let rightval = term;
 
-        if (!lefttemp)
+        if (typeof(lefttemp) == 'string')
         {
-          lefttemp = '';
-        }
-
-        if (typeof(lefttemp) != 'string')
-        {
-          leftval = JSON.stringify(lefttemp);
+          leftval = lefttemp;
         }
         else
         {
-          leftval = lefttemp;
+          leftval = lefttemp.toString();
         }
 
         if (!caseSense)
