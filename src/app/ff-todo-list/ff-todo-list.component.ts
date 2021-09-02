@@ -45,6 +45,7 @@ export class FfTodoListComponent implements OnInit {
   public task_sorting_field: String[] = [];
   public task_sorting_direction: Boolean[] = [];
 
+  public todo_searching_casesense!: Boolean;
   public todo_searching_term!: String;
   public todo_searching_field!: String;
 
@@ -85,6 +86,7 @@ export class FfTodoListComponent implements OnInit {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
+    this.todo_searching_casesense = false;
     this.todo_searching_term = '';
     this.todo_searching_field = '';
 
@@ -105,6 +107,11 @@ export class FfTodoListComponent implements OnInit {
   updateSearchSubmit(state: Boolean) {
     this.searchSubmitted = state;
     this.getTodos([]);
+  }
+
+  updateTodoSearchingCaseSense(casesense: Boolean) {
+    this.todo_searching_casesense = casesense;
+    console.log(`updateTodoSearchingCaseSense: "${casesense}"`);
   }
 
   updateTodoSearchingTerm(term: String) {

@@ -39,20 +39,26 @@ export class FfTodoMockRequestService {
   getTodos() : Observable<Todo[]> {
     return this.http.get<Todo[]>(this.todoPath).pipe(
         map((todos : Todo[]) => {
-          for (let todo of todos)
-          {
-            this.getTasksFromTodo(todo.id).subscribe(tasks => {
-              todo.tasks = [];
-              for (let task of tasks)
-              {
-                todo.tasks.push(JSON.parse(JSON.stringify(task)));
-              }
-            });
-          }
-    
+          let result: Todo[] = [];
+          let tasks: Task[] = [];
+
           console.log(`Fetched ${todos.length} Todo(s)`);
 
-          return todos;
+          this.getAllTasks().subscribe(_tasks => tasks = _tasks);
+
+          for (let todo of todos) {
+            todo.tasks = [];
+
+            for (let task of tasks) {
+              if (task.todoId == todo.id) {
+                todo.tasks.push(JSON.parse(JSON.stringify(task)));
+              }
+            }
+
+            result.push(todo);
+          }
+
+          return result;
         }),
         catchError((error: HttpErrorResponse) => {
           console.error(error);
@@ -115,6 +121,18 @@ export class FfTodoMockRequestService {
   resetTodos(): Observable<any> {
     return this.http.post(this.baseurl + 'commands/resetdb', undefined).pipe(
       tap(_ => console.log('Restored all Todos')),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  private getAllTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.taskPath).pipe(
+      tap((tasks : Task[]) => {
+        console.log(`Fetched ${tasks.length} Task(s)`);
+      }),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
         return throwError(error);

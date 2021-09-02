@@ -49,9 +49,10 @@
 		</app-ff-todo-generic-task-form>
 	</div>
 	<app-ff-todo-searching-form [todo_list_count]="todo_count"
-		[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
-		(todosearchtermChange)="updateTodoSearchingTerm($event)" (todosearchfieldChange)="updateTodoSearchingField($event)"
-		(updateSubmitStateEvent)="updateSearchSubmit($event)"></app-ff-todo-searching-form>
+			[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
+			(todosearchcaseChange)="updateTodoSearchingCaseSense($event)" (todosearchtermChange)="updateTodoSearchingTerm($event)"
+			(todosearchfieldChange)="updateTodoSearchingField($event)" (updateSubmitStateEvent)="updateSearchSubmit($event)">
+	</app-ff-todo-searching-form>
 	<table class="table mt-3">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
@@ -76,7 +77,8 @@
 							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							[todosearchexec]="searchSubmitted" [todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
+							[todosearchexec]="searchSubmitted" [todosearchcase]="todo_searching_casesense"
+							[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
 							(editTodoEvent)="prepareEditTodoForm($event)" (removeTodoEvent)="prepareRemoveTodoForm($event)"
 							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"
 							(addTaskEvent)="prepareAddTaskForm($event)" (editTaskEvent)="prepareEditTaskForm($event)"
