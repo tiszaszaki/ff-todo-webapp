@@ -171,17 +171,6 @@ export class FfTodoListComponent implements OnInit {
     var todo_results: Observable<Todo[]>;
 
     todo_results = this.todoServ.getTodos();
-    /*
-    if (this.searchSubmitted && (this.todo_searching_field != ''))
-    {
-      console.log('Searching for Todos...');
-      todo_results = this.todoServ.searchTodoByField(this.todo_searching_term, this.todo_searching_field);
-    }
-    else
-    {
-      todo_results = this.todoServ.getTodos()
-    }
-    */
 
     todo_results.subscribe(records => {
       let todo_records = records;
@@ -394,20 +383,11 @@ export class FfTodoListComponent implements OnInit {
   }
 
   removeAllTodos() {
-    while (this.todo_ids.length > 0)
-    {
-      let id=this.todo_ids.pop();
-      if (id === undefined)
-      {
-        id = -1;
-      }
-      this.todoServ.removeTodo(id)
-      .subscribe(_ => {
-        if (this.todo_ids.length == 0)
-          console.log(`Successfully removed all Todos from the board...`);
-          this.initTodoList([]);
-      });
-    }
+    this.todoServ.removeAllTodos()
+    .subscribe(_ => {
+      console.log(`Successfully removed all Todos from the board...`);
+      this.initTodoList([]);
+    });
   }
 
   addTask(task : Task) {
@@ -424,6 +404,7 @@ export class FfTodoListComponent implements OnInit {
   updateTask(patchedTask : Task) {
     let id = patchedTask.id;
     let tempTodoId = ((patchedTask.todoId !== undefined) ? patchedTask.todoId : -1);
+    delete patchedTask.todoId;
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
     this.todoServ.editTask(patchedTask)
     .subscribe(_=> {
@@ -434,39 +415,37 @@ export class FfTodoListComponent implements OnInit {
   checkTask(task : Task) {
     let id = task.id;
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
-    task.done = !task.done;
+    delete task.todoId;
     console.log(`Trying to check Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
-    this.updateTask(task);
+    this.todoServ.checkTask(id)
+    .subscribe(_=> {
+      this.getTodos([tempTodoId]);
+    });
   }
 
   removeTask(task : Task) {
     let id = task.id;
     let tempTodoId = ((task.todoId !== undefined) ? task.todoId : -1);
+    delete task.todoId;
     console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
     this.todoServ.removeTask(id)
     .subscribe(_ => {
-      this.getTodos([tempTodoId]);
+      this.todoServ.getTodo(tempTodoId)
+      .subscribe(todo => { 
+        this.getTodos([todo.phase]);
+      });
     });
   }
 
   removeAllTasks(todoId: number) {
-    while (this.task_ids[todoId].length > 0)
-    {
-      let id=this.task_ids[todoId].pop();
-      if (id === undefined)
-      {
-        id = -1;
-      }
-      this.todoServ.removeTask(id)
-      .subscribe(_ => {
-        if (this.task_ids[todoId].length == 0)
-          console.log(`Successfully removed all Tasks from Todo with ID (${(id)})...`);
-          this.todoServ.getTodo(todoId)
-          .subscribe(todo => {
-            this.getTodos([todo.phase]);
-          });
-      });
-    }
+    this.todoServ.removeAllTasks(todoId)
+    .subscribe(_ => {
+        console.log(`Successfully removed all Tasks from Todo with ID (${(todoId)})...`);
+        this.todoServ.getTodo(todoId)
+        .subscribe(todo => {
+          this.getTodos([todo.phase]);
+        });
+    });
   }
 
   ngOnInit(): void {

@@ -118,6 +118,10 @@ export class FfTodoMockRequestService {
     );
   }
 
+  removeAllTodos(): Observable<any> {
+    return of([]);
+  }
+
   resetTodos(): Observable<any> {
     return this.http.post(this.baseurl + 'commands/resetdb', undefined).pipe(
       tap(_ => console.log('Restored all Todos')),
@@ -193,5 +197,9 @@ export class FfTodoMockRequestService {
       })
     );
   }
-  
+
+  removeAllTasks(id: number): Observable<any> {
+    return of([]);
+  }
+
 }

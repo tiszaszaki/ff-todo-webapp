@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.stage';
 import { ShiftDirection } from './shift-direction';
 import { Task } from './task';
 import { Todo } from './todo';
@@ -28,7 +28,7 @@ export class FfTodoRealRequestService {
   };
 
   constructor(private http: HttpClient) {
-    this.backendUrl = 'http://localhost:8080/ff-todo/';
+    this.backendUrl = environment.apiUrl;
     this.todoPath = this.backendUrl + 'todo';
     this.taskPath = this.backendUrl + 'task';
   }
