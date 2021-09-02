@@ -1,8 +1,8 @@
-import { TszSortPipe } from './tsz-sort.pipe';
+import { TiszaSzakiSortPipe } from './tsz-sort.pipe';
 
-describe('TszSortPipe', () => {
+describe('TiszaSzakiSortPipe', () => {
   it('create an instance', () => {
-    const pipe = new TszSortPipe();
+    const pipe = new TiszaSzakiSortPipe();
     expect(pipe).toBeTruthy();
   });
 });

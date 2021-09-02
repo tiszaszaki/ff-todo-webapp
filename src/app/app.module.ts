@@ -26,7 +26,8 @@ import { FfTodoHeaderComponent } from './ff-todo-header/ff-todo-header.component
 import { FfTodoFooterComponent } from './ff-todo-footer/ff-todo-footer.component';
 import { FfTodoFormInvalidComponent } from './ff-todo-form-invalid/ff-todo-form-invalid.component';
 import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-todo-generic-task-form.component';
-import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-searching-form.component'
+import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-searching-form.component';
+import { TiszaSzakiSearchPipe } from './tsz-search.pipe'
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-s
     FfTodoFooterComponent,
     FfTodoFormInvalidComponent,
     FfTodoGenericTaskFormComponent,
-    FfTodoSearchingFormComponent
+    FfTodoSearchingFormComponent,
+    TiszaSzakiSearchPipe
   ],
   imports: [
     //ModalModule, TooltipModule, PopoverModule, ButtonsModule,

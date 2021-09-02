@@ -25,6 +25,10 @@ export class FfTodoListPerPhaseComponent implements OnInit {
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
 
+  @Input() todosearchexec!: Boolean;
+  @Input() todosearchterm!: String;
+  @Input() todosearchfield!: String;
+
   @Output() editTodoEvent = new EventEmitter<number>();
   @Output() removeTodoEvent = new EventEmitter<number>();
 

@@ -76,6 +76,7 @@
 							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
+							[todosearchexec]="searchSubmitted" [todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
 							(editTodoEvent)="prepareEditTodoForm($event)" (removeTodoEvent)="prepareRemoveTodoForm($event)"
 							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"
 							(addTaskEvent)="prepareAddTaskForm($event)" (editTaskEvent)="prepareEditTaskForm($event)"

@@ -34,13 +34,13 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   public readonly CHECK = TaskOperator.CHECK;
   public readonly REMOVE_ALL = TaskOperator.REMOVE_ALL;
 
-  resetModel() {
+  private resetModel() {
     this.model = new Task();
     this.model.name = '';
     this.model.done = false;
   }
 
-  updateModel() {
+  private updateModel() {
     if (this.data)
     {
       this.model = this.data;
@@ -51,7 +51,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
     }
   }
 
-  updateDisplay() {
+  private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
     this.confirmMessage = '<Confirm message to be filled>';
     this.confirmButtonCaption = "<Confirm>";

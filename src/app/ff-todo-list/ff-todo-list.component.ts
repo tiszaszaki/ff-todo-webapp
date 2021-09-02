@@ -48,7 +48,7 @@ export class FfTodoListComponent implements OnInit {
   public todo_searching_term!: String;
   public todo_searching_field!: String;
 
-  private searchSubmitted: Boolean = false;
+  public searchSubmitted: Boolean = false;
 
   public customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
 
@@ -147,7 +147,7 @@ export class FfTodoListComponent implements OnInit {
     this.task_sorting_direction[idx] = false;
   }
 
-  checkIfNoFormShown() {
+  private checkIfNoFormShown() {
     let result = true;
     result &&= (!this.addTodoFormShown && !this.editTodoFormShown);
     result &&= (!this.removeTodoFormShown && !this.removeAllTodosFormShown);
@@ -156,13 +156,15 @@ export class FfTodoListComponent implements OnInit {
     return result;
   }
 
-  getTodo(id : number) {
+  private getTodo(id : number) {
     return this.todoServ.getTodo(id);
   }
 
-  getTodos(phase: number[]): void {
+  private getTodos(phase: number[]): void {
     var todo_results: Observable<Todo[]>;
 
+    todo_results = this.todoServ.getTodos();
+    /*
     if (this.searchSubmitted && (this.todo_searching_field != ''))
     {
       console.log('Searching for Todos...');
@@ -172,6 +174,7 @@ export class FfTodoListComponent implements OnInit {
     {
       todo_results = this.todoServ.getTodos()
     }
+    */
 
     todo_results.subscribe(records => {
       let todo_records = records;

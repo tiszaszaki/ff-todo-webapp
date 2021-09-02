@@ -34,14 +34,14 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   public readonly REMOVE = TodoOperator.REMOVE;
   public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
-  resetModel() {
+  private resetModel() {
     this.model = new Todo();
     this.model.name = '';
     this.model.description = '';
     this.model.phase = NaN;
   }
 
-  updateModel() {
+  private updateModel() {
     if (this.data)
     {
       this.model = this.data;
@@ -52,7 +52,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     }
   }
 
-  updateDisplay() {
+  private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
     this.confirmMessage = '<Confirm message to be filled>';
     this.confirmButtonCaption = "<Confirm>";
