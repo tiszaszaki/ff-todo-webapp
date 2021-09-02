@@ -13,7 +13,7 @@
 				data-toggle="tooltip" data-placement="bottom" title="Refresh Todo list">
 				<i class="fas fa-sync-alt"></i>
 		</button>
-		<button type="button" class="btn btn-warning btn-sm" (click)="restoreTodoList()"
+		<button type="button" class="btn btn-warning btn-sm" (click)="restoreTodoList()" [disabled]="true"
 				data-toggle="tooltip" data-placement="bottom" title="Restore Todo list">
 				<i class="fas fa-trash-restore-alt"></i>
 		</button>
@@ -73,8 +73,9 @@
 			</tr>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum"
-							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat"
+					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum" [readonlyTodo]="readonlyTodo"
+							[readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat" [showDescriptionLength]="showDescriptionLength[idx]"
+							[showDateCreated]="showDateCreated[idx]" [showTaskCount]="showTaskCount[idx]"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
 							[todosearchexec]="searchSubmitted" [todosearchcase]="todo_searching_casesense"

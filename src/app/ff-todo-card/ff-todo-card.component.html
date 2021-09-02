@@ -11,11 +11,12 @@
                     data-toggle="tooltip" data-placement="bottom" title="Todo description">
                 <p class="card-text">{{ content.description }}</p>
             </li>
-            <li class="list-group-item" *ngIf="showDescriptionLength">
+            <li class="list-group-item" *ngIf="showDescriptionLength[0] || showDescriptionLength[1]">
                 <p class="card-text">Description length: {{ descriptionLength }}</p>
             </li>
             <li class="list-group-item">
-				<app-ff-todo-task-list [tasks]="tasklistStr" [taskCount]="taskCount" [readonlyTask]="readonlyTask"
+				<app-ff-todo-task-list [tasks]="tasklistStr" [taskCount]="taskCount"
+						[readonlyTask]="readonlyTask" [showTaskCount]="showTaskCount"
 						[tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [todoId]="content.id"
 						(editTaskEvent)="editTaskEvent.emit($event)"
 						(checkTaskEvent)="checkTaskEvent.emit($event)"
@@ -61,8 +62,8 @@
         </ul>
     </div>
     <div class="card-footer text-muted">
-        <p>Date updated: {{ content.datemodified | date:customDateFormat }}</p>
-        <p *ngIf="showDateCreated">Date created: {{ content.datecreated | date:customDateFormat }}</p>
+        <p>Date updated: {{ content.dateModified | date:customDateFormat }}</p>
+        <p *ngIf="showDateCreated[0] || showDateCreated[1]">Date created: {{ content.dateCreated | date:customDateFormat }}</p>
     </div>
 </div>
 <app-ff-todo-card-invalid *ngIf="!isCardValid"></app-ff-todo-card-invalid>

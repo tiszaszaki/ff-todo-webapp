@@ -3,8 +3,8 @@ export class Todo {
   public name!: String;
   public description!: String;
   public phase!: number;
-  public datemodified?: Date;
-  public datecreated?: Date;
+  public dateModified?: Date;
+  public dateCreated?: Date;
   
   public descriptionLength?: number;
   public taskCount?: number;

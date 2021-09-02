@@ -45,7 +45,7 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
 
     for (let t of todos)
     {
-      t.datecreated = t.datemodified = new Date();
+      t.dateCreated = t.dateModified = new Date();
     }
 
     return {todo: todos, task: tasks};

@@ -17,7 +17,7 @@ export class FfTodoTaskListComponent implements OnInit {
   @Input() tasksortdir!: Boolean;
 
   @Input() readonlyTask?: Boolean = false;
-  @Input() showTaskCount?: Boolean = true;
+  @Input() showTaskCount!: Boolean[];
 
   @Output() editTaskEvent = new EventEmitter<Task>();
   @Output() checkTaskEvent = new EventEmitter<Task>();
@@ -31,6 +31,11 @@ export class FfTodoTaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.tasks = JSON.parse(this.tasklistString as string);
+
+    if (this.showTaskCount.length == 0)
+      this.showTaskCount.push(false, false);
+    if (this.showTaskCount.length == 1)
+      this.showTaskCount.push(false);
   }
 
   editTask(t : Task)

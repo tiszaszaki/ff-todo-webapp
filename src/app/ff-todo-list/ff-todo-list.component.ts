@@ -29,9 +29,6 @@ export class FfTodoListComponent implements OnInit {
   public todo_list!: Todo[][];
   public task_count!: number[];
 
-  private todo_ids!: number[];
-  private task_ids!: number[][];
-
   public todoSelected!: Todo;
   public taskSelected!: Task;
 
@@ -61,9 +58,9 @@ export class FfTodoListComponent implements OnInit {
   public readonlyTodo = false;
   public readonlyTask = false;
 
-  public showDescriptionLength = true;
-  public showTaskCount = true;
-  public showDateCreated = true;
+  public showDescriptionLength: Boolean[][] = [];
+  public showTaskCount: Boolean[][] = [];
+  public showDateCreated: Boolean[][] = [];
 
   public readonly ADD_TODO = TodoOperator.ADD;
   public readonly EDIT_TODO = TodoOperator.EDIT;
@@ -95,13 +92,6 @@ export class FfTodoListComponent implements OnInit {
 
   restoreTodoList() {
     console.log('Trying to restore all Todos...');
-    // TODO: implement restoring Todos
-    /*
-    this.todoServ.resetTodos()
-    .subscribe(_ => {
-      this.initTodoList([]);
-    });
-    */
   }
 
   updateSearchSubmit(state: Boolean) {
@@ -122,11 +112,26 @@ export class FfTodoListComponent implements OnInit {
   updateTodoSearchingField(fieldName: String) {
     this.todo_searching_field = fieldName;
     console.log(`updateTodoSearchingTerm: "${fieldName}"`);
+
+    for (let idx in this.phase_labels)
+    {
+      this.showDescriptionLength[idx][1] = (this.todo_searching_field == 'descriptionLength');
+      this.showDateCreated[idx][1] = (this.todo_searching_field == 'dateCreated');
+      this.showTaskCount[idx][1] = (this.todo_searching_field == 'taskCount');
+  
+      console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
+    }
   }
 
   updateTodoSortingField(idx : number, fieldName: String) {
     this.todo_sorting_field[idx] = fieldName;
-    console.log(`updateTodoSortingField(${idx}): "${fieldName}"`);
+    console.log(`updateTodoSortingField(${idx}): "${this.todo_sorting_field[idx]}"`);
+
+    this.showDescriptionLength[idx][0] = (this.todo_sorting_field[idx] == 'descriptionLength');
+    this.showDateCreated[idx][0] = (this.todo_sorting_field[idx] == 'dateCreated');
+    this.showTaskCount[idx][0] = (this.todo_sorting_field[idx] == 'taskCount');
+
+    console.log(`updateTodoShowingField(${idx}, 'sorting'): [${[this.showDescriptionLength[idx][0], this.showDateCreated[idx][0], this.showTaskCount[idx][0]]}]`);
   }
 
   updateTodoSortingDirection(idx : number, dir: Boolean) {
@@ -181,9 +186,6 @@ export class FfTodoListComponent implements OnInit {
         this.task_count = [];
       }
 
-      this.todo_ids = [];
-      this.task_ids = [];
-
       if (phase.length == 0) {
         for (let todo_phase of this.phase_labels) {
           this.todo_list.push([]);
@@ -194,6 +196,10 @@ export class FfTodoListComponent implements OnInit {
     
           this.task_sorting_field.push('');
           this.task_sorting_direction.push(false);
+
+          this.showDescriptionLength.push([false,false]);
+          this.showDateCreated.push([false,false]);
+          this.showTaskCount.push([false,false]);
         }
       }
       if (phase.length > 0) {
@@ -217,9 +223,6 @@ export class FfTodoListComponent implements OnInit {
       {
         let todo=todo_records[todo_idx];
         let taskCountPerPhase=0;
-
-        this.todo_ids.push(todo.id);
-        this.task_ids.push([]);
 
         if (todo.tasks)
         {

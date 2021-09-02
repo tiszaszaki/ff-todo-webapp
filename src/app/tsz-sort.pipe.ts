@@ -30,7 +30,7 @@ export class TiszaSzakiSortPipe implements PipeTransform {
           }
         }
 
-        console.log(`Compared ${JSON.stringify(a2)} with ${JSON.stringify(b2)}: ${res}`);
+        //console.log(`Compared ${JSON.stringify(a2)} with ${JSON.stringify(b2)}: ${res}`);
 
         res *= (reversed ? -1 : 1);
         return res;

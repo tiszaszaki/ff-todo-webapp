@@ -24,9 +24,9 @@ export class FfTodoCardComponent implements OnInit {
   @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
   @Input('readonlyTask') _readonlyTask?: Boolean = false;
 
-  @Input() showDescriptionLength?: Boolean = true;
-  @Input() showTaskCount?: Boolean = true;
-  @Input() showDateCreated?: Boolean = true;
+  @Input() showDescriptionLength!: Boolean[];
+  @Input() showTaskCount!: Boolean[];
+  @Input() showDateCreated!: Boolean[];
 
   @Output() editTodoEvent = new EventEmitter<number>();
   @Output() removeTodoEvent = new EventEmitter<number>();
@@ -89,6 +89,16 @@ export class FfTodoCardComponent implements OnInit {
     this.readonlyTask = (this._readonlyTask ? this._readonlyTask : false);
 
     this.readonlyTask ||= this.readonlyTodo;
+
+    if (this.showDescriptionLength.length == 0)
+      this.showDescriptionLength.push(false, false);
+    if (this.showDescriptionLength.length == 1)
+      this.showDescriptionLength.push(false);
+
+    if (this.showDateCreated.length == 0)
+      this.showDateCreated.push(false, false);
+    if (this.showDateCreated.length == 1)
+      this.showDateCreated.push(false);
   }
 
   addTask() {
