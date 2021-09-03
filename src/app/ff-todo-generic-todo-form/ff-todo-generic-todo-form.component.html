@@ -31,7 +31,18 @@
                         Phase is required
                     </div>
                 </div>
-            
+
+                <div class="form-group d-flex justify-content-between">
+                    <div>
+                        <label for="deadline">Deadline</label>
+                        <input type="datetime-local" class="form-control" id="deadline" [value]="model.deadline | date:inputDateFormat">
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary" (click)="updateDeadline()">Update</button>
+                        <button type="button" class="btn btn-secondary" (click)="revertDeadline()">Revert</button>
+                    </div>                        
+                </div>
+
                 <div>
                     <button type="button" class="btn btn-primary" (click)="submitForm()" [disabled]="!todoForm.form.valid">Submit</button>
                     <button type="button" class="btn btn-secondary" (click)="dismissForm()">Close</button>

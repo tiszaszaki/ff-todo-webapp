@@ -19,11 +19,15 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   @Input() phase_labels!: String[];
   @Input() descriptionMaxLength!: number;
 
+  @Input() public inputDateFormat!: string;
+
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
 
   public model!: Todo;
+
+  private deadlineOld!: Date;
 
   public formTitle!: String;
   public confirmMessage!: String;
@@ -40,6 +44,25 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     this.model.description = '';
     this.model.phase = NaN;
   }
+
+  public updateDeadline() {
+    if (this.model.deadline)
+    {
+      this.deadlineOld = this.model.deadline;
+    }
+    this.model.deadline = new Date();
+  }
+
+  public revertDeadline() {
+    if (this.deadlineOld)
+    {
+      this.model.deadline = this.deadlineOld;
+    }
+    else
+    {
+      this.model.deadline = this.model.dateCreated;
+    }
+}
 
   private updateModel() {
     if (this.data)

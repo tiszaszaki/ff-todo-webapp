@@ -60,10 +60,13 @@
 				</div>
 			</li>
         </ul>
+		<div *ngIf="content.deadline">
+			Deadline: {{ content.deadline | date:displayDateFormat }}
+		</div>
     </div>
     <div class="card-footer text-muted">
-        <p>Date updated: {{ content.dateModified | date:customDateFormat }}</p>
-        <p *ngIf="showDateCreated[0] || showDateCreated[1]">Date created: {{ content.dateCreated | date:customDateFormat }}</p>
+        <p>Date updated: {{ content.dateModified | date:displayDateFormat }}</p>
+        <p *ngIf="showDateCreated[0] || showDateCreated[1]">Date created: {{ content.dateCreated | date:displayDateFormat }}</p>
     </div>
 </div>
 <app-ff-todo-card-invalid *ngIf="!isCardValid"></app-ff-todo-card-invalid>

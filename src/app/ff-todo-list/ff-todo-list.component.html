@@ -20,15 +20,15 @@
 	</div>
 	<div>
 		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength"
+				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				(submitDataEvent)="addTodo($event)" (shownChange)="addTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form [mode]="EDIT_TODO" [(data)]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength"
+				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				(submitDataEvent)="updateTodo($event)" (shownChange)="editTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form [mode]="REMOVE_TODO" [(data)]="todoSelected" [(shown)]="removeTodoFormShown" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength"
+				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				(submitDataEvent)="removeTodo($event)" (shownChange)="removeTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
@@ -74,7 +74,7 @@
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum" [readonlyTodo]="readonlyTodo"
-							[readonlyTask]="readonlyTask" [customDateFormat]="customDateFormat" [showDescriptionLength]="showDescriptionLength[idx]"
+							[readonlyTask]="readonlyTask" [displayDateFormat]="displayDateFormat" [showDescriptionLength]="showDescriptionLength[idx]"
 							[showDateCreated]="showDateCreated[idx]" [showTaskCount]="showTaskCount[idx]"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"

@@ -2,7 +2,7 @@
     <div *ngFor="let todo of content | tszSort:todosortfield:todosortdir | tszSearch:todosearchexec:todosearchcase:todosearchterm:todosearchfield">
         <app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
                 [showDescriptionLength]="showDescriptionLength" [showDateCreated]="showDateCreated" [showTaskCount]="showTaskCount"
-                [tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [customDateFormat]="customDateFormat"
+                [tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [displayDateFormat]="displayDateFormat"
                 (editTodoEvent)="editTodoEvent.emit($event)" (removeTodoEvent)="removeTodoEvent.emit($event)"
                 (shiftLeftTodoEvent)="shiftLeftTodoEvent.emit($event)" (shiftRightTodoEvent)="shiftRightTodoEvent.emit($event)"
                 (addTaskEvent)="addTaskEvent.emit($event)" (editTaskEvent)="editTaskEvent.emit($event)"

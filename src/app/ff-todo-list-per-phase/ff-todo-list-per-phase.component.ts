@@ -14,7 +14,7 @@ export class FfTodoListPerPhaseComponent implements OnInit {
   @Input() content! : Todo[];
   @Input() phaseNum!: number;
 
-  @Input() customDateFormat!: string;
+  @Input() displayDateFormat!: string;
 
   @Input() readonlyTodo!: Boolean;
   @Input() readonlyTask!: Boolean;

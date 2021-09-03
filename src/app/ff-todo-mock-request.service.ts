@@ -93,7 +93,6 @@ export class FfTodoMockRequestService {
   }
 
   editTodo(id : number, patchedTodo: Todo): Observable<any> {
-    delete patchedTodo.dateModified;
     patchedTodo.dateModified = new Date();
     return this.http.put(this.todoPath + patchedTodo.id, patchedTodo).pipe(
       tap(_ => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),

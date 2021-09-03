@@ -48,7 +48,8 @@ export class FfTodoListComponent implements OnInit {
 
   public searchSubmitted: Boolean = false;
 
-  public customDateFormat: string = 'yyyy-MM-dd hh:mm:ss.sss';
+  public displayDateFormat: string = 'yyyy-MM-dd HH:mm:ss.sss';
+  public inputDateFormat: string = 'yyyy-MM-dd HH:mm:ss';
 
   public phase_labels = ['Backlog', 'In progress', 'Done'];
 
@@ -79,7 +80,7 @@ export class FfTodoListComponent implements OnInit {
     this.initTodoList([]);
   }
 
-  initTodoList(phase: number[]) {
+  initTodoList(phase_list: number[]) {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
@@ -87,7 +88,7 @@ export class FfTodoListComponent implements OnInit {
     this.todo_searching_term = '';
     this.todo_searching_field = '';
 
-    this.getTodos(phase);
+    this.getTodos(new Set(phase_list));
   }
 
   restoreTodoList() {
@@ -96,7 +97,7 @@ export class FfTodoListComponent implements OnInit {
 
   updateSearchSubmit(state: Boolean) {
     this.searchSubmitted = state;
-    this.getTodos([]);
+    this.getTodos(new Set());
   }
 
   updateTodoSearchingCaseSense(casesense: Boolean) {
@@ -172,7 +173,7 @@ export class FfTodoListComponent implements OnInit {
     return this.todoServ.getTodo(id);
   }
 
-  private getTodos(phase: number[]): void {
+  private getTodos(phase: Set<number>): void {
     var todo_results: Observable<Todo[]>;
 
     todo_results = this.todoServ.getTodos();
@@ -181,12 +182,12 @@ export class FfTodoListComponent implements OnInit {
       let todo_records = records;
       this.todo_count = 0;
 
-      if (phase.length == 0) {
+      if (phase.size == 0) {
         this.todo_list = [];
         this.task_count = [];
       }
 
-      if (phase.length == 0) {
+      if (phase.size == 0) {
         for (let todo_phase of this.phase_labels) {
           this.todo_list.push([]);
           this.task_count.push(0);
@@ -202,7 +203,7 @@ export class FfTodoListComponent implements OnInit {
           this.showTaskCount.push([false,false]);
         }
       }
-      if (phase.length > 0) {
+      if (phase.size > 0) {
         for (let _phase of phase) {
           if ((_phase >= 0) && (_phase < this.phaseNum)) {
             delete this.todo_list[_phase];
@@ -232,7 +233,7 @@ export class FfTodoListComponent implements OnInit {
         todo.descriptionLength = todo.description.length;
         todo.taskCount = taskCountPerPhase;
 
-        if (phase.length == 0)
+        if (phase.size == 0)
         {
           let _phase = todo.phase;
           this.todo_list[_phase].push(todo);
@@ -253,11 +254,11 @@ export class FfTodoListComponent implements OnInit {
           this.todo_count += todo_phase.length;
         }
   
-        if (phase.length == 0)
+        if (phase.size == 0)
         {
           console.log('Filled Todo list in all phases.');
         }
-        if (phase.length > 0)
+        if (phase.size > 0)
         {
           console.log(`Tried to fill Todo list only in phases (${phase}).`);
         }
@@ -347,7 +348,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
     this.todoServ.addTodo(todo)
     .subscribe(response => {
-      this.getTodos([todo.phase]);
+      this.getTodos(new Set([todo.phase]));
     });
   }
 
@@ -356,7 +357,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
     this.todoServ.editTodo(id, todo)
     .subscribe(_ => {
-      this.getTodos([this.oldPhase, todo.phase]);
+      this.getTodos(new Set([this.oldPhase, todo.phase]));
     });
   }
 
@@ -365,7 +366,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to remove Todo with ID (${id})...`);
     this.todoServ.removeTodo(id)
     .subscribe(_ => {
-      this.getTodos([todo.phase]);
+      this.getTodos(new Set([todo.phase]));
     });
   }
 
@@ -380,7 +381,7 @@ export class FfTodoListComponent implements OnInit {
       this.todoServ.editTodo(id, todo)
       .subscribe(_ => {
         console.log(`Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`);
-        this.getTodos([this.oldPhase, new_phase]);
+        this.getTodos(new Set([this.oldPhase, new_phase]));
       });
     }
   }
@@ -399,7 +400,7 @@ export class FfTodoListComponent implements OnInit {
     .subscribe(task => {
       this.todoServ.getTodo(this.todoId)
       .subscribe(todo => { 
-        this.getTodos([todo.phase]);
+        this.getTodos(new Set([todo.phase]));
       })
     });
   }
@@ -411,7 +412,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${tempTodoId})...`);
     this.todoServ.editTask(patchedTask)
     .subscribe(_=> {
-      this.getTodos([tempTodoId]);
+      this.getTodos(new Set([tempTodoId]));
     });
   }
 
@@ -422,7 +423,7 @@ export class FfTodoListComponent implements OnInit {
     console.log(`Trying to check Task with ID (${id}) for Todo with ID (${tempTodoId})...`);
     this.todoServ.checkTask(id)
     .subscribe(_=> {
-      this.getTodos([tempTodoId]);
+      this.getTodos(new Set([tempTodoId]));
     });
   }
 
@@ -435,7 +436,7 @@ export class FfTodoListComponent implements OnInit {
     .subscribe(_ => {
       this.todoServ.getTodo(tempTodoId)
       .subscribe(todo => { 
-        this.getTodos([todo.phase]);
+        this.getTodos(new Set([todo.phase]));
       });
     });
   }
@@ -446,7 +447,7 @@ export class FfTodoListComponent implements OnInit {
         console.log(`Successfully removed all Tasks from Todo with ID (${(todoId)})...`);
         this.todoServ.getTodo(todoId)
         .subscribe(todo => {
-          this.getTodos([todo.phase]);
+          this.getTodos(new Set([todo.phase]));
         });
     });
   }
