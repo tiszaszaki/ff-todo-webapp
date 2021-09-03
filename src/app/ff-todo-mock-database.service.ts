@@ -22,9 +22,9 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
       {todoId:2, id:8, name:'i', done:false}
     ];
     const todos : Todo[] = [
-      {id:0, name:'Sonic', description:'Fejlesztése', phase:0},
-      {id:1, name:'Álláskeresés', description:'Folyamatban', phase:1},
-      {id:2, name:'Nevem', description:'Kiíratása', phase:2}
+      {id:0, name:'Sonic', description:'Fejlesztése', phase:0, dateCreated: new Date(), dateModified: new Date()},
+      {id:1, name:'Álláskeresés', description:'Folyamatban', phase:1, dateCreated: new Date(), dateModified: new Date()},
+      {id:2, name:'Nevem', description:'Kiíratása', phase:2, dateCreated: new Date(), dateModified: new Date()}
     ];
 
     let genStr = 'FeketeJános';
@@ -32,7 +32,7 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
     for (var idx1 = 0; idx1 < genStr.length; idx1++) {
       let c1 = genStr[idx1];
       let id = this.genId(todos);
-      const todo: Todo = {id: id, name: c1, description: '', phase: 0};
+      const todo: Todo = {id: id, name: c1, description: '', phase: 0, dateCreated: new Date(), dateModified: new Date()};
       todos.push(todo);
 
       for (var idx2 = 0; idx2 <= idx1; idx2++)
