@@ -15,6 +15,7 @@ export class FfTodoTaskListComponent implements OnInit {
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
+  @Input() tasksortexec!: Boolean;
 
   @Input() readonlyTask?: Boolean = false;
   @Input() showTaskCount!: Boolean[];

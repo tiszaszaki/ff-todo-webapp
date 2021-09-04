@@ -9,11 +9,12 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
 
   @Output() tasksortfieldChange = new EventEmitter<String>();
   @Output() tasksortdirChange = new EventEmitter<Boolean>();
+  @Output() tasksortResetTrigger = new EventEmitter<void>();
 
   @Input() task_list_count!: number;
 
-  public tasksortfield!: String;
-  public tasksortdir!: Boolean;
+  @Input() tasksortfield!: String;
+  @Input() tasksortdir!: Boolean;
 
   public readonly taskSortingFields = [
     {name: '', display: '(unsorted)'},
@@ -22,15 +23,12 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
   ];
 
   constructor() {
-    this.resetTaskSorting();
+    this.tasksortfield = '';
+    this.tasksortdir = false;
   }
 
   resetTaskSorting() {
-    this.tasksortfield = '';
-    this.tasksortdir = false;
-
-    this.tasksortfieldChange.emit(this.tasksortfield);
-    this.tasksortdirChange.emit(this.tasksortdir);
+    this.tasksortResetTrigger.emit();
   }
 
   ngOnInit(): void {

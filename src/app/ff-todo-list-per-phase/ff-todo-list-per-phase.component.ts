@@ -25,9 +25,11 @@ export class FfTodoListPerPhaseComponent implements OnInit {
 
   @Input() todosortfield!: String;
   @Input() todosortdir!: Boolean;
+  @Input() todosortexec!: Boolean;
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
+  @Input() tasksortexec!: Boolean;
 
   @Input() todosearchexec!: Boolean;
   @Input() todosearchcase!: Boolean;

@@ -6,7 +6,7 @@
 <div [hidden]="!tasklist_expand_status">
     <ul class="list-group border border-primary"
             data-toggle="tooltip" data-placement="bottom" title="Task list">
-        <li class="list-group-item" *ngFor="let task of tasks | tszSort:tasksortfield:tasksortdir">
+        <li class="list-group-item" *ngFor="let task of tasks | tszSort:tasksortexec:tasksortfield:tasksortdir">
             <div class="d-flex justify-content-start">
                 <div *ngIf="!readonlyTask">
                     <button type="button" class="btn btn-primary btn-sm text-end" (click)="editTask(task)"

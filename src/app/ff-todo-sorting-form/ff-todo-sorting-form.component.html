@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-between">
             <div data-toggle="tooltip" data-placement="bottom" title="Todo sorting direction">
                 <input class="form-check-input" type="checkbox" id="todo_sorting_direction"
-                        [(ngModel)]="todosortdir" name="direction" (click)="todosortdirChange.emit(todosortdir)">
+                        [(ngModel)]="todosortdir" name="direction" (click)="todosortdirChange.emit(!todosortdir)">
                 <label for="todo_sorting_direction">Descending</label>
             </div>
             <button type="button" class="btn btn-warning" (click)="resetTodoSorting()">Reset</button>

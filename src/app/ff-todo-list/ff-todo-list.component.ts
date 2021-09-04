@@ -38,9 +38,11 @@ export class FfTodoListComponent implements OnInit {
 
   public todo_sorting_field: String[] = [];
   public todo_sorting_direction: Boolean[] = [];
+  public todo_sorting_executed: Boolean[] = [];
 
   public task_sorting_field: String[] = [];
   public task_sorting_direction: Boolean[] = [];
+  public task_sorting_executed: Boolean[] = [];
 
   public todo_searching_casesense!: Boolean;
   public todo_searching_term!: String;
@@ -125,6 +127,12 @@ export class FfTodoListComponent implements OnInit {
   }
 
   updateTodoSortingField(idx : number, fieldName: String) {
+    if (!this.todo_sorting_executed[idx])
+    {
+      this.todo_sorting_executed[idx] = true;
+      console.log('Todo sorting turned ON');
+    }
+
     this.todo_sorting_field[idx] = fieldName;
     console.log(`updateTodoSortingField(${idx}): "${this.todo_sorting_field[idx]}"`);
 
@@ -136,16 +144,34 @@ export class FfTodoListComponent implements OnInit {
   }
 
   updateTodoSortingDirection(idx : number, dir: Boolean) {
+    if (!this.todo_sorting_executed[idx])
+    {
+      this.todo_sorting_executed[idx] = true;
+      console.log('Todo sorting turned ON');
+    }
+
     this.todo_sorting_direction[idx] = dir;
     console.log(`updateTodoSortingDirection(${idx}): ${dir}`);
   }
 
   updateTaskSortingField(idx : number, fieldName: String) {
+    if (!this.task_sorting_executed[idx])
+    {
+      this.task_sorting_executed[idx] = true;
+      console.log('Task sorting turned ON');
+    }
+
     this.task_sorting_field[idx] = fieldName;
     console.log(`updateTaskSortingField(${idx}): "${fieldName}"`);
   }
 
   updateTaskSortingDirection(idx : number, dir: Boolean) {
+    if (!this.task_sorting_executed[idx])
+    {
+      this.task_sorting_executed[idx] = true;
+      console.log('Task sorting turned ON');
+    }
+
     this.task_sorting_direction[idx] = dir;
     console.log(`updateTaskSortingDirection(${idx}): ${dir}`);
   }
@@ -153,11 +179,23 @@ export class FfTodoListComponent implements OnInit {
   resetTodoSorting(idx : number) {
     this.todo_sorting_field[idx] = '';
     this.todo_sorting_direction[idx] = false;
+
+    if (this.todo_sorting_executed[idx])
+    {
+      this.todo_sorting_executed[idx] = false;
+      console.log('Todo sorting turned OFF');
+    }
   }
 
   resetTaskSorting(idx : number) {
     this.task_sorting_field[idx] = '';
     this.task_sorting_direction[idx] = false;
+
+    if (this.task_sorting_executed[idx])
+    {
+      this.task_sorting_executed[idx] = false;
+      console.log('Task sorting turned OFF');
+    }
   }
 
   private checkIfNoFormShown() {
@@ -185,18 +223,26 @@ export class FfTodoListComponent implements OnInit {
       if (phase.size == 0) {
         this.todo_list = [];
         this.task_count = [];
-      }
 
-      if (phase.size == 0) {
+        this.todo_sorting_field = [];
+        this.todo_sorting_direction = [];
+        this.todo_sorting_executed = [];
+
+        this.task_sorting_field = [];
+        this.task_sorting_direction = [];
+        this.task_sorting_executed = [];
+
         for (let todo_phase of this.phase_labels) {
           this.todo_list.push([]);
           this.task_count.push(0);
-    
+
           this.todo_sorting_field.push('');
           this.todo_sorting_direction.push(false);
-    
+          this.todo_sorting_executed.push(false);
+
           this.task_sorting_field.push('');
           this.task_sorting_direction.push(false);
+          this.task_sorting_executed.push(false);
 
           this.showDescriptionLength.push([false,false]);
           this.showDateCreated.push([false,false]);
@@ -207,19 +253,21 @@ export class FfTodoListComponent implements OnInit {
         for (let _phase of phase) {
           if ((_phase >= 0) && (_phase < this.phaseNum)) {
             delete this.todo_list[_phase];
-            
+
             this.todo_list[_phase] = [];
             this.task_count[_phase] = 0;
 
             this.todo_sorting_field[_phase] = '';
             this.todo_sorting_direction[_phase] = false;
-      
+            this.todo_sorting_executed[_phase] = false;
+
             this.task_sorting_field[_phase] = '';
             this.task_sorting_direction[_phase] = false;
+            this.task_sorting_executed[_phase] = false;
           }
         }
       }
-  
+
       for (let todo_idx in todo_records)
       {
         let todo=todo_records[todo_idx];
@@ -260,7 +308,10 @@ export class FfTodoListComponent implements OnInit {
         }
         if (phase.size > 0)
         {
-          console.log(`Tried to fill Todo list only in phases (${phase}).`);
+          let phase_arr = [];
+          for (let _phase of phase) { phase_arr.push(_phase); }
+          phase_arr.sort();
+          console.log(`Tried to fill Todo list only in phases (${phase_arr}).`);
         }
       }
     });

@@ -9,11 +9,12 @@ export class FfTodoSortingFormComponent implements OnInit {
 
   @Output() todosortfieldChange = new EventEmitter<String>();
   @Output() todosortdirChange = new EventEmitter<Boolean>();
+  @Output() todosortResetTrigger = new EventEmitter<void>();
 
   @Input() todo_list_count!: number;
 
-  public todosortfield!: String;
-  public todosortdir!: Boolean;
+  @Input() todosortfield!: String;
+  @Input() todosortdir!: Boolean;
 
   public readonly todoSortingFields = [
     {name: '', display: '(unsorted)'},
@@ -26,15 +27,12 @@ export class FfTodoSortingFormComponent implements OnInit {
   ];
 
   constructor() {
-    this.resetTodoSorting();
+    this.todosortfield = '';
+    this.todosortdir = false;
   }
 
   resetTodoSorting() {
-    this.todosortfield = '';
-    this.todosortdir = false;
-
-    this.todosortfieldChange.emit(this.todosortfield);
-    this.todosortdirChange.emit(this.todosortdir);
+    this.todosortResetTrigger.emit();
   }
 
   ngOnInit(): void {

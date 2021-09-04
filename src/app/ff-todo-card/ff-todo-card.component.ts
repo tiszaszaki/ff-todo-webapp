@@ -18,6 +18,7 @@ export class FfTodoCardComponent implements OnInit {
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
+  @Input() tasksortexec!: Boolean;
 
   @Input() displayDateFormat!: string;
 

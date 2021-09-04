@@ -63,12 +63,16 @@
 			<tr class="row border border-2 border-secondary" *ngIf="todo_count">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"
+							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							(todosortfieldChange)="updateTodoSortingField(idx, $event)"
-							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"></app-ff-todo-sorting-form>
+							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"
+							(todosortResetTrigger)="resetTodoSorting(idx)"></app-ff-todo-sorting-form>
 
 					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"
+							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
 							(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
-							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"></app-ff-todo-task-sorting-form>
+							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"
+							(tasksortResetTrigger)="resetTaskSorting(idx)"></app-ff-todo-task-sorting-form>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary">
@@ -76,8 +80,9 @@
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum" [readonlyTodo]="readonlyTodo"
 							[readonlyTask]="readonlyTask" [displayDateFormat]="displayDateFormat" [showDescriptionLength]="showDescriptionLength[idx]"
 							[showDateCreated]="showDateCreated[idx]" [showTaskCount]="showTaskCount[idx]"
-							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
-							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
+							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"
+							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
+							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]"
 							[todosearchexec]="searchSubmitted" [todosearchcase]="todo_searching_casesense"
 							[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
 							(editTodoEvent)="prepareEditTodoForm($event)" (removeTodoEvent)="prepareRemoveTodoForm($event)"
