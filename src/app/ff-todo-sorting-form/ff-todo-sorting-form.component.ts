@@ -18,6 +18,7 @@ export class FfTodoSortingFormComponent implements OnInit {
 
   public readonly todoSortingFields = [
     {name: '', display: '(unsorted)'},
+    {name: 'id', display: 'Todo ID'},
     {name: 'name', display: 'Todo name'},
     {name: 'description', display: 'Todo description'},
     {name: 'descriptionLength', display: 'Todo description length'},

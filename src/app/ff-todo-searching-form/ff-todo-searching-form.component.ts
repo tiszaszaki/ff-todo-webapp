@@ -24,6 +24,7 @@ export class FfTodoSearchingFormComponent implements OnInit {
 
   public readonly todoSearchingFields = [
     {name: '', display: '(not searching)'},
+    {name: 'id', display: 'Todo ID'},
     {name: 'name', display: 'Todo name'},
     {name: 'description', display: 'Todo description'},
     {name: 'descriptionLength', display: 'Todo description length'},
@@ -49,7 +50,7 @@ export class FfTodoSearchingFormComponent implements OnInit {
     this.todosearchtermChange.emit(this.todosearchterm);
     this.todosearchfieldChange.emit(this.todosearchfield);
 
-    //this.updateSubmitStateEvent.emit(state);
+    this.updateSubmitStateEvent.emit(state);
   }
 
   private resetTodoSearching() {
