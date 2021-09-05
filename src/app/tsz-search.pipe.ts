@@ -8,7 +8,8 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
   transform(array: any, executed: Boolean, caseSense: Boolean, term: String, field: String): any[] {
     let result: any[];
 
-    if (executed && (field.trim() != ''))
+    //if (executed)
+    if (field.trim() != '')
     {
       let temp: any[];
 
@@ -48,6 +49,8 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
           result.push(elem);
         }
       }
+
+      console.log(`Filtered ${result.length} Todo(s) with TiszaSzakiSearchPipe(${(caseSense ? 'CASE_SENSITIVE' : 'CASE_INSENSITIVE')}, ${term}, ${field})`);
     }
     else
     {

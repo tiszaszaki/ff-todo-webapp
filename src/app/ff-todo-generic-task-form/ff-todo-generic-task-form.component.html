@@ -5,9 +5,9 @@
             <form #taskForm="ngForm">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" required
-                            [(ngModel)]="model.name" name="name"
-                            #name="ngModel" tszfocus>
+                    <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name"
+                            (keyup.enter)="submitForm(true)"
+                            #name="ngModel" required tszfocus>
                     <div [hidden]="name.valid || name.pristine"
                         class="alert alert-danger">
                         Name is required
@@ -16,13 +16,11 @@
 
                 <div class="form-group">
                     <label for="name">Checked</label>
-                    <input type="checkbox" class="form-check-input" id="done"
-                            [(ngModel)]="model.done" name="done"
-                            #name="ngModel">
+                    <input type="checkbox" class="form-check-input" id="done" [(ngModel)]="model.done" name="done" #name="ngModel">
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-primary" (click)="submitForm()" [disabled]="!taskForm.form.valid">Submit</button>
+                    <button type="button" class="btn btn-primary" (click)="submitForm(true)" [disabled]="!taskForm.form.valid">Submit</button>
                     <button type="button" class="btn btn-secondary" (click)="dismissForm()">Close</button>
                 </div>
             </form>
@@ -31,7 +29,7 @@
             <div>{{ confirmMessage }}</div>
             
             <div>
-                <button type="button" class="btn btn-danger" (click)="submitForm()">{{ confirmButtonCaption }}</button>
+                <button type="button" class="btn btn-danger" (click)="submitForm(true)">{{ confirmButtonCaption }}</button>
                 <button type="button" class="btn btn-secondary" (click)="dismissForm()">Cancel</button>
             </div>
         </div>

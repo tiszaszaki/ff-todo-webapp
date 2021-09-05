@@ -9,7 +9,9 @@ export class TiszaSzakiSortPipe implements PipeTransform {
     if (!Array.isArray(array)) {
       return [array];
     }
-    if (executed && field && (reversed !== undefined))
+
+    //if (executed)
+    if (field && (reversed !== undefined))
     if (field != "")
     {
       let result: any[] = [];
@@ -34,14 +36,12 @@ export class TiszaSzakiSortPipe implements PipeTransform {
           }
         }
 
-        //console.log(`Compared ${JSON.stringify(a2)} with ${JSON.stringify(b2)}: ${res}`);
-
         res *= (reversed ? -1 : 1);
         return res;
       });
 
-      console.log(array);
-      console.log(result);
+      console.log(`Sorting with TiszaSzakiSortPipe(${field},${(reversed ? 'DESCENDING' : 'ASCENDING')})...`);
+      console.log({sorting_input: array, sorting_output: result});
 
       return result;
     }

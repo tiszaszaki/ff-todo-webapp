@@ -42,7 +42,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     this.model = new Todo();
     this.model.name = '';
     this.model.description = '';
-    this.model.phase = NaN;
+    this.model.phase = 0;
   }
 
   public updateDeadline() {
@@ -134,19 +134,22 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     this.resetModel();
   }
 
-  submitForm() {
-    if (this.isOperatorIncluded(this.ADD,this.EDIT,this.REMOVE))
+  submitForm(condition: Boolean) {
+    if (condition)
     {
-      this.submitDataEvent.emit(this.model);
+      if (this.isOperatorIncluded(this.ADD,this.EDIT,this.REMOVE))
+      {
+        this.submitDataEvent.emit(this.model);
+      }
+      if (this.isOperatorIncluded())
+      {
+        this.submitIdEvent.emit(this.model.id);
+      }
+      if (this.isOperatorIncluded(this.REMOVE_ALL))
+      {
+        this.submitEvent.emit();
+      }
+      this.dismissForm();
     }
-    if (this.isOperatorIncluded())
-    {
-      this.submitIdEvent.emit(this.model.id);
-    }
-    if (this.isOperatorIncluded(this.REMOVE_ALL))
-    {
-      this.submitEvent.emit();
-    }
-    this.dismissForm();
   }
 }

@@ -111,19 +111,22 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
     this.resetModel();
   }
 
-  submitForm() {
-    if (this.isOperatorIncluded(this.ADD,this.EDIT,this.CHECK,this.REMOVE))
+  submitForm(condition: Boolean) {
+    if (condition)
     {
-      this.submitDataEvent.emit(this.model);
+      if (this.isOperatorIncluded(this.ADD,this.EDIT,this.CHECK,this.REMOVE))
+      {
+        this.submitDataEvent.emit(this.model);
+      }
+      if (this.isOperatorIncluded(this.REMOVE_ALL))
+      {
+        this.submitIdEvent.emit(this.todoId);
+      }
+      if (this.isOperatorIncluded())
+      {
+        this.submitEvent.emit();
+      }
+      this.dismissForm();
     }
-    if (this.isOperatorIncluded(this.REMOVE_ALL))
-    {
-      this.submitIdEvent.emit(this.todoId);
-    }
-    if (this.isOperatorIncluded())
-    {
-      this.submitEvent.emit();
-    }
-    this.dismissForm();
   }
 }

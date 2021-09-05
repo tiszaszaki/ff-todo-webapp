@@ -49,7 +49,7 @@ export class FfTodoSearchingFormComponent implements OnInit {
     this.todosearchtermChange.emit(this.todosearchterm);
     this.todosearchfieldChange.emit(this.todosearchfield);
 
-    this.updateSubmitStateEvent.emit(state);
+    //this.updateSubmitStateEvent.emit(state);
   }
 
   private resetTodoSearching() {
