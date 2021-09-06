@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { FfTodoGenericTodoFormComponent } from '../ff-todo-generic-todo-form/ff-todo-generic-todo-form.component';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
@@ -22,6 +24,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   @Input() prepareRemovingAllTodosEvent!: Observable<void>;
   @Input() initTodoListEvent!: Observable<void>;
   @Input() restoreTodoListEvent!: Observable<void>;
+
+  @ViewChild('FfTodoGenericTodoFormComponent', { static: false }) private genericTodoForm!: TemplateRef<FfTodoGenericTodoFormComponent>;
 
   private prepareAddTodoFormListener!: Subscription;
   private prepareRemovingAllTodosListener!: Subscription;
@@ -93,7 +97,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   public readonly LEFT = ShiftDirection.LEFT;
   public readonly RIGHT = ShiftDirection.RIGHT;
 
-  constructor(private todoServ: FfTodoRealRequestService) {
+  constructor(private todoServ: FfTodoRealRequestService, private modalService: NgbModal) {
     this.initTodoList([]);
   }
 

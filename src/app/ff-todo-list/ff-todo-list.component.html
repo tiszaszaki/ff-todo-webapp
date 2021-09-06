@@ -1,4 +1,4 @@
-<div class="content" role="main">
+<div class="container" role="main">
 	<div>
 		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
@@ -14,6 +14,10 @@
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
 				(submitEvent)="removeAllTodos()" (shownChange)="removeAllTodosFormShown = $event"></app-ff-todo-generic-todo-form>
+		<!-- >
+		<app-ff-todo-generic-todo-form [phase_labels]="phase_labels" [descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat">
+		</app-ff-todo-generic-todo-form>
+		<-->
 	</div>
 	<div>
 		<app-ff-todo-generic-task-form [mode]="ADD_TASK" [todoId]="todoId" [(shown)]="addTaskFormShown"
@@ -28,6 +32,9 @@
 		<app-ff-todo-generic-task-form [mode]="REMOVE_ALL_TASKS" [todoId]="todoId" [(shown)]="removeAllTasksFormShown"
 				(submitIdEvent)="removeAllTasks($event)" (shownChange)="removeAllTasksFormShown = $event">
 		</app-ff-todo-generic-task-form>
+		<!-- >
+		<app-ff-todo-generic-task-form [todoId]="todoId"></app-ff-todo-generic-task-form>
+		<-->
 	</div>
 	<app-ff-todo-searching-form [todo_list_count]="todo_count"
 			[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"

@@ -1,7 +1,8 @@
-<ng-template let-modal id="{{ formId }}">
+<div class="container border border-secondary rounded" *ngIf="shown">
+<!-- ><ng-template let-modal id="{{ formId }}"><-->
     <div class="modal-header">
         <h1 class="modal-title" id="{{ formId }}-title">{{ formTitle }}</h1>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <button type="button" class="close" aria-label="Close" (click)="dismissForm()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -12,7 +13,7 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name"
-                            (keyup.enter)="modal.close('Saved')" #name="ngModel" required tszfocus>
+                            (keyup.enter)="submitForm()" #name="ngModel" required tszfocus>
                     <div [hidden]="name.valid || name.pristine"
                         class="alert alert-danger">
                         Name is required
@@ -53,16 +54,17 @@
 
     <div class="modal-footer">
         <div *ngIf="isOperatorIncluded(ADD,EDIT)">
-            <button type="button" class="btn btn-primary" (click)="modal.close('Saved')">Submit</button>
-            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('')">Close</button>
+            <button type="button" class="btn btn-primary" (click)="submitForm()">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="dismissForm()">Close</button>
         </div>
         <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">
-            <button type="button" class="btn btn-danger" (click)="modal.close('Confirmed')">{{ confirmButtonCaption }}</button>
-            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('')">Cancel</button>
+            <button type="button" class="btn btn-danger" (click)="submitForm()">{{ confirmButtonCaption }}</button>
+            <button type="button" class="btn btn-secondary" (click)="dismissForm()">Cancel</button>
         </div>
     </div>
 
     <div *ngIf="!isOperatorIncluded(ADD,EDIT,REMOVE,REMOVE_ALL)">
         <app-ff-todo-form-invalid></app-ff-todo-form-invalid>
     </div>
-</ng-template>
+<!-- ></ng-template><-->
+</div>

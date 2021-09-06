@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
 
@@ -42,7 +41,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   public readonly REMOVE = TodoOperator.REMOVE;
   public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
-  constructor(private modalService: NgbModal) {
+  constructor() {
   }
 
   private resetModel() {
@@ -121,17 +120,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     }
   }
 
-  showModal(content: String) {
-    if (this.shown)
-    {
-      this.modalService.open(content, {ariaLabelledBy: `${this.formId}-title`}).result.then((result) => {
-        this.submitForm(true);
-      }, (reason) => {
-        this.dismissForm();
-      });
-    }
-  }
-
   ngOnInit(): void {
     this.modeStr = TodoOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}-todo-form`;
@@ -143,19 +131,19 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.showModal(this.formId);
     this.updateModel();
     this.updateDisplay();
   }
 
   dismissForm() {
+    this.resetModel();
+
     this.shown = !this.shown;
     this.shownChange.emit(this.shown);
-    this.resetModel();
   }
 
-  submitForm(condition: Boolean) {
-    if (condition)
+  submitForm(condition?: Boolean) {
+    if ((condition === undefined) || condition)
     {
       if (this.isOperatorIncluded(this.ADD,this.EDIT,this.REMOVE))
       {
