@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';

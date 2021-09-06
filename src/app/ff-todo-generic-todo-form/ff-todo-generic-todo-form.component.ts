@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
 
@@ -27,6 +28,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
 
   public model!: Todo;
 
+  public modeStr!: String;
+  public formId!: String;
+
   private deadlineOld!: Date;
 
   public formTitle!: String;
@@ -37,6 +41,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   public readonly EDIT = TodoOperator.EDIT;
   public readonly REMOVE = TodoOperator.REMOVE;
   public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
+
+  constructor(private modalService: NgbModal) {
+  }
 
   private resetModel() {
     this.model = new Todo();
@@ -106,16 +113,28 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
         this.confirmMessage = 'Are you sure to remove all Todos from the board?';
         this.confirmButtonCaption = 'Remove All';
       } break;
-      default: { 
+      default: {
         this.formTitle = '';
+        this.confirmMessage = '';
+        this.confirmButtonCaption = '';
       } break;
     }
   }
 
-  constructor() {
+  showModal(content: String) {
+    if (this.shown)
+    {
+      this.modalService.open(content, {ariaLabelledBy: `${this.formId}-title`}).result.then((result) => {
+        this.submitForm(true);
+      }, (reason) => {
+        this.dismissForm();
+      });
+    }
   }
 
   ngOnInit(): void {
+    this.modeStr = TodoOperator[this.mode].toLowerCase();
+    this.formId = `${this.modeStr}-todo-form`;
     this.resetModel();
   }
 
@@ -124,6 +143,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.showModal(this.formId);
     this.updateModel();
     this.updateDisplay();
   }

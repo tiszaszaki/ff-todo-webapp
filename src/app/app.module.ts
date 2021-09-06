@@ -7,9 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
 
-// MDB Angular Free
-//import { ModalModule, TooltipModule, PopoverModule, ButtonsModule } from 'angular-bootstrap-md';
-
 import { AppComponent } from './app.component';
 import { FfTodoListComponent } from './ff-todo-list/ff-todo-list.component';
 import { FfTodoCardComponent } from './ff-todo-card/ff-todo-card.component';
@@ -28,7 +25,8 @@ import { FfTodoFormInvalidComponent } from './ff-todo-form-invalid/ff-todo-form-
 import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-todo-generic-task-form.component';
 import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-searching-form.component';
 import { TiszaSzakiSearchPipe } from './tsz-search.pipe';
-import { TiszaSzakiFocusDirective } from './tszfocus.directive'
+import { TiszaSzakiFocusDirective } from './tszfocus.directive';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 @NgModule({
   declarations: [
@@ -53,8 +51,7 @@ import { TiszaSzakiFocusDirective } from './tszfocus.directive'
     TiszaSzakiFocusDirective
   ],
   imports: [
-    //ModalModule, TooltipModule, PopoverModule, ButtonsModule,
-    BrowserModule, FormsModule, HttpClientModule
+    BrowserModule, FormsModule, HttpClientModule, NgbModule
     //HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: 'ff-todo/' })
   ],
   providers: [],

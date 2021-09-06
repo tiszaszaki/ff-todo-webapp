@@ -24,6 +24,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
 
   public model!: Task;
 
+  public modeStr!: String;
+
   public formTitle!: String;
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
@@ -85,6 +87,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
       } break;
       default: {
         this.formTitle = '';
+        this.confirmMessage = '';
+        this.confirmButtonCaption = '';
       } break;
     }
   }
@@ -93,6 +97,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.modeStr = TaskOperator[this.mode].toLowerCase();
     this.resetModel();
   }
 

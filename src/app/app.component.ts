@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
-import { FfTodoListComponent } from './ff-todo-list/ff-todo-list.component';
 
 @Component({
   selector: 'app-root',
