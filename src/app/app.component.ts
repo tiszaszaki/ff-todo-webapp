@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
+import { TiszaSzakiAlert } from './tsz-alert';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,9 @@ import { Subject } from 'rxjs';
 export class AppComponent {
   public title = 'ff-todo-webapp';
 
+  public alerts: TiszaSzakiAlert[] = [];
+  public maxAlerts = 5;
+
   public readonlyTodo!: Boolean;
   public todo_count!: number;
   public enableRestoreTodos!: Boolean;
@@ -17,6 +21,15 @@ export class AppComponent {
   public prepareRemovingAllTodosTrigger = new Subject<void>();
   public initTodoListTrigger = new Subject<void>();
   public restoreTodoListTrigger = new Subject<void>();
+
+  addAlertMessage(msg: TiszaSzakiAlert) {
+    if (this.alerts.length == this.maxAlerts)
+    {
+      this.alerts.shift();
+    }
+
+    this.alerts.push(msg);
+  }
 
   prepareAddTodoForm() {
     this.prepareAddTodoFormTrigger.next();

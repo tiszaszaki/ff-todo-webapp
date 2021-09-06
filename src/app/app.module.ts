@@ -26,7 +26,8 @@ import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-t
 import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-searching-form.component';
 import { TiszaSzakiSearchPipe } from './tsz-search.pipe';
 import { TiszaSzakiFocusDirective } from './tszfocus.directive';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FfTodoAlertListComponent } from './ff-todo-alert-list/ff-todo-alert-list.component'
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
     FfTodoGenericTaskFormComponent,
     FfTodoSearchingFormComponent,
     TiszaSzakiSearchPipe,
-    TiszaSzakiFocusDirective
+    TiszaSzakiFocusDirective,
+    FfTodoAlertListComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule

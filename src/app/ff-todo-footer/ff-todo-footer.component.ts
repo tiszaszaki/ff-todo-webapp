@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TiszaSzakiAlert } from '../tsz-alert';
 
 @Component({
   selector: 'app-ff-todo-footer',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ff-todo-footer.component.css', '../app.component.css']
 })
 export class FfTodoFooterComponent implements OnInit {
+
+  @Input() alerts!: TiszaSzakiAlert[];
 
   constructor() { }
 
