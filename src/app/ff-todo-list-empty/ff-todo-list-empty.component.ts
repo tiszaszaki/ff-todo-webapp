@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ff-todo-list-empty',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ff-todo-list-empty.component.css']
 })
 export class FfTodoListEmptyComponent implements OnInit {
+
+  @Input() todoQuerySuccess!: Boolean;
 
   constructor() { }
 

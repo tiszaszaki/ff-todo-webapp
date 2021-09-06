@@ -42,6 +42,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   public removeTaskFormShown: Boolean = false;
   public removeAllTasksFormShown: Boolean = false;
 
+  public todoQuerySuccess!: Boolean;
+
   public todo_count!: number;
   public todo_list!: Todo[][];
   public task_count!: number[];
@@ -240,39 +242,45 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
 
     todo_results = this.todoServ.getTodos();
 
+    this.todo_count = 0;
+
+    this.todoQuerySuccess = false;
+
+    if (phase.size == 0) {
+      this.todo_list = [];
+      this.task_count = [];
+
+      this.todo_sorting_field = [];
+      this.todo_sorting_direction = [];
+      this.todo_sorting_executed = [];
+
+      this.task_sorting_field = [];
+      this.task_sorting_direction = [];
+      this.task_sorting_executed = [];
+
+      for (let todo_phase of this.phase_labels) {
+        this.todo_list.push([]);
+        this.task_count.push(0);
+
+        this.todo_sorting_field.push('');
+        this.todo_sorting_direction.push(false);
+        this.todo_sorting_executed.push(false);
+
+        this.task_sorting_field.push('');
+        this.task_sorting_direction.push(false);
+        this.task_sorting_executed.push(false);
+
+        this.showDescriptionLength.push([false,false]);
+        this.showDateCreated.push([false,false]);
+        this.showTaskCount.push([false,false]);
+      }
+    }
+
     todo_results.subscribe(records => {
       let todo_records = records;
-      this.todo_count = 0;
 
-      if (phase.size == 0) {
-        this.todo_list = [];
-        this.task_count = [];
+      this.todoQuerySuccess = true;
 
-        this.todo_sorting_field = [];
-        this.todo_sorting_direction = [];
-        this.todo_sorting_executed = [];
-
-        this.task_sorting_field = [];
-        this.task_sorting_direction = [];
-        this.task_sorting_executed = [];
-
-        for (let todo_phase of this.phase_labels) {
-          this.todo_list.push([]);
-          this.task_count.push(0);
-
-          this.todo_sorting_field.push('');
-          this.todo_sorting_direction.push(false);
-          this.todo_sorting_executed.push(false);
-
-          this.task_sorting_field.push('');
-          this.task_sorting_direction.push(false);
-          this.task_sorting_executed.push(false);
-
-          this.showDescriptionLength.push([false,false]);
-          this.showDateCreated.push([false,false]);
-          this.showTaskCount.push([false,false]);
-        }
-      }
       if (phase.size > 0) {
         for (let _phase of phase) {
           if ((_phase >= 0) && (_phase < this.phaseNum)) {
