@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
@@ -13,7 +13,21 @@ import { TodoOperator } from '../todo-operator';
   templateUrl: './ff-todo-list.component.html',
   styleUrls: ['./ff-todo-list.component.css']
 })
-export class FfTodoListComponent implements OnInit {
+export class FfTodoListComponent implements OnInit, OnDestroy {
+
+  @Output() updateReadonlyTodo = new EventEmitter<Boolean>();
+  @Output() updateTodoCount = new EventEmitter<number>();
+  @Output() toggleRestoreTodos = new EventEmitter<Boolean>();
+
+  @Input() prepareAddTodoFormEvent!: Observable<void>;
+  @Input() prepareRemovingAllTodosEvent!: Observable<void>;
+  @Input() initTodoListEvent!: Observable<void>;
+  @Input() restoreTodoListEvent!: Observable<void>;
+
+  private prepareAddTodoFormListener!: Subscription;
+  private prepareRemovingAllTodosListener!: Subscription;
+  private initTodoListListener!: Subscription;
+  private restoreTodoListListener!: Subscription;
 
   public addTodoFormShown: Boolean = false;
   public editTodoFormShown: Boolean = false;
@@ -61,6 +75,8 @@ export class FfTodoListComponent implements OnInit {
   public readonlyTodo = false;
   public readonlyTask = false;
 
+  public enabledRestoreTodos = false;
+
   public showDescriptionLength: Boolean[][] = [];
   public showTaskCount: Boolean[][] = [];
   public showDateCreated: Boolean[][] = [];
@@ -82,13 +98,18 @@ export class FfTodoListComponent implements OnInit {
     this.initTodoList([]);
   }
 
-  initTodoList(phase_list: number[]) {
+  initTodoList(phase_list?: number[]) {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
     this.todo_searching_casesense = false;
     this.todo_searching_term = '';
     this.todo_searching_field = '';
+
+    if (!phase_list)
+    {
+      phase_list = [];
+    }
 
     this.getTodos(new Set(phase_list));
   }
@@ -302,6 +323,8 @@ export class FfTodoListComponent implements OnInit {
           this.todo_count += todo_phase.length;
         }
   
+        this.updateTodoCount.emit(this.todo_count);
+
         if (phase.size == 0)
         {
           console.log('Filled Todo list in all phases.');
@@ -504,6 +527,20 @@ export class FfTodoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.updateReadonlyTodo.emit(this.readonlyTodo);
+    this.toggleRestoreTodos.emit(this.enabledRestoreTodos);
+
+    this.prepareAddTodoFormListener = this.prepareAddTodoFormEvent.subscribe(() => this.prepareAddTodoForm());
+    this.prepareRemovingAllTodosListener = this.prepareRemovingAllTodosEvent.subscribe(() => this.prepareRemovingAllTodos());
+    this.initTodoListListener = this.initTodoListEvent.subscribe(() => this.initTodoList());
+    this.restoreTodoListListener = this.restoreTodoListEvent.subscribe(() => this.restoreTodoList());
+  }
+
+  ngOnDestroy(): void {
+    this.prepareAddTodoFormListener.unsubscribe();
+    this.prepareRemovingAllTodosListener.unsubscribe();
+    this.initTodoListListener.unsubscribe();
+    this.restoreTodoListListener.unsubscribe();
   }
 
 }
