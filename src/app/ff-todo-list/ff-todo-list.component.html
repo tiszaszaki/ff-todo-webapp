@@ -45,9 +45,12 @@
 		<-->
 	</div>
 	<app-ff-todo-searching-form [todo_list_count]="todo_count"
+			[todosearchcase]="todo_searching_casesense" [todosearchhighlight]="todo_searching_highlight"
 			[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
-			(todosearchcaseChange)="updateTodoSearchingCaseSense($event)" (todosearchtermChange)="updateTodoSearchingTerm($event)"
-			(todosearchfieldChange)="updateTodoSearchingField($event)" (updateSubmitStateEvent)="updateSearchSubmit($event)">
+			(todosearchcaseChange)="updateTodoSearchingCaseSense($event)"
+			(todosearchhighlightChange)="updateTodoSearchingHighlightMatches($event)"
+			(todosearchtermChange)="updateTodoSearchingTerm($event)" (todosearchfieldChange)="updateTodoSearchingField($event)"
+			(updateSubmitStateEvent)="updateSearchSubmit($event)">
 	</app-ff-todo-searching-form>
 	<table class="table mt-3">
 		<tbody>
@@ -64,11 +67,13 @@
 							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"
 							(todosortResetTrigger)="resetTodoSorting(idx)"></app-ff-todo-sorting-form>
 
-					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"
-							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
-							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"
-							(tasksortResetTrigger)="resetTaskSorting(idx)"></app-ff-todo-task-sorting-form>
+					<div class="mt-2">
+						<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"
+								[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
+								(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
+								(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"
+								(tasksortResetTrigger)="resetTaskSorting(idx)"></app-ff-todo-task-sorting-form>
+					</div>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary">
@@ -81,6 +86,7 @@
 							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
 							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]"
 							[todosearchexec]="searchSubmitted" [todosearchcase]="todo_searching_casesense"
+							[todosearchhighlight]="todo_searching_highlight"
 							[todosearchterm]="todo_searching_term" [todosearchfield]="todo_searching_field"
 							(editTodoEvent)="prepareEditTodoForm($event)" (removeTodoEvent)="prepareRemoveTodoForm($event)"
 							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"

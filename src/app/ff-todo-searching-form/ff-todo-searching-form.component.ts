@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class FfTodoSearchingFormComponent implements OnInit {
 
   @Output() todosearchcaseChange = new EventEmitter<Boolean>();
+  @Output() todosearchhighlightChange = new EventEmitter<Boolean>();
   @Output() todosearchtermChange = new EventEmitter<String>();
   @Output() todosearchfieldChange = new EventEmitter<String>();
 
@@ -16,6 +17,7 @@ export class FfTodoSearchingFormComponent implements OnInit {
   @Input() todo_list_count!: number;
 
   @Input() todosearchcase!: Boolean;
+  @Input() todosearchhighlight!: Boolean;
 
   @Input() todosearchterm!: String;
   @Input() todosearchfield!: String;
@@ -47,6 +49,8 @@ export class FfTodoSearchingFormComponent implements OnInit {
     }
 
     this.todosearchcaseChange.emit(this.todosearchcase);
+    this.todosearchhighlightChange.emit(this.todosearchhighlight);
+
     this.todosearchtermChange.emit(this.todosearchterm);
     this.todosearchfieldChange.emit(this.todosearchfield);
 
@@ -55,6 +59,7 @@ export class FfTodoSearchingFormComponent implements OnInit {
 
   private resetTodoSearching() {
     this.todosearchcase = false;
+    this.todosearchhighlight = false;
     this.todosearchterm = '';
     this.todosearchfield = '';
   }

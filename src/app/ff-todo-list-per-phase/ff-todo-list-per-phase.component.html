@@ -1,5 +1,5 @@
 <div *ngIf="content.length">
-    <div *ngFor="let todo of content | tszSort:todosortexec:todosortfield:todosortdir | tszSearch:todosearchexec:todosearchcase:todosearchterm:todosearchfield">
+    <div *ngFor="let todo of content | tszSort:todosortexec:todosortfield:todosortdir | tszSearch:todosearchexec:todosearchcase:todosearchterm:todosearchfield:todosearchhighlight">
         <app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
                 [showDescriptionLength]="showDescriptionLength" [showDateCreated]="showDateCreated" [showTaskCount]="showTaskCount"
                 [tasksortexec]="tasksortexec" [tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [displayDateFormat]="displayDateFormat"

@@ -73,6 +73,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   public task_sorting_executed: Boolean[] = [];
 
   public todo_searching_casesense!: Boolean;
+  public todo_searching_highlight!: Boolean;
   public todo_searching_term!: String;
   public todo_searching_field!: String;
 
@@ -117,6 +118,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
     this.descriptionMaxLength = 1024;
 
     this.todo_searching_casesense = false;
+    this.todo_searching_highlight = false;
     this.todo_searching_term = '';
     this.todo_searching_field = '';
 
@@ -145,6 +147,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   updateTodoSearchingCaseSense(casesense: Boolean) {
     this.todo_searching_casesense = casesense;
     console.log(`updateTodoSearchingCaseSense: "${casesense}"`);
+  }
+
+  updateTodoSearchingHighlightMatches(highlight: Boolean) {
+    this.todo_searching_highlight = highlight;
+    console.log(`updateTodoSearchingHighlightMatches: "${highlight}"`);
   }
 
   updateTodoSearchingTerm(term: String) {

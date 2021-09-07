@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TiszaSzakiSearchPipe implements PipeTransform {
 
-  transform(array: any, executed: Boolean, caseSense: Boolean, term: String, field: String): any[] {
+  transform(array: any, executed: Boolean, caseSense: Boolean, term: String, field: String, highlight: Boolean): any[] {
     let result: any[];
 
     //if (executed)
@@ -40,12 +40,22 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
 
         if (!caseSense)
         {
-          leftval = leftval.toLowerCase();
-          rightval = rightval.toLowerCase();
+          leftval = leftval.toUpperCase();
+          rightval = rightval.toUpperCase();
         }
 
         if (leftval.search(rightval as string) >= 0)
         {
+          if (highlight)
+          {
+            const re = RegExp(`${rightval}`, 'g')
+            const match = leftval.match(re);
+            const res = `(${match[0]})`;
+
+            leftval = leftval.replace(re, res);
+            elem[field as string] = leftval;
+          }
+
           result.push(elem);
         }
       }
