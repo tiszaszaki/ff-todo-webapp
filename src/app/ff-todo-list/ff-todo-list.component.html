@@ -17,11 +17,8 @@
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
 				[preparingFormEvent]="prepareRemoveAllTodosFormTrigger.asObservable()"
-				(submitEvent)="removeAllTodos()" (shownChange)="removeAllTodosFormShown = $event"></app-ff-todo-generic-todo-form>
-		<!-- >
-		<app-ff-todo-generic-todo-form [phase_labels]="phase_labels" [descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat">
+				(submitEvent)="removeAllTodos()" (shownChange)="removeAllTodosFormShown = $event">
 		</app-ff-todo-generic-todo-form>
-		<-->
 	</div>
 	<div>
 		<app-ff-todo-generic-task-form #addTaskForm [mode]="ADD_TASK" [todoId]="todoId" [(shown)]="addTaskFormShown"
@@ -40,9 +37,6 @@
 				[preparingFormEvent]="prepareRemoveAllTasksFormTrigger.asObservable()"
 				(submitIdEvent)="removeAllTasks($event)" (shownChange)="removeAllTasksFormShown = $event">
 		</app-ff-todo-generic-task-form>
-		<!-- >
-		<app-ff-todo-generic-task-form [todoId]="todoId"></app-ff-todo-generic-task-form>
-		<-->
 	</div>
 	<app-ff-todo-searching-form [todo_list_count]="todo_count"
 			[todosearchcase]="todo_searching_casesense" [todosearchhighlight]="todo_searching_highlight"

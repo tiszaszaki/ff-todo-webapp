@@ -2,7 +2,7 @@
 <ng-template #genericTodoForm let-modal>
     <div class="modal-header">
         <h1 class="modal-title" id="{{ formId }}-title">{{ formTitle }}</h1>
-        <button type="button" class="close" aria-label="Close" (click)="dismissForm()">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Closed by cross')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -12,25 +12,22 @@
             <form>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name"
-                            (keyup.enter)="submitForm()" #name="ngModel" required tszfocus>
+                    <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
+                            (keyup.enter)="modal.close(model)" #name="ngModel" required tszfocus>
                     <div [hidden]="name.valid || name.pristine"
                         class="alert alert-danger">
                         Name is required
                     </div>
-                </div>
 
-                <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" [(ngModel)]="model.description" name="description">
-                </div>
+                    <input type="text" class="form-control" id="description" [(ngModel)]="model.description" name="description"
+                            value="model.description" #description="ngModel">
 
-                <div class="form-group">
                     <div>
                         <label for="phase">Todo phase:</label>
                     </div>
                     <div class="btn-group btn-group-toggle" ngbRadioGroup id="phase" [(ngModel)]="model.phase"
-                            name="phase" #phase="ngModel" required>
+                            name="phase" value="model.phase" #phase="ngModel" required>
                         <label ngbButtonLabel class="btn-primary" *ngFor="let phase of phase_labels; let idx=index">
                             <input ngbButton type="radio" [value]="idx">{{ phase }}
                         </label>
@@ -43,7 +40,8 @@
                 <div class="form-group d-flex justify-content-between">
                     <div>
                         <label for="deadline">Deadline</label>
-                        <input type="datetime-local" class="form-control" id="deadline" [value]="model.deadline | date:inputDateFormat">
+                        <input type="datetime-local" class="form-control" id="deadline" [(ngModel)]="model.deadline"
+                                [value]="model.deadline | date:inputDateFormat">
                     </div>
                     <div>
                         <button type="button" class="btn btn-primary" (click)="updateDeadline()">Update</button>
@@ -59,12 +57,12 @@
 
     <div class="modal-footer">
         <div *ngIf="isOperatorIncluded(ADD,EDIT)">
-            <button type="button" class="btn btn-primary" (click)="submitForm()">Submit</button>
-            <button type="button" class="btn btn-secondary" (click)="dismissForm()">Close</button>
+            <button type="button" class="btn btn-primary" (click)="modal.close(model)">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button')">Close</button>
         </div>
         <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">
-            <button type="button" class="btn btn-danger" (click)="submitForm()">{{ confirmButtonCaption }}</button>
-            <button type="button" class="btn btn-secondary" (click)="dismissForm()">Cancel</button>
+            <button type="button" class="btn btn-danger" (click)="modal.close('Confirmed')">{{ confirmButtonCaption }}</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Dismissed')">Cancel</button>
         </div>
     </div>
 

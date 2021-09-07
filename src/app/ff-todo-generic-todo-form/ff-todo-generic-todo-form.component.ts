@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
@@ -29,7 +29,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   @Input() preparingFormEvent!: Observable<void>;
 
-  @ViewChild('genericTodoForm') formElement!: ElementRef;
+  @ViewChild('genericTodoForm') formElement: any;
 
   public model!: Todo;
 
@@ -130,7 +130,28 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   showModal()
   {
-    this.modalService.open(this.formId);
+    console.log(`Trying to open a modal with ID (${this.formId})...`);
+
+    const tempModal = this.modalService.open(this.formElement);
+
+    tempModal.result.then((result) => {
+      this.model = result;
+      console.log(this.model);
+      this.submitForm();
+    }, (reason) => {
+      console.log(this.getDismissReason(reason));
+      this.dismissForm();
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'Closed by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'Closed by clicking on a backdrop';
+    } else {
+      return `${reason}`;
+    }
   }
 
   ngOnInit(): void {
