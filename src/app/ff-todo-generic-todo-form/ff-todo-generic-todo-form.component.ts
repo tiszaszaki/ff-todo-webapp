@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
 
@@ -7,7 +9,7 @@ import { TodoOperator } from '../todo-operator';
   templateUrl: './ff-todo-generic-todo-form.component.html',
   styleUrls: ['./ff-todo-generic-todo-form.component.css']
 })
-export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
+export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() mode!: TodoOperator;
 
   @Input() data!: Todo;
@@ -25,6 +27,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
 
+  @Input() preparingFormEvent!: Observable<void>;
+
+  @ViewChild('genericTodoForm') formElement!: ElementRef;
+
   public model!: Todo;
 
   public modeStr!: String;
@@ -36,12 +42,14 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
 
+  private preparingFormListener!: Subscription;
+
   public readonly ADD = TodoOperator.ADD;
   public readonly EDIT = TodoOperator.EDIT;
   public readonly REMOVE = TodoOperator.REMOVE;
   public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
-  constructor() {
+  constructor(private modalService: NgbModal) {
   }
 
   private resetModel() {
@@ -120,10 +128,21 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges{
     }
   }
 
+  showModal()
+  {
+    this.modalService.open(this.formId);
+  }
+
   ngOnInit(): void {
     this.modeStr = TodoOperator[this.mode].toLowerCase();
-    this.formId = `${this.modeStr}-todo-form`;
+    this.formId = `${this.modeStr}TodoForm`;
     this.resetModel();
+
+    this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+  }
+
+  ngOnDestroy(): void {
+    this.preparingFormListener.unsubscribe();
   }
 
   isOperatorIncluded(...operators : TodoOperator[]) : boolean {

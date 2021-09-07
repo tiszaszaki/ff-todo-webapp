@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
-import { FfTodoGenericTodoFormComponent } from '../ff-todo-generic-todo-form/ff-todo-generic-todo-form.component';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
@@ -28,7 +26,15 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   @Input() initTodoListEvent!: Observable<void>;
   @Input() restoreTodoListEvent!: Observable<void>;
 
-  @ViewChild('FfTodoGenericTodoFormComponent', { static: false }) private genericTodoForm!: TemplateRef<FfTodoGenericTodoFormComponent>;
+  public prepareAddTodoFormTrigger = new Subject<void>();
+  public prepareEditTodoFormTrigger = new Subject<void>();
+  public prepareRemoveTodoFormTrigger = new Subject<void>();
+  public prepareRemoveAllTodosFormTrigger = new Subject<void>();
+
+  public prepareAddTaskFormTrigger = new Subject<void>();
+  public prepareEditTaskFormTrigger = new Subject<void>();
+  public prepareRemoveTaskFormTrigger = new Subject<void>();
+  public prepareRemoveAllTasksFormTrigger = new Subject<void>();
 
   private prepareAddTodoFormListener!: Subscription;
   private prepareRemovingAllTodosListener!: Subscription;
@@ -102,7 +108,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   public readonly LEFT = ShiftDirection.LEFT;
   public readonly RIGHT = ShiftDirection.RIGHT;
 
-  constructor(private todoServ: FfTodoRealRequestService, private modalService: NgbModal) {
+  constructor(private todoServ: FfTodoRealRequestService) {
     this.initTodoList([]);
   }
 
@@ -360,80 +366,88 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   }
 
   prepareAddTodoForm() {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for adding new Todo...`);
       this.addTodoFormShown = !this.addTodoFormShown;
+      this.prepareAddTodoFormTrigger.next();
     }
   }
 
   prepareEditTodoForm(id : number) {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for editing Todo...`);
       this.getTodo(id).subscribe(todo => {
         this.oldPhase = todo.phase;
         this.todoSelected = todo;
         this.editTodoFormShown = !this.editTodoFormShown;
+        this.prepareEditTodoFormTrigger.next();
       });
     }
   }
 
   prepareRemoveTodoForm(id : number) {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for removing Todo...`);
       this.getTodo(id).subscribe(todo => {
         this.todoSelected = todo;
         this.removeTodoFormShown = !this.removeTodoFormShown;
+        this.prepareRemoveTodoFormTrigger.next();
       });
     }
   }
 
   prepareRemovingAllTodos() {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for removing all Todos...`);
       this.removeAllTodosFormShown = !this.removeAllTodosFormShown;
+      this.prepareRemoveAllTodosFormTrigger.next();
     }
   }
 
   prepareAddTaskForm(id : number) {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for editing Task...`);
       this.todoId = id;
       this.addTaskFormShown = !this.addTaskFormShown;
+      this.prepareAddTaskFormTrigger.next();
     }
   }
 
   prepareEditTaskForm(markedTask : Task) {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for editing Task...`);
       this.todoId = (markedTask.todoId ? markedTask.todoId : -1);
       this.taskSelected = markedTask;
       this.editTaskFormShown = !this.editTaskFormShown;
+      this.prepareEditTaskFormTrigger.next();
     }
   }
 
   prepareRemoveTaskForm(markedTask : Task) {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       let tempTodoId = (markedTask.todoId ? markedTask.todoId : -1);
       console.log(`Preparing form for removing Task...`);
       this.todoId = tempTodoId;
       this.taskSelected = markedTask;
       this.removeTaskFormShown = !this.removeTaskFormShown;
+      this.prepareRemoveTaskFormTrigger.next();
     }
   }
 
   prepareRemoveAllTasksForm(id : number) {
-    if (this.checkIfNoFormShown())
+    if (true || this.checkIfNoFormShown())
     {
       console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
       this.todoId = id;
       this.removeAllTasksFormShown = !this.removeAllTasksFormShown;
+      this.prepareRemoveAllTasksFormTrigger.next();
     }
   }
 

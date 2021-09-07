@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
 
@@ -22,19 +24,29 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Task>();
 
+  @Input() preparingFormEvent!: Observable<void>;
+
+  @ViewChild('genericTaskForm') formElement!: ElementRef;
+
   public model!: Task;
 
   public modeStr!: String;
+  public formId!: String;
 
   public formTitle!: String;
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
+
+  private preparingFormListener!: Subscription;
 
   public readonly ADD = TaskOperator.ADD;
   public readonly EDIT = TaskOperator.EDIT;
   public readonly REMOVE = TaskOperator.REMOVE;
   public readonly CHECK = TaskOperator.CHECK;
   public readonly REMOVE_ALL = TaskOperator.REMOVE_ALL;
+
+  constructor(private modalService: NgbModal) {
+  }
 
   private resetModel() {
     this.model = new Task();
@@ -93,12 +105,17 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor() {
+  showModal()
+  {
+    this.modalService.open(this.formId);
   }
 
   ngOnInit(): void {
     this.modeStr = TaskOperator[this.mode].toLowerCase();
+    this.formId = `${this.modeStr}TaskForm`;
     this.resetModel();
+
+    this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
   }
 
   isOperatorIncluded(...operators : TaskOperator[]) : boolean {
@@ -112,12 +129,13 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
 
   dismissForm() {
     this.shown = !this.shown;
+
     this.shownChange.emit(this.shown);
     this.resetModel();
   }
 
-  submitForm(condition: Boolean) {
-    if (condition)
+  submitForm(condition?: Boolean) {
+    if ((condition === undefined) || condition)
     {
       if (this.isOperatorIncluded(this.ADD,this.EDIT,this.CHECK,this.REMOVE))
       {

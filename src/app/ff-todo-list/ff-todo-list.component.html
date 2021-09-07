@@ -1,18 +1,22 @@
 <div class="container" role="main">
 	<div>
-		<app-ff-todo-generic-todo-form [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
+		<app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO" [(shown)]="addTodoFormShown" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
+				[preparingFormEvent]="prepareAddTodoFormTrigger.asObservable()"
 				(submitDataEvent)="addTodo($event)" (shownChange)="addTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form [mode]="EDIT_TODO" [(data)]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
+		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(data)]="todoSelected" [(shown)]="editTodoFormShown" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
+				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()"
 				(submitDataEvent)="updateTodo($event)" (shownChange)="editTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form [mode]="REMOVE_TODO" [(data)]="todoSelected" [(shown)]="removeTodoFormShown" [phase_labels]="phase_labels"
+		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(data)]="todoSelected" [(shown)]="removeTodoFormShown" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
+				[preparingFormEvent]="prepareRemoveTodoFormTrigger.asObservable()"
 				(submitDataEvent)="removeTodo($event)" (shownChange)="removeTodoFormShown = $event">
 		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
+		<app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS" [(shown)]="removeAllTodosFormShown"
+				[preparingFormEvent]="prepareRemoveAllTodosFormTrigger.asObservable()"
 				(submitEvent)="removeAllTodos()" (shownChange)="removeAllTodosFormShown = $event"></app-ff-todo-generic-todo-form>
 		<!-- >
 		<app-ff-todo-generic-todo-form [phase_labels]="phase_labels" [descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat">
@@ -20,16 +24,20 @@
 		<-->
 	</div>
 	<div>
-		<app-ff-todo-generic-task-form [mode]="ADD_TASK" [todoId]="todoId" [(shown)]="addTaskFormShown"
+		<app-ff-todo-generic-task-form #addTaskForm [mode]="ADD_TASK" [todoId]="todoId" [(shown)]="addTaskFormShown"
+				[preparingFormEvent]="prepareAddTaskFormTrigger.asObservable()"
 				(submitDataEvent)="addTask($event)" (shownChange)="addTaskFormShown = $event">
 		</app-ff-todo-generic-task-form>
-		<app-ff-todo-generic-task-form [mode]="EDIT_TASK" [todoId]="todoId" [data]="taskSelected" [(shown)]="editTaskFormShown"
+		<app-ff-todo-generic-task-form #editTaskForm [mode]="EDIT_TASK" [todoId]="todoId" [data]="taskSelected" [(shown)]="editTaskFormShown"
+				[preparingFormEvent]="prepareEditTaskFormTrigger.asObservable()"
 				(submitDataEvent)="updateTask($event)" (shownChange)="editTaskFormShown = $event">
 		</app-ff-todo-generic-task-form>
-		<app-ff-todo-generic-task-form [mode]="REMOVE_TASK" [todoId]="todoId" [data]="taskSelected" [(shown)]="removeTaskFormShown"
+		<app-ff-todo-generic-task-form #removeTaskForm [mode]="REMOVE_TASK" [todoId]="todoId" [data]="taskSelected" [(shown)]="removeTaskFormShown"
+				[preparingFormEvent]="prepareRemoveTaskFormTrigger.asObservable()"
 				(submitDataEvent)="removeTask($event)" (shownChange)="removeTaskFormShown = $event">
 		</app-ff-todo-generic-task-form>
-		<app-ff-todo-generic-task-form [mode]="REMOVE_ALL_TASKS" [todoId]="todoId" [(shown)]="removeAllTasksFormShown"
+		<app-ff-todo-generic-task-form #removeAllTasksForm [mode]="REMOVE_ALL_TASKS" [todoId]="todoId" [(shown)]="removeAllTasksFormShown"
+				[preparingFormEvent]="prepareRemoveAllTasksFormTrigger.asObservable()"
 				(submitIdEvent)="removeAllTasks($event)" (shownChange)="removeAllTasksFormShown = $event">
 		</app-ff-todo-generic-task-form>
 		<!-- >

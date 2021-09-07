@@ -1,5 +1,5 @@
-<div class="container border border-secondary rounded" *ngIf="shown">
-<!-- ><ng-template let-modal id="{{ formId }}"><-->
+<!-- ><div class="container border border-secondary rounded" *ngIf="shown"><-->
+<ng-template #genericTodoForm let-modal>
     <div class="modal-header">
         <h1 class="modal-title" id="{{ formId }}-title">{{ formTitle }}</h1>
         <button type="button" class="close" aria-label="Close" (click)="dismissForm()">
@@ -35,11 +35,6 @@
                             <input ngbButton type="radio" [value]="idx">{{ phase }}
                         </label>
                     </div>
-                    <!-- >
-                    <select class="form-control" id="phase" [(ngModel)]="model.phase" name="phase" #phase="ngModel" required>
-                    <option *ngFor="let phase of phase_labels; let idx=index" [value]="idx">{{ phase }}</option>
-                    </select>
-                    <-->
                     <div [hidden]="phase.valid || phase.pristine" class="alert alert-danger">
                         Phase is required
                     </div>
@@ -76,5 +71,5 @@
     <div *ngIf="!isOperatorIncluded(ADD,EDIT,REMOVE,REMOVE_ALL)">
         <app-ff-todo-form-invalid></app-ff-todo-form-invalid>
     </div>
-<!-- ></ng-template><-->
-</div>
+</ng-template>
+<!-- ></div><-->
