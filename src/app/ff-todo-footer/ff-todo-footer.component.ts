@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { TiszaSzakiAlert } from '../tsz-alert';
 
 @Component({
@@ -6,13 +7,26 @@ import { TiszaSzakiAlert } from '../tsz-alert';
   templateUrl: './ff-todo-footer.component.html',
   styleUrls: ['./ff-todo-footer.component.css', '../app.component.css']
 })
-export class FfTodoFooterComponent implements OnInit {
+export class FfTodoFooterComponent implements OnInit, OnDestroy {
 
-  @Input() alerts!: TiszaSzakiAlert[];
+  @Input() maxAlerts!: Number;
+
+  @Input() addAlertMessageEvent!: Observable<TiszaSzakiAlert>;
+
+  @Input() displayDateFormat!: string;
+
+  public addAlertMessageTrigger = new Subject<TiszaSzakiAlert>();
+
+  private addAlertMessageListener!: Subscription;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.addAlertMessageListener = this.addAlertMessageEvent.subscribe((msg) => this.addAlertMessageTrigger.next(msg));
+  }
+
+  ngOnDestroy(): void {
+    this.addAlertMessageListener.unsubscribe();
   }
 
 }

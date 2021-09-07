@@ -26,6 +26,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
   @Input() initTodoListEvent!: Observable<void>;
   @Input() restoreTodoListEvent!: Observable<void>;
 
+  @Input() displayDateFormat!: string;
+
   public prepareAddTodoFormTrigger = new Subject<void>();
   public prepareEditTodoFormTrigger = new Subject<void>();
   public prepareRemoveTodoFormTrigger = new Subject<void>();
@@ -79,7 +81,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
 
   public searchSubmitted: Boolean = false;
 
-  public displayDateFormat: string = 'yyyy-MM-dd HH:mm:ss.sss';
   public inputDateFormat: string = 'yyyy-MM-dd HH:mm:ss';
 
   public phase_labels = ['Backlog', 'In progress', 'Done'];

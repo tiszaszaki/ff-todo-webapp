@@ -6,6 +6,10 @@ svg#clouds {
     width: 1920px;
   }
 
+  .navbar {
+    align-items: flex-end;
+  }
+
   footer {
     margin-top: 8px;
     display: flex;

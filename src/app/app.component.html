@@ -4,11 +4,13 @@
 </app-ff-todo-header>
 
 <app-ff-todo-list (updateReadonlyTodo)="updateReadonlyTodo($event)" (updateTodoCount)="updateTodoCount($event)" (toggleRestoreTodos)="toggleRestoreTodos($event)"
-        (addAlertMessage)="addAlertMessage($event)"
+        (addAlertMessage)="addAlertMessage($event)" [displayDateFormat]="displayDateFormat"
         [prepareAddTodoFormEvent]="prepareAddTodoFormTrigger.asObservable()"
         [prepareRemovingAllTodosEvent]="prepareRemovingAllTodosTrigger.asObservable()"
         [initTodoListEvent]="initTodoListTrigger.asObservable()"
         [restoreTodoListEvent]="restoreTodoListTrigger.asObservable()">
 </app-ff-todo-list>
 
-<app-ff-todo-footer [alerts]="alerts"></app-ff-todo-footer>
+<app-ff-todo-footer [addAlertMessageEvent]="addAlertMessageTrigger.asObservable()" [maxAlerts]="maxAlerts"
+        [displayDateFormat]="displayDateFormat">
+</app-ff-todo-footer>

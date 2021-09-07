@@ -1,9 +1,11 @@
 <footer class="container">
     <!-- Footer -->
     <nav class="navbar fixed-bottom navbar-light bg-light">
-        <app-ff-todo-alert-list [alerts]="alerts"></app-ff-todo-alert-list>
+        <app-ff-todo-alert-list [addAlertMessageEvent]="addAlertMessageTrigger.asObservable()" [maxAlerts]="maxAlerts"
+            [displayDateFormat]="displayDateFormat">
+        </app-ff-todo-alert-list>
 
-        <div class="d-flex">
+        <div class="d-flex angular-link">
             Love Angular?&nbsp;
             <a href="https://github.com/angular/angular" target="_blank" rel="noopener"> Give our repo a star.
             <div class="github-star-badge">

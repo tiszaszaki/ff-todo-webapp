@@ -10,8 +10,9 @@ import { TiszaSzakiAlert } from './tsz-alert';
 export class AppComponent {
   public title = 'ff-todo-webapp';
 
-  public alerts: TiszaSzakiAlert[] = [];
-  public maxAlerts = 5;
+  public displayDateFormat: string = 'yyyy-MM-dd HH:mm:ss.sss';
+
+  public maxAlerts: Number = 5;
 
   public readonlyTodo!: Boolean;
   public todo_count!: number;
@@ -22,15 +23,12 @@ export class AppComponent {
   public initTodoListTrigger = new Subject<void>();
   public restoreTodoListTrigger = new Subject<void>();
 
+  public addAlertMessageTrigger = new Subject<TiszaSzakiAlert>();
+
   addAlertMessage(msg: TiszaSzakiAlert) {
-    if (this.alerts.length == this.maxAlerts)
-    {
-      this.alerts.shift();
-    }
-
-    this.alerts.push(msg);
+    this.addAlertMessageTrigger.next(msg);
   }
-
+  
   prepareAddTodoForm() {
     this.prepareAddTodoFormTrigger.next();
   }
