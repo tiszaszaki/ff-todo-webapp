@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
-                            (keyup.enter)="modal.close(model)" #name="ngModel" required tszfocus>
+                            (keyup.enter)="modal.close('Saved by pressing Enter')" #name="ngModel" required tszfocus>
                     <div [hidden]="name.valid || name.pristine"
                         class="alert alert-danger">
                         Name is required
@@ -40,8 +40,9 @@
                 <div class="form-group d-flex justify-content-between">
                     <div>
                         <label for="deadline">Deadline</label>
-                        <input type="datetime-local" class="form-control" id="deadline" [(ngModel)]="model.deadline"
-                                [value]="model.deadline | date:inputDateFormat">
+                        <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker" [(ngModel)]="model.deadline"
+                                name="deadline" value="model.deadline | date:inputDateFormat">
+                        <button type="button" class="btn btn-secondary" (click)="deadlinePick.toggle()">Select Date</button>
                     </div>
                     <div>
                         <button type="button" class="btn btn-primary" (click)="updateDeadline()">Update</button>
@@ -57,8 +58,8 @@
 
     <div class="modal-footer">
         <div *ngIf="isOperatorIncluded(ADD,EDIT)">
-            <button type="button" class="btn btn-primary" (click)="modal.close(model)">Submit</button>
-            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button')">Close</button>
+            <button type="button" class="btn btn-primary" (click)="modal.close('Saved by button click')">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
         </div>
         <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">
             <button type="button" class="btn btn-danger" (click)="modal.close('Confirmed')">{{ confirmButtonCaption }}</button>

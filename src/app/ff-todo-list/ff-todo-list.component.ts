@@ -331,9 +331,15 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
         {
           taskCountPerPhase = todo.tasks.length;
         }
+        else
+        {
+          todo.tasks = [];
+        }
 
-        todo.descriptionLength = todo.description.length;
-        todo.taskCount = taskCountPerPhase;
+        if (!todo.description)
+        {
+          todo.description = '';
+        }
 
         if (phase.size == 0)
         {

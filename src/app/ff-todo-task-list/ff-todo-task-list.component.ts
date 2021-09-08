@@ -26,7 +26,7 @@ export class FfTodoTaskListComponent implements OnInit {
 
   public tasks! : Task[];
 
-  public tasklist_expand_status: Boolean = false;
+  public tasklist_collapse_status: boolean = true;
 
   constructor() { }
 
@@ -62,10 +62,5 @@ export class FfTodoTaskListComponent implements OnInit {
     markedTask.todoId = this.todoId;
     console.log(`Trying to check this Task (${taskStr})...`);
     this.checkTaskEvent.emit(markedTask);
-  }
-
-  toggleCollapse()
-  {
-    this.tasklist_expand_status = !this.tasklist_expand_status;
   }
 }

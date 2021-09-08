@@ -7,8 +7,5 @@ export class Todo {
   public dateCreated!: Date;
   public deadline?: Date;
   
-  public descriptionLength?: number;
-  public taskCount?: number;
-
   tasks?: Task[];
 }

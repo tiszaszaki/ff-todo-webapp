@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { Todo } from '../todo';
@@ -29,7 +29,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   @Input() preparingFormEvent!: Observable<void>;
 
-  @ViewChild('genericTodoForm') formElement: any;
+  @ViewChild('genericTodoForm') formElement!: TemplateRef<FfTodoGenericTodoFormComponent>;
 
   public model!: Todo;
 
@@ -135,11 +135,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     const tempModal = this.modalService.open(this.formElement);
 
     tempModal.result.then((result) => {
-      this.model = result;
-      console.log(this.model);
+      console.log(`${this.formId}: ${result}`);
       this.submitForm();
     }, (reason) => {
-      console.log(this.getDismissReason(reason));
+      console.log(`${this.formId}: ${this.getDismissReason(reason)}`);
       this.dismissForm();
     });
   }
