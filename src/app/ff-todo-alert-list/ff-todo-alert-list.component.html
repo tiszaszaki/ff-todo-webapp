@@ -1,7 +1,3 @@
-<div>
-    <p *ngFor="let alert of alerts">
-        <ngb-alert [type]="alert.type" (closed)="close(alert)" ngbTooltip="Notification created at {{ alert.createdAt | date:displayDateFormat }}">
-            {{ alert.message }}
-        </ngb-alert>
-    </p>
-</div>
+<ngb-alert *ngFor="let alert of alerts" [type]="alert.type" (closed)="close(alert)" ngbTooltip="Notification created at {{ alert.createdAt | date:displayDateFormat }}">
+    {{ alert.message }}
+</ngb-alert>

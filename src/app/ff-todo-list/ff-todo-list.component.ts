@@ -341,6 +341,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy {
           todo.description = '';
         }
 
+        if (todo.deadline)
+        {
+          todo.deadlineObj = new Date(todo.deadline as string);
+        }
+
         if (phase.size == 0)
         {
           let _phase = todo.phase;

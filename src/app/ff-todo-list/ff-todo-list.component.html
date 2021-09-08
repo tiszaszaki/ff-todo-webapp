@@ -8,8 +8,7 @@
 				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
 		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(data)]="todoSelected" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
+		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(data)]="todoSelected"
 				[preparingFormEvent]="prepareRemoveTodoFormTrigger.asObservable()" (submitDataEvent)="removeTodo($event)">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS"

@@ -5,7 +5,8 @@ export class Todo {
   public phase!: number;
   public dateModified!: Date;
   public dateCreated!: Date;
-  public deadline?: Date;
-  
+  public deadline?: String;
+  public deadlineObj?: Date;
+
   tasks?: Task[];
 }

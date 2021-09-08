@@ -18,7 +18,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   @Input() phase_labels!: String[];
   @Input() descriptionMaxLength!: number;
 
-  @Input() public inputDateFormat!: string;
+  @Input() inputDateFormat!: string;
 
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
@@ -61,24 +61,34 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.phase = 0;
   }
 
-  public updateDeadline() {
-    if (this.model.deadline)
+  public updateDeadlineStr() {
+    if (this.model.deadlineObj)
     {
-      this.deadlineOld = this.model.deadline;
+      this.model.deadline = this.model.deadlineObj.toJSON();
+      console.log(this.model.deadline);
     }
-    this.model.deadline = new Date();
+  }
+
+  public updateDeadline() {
+    if (this.model.deadlineObj)
+    {
+      this.deadlineOld = this.model.deadlineObj;
+    }
+    this.model.deadlineObj = new Date();
+    this.updateDeadlineStr();
   }
 
   public revertDeadline() {
     if (this.deadlineOld)
     {
-      this.model.deadline = this.deadlineOld;
+      this.model.deadlineObj = this.deadlineOld;
     }
     else
     {
-      this.model.deadline = this.model.dateCreated;
+      this.model.deadlineObj = this.model.dateCreated;
     }
-}
+    this.updateDeadlineStr();
+  }
 
   private updateModel() {
     if (this.data)
@@ -138,7 +148,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       case 'name': this.model.name = fieldValue; break;
       case 'description': this.model.description = fieldValue; break;
       case 'phase': this.model.phase = fieldValue; break;
-      case 'deadline': this.model.deadline = fieldValue; break;
+      case 'deadline': {
+        this.model.deadlineObj = fieldValue;
+        this.updateDeadlineStr();
+      } break;
       default: break;
     }
   }
@@ -171,7 +184,11 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   ngOnInit(): void {
     this.modeStr = TodoOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}TodoForm`;
-    this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
+
+    if (this.isOperatorIncluded(this.ADD,this.EDIT))
+    {
+      this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
+    }
 
     this.resetModel();
 

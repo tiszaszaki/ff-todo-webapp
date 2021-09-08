@@ -46,8 +46,8 @@
                 <div class="form-group d-flex justify-content-between">
                     <div class="input-group">
                         <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
-                                [ngModel]="model.deadline" (ngModelChange)="changeModelField('deadline', $event)" (click)="deadlinePick.toggle()"
-                                name="deadline" value="model.deadline | date:inputDateFormat" [placeholder]="inputDateFormatDisp">
+                                [ngModel]="model.deadlineObj" (ngModelChange)="changeModelField('deadline', $event)" (click)="deadlinePick.toggle()"
+                                name="deadline" value="model.deadlineObj | date:inputDateFormat" [placeholder]="inputDateFormatDisp">
                     </div>
                     <button type="button" class="btn btn-primary" (click)="updateDeadline()">Update</button>
                     <button type="button" class="btn btn-secondary" (click)="revertDeadline()">Revert</button>
