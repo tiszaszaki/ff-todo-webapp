@@ -22,7 +22,6 @@ export class ModalBasicComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.open(this.formElement);
   }
 
   private getDismissReason(reason: any): string {

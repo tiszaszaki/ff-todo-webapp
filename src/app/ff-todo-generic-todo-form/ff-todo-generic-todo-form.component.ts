@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { Todo } from '../todo';
@@ -14,9 +14,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   @Input() data!: Todo;
   @Output() dataChange = new EventEmitter<Todo>();
-
-  @Input() shown!: Boolean;
-  @Output() shownChange = new EventEmitter<Boolean>();
 
   @Input() phase_labels!: String[];
   @Input() descriptionMaxLength!: number;
@@ -36,7 +33,12 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public modeStr!: String;
   public formId!: String;
 
+  public inputDateFormatDisp!: String;
+
   private deadlineOld!: Date;
+
+  public dateComponent!: Date;
+  public timeComponent!: Date;
 
   public formTitle!: String;
   public confirmMessage!: String;
@@ -83,10 +85,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     {
       this.model = this.data;
     }
-    else
-    {
-      this.resetModel();
-    }
   }
 
   private updateDisplay() {
@@ -128,6 +126,23 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     }
   }
 
+  changeDeadlineComponent(compName: String, compValue: Date) {
+    if (compName == 'date') { this.dateComponent = compValue; }
+    else if (compName == 'time') { this.timeComponent = compValue; }
+    else { }
+  }
+
+  changeModelField(fieldName: string, fieldValue: any) {
+    switch (fieldName)
+    {
+      case 'name': this.model.name = fieldValue; break;
+      case 'description': this.model.description = fieldValue; break;
+      case 'phase': this.model.phase = fieldValue; break;
+      case 'deadline': this.model.deadline = fieldValue; break;
+      default: break;
+    }
+  }
+
   showModal()
   {
     console.log(`Trying to open a modal with ID (${this.formId})...`);
@@ -156,6 +171,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   ngOnInit(): void {
     this.modeStr = TodoOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}TodoForm`;
+    this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
+
     this.resetModel();
 
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
@@ -176,9 +193,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   dismissForm() {
     this.resetModel();
-
-    this.shown = !this.shown;
-    this.shownChange.emit(this.shown);
   }
 
   submitForm(condition?: Boolean) {
