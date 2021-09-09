@@ -10,13 +10,13 @@
         <span>Welcome to {{title}}</span>
     </div>
 
-    <div class="border border-3 border-secondary rounded p-2" *ngIf="!readonlyTodo">
+    <div class="border border-3 border-secondary rounded p-2">
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()"
+        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()" [disabled]="readonlyTodo"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos.emit()"
+        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos.emit()" [disabled]="readonlyTodo"
             data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
             [disabled]="!todo_count">
           <i class="fas fa-broom"></i>
@@ -29,6 +29,18 @@
         <button type="button" class="btn btn-warning btn-sm w-25" (click)="restoreTodoList.emit()" [disabled]="!enableRestoreTodos"
             data-toggle="tooltip" data-placement="bottom" title="Restore Todo list">
             <i class="fas fa-trash-restore-alt"></i>
+        </button>
+      </div>
+      <div class="d-flex justify-content-start">
+        <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTodo()">
+          <span *ngIf="readonlyTodo"><i class="fas fa-lock"></i></span>
+          <span *ngIf="!readonlyTodo"><i class="fas fa-unlock"></i></span>
+          &nbsp;Todos
+        </button>
+        <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTask()">
+          <span *ngIf="readonlyTask"><i class="fas fa-lock"></i></span>
+          <span *ngIf="!readonlyTask"><i class="fas fa-unlock"></i></span>
+          &nbsp;Tasks
         </button>
       </div>
     </div>

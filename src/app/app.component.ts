@@ -23,12 +23,23 @@ export class AppComponent {
   public initTodoListTrigger = new Subject<void>();
   public restoreTodoListTrigger = new Subject<void>();
 
+  public toggleReadonlyTodoTrigger = new Subject<Boolean>();
+  public toggleReadonlyTaskTrigger = new Subject<Boolean>();
+
   public addAlertMessageTrigger = new Subject<TiszaSzakiAlert>();
 
   addAlertMessage(msg: TiszaSzakiAlert) {
     this.addAlertMessageTrigger.next(msg);
   }
-  
+
+  toggleReadonlyTodo(val: Boolean) {
+    this.toggleReadonlyTodoTrigger.next(val);
+  }
+
+  toggleReadonlyTask(val: Boolean) {
+    this.toggleReadonlyTaskTrigger.next(val);
+  }
+
   prepareAddTodoForm() {
     this.prepareAddTodoFormTrigger.next();
   }
