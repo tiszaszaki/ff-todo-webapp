@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SearchingRule } from '../searching-rule';
 
 @Component({
   selector: 'app-ff-todo-searching-form',
@@ -9,8 +10,8 @@ export class FfTodoSearchingFormComponent implements OnInit {
 
   @Output() todosearchcaseChange = new EventEmitter<Boolean>();
   @Output() todosearchhighlightChange = new EventEmitter<Boolean>();
-  @Output() todosearchtermChange = new EventEmitter<String>();
-  @Output() todosearchfieldChange = new EventEmitter<String>();
+
+  @Output() todosearchruleChange = new EventEmitter<SearchingRule>();
 
   @Output() updateSubmitStateEvent = new EventEmitter<Boolean>();
 
@@ -19,8 +20,10 @@ export class FfTodoSearchingFormComponent implements OnInit {
   @Input() todosearchcase!: Boolean;
   @Input() todosearchhighlight!: Boolean;
 
-  @Input() todosearchterm!: String;
-  @Input() todosearchfield!: String;
+  @Input() todosearchRules!: Map<String,String>;
+
+  public todosearchterm!: String;
+  public todosearchfield!: String;
 
   public submitted: Boolean = false;
 
@@ -51,8 +54,7 @@ export class FfTodoSearchingFormComponent implements OnInit {
     this.todosearchcaseChange.emit(this.todosearchcase);
     this.todosearchhighlightChange.emit(this.todosearchhighlight);
 
-    this.todosearchtermChange.emit(this.todosearchterm);
-    this.todosearchfieldChange.emit(this.todosearchfield);
+    this.todosearchruleChange.emit({term: this.todosearchterm, field: this.todosearchfield});
 
     this.updateSubmitStateEvent.emit(state);
   }
@@ -66,5 +68,4 @@ export class FfTodoSearchingFormComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

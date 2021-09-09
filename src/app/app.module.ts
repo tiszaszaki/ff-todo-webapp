@@ -28,7 +28,8 @@ import { TiszaSzakiSearchPipe } from './tsz-search.pipe';
 import { TiszaSzakiFocusDirective } from './tszfocus.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FfTodoAlertListComponent } from './ff-todo-alert-list/ff-todo-alert-list.component';
-import { ModalBasicComponent } from './modal-basic/modal-basic.component'
+import { ModalBasicComponent } from './modal-basic/modal-basic.component';
+import { FfTodoSearchNoResultsComponent } from './ff-todo-search-no-results/ff-todo-search-no-results.component'
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ModalBasicComponent } from './modal-basic/modal-basic.component'
     TiszaSzakiSearchPipe,
     TiszaSzakiFocusDirective,
     FfTodoAlertListComponent,
-    ModalBasicComponent
+    ModalBasicComponent,
+    FfTodoSearchNoResultsComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule

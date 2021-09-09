@@ -37,8 +37,7 @@ export class FfTodoListPerPhaseComponent implements OnInit {
   @Input() todosearchcase!: Boolean;
   @Input() todosearchhighlight!: Boolean;
 
-  @Input() todosearchterm!: String;
-  @Input() todosearchfield!: String;
+  @Input() todosearchRules!: Map<String,String>;
 
   @Output() editTodoEvent = new EventEmitter<number>();
   @Output() removeTodoEvent = new EventEmitter<number>();
@@ -55,5 +54,4 @@ export class FfTodoListPerPhaseComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

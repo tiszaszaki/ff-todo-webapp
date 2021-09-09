@@ -32,4 +32,11 @@
             </div>
         </div>
     </div>
+    <div *ngIf="todosearchRules.size">
+        <h3>Active searching rules:</h3>
+        <div *ngFor="let field of todosearchRules.keys()">
+            <span>Field: "{{ field }}"</span>&nbsp;
+            <span>Term: "{{ todosearchRules.get(field) }}"</span>
+        </div>
+    </div>
 </div>

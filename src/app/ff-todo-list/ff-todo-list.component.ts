@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
+import { SearchingRule } from '../searching-rule';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
@@ -82,8 +83,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public todo_searching_casesense!: Boolean;
   public todo_searching_highlight!: Boolean;
-  public todo_searching_term!: String;
-  public todo_searching_field!: String;
+  public todo_searching_rules!: Map<String,String>;
 
   public searchSubmitted: Boolean = false;
 
@@ -126,8 +126,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.todo_searching_casesense = false;
     this.todo_searching_highlight = false;
-    this.todo_searching_term = '';
-    this.todo_searching_field = '';
+    this.todo_searching_rules = new Map<String,String>();
 
     if (!phase_list)
     {
@@ -148,6 +147,12 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   updateSearchSubmit(state: Boolean) {
     this.searchSubmitted = state;
+
+    if (!this.searchSubmitted)
+    {
+      this.todo_searching_rules.clear();
+    }
+
     this.getTodos(new Set());
   }
 
@@ -161,21 +166,25 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     console.log(`updateTodoSearchingHighlightMatches: "${highlight}"`);
   }
 
-  updateTodoSearchingTerm(term: String) {
-    this.todo_searching_term = term;
-    console.log(`updateTodoSearchingTerm: "${term}"`);
+  clearTodoSearchingRules() {
+    this.todo_searching_rules.clear();
+    console.log(this.todo_searching_rules.size);
   }
 
-  updateTodoSearchingField(fieldName: String) {
-    this.todo_searching_field = fieldName;
-    console.log(`updateTodoSearchingTerm: "${fieldName}"`);
+  updateTodoSearchingRule(rule: SearchingRule) {
+    let term = rule.term;
+    let fieldName = rule.field;
+
+    this.todo_searching_rules.set(fieldName, term);
+
+    console.log(`updateTodoSearchingRule: "${fieldName}" -> "${term}"`);
 
     for (let idx in this.phase_labels)
     {
-      this.showDescriptionLength[idx][1] = (this.todo_searching_field == 'descriptionLength');
-      this.showDateCreated[idx][1] = (this.todo_searching_field == 'dateCreated');
-      this.showTaskCount[idx][1] = (this.todo_searching_field == 'taskCount');
-  
+      this.showDescriptionLength[idx][1] = (fieldName == 'descriptionLength');
+      this.showDateCreated[idx][1] = (fieldName == 'dateCreated');
+      this.showTaskCount[idx][1] = (fieldName == 'taskCount');
+
       console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
     }
   }
