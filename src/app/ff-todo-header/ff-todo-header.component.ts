@@ -25,6 +25,8 @@ export class FfTodoHeaderComponent implements OnInit {
   @Output() toggleReadonlyTodo = new EventEmitter<Boolean>();
   @Output() toggleReadonlyTask = new EventEmitter<Boolean>();
 
+  public toolbar_collapse_status = false;
+
   updateReadonlyTodo() {
     this.readonlyTodo = !this.readonlyTodo;
     this.toggleReadonlyTodo.emit(this.readonlyTodo);

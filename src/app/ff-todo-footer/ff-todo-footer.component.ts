@@ -15,6 +15,8 @@ export class FfTodoFooterComponent implements OnInit, OnDestroy {
 
   @Input() displayDateFormat!: string;
 
+  public footer_collapse_status = true;
+
   public addAlertMessageTrigger = new Subject<TiszaSzakiAlert>();
 
   private addAlertMessageListener!: Subscription;

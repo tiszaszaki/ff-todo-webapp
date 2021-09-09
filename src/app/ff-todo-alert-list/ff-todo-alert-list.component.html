@@ -1,3 +1,4 @@
 <ngb-alert *ngFor="let alert of alerts" [type]="alert.type" (closed)="close(alert)" ngbTooltip="Notification created at {{ alert.createdAt | date:displayDateFormat }}">
     {{ alert.message }}
 </ngb-alert>
+<div class="text-muted text-center" *ngIf="!alerts.length">Alert list is empty</div>
