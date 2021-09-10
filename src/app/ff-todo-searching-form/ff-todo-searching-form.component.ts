@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 import { SearchingRule } from '../searching-rule';
 
 @Component({
@@ -6,14 +8,17 @@ import { SearchingRule } from '../searching-rule';
   templateUrl: './ff-todo-searching-form.component.html',
   styleUrls: ['./ff-todo-searching-form.component.css']
 })
-export class FfTodoSearchingFormComponent implements OnInit {
+export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   @Output() todosearchcaseChange = new EventEmitter<Boolean>();
   @Output() todosearchhighlightChange = new EventEmitter<Boolean>();
 
   @Output() todosearchruleChange = new EventEmitter<SearchingRule>();
+  @Output() todosearchruleRemove = new EventEmitter<String>();
 
   @Output() updateSubmitStateEvent = new EventEmitter<Boolean>();
+
+  @Input() preparingFormEvent!: Observable<void>;
 
   @Input() todo_list_count!: number;
 
@@ -22,10 +27,14 @@ export class FfTodoSearchingFormComponent implements OnInit {
 
   @Input() todosearchRules!: Map<String,String>;
 
+  @ViewChild('searchTodoForm') formElement!: TemplateRef<FfTodoSearchingFormComponent>;
+
   public todosearchterm!: String;
   public todosearchfield!: String;
 
   public submitted: Boolean = false;
+
+  private preparingFormListener!: Subscription;
 
   public readonly todoSearchingFields = [
     {name: '', display: '(not searching)'},
@@ -38,8 +47,14 @@ export class FfTodoSearchingFormComponent implements OnInit {
     {name: 'dateModified', display: 'Date of Todo updated'}
   ];
 
-  constructor() {
+  constructor(private modalService: NgbModal) {
     this.resetTodoSearching();
+  }
+
+  removeTodoSearchRule() {
+    this.todosearchruleRemove.emit(this.todosearchfield);
+
+    this.resetTodoSearchRule();
   }
 
   updateSubmitState(state: Boolean)
@@ -59,13 +74,47 @@ export class FfTodoSearchingFormComponent implements OnInit {
     this.updateSubmitStateEvent.emit(state);
   }
 
-  private resetTodoSearching() {
-    this.todosearchcase = false;
-    this.todosearchhighlight = false;
+  private resetTodoSearchRule() {
     this.todosearchterm = '';
     this.todosearchfield = '';
   }
 
+  private resetTodoSearching() {
+    this.todosearchcase = false;
+    this.todosearchhighlight = false;
+    this.resetTodoSearchRule();
+  }
+
+  showModal()
+  {
+    console.log(`Trying to open a modal with ID (searchTodoForm)...`);
+
+    const tempModal = this.modalService.open(this.formElement);
+
+    tempModal.result.then((result) => {
+      console.log(`searchTodoForm: ${result}`);
+      this.updateSubmitState(true);
+      this.resetTodoSearchRule();
+    }, (reason) => {
+      console.log(`searchTodoForm: ${this.getDismissReason(reason)}`);
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'Closed by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'Closed by clicking on a backdrop';
+    } else {
+      return `${reason}`;
+    }
+  }
+
   ngOnInit(): void {
+    this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+  }
+
+  ngOnDestroy(): void {
+    this.preparingFormListener.unsubscribe();
   }
 }

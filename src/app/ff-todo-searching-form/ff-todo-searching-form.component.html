@@ -1,42 +1,55 @@
-<div class="border border border-3 border-secondary rounded p-2" *ngIf="todo_list_count || submitted">
-    <h4 class="mb-3">Searching of Todos:</h4>
-    <div class="form-group">
-        <div class="mb-2">
+<ng-template #searchTodoForm let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="search-todo-title">Searching for Todos</h4>
+        <button type="button" class="close" aria-label="Close" (click)="updateSubmitState(true); modal.dismiss('Closed by cross')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
             <label for="todo_searching_field">Field:</label>
             <select class="form-select form-control" [(ngModel)]="todosearchfield" name="term" id="todo_searching_field"
                     data-toggle="tooltip" data-placement="bottom" title="Todo searching field">
                 <option *ngFor="let field of todoSearchingFields" [value]="field.name">{{ field.display }}</option>
             </select>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="d-flex justify-content-between">
+        <div class="form-group">
             <div data-toggle="tooltip" data-placement="bottom" title="Todo searching term">
                 <label for="todo_searching_term">Search for:</label>
                 <input class="form-text-input form-control" type="text" id="todo_searching_term"
                         [(ngModel)]="todosearchterm" name="field">
             </div>
-            <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
-                <input class="form-check-input" type="checkbox" id="todo_search_casesense"
-                        [(ngModel)]="todosearchcase" name="casesense" (click)="todosearchcaseChange.emit(todosearchcase)">
-                <label for="todo_search_casesense">Case sensitive</label>
+            <div class="d-flex justify-content-between">
+                <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
+                    <input class="form-check-input" type="checkbox" id="todo_search_casesense"
+                            [(ngModel)]="todosearchcase" name="casesense" (click)="todosearchcaseChange.emit(todosearchcase)">
+                    <label for="todo_search_casesense">Case sensitive</label>
+                </div>
+                <div data-toggle="tooltip" data-placement="bottom" title="Toggle highlighting matches">
+                    <input class="form-check-input" type="checkbox" id="todo_search_highlight"
+                            [(ngModel)]="todosearchhighlight" name="todosearchhighlight" (click)="todosearchhighlightChange.emit(todosearchhighlight)">
+                    <label for="todo_search_highlight">Highlight matches</label>
+                </div>
             </div>
-            <div data-toggle="tooltip" data-placement="bottom" title="Toggle highlighting matches">
-                <input class="form-check-input" type="checkbox" id="todo_search_highlight"
-                        [(ngModel)]="todosearchhighlight" name="todosearchhighlight" (click)="todosearchhighlightChange.emit(todosearchhighlight)">
-                <label for="todo_search_highlight">Highlight matches</label>
-            </div>
-            <div>
-                <button type="button" class="btn btn-primary" (click)="updateSubmitState(true)">Search</button>
-                <button type="button" class="btn btn-warning" (click)="updateSubmitState(false)">Reset</button>
+        </div>
+        <div class="form-group" *ngIf="todosearchRules.size">
+            <h2>Active searching rules:</h2>
+            <div *ngFor="let field of todosearchRules.keys()">
+                <span>Field: "{{ field }}"</span>&nbsp;
+                <span>Term: "{{ todosearchRules.get(field) }}"</span>
             </div>
         </div>
     </div>
-    <div *ngIf="todosearchRules.size">
-        <h3>Active searching rules:</h3>
-        <div *ngFor="let field of todosearchRules.keys()">
-            <span>Field: "{{ field }}"</span>&nbsp;
-            <span>Term: "{{ todosearchRules.get(field) }}"</span>
+
+    <div class="modal-footer">
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="modal.close('Submitted by button click')">Search</button>
+            <button type="button" class="btn btn-danger" (click)="removeTodoSearchRule()">Remove rule</button>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-warning" (click)="updateSubmitState(false); modal.dismiss('Reseted by button click')">Reset</button>
+            <button type="button" class="btn btn-secondary" (click)="updateSubmitState(true); modal.dismiss('Closed by button click')">Close</button>
         </div>
     </div>
-</div>
+</ng-template>

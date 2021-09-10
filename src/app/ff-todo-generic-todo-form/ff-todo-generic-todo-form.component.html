@@ -22,8 +22,8 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="description" [ngModel]="model.description" (ngModelChange)="changeModelField('description', $event)"
-                                name="description" value="model.description" #description="ngModel">
+                        <textarea type="text" class="form-control" id="description" [ngModel]="model.description" (ngModelChange)="changeModelField('description', $event)"
+                                name="description" value="model.description" #description="ngModel" maxlength="{{ descriptionMaxLength }}"></textarea>
                     </div>
                 </div>
 

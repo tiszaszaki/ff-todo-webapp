@@ -23,6 +23,8 @@ export class AppComponent {
   public initTodoListTrigger = new Subject<void>();
   public restoreTodoListTrigger = new Subject<void>();
 
+  public prepareSearchTodoFormTrigger = new Subject<void>();
+
   public toggleReadonlyTodoTrigger = new Subject<Boolean>();
   public toggleReadonlyTaskTrigger = new Subject<Boolean>();
 
@@ -54,6 +56,10 @@ export class AppComponent {
 
   restoreTodoList() {
     this.restoreTodoListTrigger.next();
+  }
+
+  prepareSearchTodoForm() {
+    this.prepareSearchTodoFormTrigger.next();
   }
 
   updateReadonlyTodo(val: Boolean) {

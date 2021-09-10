@@ -22,6 +22,8 @@ export class FfTodoHeaderComponent implements OnInit {
   @Output() initTodoList = new EventEmitter<void>();
   @Output() restoreTodoList = new EventEmitter<void>();
 
+  @Output() prepareSearchTodoForm = new EventEmitter<void>();
+
   @Output() toggleReadonlyTodo = new EventEmitter<Boolean>();
   @Output() toggleReadonlyTask = new EventEmitter<Boolean>();
 

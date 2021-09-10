@@ -1,6 +1,6 @@
 <app-ff-todo-header [title]="title" [readonlyTodo]="readonlyTodo" [todo_count]="todo_count" [enableRestoreTodos]="enableRestoreTodos"
         (prepareAddTodoForm)="prepareAddTodoForm()" (prepareRemovingAllTodos)="prepareRemovingAllTodos()"
-        (initTodoList)="initTodoList()" (restoreTodoList)="restoreTodoList()"
+        (initTodoList)="initTodoList()" (restoreTodoList)="restoreTodoList()" (prepareSearchTodoForm)="prepareSearchTodoForm()"
         (toggleReadonlyTodo)="toggleReadonlyTodo($event)" (toggleReadonlyTask)="toggleReadonlyTask($event)">
 </app-ff-todo-header>
 
@@ -9,6 +9,7 @@
         [prepareAddTodoFormEvent]="prepareAddTodoFormTrigger.asObservable()"
         [prepareRemovingAllTodosEvent]="prepareRemovingAllTodosTrigger.asObservable()"
         [initTodoListEvent]="initTodoListTrigger.asObservable()" [restoreTodoListEvent]="restoreTodoListTrigger.asObservable()"
+        [prepareSearchTodoFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
         [toggleReadonlyTodoEvent]="toggleReadonlyTodoTrigger.asObservable()" [toggleReadonlyTaskEvent]="toggleReadonlyTaskTrigger.asObservable()">
 </app-ff-todo-list>
 

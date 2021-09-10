@@ -33,8 +33,10 @@
 			[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="todo_searching_rules"
 			(todosearchcaseChange)="updateTodoSearchingCaseSense($event)"
 			(todosearchhighlightChange)="updateTodoSearchingHighlightMatches($event)"
-			(todosearchruleChange)="updateTodoSearchingRule($event)" (todosearchfieldReset)="clearTodoSearchingRules()"
-			(updateSubmitStateEvent)="updateSearchSubmit($event)">
+			(todosearchruleChange)="updateTodoSearchingRule($event)" (todosearchruleRemove)="removeTodoSearchingRule($event)"
+			(todosearchfieldReset)="clearTodoSearchingRules()"
+			(updateSubmitStateEvent)="updateSearchSubmit($event)"
+			[preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()">
 	</app-ff-todo-searching-form>
 	<table class="table mt-3">
 		<tbody>

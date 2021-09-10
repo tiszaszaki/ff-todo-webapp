@@ -52,6 +52,10 @@
           <span *ngIf="!readonlyTask"><i class="fas fa-unlock"></i></span>
           &nbsp;Tasks
         </button>
+        <button type="button" class="btn btn-primary w-25" (click)="prepareSearchTodoForm.emit()" [disabled]="!todo_count"
+            data-toggle="tooltip" data-placement="bottom" title="Search Todos">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
     </div>
   </div>

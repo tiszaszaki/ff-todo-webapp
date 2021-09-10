@@ -27,6 +27,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() initTodoListEvent!: Observable<void>;
   @Input() restoreTodoListEvent!: Observable<void>;
 
+  @Input() prepareSearchTodoFormEvent!: Observable<void>;
+
   @Input() toggleReadonlyTodoEvent!: Observable<Boolean>;
   @Input() toggleReadonlyTaskEvent!: Observable<Boolean>;
 
@@ -36,6 +38,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareEditTodoFormTrigger = new Subject<void>();
   public prepareRemoveTodoFormTrigger = new Subject<void>();
   public prepareRemoveAllTodosFormTrigger = new Subject<void>();
+
+  public prepareSearchTodoFormTrigger = new Subject<void>();
 
   public prepareAddTaskFormTrigger = new Subject<void>();
   public prepareEditTaskFormTrigger = new Subject<void>();
@@ -47,18 +51,10 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   private initTodoListListener!: Subscription;
   private restoreTodoListListener!: Subscription;
 
+  private prepareSearchTodoFormListener!: Subscription;
+
   private toggleReadonlyTodoListener!: Subscription;
   private toggleReadonlyTaskListener!: Subscription;
-
-  public addTodoFormShown: Boolean = false;
-  public editTodoFormShown: Boolean = false;
-  public removeTodoFormShown: Boolean = false;
-  public removeAllTodosFormShown: Boolean = false;
-
-  public addTaskFormShown: Boolean = false;
-  public editTaskFormShown: Boolean = false;
-  public removeTaskFormShown: Boolean = false;
-  public removeAllTasksFormShown: Boolean = false;
 
   public todoQuerySuccess!: Boolean;
 
@@ -171,21 +167,40 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     console.log(this.todo_searching_rules.size);
   }
 
+  removeTodoSearchingRule(fieldName: String) {
+
+    this.todo_searching_rules.delete(fieldName);
+
+    console.log(`removeTodoSearchingRule: "${fieldName}"`);
+
+    for (let idx in this.phase_labels)
+    {
+      this.showDescriptionLength[idx][1] = !(fieldName == 'descriptionLength');
+      this.showDateCreated[idx][1] = !(fieldName == 'dateCreated');
+      this.showTaskCount[idx][1] = !(fieldName == 'taskCount');
+
+      console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
+    }
+  }
+
   updateTodoSearchingRule(rule: SearchingRule) {
     let term = rule.term;
     let fieldName = rule.field;
 
-    this.todo_searching_rules.set(fieldName, term);
-
-    console.log(`updateTodoSearchingRule: "${fieldName}" -> "${term}"`);
-
-    for (let idx in this.phase_labels)
+    if (fieldName != '')
     {
-      this.showDescriptionLength[idx][1] = (fieldName == 'descriptionLength');
-      this.showDateCreated[idx][1] = (fieldName == 'dateCreated');
-      this.showTaskCount[idx][1] = (fieldName == 'taskCount');
+      this.todo_searching_rules.set(fieldName, term);
 
-      console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
+      console.log(`updateTodoSearchingRule: "${fieldName}" -> "${term}"`);
+
+      for (let idx in this.phase_labels)
+      {
+        this.showDescriptionLength[idx][1] = (fieldName == 'descriptionLength');
+        this.showDateCreated[idx][1] = (fieldName == 'dateCreated');
+        this.showTaskCount[idx][1] = (fieldName == 'taskCount');
+
+        console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
+      }
     }
   }
 
@@ -259,15 +274,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.task_sorting_executed[idx] = false;
       console.log('Task sorting turned OFF');
     }
-  }
-
-  private checkIfNoFormShown() {
-    let result = true;
-    result &&= (!this.addTodoFormShown && !this.editTodoFormShown);
-    result &&= (!this.removeTodoFormShown && !this.removeAllTodosFormShown);
-    result &&= (!this.addTaskFormShown && !this.editTaskFormShown);
-    result &&= (!this.removeTaskFormShown && !this.removeAllTasksFormShown);
-    return result;
   }
 
   private getTodo(id : number) {
@@ -399,90 +405,63 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  prepareSearchTodoForm() {
+    console.log(`Preparing form for adding new Todo...`);
+    this.prepareSearchTodoFormTrigger.next();
+  }
+
   prepareAddTodoForm() {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for adding new Todo...`);
-      this.addTodoFormShown = !this.addTodoFormShown;
-      this.prepareAddTodoFormTrigger.next();
-    }
+    console.log(`Preparing form for adding new Todo...`);
+    this.prepareAddTodoFormTrigger.next();
   }
 
   prepareEditTodoForm(id : number) {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for editing Todo...`);
-      this.getTodo(id).subscribe(todo => {
-        this.oldPhase = todo.phase;
-        this.todoSelected = todo;
-        this.editTodoFormShown = !this.editTodoFormShown;
-        this.prepareEditTodoFormTrigger.next();
-      });
-    }
+    console.log(`Preparing form for editing Todo...`);
+    this.getTodo(id).subscribe(todo => {
+      this.oldPhase = todo.phase;
+      this.todoSelected = todo;
+      this.prepareEditTodoFormTrigger.next();
+    });
   }
 
   prepareRemoveTodoForm(id : number) {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for removing Todo...`);
-      this.getTodo(id).subscribe(todo => {
-        this.todoSelected = todo;
-        this.removeTodoFormShown = !this.removeTodoFormShown;
-        this.prepareRemoveTodoFormTrigger.next();
-      });
-    }
+    console.log(`Preparing form for removing Todo...`);
+    this.getTodo(id).subscribe(todo => {
+      this.todoSelected = todo;
+      this.prepareRemoveTodoFormTrigger.next();
+    });
   }
 
   prepareRemovingAllTodos() {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for removing all Todos...`);
-      this.removeAllTodosFormShown = !this.removeAllTodosFormShown;
-      this.prepareRemoveAllTodosFormTrigger.next();
-    }
+    console.log(`Preparing form for removing all Todos...`);
+    this.prepareRemoveAllTodosFormTrigger.next();
   }
 
   prepareAddTaskForm(id : number) {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for editing Task...`);
-      this.todoId = id;
-      this.addTaskFormShown = !this.addTaskFormShown;
-      this.prepareAddTaskFormTrigger.next();
-    }
+    console.log(`Preparing form for editing Task...`);
+    this.todoId = id;
+    this.prepareAddTaskFormTrigger.next();
   }
 
   prepareEditTaskForm(markedTask : Task) {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for editing Task...`);
-      this.todoId = (markedTask.todoId ? markedTask.todoId : -1);
-      this.taskSelected = markedTask;
-      this.editTaskFormShown = !this.editTaskFormShown;
-      this.prepareEditTaskFormTrigger.next();
-    }
+    console.log(`Preparing form for editing Task...`);
+    this.todoId = (markedTask.todoId ? markedTask.todoId : -1);
+    this.taskSelected = markedTask;
+    this.prepareEditTaskFormTrigger.next();
   }
 
   prepareRemoveTaskForm(markedTask : Task) {
-    if (true || this.checkIfNoFormShown())
-    {
-      let tempTodoId = (markedTask.todoId ? markedTask.todoId : -1);
-      console.log(`Preparing form for removing Task...`);
-      this.todoId = tempTodoId;
-      this.taskSelected = markedTask;
-      this.removeTaskFormShown = !this.removeTaskFormShown;
-      this.prepareRemoveTaskFormTrigger.next();
-    }
+    let tempTodoId = (markedTask.todoId ? markedTask.todoId : -1);
+    console.log(`Preparing form for removing Task...`);
+    this.todoId = tempTodoId;
+    this.taskSelected = markedTask;
+    this.prepareRemoveTaskFormTrigger.next();
   }
 
   prepareRemoveAllTasksForm(id : number) {
-    if (true || this.checkIfNoFormShown())
-    {
-      console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
-      this.todoId = id;
-      this.removeAllTasksFormShown = !this.removeAllTasksFormShown;
-      this.prepareRemoveAllTasksFormTrigger.next();
-    }
+    console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
+    this.todoId = id;
+    this.prepareRemoveAllTasksFormTrigger.next();
   }
 
   addTodo(todo : Todo) {
@@ -639,6 +618,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.initTodoListListener = this.initTodoListEvent.subscribe(() => this.refreshTodoList());
     this.restoreTodoListListener = this.restoreTodoListEvent.subscribe(() => this.restoreTodoList());
 
+    this.prepareSearchTodoFormListener = this.prepareSearchTodoFormEvent.subscribe(() => this.prepareSearchTodoForm());
+
     this.toggleReadonlyTodoListener = this.toggleReadonlyTodoEvent.subscribe((val) => { 
       this.readonlyTodo = val;
       this.refreshTodoList();
@@ -654,6 +635,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.prepareRemovingAllTodosListener.unsubscribe();
     this.initTodoListListener.unsubscribe();
     this.restoreTodoListListener.unsubscribe();
+
+    this.prepareSearchTodoFormListener.unsubscribe();
 
     this.toggleReadonlyTodoListener.unsubscribe();
     this.toggleReadonlyTaskListener.unsubscribe();
