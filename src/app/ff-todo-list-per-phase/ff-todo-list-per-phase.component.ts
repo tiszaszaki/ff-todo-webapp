@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Task } from '../task';
 import { Todo } from '../todo';
 
@@ -7,7 +8,7 @@ import { Todo } from '../todo';
   templateUrl: './ff-todo-list-per-phase.component.html',
   styleUrls: ['./ff-todo-list-per-phase.component.css']
 })
-export class FfTodoListPerPhaseComponent implements OnInit {
+export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   constructor() { }
 
@@ -52,6 +53,19 @@ export class FfTodoListPerPhaseComponent implements OnInit {
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
 
+  @Input() notifySearchResultsIn = new Observable<void>();
+
+  @Output() notifySearchResultsOut = new EventEmitter<Number>();
+
+  private notifySearchResultsListener = new Subscription;
+
+  public searchres : Todo[] = [];
+
   ngOnInit(): void {
+    this.notifySearchResultsListener = this.notifySearchResultsIn.subscribe(() => this.notifySearchResultsOut.emit(this.searchres.length));
+  }
+
+  ngOnDestroy(): void {
+    this.notifySearchResultsListener.unsubscribe();
   }
 }

@@ -44,11 +44,28 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     {name: 'descriptionLength', display: 'Todo description length'},
     {name: 'taskCount', display: 'Task count in Todo'},
     {name: 'dateCreated', display: 'Date of Todo created'},
-    {name: 'dateModified', display: 'Date of Todo updated'}
+    {name: 'dateModified', display: 'Date of Todo updated'},
+    {name: 'tasks.name', display: 'Task name'},
+    {name: 'tasks.done', display: 'Task checked'}
   ];
 
   constructor(private modalService: NgbModal) {
     this.resetTodoSearching();
+  }
+
+  getTodoSearchingFieldDisplay(field: String): String {
+    let result: String='';
+
+    for (let fieldEntry of this.todoSearchingFields)
+    {
+      if (fieldEntry.name == field)
+      {
+        result = fieldEntry.display;
+        break;
+      }
+    }
+
+    return result;
   }
 
   removeTodoSearchRule() {

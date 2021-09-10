@@ -36,18 +36,20 @@
         <div class="form-group" *ngIf="todosearchRules.size">
             <h5>Active searching rules:</h5>
             <div class="border border-secondary rounded">
-                <table class="table table-hover">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                        <th scope="col">Field</th>
-                        <th scope="col">Term</th>
+                            <th scope="col">Field</th>
+                            <th scope="col">Display</th>
+                            <th scope="col">Term</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let field of todosearchRules.keys()">
-                        <td>{{ field }}</td>
-                        <td>{{ todosearchRules.get(field) }}</td>
-                    </tr>
+                        <tr *ngFor="let field of todosearchRules.keys()">
+                            <td>{{ field }}</td>
+                            <td>{{ getTodoSearchingFieldDisplay(field) }}</td>
+                            <td>{{ todosearchRules.get(field) }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

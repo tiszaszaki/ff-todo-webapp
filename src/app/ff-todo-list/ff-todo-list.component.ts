@@ -44,6 +44,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareSortTodoFormTrigger!: Array< Subject<void> >;
   public prepareSortTaskFormTrigger!: Array< Subject<void> >;
 
+  public notifySearchTodoResultsTrigger!: Array< Subject<void> >;
+
   public prepareAddTaskFormTrigger = new Subject<void>();
   public prepareEditTaskFormTrigger = new Subject<void>();
   public prepareRemoveTaskFormTrigger = new Subject<void>();
@@ -129,11 +131,13 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];
+    this.notifySearchTodoResultsTrigger = [];
 
     for (let phase of this.phase_labels)
     {
       this.prepareSortTodoFormTrigger.push(new Subject<void>());
       this.prepareSortTaskFormTrigger.push(new Subject<void>());
+      this.notifySearchTodoResultsTrigger.push(new Subject<void>());
     }
 
     if (!phase_list)
@@ -195,6 +199,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  notifyTodoSearchResults(phase_idx: number, results: Number) {
+    this.addAlertMessage.emit({type: 'info',
+        message: `Searching resulted ${results} Todo(s) in phase '${this.phase_labels[phase_idx]}'.`});
+  }
+
   updateTodoSearchingRule(rule: SearchingRule) {
     let term = rule.term;
     let fieldName = rule.field;
@@ -210,6 +219,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         this.showDescriptionLength[idx][1] = (fieldName == 'descriptionLength');
         this.showDateCreated[idx][1] = (fieldName == 'dateCreated');
         this.showTaskCount[idx][1] = (fieldName == 'taskCount');
+
+        this.notifySearchTodoResultsTrigger[idx].next();
 
         console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
       }

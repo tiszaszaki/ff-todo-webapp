@@ -1,5 +1,5 @@
 <div *ngIf="content.length">
-    <div *ngFor="let todo of content | tszSort:todosortexec:todosortfield:todosortdir | tszSearch:todosearchexec:todosearchcase:todosearchRules:todosearchhighlight">
+    <div *ngFor="let todo of content | tszSort:todosortexec:todosortfield:todosortdir | tszSearch:todosearchexec:todosearchcase:todosearchRules:todosearchhighlight as searchres">
         <app-ff-todo-card [content]="todo" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask" [phaseNum]="phaseNum"
                 [showDescriptionLength]="showDescriptionLength" [showDateCreated]="showDateCreated" [showTaskCount]="showTaskCount"
                 [tasksortexec]="tasksortexec" [tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [displayDateFormat]="displayDateFormat"
@@ -12,4 +12,4 @@
     </div>
 </div>
 <app-ff-todo-list-empty *ngIf="!content.length" [todoQuerySuccess]="todoQuerySuccess"></app-ff-todo-list-empty>
-<app-ff-todo-search-no-results *ngIf="!content.length && todosearchRules.size"></app-ff-todo-search-no-results>
+<app-ff-todo-search-no-results *ngIf="content.length && !searchres.length"></app-ff-todo-search-no-results>
