@@ -34,10 +34,22 @@
             </div>
         </div>
         <div class="form-group" *ngIf="todosearchRules.size">
-            <h2>Active searching rules:</h2>
-            <div *ngFor="let field of todosearchRules.keys()">
-                <span>Field: "{{ field }}"</span>&nbsp;
-                <span>Term: "{{ todosearchRules.get(field) }}"</span>
+            <h5>Active searching rules:</h5>
+            <div class="border border-secondary rounded">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th scope="col">Field</th>
+                        <th scope="col">Term</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let field of todosearchRules.keys()">
+                        <td>{{ field }}</td>
+                        <td>{{ todosearchRules.get(field) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

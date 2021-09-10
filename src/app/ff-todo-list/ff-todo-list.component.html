@@ -47,19 +47,25 @@
 			</tr>
 			<tr class="row border border-2 border-secondary" *ngIf="todo_count">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length"
+					<button type="button" class="btn btn-secondary" (click)="prepareSortTodoForm(idx)">
+						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Todos
+					</button>
+					<button type="button" class="btn btn-secondary" (click)="prepareSortTaskForm(idx)">
+						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Tasks
+					</button>
+
+					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length" [phase_label]="phase_labels[idx]"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							(todosortfieldChange)="updateTodoSortingField(idx, $event)"
 							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"
-							(todosortResetTrigger)="resetTodoSorting(idx)"></app-ff-todo-sorting-form>
-
-					<div class="mt-2">
-						<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]"
-								[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
-								(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
-								(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"
-								(tasksortResetTrigger)="resetTaskSorting(idx)"></app-ff-todo-task-sorting-form>
-					</div>
+							(todosortResetTrigger)="resetTodoSorting(idx)"
+							[preparingFormEvent]="prepareSortTodoFormTrigger[idx].asObservable()"></app-ff-todo-sorting-form>
+					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]" [phase_label]="phase_labels[idx]"
+							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
+							(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
+							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"
+							(tasksortResetTrigger)="resetTaskSorting(idx)"
+							[preparingFormEvent]="prepareSortTaskFormTrigger[idx].asObservable()"></app-ff-todo-task-sorting-form>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary">

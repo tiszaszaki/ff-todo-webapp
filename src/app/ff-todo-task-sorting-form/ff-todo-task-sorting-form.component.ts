@@ -1,20 +1,30 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ff-todo-task-sorting-form',
   templateUrl: './ff-todo-task-sorting-form.component.html',
   styleUrls: ['./ff-todo-task-sorting-form.component.css']
 })
-export class FfTodoTaskSortingFormComponent implements OnInit {
+export class FfTodoTaskSortingFormComponent implements OnInit, OnDestroy {
 
   @Output() tasksortfieldChange = new EventEmitter<String>();
   @Output() tasksortdirChange = new EventEmitter<Boolean>();
   @Output() tasksortResetTrigger = new EventEmitter<void>();
 
+  @Input() preparingFormEvent!: Observable<void>;
+
   @Input() task_list_count!: number;
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
+
+  @Input() phase_label!: String;
+
+  @ViewChild('sortTaskForm') formElement!: TemplateRef<FfTodoTaskSortingFormComponent>;
+
+  private preparingFormListener!: Subscription;
 
   public readonly taskSortingFields = [
     {name: '', display: '(unsorted)'},
@@ -22,7 +32,7 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
     {name: 'done', display: 'Task checked'}
   ];
 
-  constructor() {
+  constructor(private modalService: NgbModal) {
     this.tasksortfield = '';
     this.tasksortdir = false;
   }
@@ -31,7 +41,35 @@ export class FfTodoTaskSortingFormComponent implements OnInit {
     this.tasksortResetTrigger.emit();
   }
 
+  showModal()
+  {
+    console.log(`Trying to open a modal with ID (sortTaskForm)...`);
+
+    const tempModal = this.modalService.open(this.formElement);
+
+    tempModal.result.then((result) => {
+      console.log(`sortTaskForm: ${result}`);
+    }, (reason) => {
+      console.log(`sortTaskForm: ${this.getDismissReason(reason)}`);
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'Closed by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'Closed by clicking on a backdrop';
+    } else {
+      return `${reason}`;
+    }
+  }
+
   ngOnInit(): void {
+    this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+  }
+
+  ngOnDestroy(): void {
+    this.preparingFormListener.unsubscribe();
   }
 
 }

@@ -41,6 +41,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public prepareSearchTodoFormTrigger = new Subject<void>();
 
+  public prepareSortTodoFormTrigger!: Array< Subject<void> >;
+  public prepareSortTaskFormTrigger!: Array< Subject<void> >;
+
   public prepareAddTaskFormTrigger = new Subject<void>();
   public prepareEditTaskFormTrigger = new Subject<void>();
   public prepareRemoveTaskFormTrigger = new Subject<void>();
@@ -123,6 +126,15 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.todo_searching_casesense = false;
     this.todo_searching_highlight = false;
     this.todo_searching_rules = new Map<String,String>();
+
+    this.prepareSortTodoFormTrigger = [];
+    this.prepareSortTaskFormTrigger = [];
+
+    for (let phase of this.phase_labels)
+    {
+      this.prepareSortTodoFormTrigger.push(new Subject<void>());
+      this.prepareSortTaskFormTrigger.push(new Subject<void>());
+    }
 
     if (!phase_list)
     {
@@ -406,8 +418,18 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   prepareSearchTodoForm() {
-    console.log(`Preparing form for adding new Todo...`);
+    console.log(`Preparing form for searching Todos...`);
     this.prepareSearchTodoFormTrigger.next();
+  }
+
+  prepareSortTodoForm(phase_idx: number) {
+    console.log(`Preparing form for sorting Todos...`);
+    this.prepareSortTodoFormTrigger[phase_idx].next();
+  }
+
+  prepareSortTaskForm(phase_idx: number) {
+    console.log(`Preparing form for sorting Tasks...`);
+    this.prepareSortTaskFormTrigger[phase_idx].next();
   }
 
   prepareAddTodoForm() {
