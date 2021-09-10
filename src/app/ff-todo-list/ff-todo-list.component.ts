@@ -208,7 +208,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     let term = rule.term;
     let fieldName = rule.field;
 
-    if (fieldName != '')
+    if ((fieldName != '') && (term != ''))
     {
       this.todo_searching_rules.set(fieldName, term);
 

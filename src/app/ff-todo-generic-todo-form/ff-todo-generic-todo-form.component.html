@@ -11,9 +11,8 @@
             <form #todoForm="ngForm">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" [ngModel]="model.name" (ngModelChange)="changeModelField('name', $event)"
-                            name="name" value="model.name" #name="ngModel"
-                            (keyup.enter)="modal.close('Saved by pressing Enter')" required tszfocus>
+                    <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
+                            #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')" required tszfocus>
                     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                         Name is required
                     </div>
@@ -22,16 +21,17 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <div class="input-group">
-                        <textarea type="text" class="form-control" id="description" [ngModel]="model.description" (ngModelChange)="changeModelField('description', $event)"
-                                name="description" value="model.description" #description="ngModel" maxlength="{{ descriptionMaxLength }}"></textarea>
+                        <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description"
+                                name="description" value="model.description" #description="ngModel" maxlength="{{ descriptionMaxLength }}">
+                        </textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="phase">Todo phase</label>
                     <div class="input-group">
-                        <div class="btn-group btn-group-toggle" ngbRadioGroup id="phase" [ngModel]="model.phase" (ngModelChange)="changeModelField('phase', $event)"
-                                name="phase" value="model.phase" #phase="ngModel" required>
+                        <div class="btn-group btn-group-toggle" ngbRadioGroup id="phase" [(ngModel)]="model.phase" name="phase"
+                                value="model.phase" #phase="ngModel" required>
                             <label ngbButtonLabel class="btn-primary" *ngFor="let phase of phase_labels; let idx=index">
                                 <input ngbButton type="radio" [value]="idx">{{ phase }}
                             </label>
@@ -46,8 +46,8 @@
                 <div class="form-group d-flex justify-content-between">
                     <div class="input-group">
                         <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
-                                [ngModel]="model.deadlineObj" (ngModelChange)="changeModelField('deadline', $event)" (click)="deadlinePick.toggle()"
-                                name="deadline" value="model.deadlineObj | date:inputDateFormat" [placeholder]="inputDateFormatDisp">
+                                [(ngModel)]="model.deadlineObj" name="deadline" value="model.deadlineObj | date:inputDateFormat"
+                                (click)="deadlinePick.toggle()" [placeholder]="inputDateFormatDisp">
                     </div>
                     <button type="button" class="btn btn-primary" (click)="updateDeadline()">Update</button>
                     <button type="button" class="btn btn-secondary" (click)="revertDeadline()">Revert</button>

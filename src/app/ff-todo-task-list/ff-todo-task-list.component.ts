@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Task } from '../task';
 
 @Component({
@@ -7,6 +8,8 @@ import { Task } from '../task';
   styleUrls: ['./ff-todo-task-list.component.css']
 })
 export class FfTodoTaskListComponent implements OnInit {
+
+  constructor(private highlighter: DomSanitizer) { }
 
   @Input() todoId!: number;
 
@@ -24,14 +27,19 @@ export class FfTodoTaskListComponent implements OnInit {
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
 
+  public highlightedNames = new Map<Number,SafeHtml>();
+
   public tasks! : Task[];
 
   public tasklist_collapse_status: boolean = true;
 
-  constructor() { }
-
   ngOnInit(): void {
     this.tasks = JSON.parse(this.tasklistString as string);
+
+    for (let task of this.tasks)
+    {
+      this.highlightedNames.set(task.id, this.highlighter.bypassSecurityTrustHtml(task.name as string));
+    }
 
     if (this.showTaskCount.length == 0)
       this.showTaskCount.push(false, false);

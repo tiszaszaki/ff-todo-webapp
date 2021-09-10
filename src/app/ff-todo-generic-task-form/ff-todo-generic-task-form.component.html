@@ -11,9 +11,8 @@
             <form #taskForm="ngForm">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" [ngModel]="model.name" (ngModelChange)="changeModelField('name', $event)"
-                            name="name" value="model.name" #name="ngModel"
-                            (keyup.enter)="modal.close('Saved by pressing Enter')" required tszfocus>
+                    <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
+                            #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')" required tszfocus>
                     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                         Name is required
                     </div>
@@ -21,8 +20,8 @@
 
                 <div class="form-group d-flex justify-content-begin">
                     <label for="done">Checked</label>
-                    <input type="checkbox" class="form-check-input" id="done" [ngModel]="model.done" (ngModelChange)="changeModelField('done', $event)"
-                            name="done" value="model.done" #name="ngModel">
+                    <input type="checkbox" class="form-check-input" id="done" [(ngModel)]="model.done" name="done"
+                            value="model.done" #name="ngModel">
                 </div>
             </form>
         </div>

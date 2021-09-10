@@ -34,7 +34,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   @Input() tasksortdir!: Boolean;
   @Input() tasksortexec!: Boolean;
 
-  @Input() todosearchexec!: Boolean;
   @Input() todosearchcase!: Boolean;
   @Input() todosearchhighlight!: Boolean;
 

@@ -2,14 +2,16 @@
     <div class="card-header">
         <h5 class="card-title">
 			<div class="text-muted text-center" data-toggle="tooltip" data-placement="bottom" title="Todo ID">{{ content.id }}</div>
-			<div class="text-center" data-toggle="tooltip" data-placement="bottom" title="Todo name">{{ content.name }}</div>
+			<div class="text-center" data-toggle="tooltip" data-placement="bottom" title="Todo name" [innerHTML]="highlightedName">
+				{{ content.name }}
+			</div>
         </h5>
     </div>
     <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item rounded border border-secondary" *ngIf="descriptionLength"
                     data-toggle="tooltip" data-placement="bottom" title="Todo description">
-                <p class="card-text">{{ content.description }}</p>
+                <p class="card-text" [innerHTML]="highlightedDescription">{{ content.description }}</p>
             </li>
             <li class="list-group-item" *ngIf="showDescriptionLength[0] || showDescriptionLength[1]">
                 <p class="card-text">Description length: {{ descriptionLength }}</p>

@@ -101,15 +101,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
     }
   }
 
-  changeModelField(fieldName: string, fieldValue: any) {
-    switch (fieldName)
-    {
-      case 'name': this.model.name = fieldValue; break;
-      case 'done': this.model.done = fieldValue; break;
-      default: break;
-    }
-  }
-
   showModal()
   {
     console.log(`Trying to open a modal with ID (${this.formId})...`);

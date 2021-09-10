@@ -5,10 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TiszaSzakiSearchPipe implements PipeTransform {
 
-  transform(array: any, executed: Boolean, caseSense: Boolean, rules: Map<String,String>, highlight: Boolean): any[] {
+  transform(array: any, caseSense: Boolean, rules: Map<String,String>, highlight: Boolean): any[] {
     let result: any[];
-
-    //if (executed) {
 
     if (Array.isArray(array))
     {
@@ -48,22 +46,18 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
                   else {
                     leftval = lefttemp.toString();
                   }
+
+                  matches = false;
+                  matches ||= (caseSense && (leftval.search(rightval as string) >= 0));
+                  matches ||= (!caseSense && (leftval.toLowerCase().search(rightval.toLowerCase()) >= 0));
       
-                  if (!caseSense) {
-                    leftval = leftval.toUpperCase();
-                    rightval = rightval.toUpperCase();
-                  }
-
-                  matches = (leftval.search(rightval as string) >= 0);
-
                   if (matches) {
                     if (highlight) {
-                      const re = RegExp(`${rightval}`, 'g')
+                      const re = RegExp(`${rightval}`, 'g' + (caseSense ? '' : 'i'));
                       const match = leftval.match(re);
-                      const res = `(${match[0]})`;
+                      const res = `<mark>${match[0]}</mark>`;
       
-                      leftval = leftval.replace(re, res);
-                      elem2[elemField] = leftval;
+                      elem2[elemField] = leftval.replace(re, res);
                     }
                   }
 
@@ -79,6 +73,7 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
           }
           else {
             let lefttemp = elem[field as string];
+            let matches;
 
             if (typeof(lefttemp) == 'string') {
               leftval = lefttemp;
@@ -87,19 +82,17 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
               leftval = lefttemp.toString();
             }
 
-            if (!caseSense) {
-              leftval = leftval.toUpperCase();
-              rightval = rightval.toUpperCase();
-            }
+            matches = false;
+            matches ||= (caseSense && (leftval.search(rightval as string) >= 0));
+            matches ||= (!caseSense && (leftval.toLowerCase().search(rightval.toLowerCase()) >= 0));
 
-            if (leftval.search(rightval as string) >= 0) {
+            if (matches) {
               if (highlight) {
-                const re = RegExp(`${rightval}`, 'g')
+                const re = RegExp(`${rightval}`, 'g' + (caseSense ? '' : 'i'));
                 const match = leftval.match(re);
-                const res = `(${match[0]})`;
+                const res = `<mark>${match[0]}</mark>`;
 
-                leftval = leftval.replace(re, res);
-                elem[field as string] = leftval;
+                elem[field as string] = leftval.replace(re, res);
               }
 
               result.push(elem);
@@ -107,10 +100,10 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
           }
         }
 
-        console.log(`Filtered ${result.length} Todo(s) with TiszaSzakiSearchPipe(${(caseSense ? 'CASE_SENSITIVE' : 'CASE_INSENSITIVE')}, ${term}, ${field})`);
+        console.log(`Filtered ${result.length} Todo(s) with TiszaSzakiSearchPipe(${(caseSense ? 'CASE_SENSITIVE' : 'CASE_INSENSITIVE')}, `
+            + `${term}, ${field}, ${(highlight ? 'HIGHLIGHTING' : 'NON_HIGHLIGHTING')})`);
       }
     }
-    //}
 
     return result;
   }

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { Todo } from '../todo';
@@ -10,8 +11,7 @@ import { Todo } from '../todo';
 })
 export class FfTodoCardComponent implements OnInit {
 
-  constructor() {
-  }
+  constructor(private highlighter: DomSanitizer) { }
 
   @Input() content!: Todo;
   @Input() phaseNum!: number;
@@ -42,6 +42,9 @@ export class FfTodoCardComponent implements OnInit {
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
 
+  public highlightedName!: SafeHtml;
+  public highlightedDescription!: SafeHtml;
+
   public readonlyTodo!: Boolean;
   public readonlyTask!: Boolean;
 
@@ -62,6 +65,9 @@ export class FfTodoCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.contentStr = JSON.stringify(this.content);
+
+    this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
+    this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
 
     if (this.isCardValid)
     {

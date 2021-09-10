@@ -24,7 +24,7 @@
                         <span class="text-muted mr-1" data-toggle="tooltip" data-placement="bottom" title="Task ID">
                             #{{ task.id + 1 }}
                         </span>
-                        <span data-toggle="tooltip" data-placement="bottom" title="Task name">
+                        <span data-toggle="tooltip" data-placement="bottom" title="Task name" [innerHTML]="highlightedNames.get(task.id)">
                             {{ task.name }}
                         </span>
                     </label>

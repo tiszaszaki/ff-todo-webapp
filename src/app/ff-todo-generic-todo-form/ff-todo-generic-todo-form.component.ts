@@ -142,20 +142,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     else { }
   }
 
-  changeModelField(fieldName: string, fieldValue: any) {
-    switch (fieldName)
-    {
-      case 'name': this.model.name = fieldValue; break;
-      case 'description': this.model.description = fieldValue; break;
-      case 'phase': this.model.phase = fieldValue; break;
-      case 'deadline': {
-        this.model.deadlineObj = fieldValue;
-        this.updateDeadlineStr();
-      } break;
-      default: break;
-    }
-  }
-
   showModal()
   {
     console.log(`Trying to open a modal with ID (${this.formId})...`);
