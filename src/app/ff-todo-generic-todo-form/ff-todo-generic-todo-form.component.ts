@@ -65,7 +65,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     if (this.model.deadlineObj)
     {
       this.model.deadline = this.model.deadlineObj.toJSON();
-      console.log(this.model.deadline);
     }
   }
 

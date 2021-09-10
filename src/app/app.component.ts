@@ -14,8 +14,10 @@ export class AppComponent {
 
   public maxAlerts: Number = 5;
 
-  public readonlyTodo!: Boolean;
   public todo_count!: number;
+
+  public todosearchexec!: Boolean;
+  public readonlyTodo!: Boolean;
   public enableRestoreTodos!: Boolean;
 
   public prepareAddTodoFormTrigger = new Subject<void>();
@@ -60,6 +62,10 @@ export class AppComponent {
 
   prepareSearchTodoForm() {
     this.prepareSearchTodoFormTrigger.next();
+  }
+
+  updateTodoSearchExec(val: Boolean) {
+    this.todosearchexec = val;
   }
 
   updateReadonlyTodo(val: Boolean) {

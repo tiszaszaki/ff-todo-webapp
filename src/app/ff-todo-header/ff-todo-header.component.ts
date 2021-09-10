@@ -11,6 +11,7 @@ export class FfTodoHeaderComponent implements OnInit {
 
   @Input() title! : String;
 
+  @Input() todosearchexec!: Boolean;
   @Input() readonlyTodo!: Boolean;
   @Input() readonlyTask!: Boolean;
 

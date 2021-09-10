@@ -7,9 +7,10 @@
                 (shiftLeftTodoEvent)="shiftLeftTodoEvent.emit($event)" (shiftRightTodoEvent)="shiftRightTodoEvent.emit($event)"
                 (addTaskEvent)="addTaskEvent.emit($event)" (editTaskEvent)="editTaskEvent.emit($event)"
                 (checkTaskEvent)="checkTaskEvent.emit($event)" (removeTaskEvent)="removeTaskEvent.emit($event)"
-                (removeAllTasksEvent)="removeAllTasksEvent.emit($event)">
+                (removeAllTasksEvent)="removeAllTasksEvent.emit($event)" [todosearchexec]="todosearchexec"
+                [searchresCount]="searchres.length" (searchresCountUpdate)="searchresCount = $event">
         </app-ff-todo-card>
     </div>
 </div>
 <app-ff-todo-list-empty *ngIf="!content.length" [todoQuerySuccess]="todoQuerySuccess"></app-ff-todo-list-empty>
-<app-ff-todo-search-no-results *ngIf="content.length && !searchres.length"></app-ff-todo-search-no-results>
+<app-ff-todo-search-no-results *ngIf="content.length && !searchresCount"></app-ff-todo-search-no-results>

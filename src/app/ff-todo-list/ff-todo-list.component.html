@@ -77,7 +77,7 @@
 							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"
 							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
 							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							[todosearchcase]="todo_searching_casesense"
+							[todosearchcase]="todo_searching_casesense" [todosearchexec]="searchSubmitted"
 							[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="todo_searching_rules"
 							[notifySearchResultsIn]="notifySearchTodoResultsTrigger[idx].asObservable()"
 							(notifySearchResultsOut)="notifyTodoSearchResults(idx, $event)"

@@ -22,11 +22,11 @@
 
     <div class="border border-3 border-secondary rounded p-2" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()" [disabled]="readonlyTodo"
+        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()" [disabled]="readonlyTodo || todosearchexec"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos.emit()" [disabled]="readonlyTodo"
+        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos.emit()" [disabled]="readonlyTodo || todosearchexec"
             data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
             [disabled]="!todo_count">
           <i class="fas fa-broom"></i>

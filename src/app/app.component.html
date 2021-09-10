@@ -1,11 +1,11 @@
 <app-ff-todo-header [title]="title" [readonlyTodo]="readonlyTodo" [todo_count]="todo_count" [enableRestoreTodos]="enableRestoreTodos"
-        (prepareAddTodoForm)="prepareAddTodoForm()" (prepareRemovingAllTodos)="prepareRemovingAllTodos()"
+        [todosearchexec]="todosearchexec" (prepareAddTodoForm)="prepareAddTodoForm()" (prepareRemovingAllTodos)="prepareRemovingAllTodos()"
         (initTodoList)="initTodoList()" (restoreTodoList)="restoreTodoList()" (prepareSearchTodoForm)="prepareSearchTodoForm()"
         (toggleReadonlyTodo)="toggleReadonlyTodo($event)" (toggleReadonlyTask)="toggleReadonlyTask($event)">
 </app-ff-todo-header>
 
 <app-ff-todo-list (updateReadonlyTodo)="updateReadonlyTodo($event)" (updateTodoCount)="updateTodoCount($event)" (toggleRestoreTodos)="toggleRestoreTodos($event)"
-        (addAlertMessage)="addAlertMessage($event)" [displayDateFormat]="displayDateFormat"
+        (addAlertMessage)="addAlertMessage($event)" [displayDateFormat]="displayDateFormat" (updateTodoSearchExec)="updateTodoSearchExec($event)"
         [prepareAddTodoFormEvent]="prepareAddTodoFormTrigger.asObservable()"
         [prepareRemovingAllTodosEvent]="prepareRemovingAllTodosTrigger.asObservable()"
         [initTodoListEvent]="initTodoListTrigger.asObservable()" [restoreTodoListEvent]="restoreTodoListTrigger.asObservable()"

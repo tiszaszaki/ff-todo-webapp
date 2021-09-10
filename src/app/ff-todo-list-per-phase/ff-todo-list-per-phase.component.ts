@@ -36,6 +36,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   @Input() todosearchcase!: Boolean;
   @Input() todosearchhighlight!: Boolean;
+  @Input() todosearchexec!: Boolean;
 
   @Input() todosearchRules!: Map<String,String>;
 
@@ -58,10 +59,10 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   private notifySearchResultsListener = new Subscription;
 
-  public searchres : Todo[] = [];
+  public searchresCount: number = 0;
 
   ngOnInit(): void {
-    this.notifySearchResultsListener = this.notifySearchResultsIn.subscribe(() => this.notifySearchResultsOut.emit(this.searchres.length));
+    this.notifySearchResultsListener = this.notifySearchResultsIn.subscribe(() => this.notifySearchResultsOut.emit(this.searchresCount));
   }
 
   ngOnDestroy(): void {

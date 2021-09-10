@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
@@ -9,7 +9,7 @@ import { Todo } from '../todo';
   templateUrl: './ff-todo-card.component.html',
   styleUrls: ['./ff-todo-card.component.css']
 })
-export class FfTodoCardComponent implements OnInit {
+export class FfTodoCardComponent implements OnInit, OnChanges {
 
   constructor(private highlighter: DomSanitizer) { }
 
@@ -22,12 +22,16 @@ export class FfTodoCardComponent implements OnInit {
 
   @Input() displayDateFormat!: string;
 
+  @Input() todosearchexec!: Boolean;
+
   @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
   @Input('readonlyTask') _readonlyTask?: Boolean = false;
 
   @Input() showDescriptionLength!: Boolean[];
   @Input() showTaskCount!: Boolean[];
   @Input() showDateCreated!: Boolean[];
+
+  @Input() searchresCount!: number;
 
   @Output() editTodoEvent = new EventEmitter<number>();
   @Output() removeTodoEvent = new EventEmitter<number>();
@@ -41,6 +45,8 @@ export class FfTodoCardComponent implements OnInit {
   @Output() editTaskEvent = new EventEmitter<Task>();
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
+
+  @Output() searchresCountUpdate = new EventEmitter<number>();
 
   public highlightedName!: SafeHtml;
   public highlightedDescription!: SafeHtml;
@@ -95,6 +101,7 @@ export class FfTodoCardComponent implements OnInit {
     this.readonlyTodo = (this._readonlyTodo ? this._readonlyTodo : false);
     this.readonlyTask = (this._readonlyTask ? this._readonlyTask : false);
 
+    this.readonlyTodo ||= this.todosearchexec;
     this.readonlyTask ||= this.readonlyTodo;
 
     if (this.showDescriptionLength.length == 0)
@@ -106,6 +113,13 @@ export class FfTodoCardComponent implements OnInit {
       this.showDateCreated.push(false, false);
     if (this.showDateCreated.length == 1)
       this.showDateCreated.push(false);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.searchresCount)
+    {
+      this.searchresCountUpdate.emit(this.searchresCount);
+    }
   }
 
   addTask() {

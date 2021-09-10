@@ -16,6 +16,7 @@ import { TiszaSzakiAlert } from '../tsz-alert';
 })
 export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
+  @Output() updateTodoSearchExec = new EventEmitter<Boolean>();
   @Output() updateReadonlyTodo = new EventEmitter<Boolean>();
   @Output() updateTodoCount = new EventEmitter<number>();
   @Output() toggleRestoreTodos = new EventEmitter<Boolean>();
@@ -180,7 +181,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   clearTodoSearchingRules() {
     this.todo_searching_rules.clear();
-    console.log(this.todo_searching_rules.size);
   }
 
   removeTodoSearchingRule(fieldName: String) {
@@ -678,5 +678,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(): void {
     this.enabledRestoreTodos &&= !this.readonlyTodo;
     this.toggleRestoreTodos.emit(this.enabledRestoreTodos);
+    this.updateTodoSearchExec.emit(this.searchSubmitted);
   }
 }

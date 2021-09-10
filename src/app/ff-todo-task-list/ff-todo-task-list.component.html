@@ -22,7 +22,7 @@
                             (click)="checkTask(task)" *ngIf="!readonlyTask" id="task_name">
                     <label for="task_name">
                         <span class="text-muted mr-1" data-toggle="tooltip" data-placement="bottom" title="Task ID">
-                            #{{ task.id + 1 }}
+                            ({{ task.id }})
                         </span>
                         <span data-toggle="tooltip" data-placement="bottom" title="Task name" [innerHTML]="highlightedNames.get(task.id)">
                             {{ task.name }}
