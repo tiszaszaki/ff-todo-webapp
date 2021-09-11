@@ -13,8 +13,19 @@ import { Todo } from './todo';
 export class FfTodoRealRequestService {
 
   private backendUrl!: string;
+  private boardPath!: string;
   private todoPath!: string;
   private taskPath!: string;
+
+  private boardTodoTaskPath(id1: number, id2: number): string
+  {
+    return `${this.boardPath}/${id1}/todo/${id2}/task`;
+  }
+
+  private boardTodoPath(id: number): string
+  {
+    return `${this.boardPath}/${id}/todo`;
+  }
 
   private todoTaskPath(id: number): string
   {
@@ -29,6 +40,7 @@ export class FfTodoRealRequestService {
 
   constructor(private http: HttpClient) {
     this.backendUrl = environment.apiUrl;
+    this.boardPath = this.backendUrl + 'board';
     this.todoPath = this.backendUrl + 'todo';
     this.taskPath = this.backendUrl + 'task';
   }
@@ -58,7 +70,7 @@ export class FfTodoRealRequestService {
   }
 
   addTodo(todo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.todoPath}`, todo, this.httpOptions).pipe(
+    return this.http.put<Todo>(`${this.boardTodoPath(0)}`, todo, this.httpOptions).pipe(
       tap((newTodo: Todo) => console.log(`Added new Todo: ${JSON.stringify(newTodo)}`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
