@@ -62,10 +62,10 @@
 				data-toggle="tooltip" data-placement="bottom" title="Board title">{{ boardContent.name }}</h2>
 		<div *ngIf="boardContent.description" class="border border-secondary rounded w-75"
 				data-toggle="tooltip" data-placement="bottom" title="Board description">{{ boardContent.description }}</div>
-		<div class="text-muted" *ngIf="!boardContent.description">No description added</div>
+		<div class="text-muted" *ngIf="boardContent.name && !boardContent.description">No description added</div>
 		<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
-		<div class="text-muted" *ngIf="!boardContent.author">Unknown author</div>
-		<div>
+		<div class="text-muted" *ngIf="boardContent.name && !boardContent.author">Unknown author</div>
+		<div *ngIf="boardContent.name">
 			<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
 					data-toggle="tooltip" data-placement="bottom" title="Edit Board">
 				<i class="fas fa-pencil-alt"></i>&nbsp;Board
@@ -76,7 +76,7 @@
 			</button>
 		</div>
 	</div>
-	<table class="table mt-3">
+	<table class="table mt-3" *ngIf="this.boardSelected">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let phase of phase_labels">

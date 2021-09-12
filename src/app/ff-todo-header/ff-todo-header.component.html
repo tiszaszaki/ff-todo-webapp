@@ -27,7 +27,7 @@
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>
         <button type="button" class="btn btn-warning w-50" (click)="updateSelectedBoard.emit(boardSelected)"
-            data-toggle="tooltip" data-placement="bottom" title="Refresh Board">
+            data-toggle="tooltip" data-placement="bottom" title="Refresh Board" [disabled]="!boardSelected">
           <i class="fas fa-sync-alt"></i>&nbsp;Board
         </button>
         <select class="form-select form-control" [(ngModel)]="boardSelected" name="boardSelected"
@@ -35,7 +35,7 @@
           <option *ngFor="let field of boardNameMapping.keys()" [value]="field">{{ boardNameMapping.get(field) }}</option>
         </select>
       </div>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between" *ngIf="boardNameMapping.size">
         <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()" [disabled]="readonlyTodo || todosearchexec"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Todo
@@ -55,7 +55,7 @@
             <i class="fas fa-trash-restore-alt"></i>&nbsp;Todos
         </button>
       </div>
-      <div class="d-flex justify-content-start">
+      <div class="d-flex justify-content-start" *ngIf="boardNameMapping.size">
         <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTodo()">
           <span *ngIf="readonlyTodo"><i class="fas fa-lock"></i></span>
           <span *ngIf="!readonlyTodo"><i class="fas fa-unlock"></i></span>

@@ -338,6 +338,20 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
       this.boardNameMapping = new Map<Number, String>();
 
+      if (!results.length)
+      {
+        this.boardSelected = NaN;
+        this.boardContent = new Board();
+
+        this.readonlyTask = false;
+        this.updateReadonlyTask.emit(this.readonlyTask);
+
+        this.readonlyTodo = false;      
+        this.updateReadonlyTodo.emit(this.readonlyTodo);
+      
+        this.updateBoardNames.emit(this.boardNameMapping);
+      }
+
       for (let id of results)
       {
         this.todoServ.getBoard(id as number).subscribe(result => {

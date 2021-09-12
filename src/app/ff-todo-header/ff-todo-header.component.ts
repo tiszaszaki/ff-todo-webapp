@@ -52,6 +52,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.boardNameMapping)
     {
+      this.boardSelected = NaN;
       for (let id of this.boardNameMapping.keys())
       {
         this.boardSelected = id;
