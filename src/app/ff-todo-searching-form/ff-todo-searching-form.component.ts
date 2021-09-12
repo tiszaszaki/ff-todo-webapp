@@ -13,8 +13,9 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   @Output() todosearchcaseChange = new EventEmitter<Boolean>();
   @Output() todosearchhighlightChange = new EventEmitter<Boolean>();
 
-  @Output() todosearchruleChange = new EventEmitter<SearchingRule>();
   @Output() todosearchruleRemove = new EventEmitter<String>();
+  @Output() todosearchruleChange = new EventEmitter<SearchingRule>();
+  @Output() todosearchruleReset = new EventEmitter<void>();
 
   @Output() updateSubmitStateEvent = new EventEmitter<Boolean>();
 
@@ -102,6 +103,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     this.todosearchcase = false;
     this.todosearchhighlight = false;
     this.resetTodoSearchRule();
+    this.todosearchruleReset.emit();
   }
 
   showModal()
@@ -131,10 +133,11 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
-    this.resetFormListener = this.resetFormEvent.subscribe(() => this.updateSubmitState(false));
+    this.resetFormListener = this.resetFormEvent.subscribe(() => this.resetTodoSearching());
   }
 
   ngOnDestroy(): void {
     this.preparingFormListener.unsubscribe();
+    this.resetFormListener.unsubscribe();
   }
 }

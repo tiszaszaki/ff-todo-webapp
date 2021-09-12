@@ -180,6 +180,12 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.addAlertMessage.emit({type:'warning', message: 'Trying to restore all Todos...'});
   }
 
+  resetSearchSubmit() {
+    this.searchSubmitted = false;
+
+    this.todo_searching_rules.clear();
+  }
+
   updateSearchSubmit(state: Boolean) {
     this.searchSubmitted = state;
 
@@ -188,7 +194,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.todo_searching_rules.clear();
     }
 
-    this.getTodos(new Set());
+    this.getTodos();
   }
 
   updateTodoSearchingCaseSense(casesense: Boolean) {
@@ -343,7 +349,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
             for (let id of this.boardNameMapping.keys())
             {
-              this.updateBoard(id);
+              this.boardSelected = id;
               break;
             }
 
@@ -366,9 +372,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  private updateBoard(id : Number) {
+  private updateBoard(id: Number) {
     this.boardSelected = id;
-
     this.todoServ.getBoard(this.boardSelected as number).subscribe(board => {
       this.boardContent = board;
       this.getTodos();
