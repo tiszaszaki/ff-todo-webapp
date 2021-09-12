@@ -66,6 +66,36 @@ export class FfTodoRealRequestService {
     );
   }
 
+  addBoard(board: Board): Observable<Board> {
+    return this.http.put<Board>(`${this.boardPath}`, board, this.httpOptions).pipe(
+      tap((newBoard: Board) => console.log(`Added new Board: ${JSON.stringify(newBoard)}`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    )
+  }
+
+  editBoard(id : number, patchedBoard: Board): Observable<any> {
+    return this.http.patch(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
+      tap(_ => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  removeBoard(id: number): Observable<any> {
+    return this.http.delete(`${this.boardPath}/${id}`).pipe(
+      tap(_ => console.log(`Removed Board with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
   getTodo(id : number) : Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
         tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),

@@ -1,11 +1,24 @@
 <div class="container" role="main">
 	<div>
+		<app-ff-todo-generic-board-form #addBoardForm [mode]="ADD_BOARD" [descriptionMaxLength]="boardDescriptionMaxLength"
+				[preparingFormEvent]="prepareAddBoardFormTrigger.asObservable()" (submitDataEvent)="addBoard($event)">
+		</app-ff-todo-generic-board-form>
+
+		<app-ff-todo-generic-board-form #editBoardForm [mode]="EDIT_BOARD" [(data)]="boardContent"
+				[descriptionMaxLength]="boardDescriptionMaxLength"
+				[preparingFormEvent]="prepareEditBoardFormTrigger.asObservable()" (submitDataEvent)="editBoard($event)">
+		</app-ff-todo-generic-board-form>
+
+		<app-ff-todo-generic-board-form #removeBoardForm [mode]="REMOVE_BOARD" [(data)]="boardContent"
+				[preparingFormEvent]="prepareRemoveBoardFormTrigger.asObservable()" (submitDataEvent)="removeBoard($event)">
+		</app-ff-todo-generic-board-form>
+
 		<app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
+				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				[preparingFormEvent]="prepareAddTodoFormTrigger.asObservable()" (submitDataEvent)="addTodo($event)">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(data)]="todoSelected" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="descriptionMaxLength" [inputDateFormat]="inputDateFormat"
+				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(data)]="todoSelected"
@@ -38,9 +51,21 @@
 			(updateSubmitStateEvent)="updateSearchSubmit($event)"
 			[preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()">
 	</app-ff-todo-searching-form>
-	<h2 class="text-center">{{ boardContent.name }}</h2>
-	<div *ngIf="boardContent.description" class="border border-secondary rounded w-75">{{ boardContent.description }}</div>
-	<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
+	<div *ngIf="boardContent">
+		<h2 class="text-center">{{ boardContent.name }}</h2>
+		<div *ngIf="boardContent.description" class="border border-secondary rounded w-75">{{ boardContent.description }}</div>
+		<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
+		<div>
+			<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
+					data-toggle="tooltip" data-placement="bottom" title="Edit Board">
+				<i class="fas fa-pencil-alt"></i>&nbsp;Board
+			</button>
+			<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveBoardForm()"
+					data-toggle="tooltip" data-placement="bottom" title="Remove Board">
+				<i class="fas fa-trash-alt"></i>&nbsp;Board
+			</button>
+		</div>
+	</div>
 	<table class="table mt-3">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
