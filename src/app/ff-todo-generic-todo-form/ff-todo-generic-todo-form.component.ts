@@ -48,6 +48,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public readonly ADD = TodoOperator.ADD;
   public readonly EDIT = TodoOperator.EDIT;
+  public readonly CLONE = TodoOperator.CLONE;
+  public readonly SHIFT = TodoOperator.SHIFT;
   public readonly REMOVE = TodoOperator.REMOVE;
   public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
@@ -111,6 +113,13 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         {
           let id=this.data.id;
           this.formTitle = `Edit Todo with ID #${id+1}`;
+        }
+      } break;
+      case this.CLONE: {
+        if (this.data)
+        {
+          let id=this.data.id;
+          this.formTitle = `Clone Todo with ID #${id+1}`;
         }
       } break;
       case this.REMOVE: {
@@ -200,7 +209,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   submitForm(condition?: Boolean) {
     if ((condition === undefined) || condition)
     {
-      if (this.isOperatorIncluded(this.ADD,this.EDIT,this.REMOVE))
+      if (this.isOperatorIncluded(this.ADD,this.EDIT,this.CLONE,this.REMOVE))
       {
         this.submitDataEvent.emit(this.model);
       }

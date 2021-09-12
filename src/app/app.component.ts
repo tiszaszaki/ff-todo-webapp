@@ -18,6 +18,7 @@ export class AppComponent {
 
   public todosearchexec!: Boolean;
   public readonlyTodo!: Boolean;
+  public readonlyTask!: Boolean;
   public enableRestoreTodos!: Boolean;
 
   public prepareAddBoardFormTrigger = new Subject<void>();
@@ -87,6 +88,10 @@ export class AppComponent {
 
   updateReadonlyTodo(val: Boolean) {
     this.readonlyTodo = val;
+  }
+
+  updateReadonlyTask(val: Boolean) {
+    this.readonlyTask = val;
   }
 
   updateTodoCount(val: number) {

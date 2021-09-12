@@ -96,6 +96,46 @@ export class FfTodoRealRequestService {
     );
   }
 
+  getBoardReadonlyTodosSetting(id : number) : Observable<Boolean> {
+    return this.http.get<Boolean>(`${this.boardPath}/${id}/readonly-todos`).pipe(
+        tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
+  setBoardReadonlyTodosSetting(id : number, readonly: Boolean) : Observable<void> {
+    return this.http.patch<void>(`${this.boardPath}/${id}/readonly-todos/${readonly}`, undefined).pipe(
+        tap(_ => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
+  getBoardReadonlyTasksSetting(id : number) : Observable<Boolean> {
+    return this.http.get<Boolean>(`${this.boardPath}/${id}/readonly-tasks`).pipe(
+        tap((readonly : Boolean) => console.log(`Fetched Read-only Tasks settings for Board with ID (${id}): (${readonly})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
+  setBoardReadonlyTasksSetting(id : number, readonly: Boolean) : Observable<void> {
+    return this.http.patch<void>(`${this.boardPath}/${id}/readonly-tasks/${readonly}`, undefined).pipe(
+        tap(_ => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
   getTodo(id : number) : Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
         tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
@@ -138,6 +178,16 @@ export class FfTodoRealRequestService {
         return throwError(error);
       })
     )
+  }
+
+  cloneTodo(id : number, phase: number): Observable<Todo> {
+    return this.http.patch<Todo>(`${this.todoPath}/${id}/phase/${phase}`, undefined).pipe(
+      tap((clonedTodo: Todo) => console.log(`Cloned Todo with ID (${clonedTodo.id}): (${JSON.stringify(clonedTodo)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
   }
 
   editTodo(id : number, patchedTodo: Todo): Observable<any> {

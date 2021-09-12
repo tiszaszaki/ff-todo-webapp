@@ -34,6 +34,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
   @Input() searchresCount!: number;
 
   @Output() editTodoEvent = new EventEmitter<number>();
+  @Output() cloneTodoEvent = new EventEmitter<number>();
   @Output() removeTodoEvent = new EventEmitter<number>();
 
   @Output() shiftLeftTodoEvent = new EventEmitter<Todo>();
@@ -129,6 +130,10 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
   editTodo() {
     console.log(`Trying to edit this Todo (${this.contentStr})...`);
     this.editTodoEvent.emit(this.content.id);
+  }
+  cloneTodo() {
+    console.log(`Trying to clone this Todo (${this.contentStr})...`);
+    this.cloneTodoEvent.emit(this.content.id);
   }
 
   removeTodo() {

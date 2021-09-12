@@ -41,6 +41,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   @Input() todosearchRules!: Map<String,String>;
 
   @Output() editTodoEvent = new EventEmitter<number>();
+  @Output() cloneTodoEvent = new EventEmitter<number>();
   @Output() removeTodoEvent = new EventEmitter<number>();
 
   @Output() shiftLeftTodoEvent = new EventEmitter<Todo>();

@@ -21,6 +21,9 @@
 				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
 		</app-ff-todo-generic-todo-form>
+		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(data)]="todoSelected" [phase_labels]="phase_labels"
+				[preparingFormEvent]="prepareCloneTodoFormTrigger.asObservable()" (submitDataEvent)="cloneTodo($event)">
+		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(data)]="todoSelected"
 				[preparingFormEvent]="prepareRemoveTodoFormTrigger.asObservable()" (submitDataEvent)="removeTodo($event)">
 		</app-ff-todo-generic-todo-form>
@@ -109,7 +112,8 @@
 							[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="todo_searching_rules"
 							[notifySearchResultsIn]="notifySearchTodoResultsTrigger[idx].asObservable()"
 							(notifySearchResultsOut)="notifyTodoSearchResults(idx, $event)"
-							(editTodoEvent)="prepareEditTodoForm($event)" (removeTodoEvent)="prepareRemoveTodoForm($event)"
+							(editTodoEvent)="prepareEditTodoForm($event)" (cloneTodoEvent)="prepareCloneTodoForm($event)"
+							(removeTodoEvent)="prepareRemoveTodoForm($event)"
 							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"
 							(addTaskEvent)="prepareAddTaskForm($event)" (editTaskEvent)="prepareEditTaskForm($event)"
 							(checkTaskEvent)="checkTask($event)" (removeTaskEvent)="removeTask($event)"
