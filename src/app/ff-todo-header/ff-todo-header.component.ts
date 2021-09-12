@@ -55,6 +55,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
       for (let id of this.boardNameMapping.keys())
       {
         this.boardSelected = id;
+        this.updateSelectedBoard.emit(this.boardSelected);
         break;
       }
     }

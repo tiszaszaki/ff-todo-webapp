@@ -52,12 +52,19 @@
 			(todosearchruleChange)="updateTodoSearchingRule($event)" (todosearchruleRemove)="removeTodoSearchingRule($event)"
 			(todosearchfieldReset)="clearTodoSearchingRules()"
 			(updateSubmitStateEvent)="updateSearchSubmit($event)"
-			[preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()">
+			[preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
+			[resetFormEvent]="resetSearchTodoFormTrigger.asObservable()">
 	</app-ff-todo-searching-form>
 	<div *ngIf="boardContent">
-		<h2 class="text-center">{{ boardContent.name }}</h2>
-		<div *ngIf="boardContent.description" class="border border-secondary rounded w-75">{{ boardContent.description }}</div>
+		<h2 class="text-muted text-center"
+				data-toggle="tooltip" data-placement="bottom" title="Board ID">{{ boardContent.id }}</h2>
+		<h2 class="text-center"
+				data-toggle="tooltip" data-placement="bottom" title="Board title">{{ boardContent.name }}</h2>
+		<div *ngIf="boardContent.description" class="border border-secondary rounded w-75"
+				data-toggle="tooltip" data-placement="bottom" title="Board description">{{ boardContent.description }}</div>
+		<div class="text-muted" *ngIf="!boardContent.description">No description added</div>
 		<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
+		<div class="text-muted" *ngIf="!boardContent.author">Unknown author</div>
 		<div>
 			<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
 					data-toggle="tooltip" data-placement="bottom" title="Edit Board">

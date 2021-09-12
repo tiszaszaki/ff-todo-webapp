@@ -19,6 +19,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   @Output() updateSubmitStateEvent = new EventEmitter<Boolean>();
 
   @Input() preparingFormEvent!: Observable<void>;
+  @Input() resetFormEvent!: Observable<void>;
 
   @Input() todo_list_count!: number;
 
@@ -35,6 +36,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   public submitted: Boolean = false;
 
   private preparingFormListener!: Subscription;
+  private resetFormListener!: Subscription;
 
   public readonly todoSearchingFields = [
     {name: '', display: '(not searching)'},
@@ -129,6 +131,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+    this.resetFormListener = this.resetFormEvent.subscribe(() => this.updateSubmitState(false));
   }
 
   ngOnDestroy(): void {

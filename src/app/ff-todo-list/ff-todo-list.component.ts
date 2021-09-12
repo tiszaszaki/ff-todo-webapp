@@ -57,6 +57,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareRemoveAllTodosFormTrigger = new Subject<void>();
 
   public prepareSearchTodoFormTrigger = new Subject<void>();
+  public resetSearchTodoFormTrigger = new Subject<void>();
 
   public prepareSortTodoFormTrigger!: Array< Subject<void> >;
   public prepareSortTaskFormTrigger!: Array< Subject<void> >;
@@ -371,6 +372,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.todoServ.getBoard(this.boardSelected as number).subscribe(board => {
       this.boardContent = board;
       this.getTodos();
+      this.resetSearchTodoFormTrigger.next();
     });
   }
 
