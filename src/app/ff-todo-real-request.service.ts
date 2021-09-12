@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.stage';
+import { Board } from './board';
 import { ShiftDirection } from './shift-direction';
 import { Task } from './task';
 import { Todo } from './todo';
@@ -45,6 +46,26 @@ export class FfTodoRealRequestService {
     this.taskPath = this.backendUrl + 'task';
   }
 
+  getBoard(id : number) : Observable<Board> {
+    return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
+        tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
+  getBoards() : Observable<Number[]> {
+    return this.http.get<Number[]>(`${this.boardPath}`).pipe(
+        tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
   getTodo(id : number) : Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
         tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
@@ -65,12 +86,22 @@ export class FfTodoRealRequestService {
     );
   }
 
+  getTodosFromBoard(id : number) : Observable<Todo[]> {
+    return this.http.get<Todo[]>(`${this.boardTodoPath(id)}s`).pipe(
+        tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s) from Board with ID (${id})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
   searchTodoByField(term: String, field: String): Observable<Todo[]> {
     return of([]);
   }
 
-  addTodo(todo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.boardTodoPath(0)}`, todo, this.httpOptions).pipe(
+  addTodo(id: number, todo: Todo): Observable<Todo> {
+    return this.http.put<Todo>(`${this.boardTodoPath(id)}`, todo, this.httpOptions).pipe(
       tap((newTodo: Todo) => console.log(`Added new Todo: ${JSON.stringify(newTodo)}`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
@@ -110,9 +141,19 @@ export class FfTodoRealRequestService {
     );
   }
 
-  removeAllTodos(): Observable<any> {
-    return this.http.delete(`${this.todoPath}/clear`).pipe(
-      tap(_ => console.log(`Removed all Todos`)),
+  removeAllTodos(id: number): Observable<any> {
+    return this.http.delete(`${this.boardTodoPath(id)}/clear`).pipe(
+      tap(_ => console.log(`Removed all Todos from Board with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  removeAllTodosFromBoard(id: Number): Observable<any> {
+    return this.http.delete(`${this.boardPath}/${id}/clear`).pipe(
+      tap(_ => console.log(`Removed all Todos from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
         return throwError(error);

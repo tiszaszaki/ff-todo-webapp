@@ -1,7 +1,9 @@
 <app-ff-todo-header [title]="title" [readonlyTodo]="readonlyTodo" [todo_count]="todo_count" [enableRestoreTodos]="enableRestoreTodos"
         [todosearchexec]="todosearchexec" (prepareAddTodoForm)="prepareAddTodoForm()" (prepareRemovingAllTodos)="prepareRemovingAllTodos()"
         (initTodoList)="initTodoList()" (restoreTodoList)="restoreTodoList()" (prepareSearchTodoForm)="prepareSearchTodoForm()"
-        (toggleReadonlyTodo)="toggleReadonlyTodo($event)" (toggleReadonlyTask)="toggleReadonlyTask($event)">
+        (toggleReadonlyTodo)="toggleReadonlyTodo($event)" (toggleReadonlyTask)="toggleReadonlyTask($event)"
+        (prepareAddBoardForm)="prepareAddBoardForm()" (updateSelectedBoard)="updateSelectedBoard($event)"
+        [boardNameMapping]="boardNameMapping">
 </app-ff-todo-header>
 
 <app-ff-todo-list (updateReadonlyTodo)="updateReadonlyTodo($event)" (updateTodoCount)="updateTodoCount($event)" (toggleRestoreTodos)="toggleRestoreTodos($event)"
@@ -10,7 +12,9 @@
         [prepareRemovingAllTodosEvent]="prepareRemovingAllTodosTrigger.asObservable()"
         [initTodoListEvent]="initTodoListTrigger.asObservable()" [restoreTodoListEvent]="restoreTodoListTrigger.asObservable()"
         [prepareSearchTodoFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
-        [toggleReadonlyTodoEvent]="toggleReadonlyTodoTrigger.asObservable()" [toggleReadonlyTaskEvent]="toggleReadonlyTaskTrigger.asObservable()">
+        [toggleReadonlyTodoEvent]="toggleReadonlyTodoTrigger.asObservable()" [toggleReadonlyTaskEvent]="toggleReadonlyTaskTrigger.asObservable()"
+        [prepareAddBoardFormEvent]="prepareAddBoardFormTrigger.asObservable()" [updateSelectedBoardEvent]="updateSelectedBoardTrigger.asObservable()"
+        (updateBoardNames)="updateBoardNames($event)">
 </app-ff-todo-list>
 
 <app-ff-todo-footer [addAlertMessageEvent]="addAlertMessageTrigger.asObservable()" [maxAlerts]="maxAlerts"

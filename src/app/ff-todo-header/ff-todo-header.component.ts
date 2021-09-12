@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-ff-todo-header',
   templateUrl: './ff-todo-header.component.html',
   styleUrls: ['./ff-todo-header.component.css', '../app.component.css']
 })
-export class FfTodoHeaderComponent implements OnInit {
+export class FfTodoHeaderComponent implements OnInit, OnChanges {
 
   constructor() { }
 
@@ -18,6 +18,11 @@ export class FfTodoHeaderComponent implements OnInit {
   @Input() todo_count!: number;
   @Input() enableRestoreTodos!: Boolean;
 
+  @Input() boardNameMapping!: Map<Number, String>;
+
+  @Output() prepareAddBoardForm = new EventEmitter<void>();
+  @Output() updateSelectedBoard = new EventEmitter<Number>();
+
   @Output() prepareAddTodoForm = new EventEmitter<void>();
   @Output() prepareRemovingAllTodos = new EventEmitter<void>();
   @Output() initTodoList = new EventEmitter<void>();
@@ -28,6 +33,7 @@ export class FfTodoHeaderComponent implements OnInit {
   @Output() toggleReadonlyTodo = new EventEmitter<Boolean>();
   @Output() toggleReadonlyTask = new EventEmitter<Boolean>();
 
+  public boardSelected!: Number;
   public toolbar_collapse_status = false;
 
   updateReadonlyTodo() {
@@ -41,6 +47,17 @@ export class FfTodoHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.boardNameMapping)
+    {
+      for (let id of this.boardNameMapping.keys())
+      {
+        this.boardSelected = id;
+        break;
+      }
+    }
   }
 
 }

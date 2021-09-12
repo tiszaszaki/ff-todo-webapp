@@ -38,6 +38,9 @@
 			(updateSubmitStateEvent)="updateSearchSubmit($event)"
 			[preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()">
 	</app-ff-todo-searching-form>
+	<h2 class="text-center">{{ boardContent.name }}</h2>
+	<div *ngIf="boardContent.description" class="border border-secondary rounded w-75">{{ boardContent.description }}</div>
+	<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
 	<table class="table mt-3">
 		<tbody>
 			<tr class="row border border-2 border-secondary">

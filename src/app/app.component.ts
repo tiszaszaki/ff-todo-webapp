@@ -20,6 +20,9 @@ export class AppComponent {
   public readonlyTodo!: Boolean;
   public enableRestoreTodos!: Boolean;
 
+  public prepareAddBoardFormTrigger = new Subject<void>();
+  public updateSelectedBoardTrigger = new Subject<Number>();
+
   public prepareAddTodoFormTrigger = new Subject<void>();
   public prepareRemovingAllTodosTrigger = new Subject<void>();
   public initTodoListTrigger = new Subject<void>();
@@ -32,8 +35,14 @@ export class AppComponent {
 
   public addAlertMessageTrigger = new Subject<TiszaSzakiAlert>();
 
+  public boardNameMapping = new Map<Number, String>();
+
   addAlertMessage(msg: TiszaSzakiAlert) {
     this.addAlertMessageTrigger.next(msg);
+  }
+
+  updateBoardNames(val: Map<Number, String>) {
+    this.boardNameMapping = val;
   }
 
   toggleReadonlyTodo(val: Boolean) {
@@ -42,6 +51,14 @@ export class AppComponent {
 
   toggleReadonlyTask(val: Boolean) {
     this.toggleReadonlyTaskTrigger.next(val);
+  }
+
+  prepareAddBoardForm() {
+    this.prepareAddBoardFormTrigger.next();
+  }
+
+  updateSelectedBoard(val: Number) {
+    this.updateSelectedBoardTrigger.next(val);
   }
 
   prepareAddTodoForm() {

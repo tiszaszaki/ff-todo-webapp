@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { Board } from '../board';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { SearchingRule } from '../searching-rule';
 import { ShiftDirection } from '../shift-direction';
@@ -21,7 +22,12 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   @Output() updateTodoCount = new EventEmitter<number>();
   @Output() toggleRestoreTodos = new EventEmitter<Boolean>();
 
+  @Output() updateBoardNames = new EventEmitter< Map<Number, String> >();
+
   @Output() addAlertMessage = new EventEmitter<TiszaSzakiAlert>();
+
+  @Input() prepareAddBoardFormEvent!: Observable<void>;
+  @Input() updateSelectedBoardEvent!: Observable<Number>;
 
   @Input() prepareAddTodoFormEvent!: Observable<void>;
   @Input() prepareRemovingAllTodosEvent!: Observable<void>;
@@ -52,6 +58,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareRemoveTaskFormTrigger = new Subject<void>();
   public prepareRemoveAllTasksFormTrigger = new Subject<void>();
 
+  private prepareAddBoardFormListener!: Subscription;
+  private updateSelectedBoardListener!: Subscription;
+
   private prepareAddTodoFormListener!: Subscription;
   private prepareRemovingAllTodosListener!: Subscription;
   private initTodoListListener!: Subscription;
@@ -63,6 +72,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   private toggleReadonlyTaskListener!: Subscription;
 
   public todoQuerySuccess!: Boolean;
+
+  public boardSelected!: Number;
+  public boardNameMapping!: Map<Number, String>;
+
+  public boardContent!: Board;
 
   public todo_count!: number;
   public todo_list!: Todo[][];
@@ -119,10 +133,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public readonly RIGHT = ShiftDirection.RIGHT;
 
   constructor(private todoServ: FfTodoRealRequestService) {
-    this.initTodoList([]);
-  }
-
-  initTodoList(phase_list?: number[]) {
     this.phaseNum = this.phase_labels.length;
     this.descriptionMaxLength = 1024;
 
@@ -140,18 +150,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.prepareSortTaskFormTrigger.push(new Subject<void>());
       this.notifySearchTodoResultsTrigger.push(new Subject<void>());
     }
-
-    if (!phase_list)
-    {
-      phase_list = [];
-    }
-
-    this.getTodos(new Set(phase_list));
   }
 
   refreshTodoList() {
     this.addAlertMessage.emit({type:'warning', message: 'Trying to refresh all Todos...'});
-    this.initTodoList();
+    this.getTodos();
   }
 
   restoreTodoList() {
@@ -303,10 +306,51 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     return this.todoServ.getTodo(id);
   }
 
-  private getTodos(phase: Set<number>): void {
+  private updateBoardList()
+  {
+    this.todoServ.getBoards().subscribe(results => {
+      let idx=0;
+
+      this.boardNameMapping = new Map<Number, String>();
+
+      for (let id of results)
+      {
+        this.todoServ.getBoard(id as number).subscribe(result => {
+          this.boardNameMapping.set(id, result.name);
+          idx++;
+          if (idx == results.length)
+          {
+            this.updateBoardNames.emit(this.boardNameMapping);
+
+            for (let id of this.boardNameMapping.keys())
+            {
+              this.updateBoard(id);
+              break;
+            }        
+          }
+        });
+      }
+    });
+  }
+
+  private updateBoard(id : Number) {
+    this.boardSelected = id;
+
+    this.todoServ.getBoard(this.boardSelected as number).subscribe(board => {
+      this.boardContent = board;
+      this.getTodos();
+    });
+  }
+
+  private getTodos(phase?: Set<number>): void {
     var todo_results: Observable<Todo[]>;
 
-    todo_results = this.todoServ.getTodos();
+    if (!phase)
+    {
+      phase = new Set<number>([]);
+    }
+
+    todo_results = this.todoServ.getTodosFromBoard(this.boardSelected as number);
 
     this.todo_count = 0;
 
@@ -345,8 +389,12 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     todo_results.subscribe(records => {
       let todo_records = records;
 
+      if (!todo_records)
+        todo_records = [];
+
       this.todoQuerySuccess = true;
 
+      if (phase)
       if (phase.size > 0) {
         for (let _phase of phase) {
           if ((_phase >= 0) && (_phase < this.phaseNum)) {
@@ -390,6 +438,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
           todo.deadlineObj = new Date(todo.deadline as string);
         }
 
+        if (phase)
         if (phase.size == 0)
         {
           let _phase = todo.phase;
@@ -410,13 +459,13 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         {
           this.todo_count += todo_phase.length;
         }
-  
-        this.updateTodoCount.emit(this.todo_count);
 
+        if (phase)
         if (phase.size == 0)
         {
           console.log('Filled Todo list in all phases.');
         }
+        if (phase)
         if (phase.size > 0)
         {
           let phase_arr = [];
@@ -425,6 +474,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
           console.log(`Tried to fill Todo list only in phases (${phase_arr}).`);
         }
       }
+
+      this.updateTodoCount.emit(this.todo_count);
     });
   }
 
@@ -499,9 +550,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   addTodo(todo : Todo) {
     console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
-    this.todoServ.addTodo(todo)
+    this.todoServ.addTodo(this.boardSelected as number, todo)
     .subscribe(todo => {
-      this.addAlertMessage.emit({type: 'success', message: `Successfully added new Todo (${JSON.stringify(todo)}).`});
+      this.addAlertMessage.emit({type: 'success', message: `Successfully added new Todo (${JSON.stringify(todo)}) to Board with ID (${this.boardSelected}).`});
       this.getTodos(new Set([todo.phase]));
     }, errorMsg => {
       this.addAlertMessage.emit({type: 'danger', message: `Failed to add new Todo. See browser console for details.`});
@@ -551,10 +602,10 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   removeAllTodos() {
-    this.todoServ.removeAllTodos()
+    this.todoServ.removeAllTodos(this.boardSelected as number)
     .subscribe(_ => {
-      this.addAlertMessage.emit({type: 'success', message: `Successfully removed all Todos from the board...`});
-      this.initTodoList([]);
+      this.addAlertMessage.emit({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected})...`});
+      this.getTodos();
     }, errorMsg => {
       this.addAlertMessage.emit({type: 'danger', message: `Failed to remove all Todos. See browser console for details.`});
     });
@@ -643,8 +694,13 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+    this.updateBoardList();
+
     this.updateReadonlyTodo.emit(this.readonlyTodo);
     this.toggleRestoreTodos.emit(this.enabledRestoreTodos);
+
+    this.prepareAddBoardFormListener = this.prepareAddBoardFormEvent.subscribe(() => {});
+    this.updateSelectedBoardListener = this.updateSelectedBoardEvent.subscribe((id) => this.updateBoard(id));
 
     this.prepareAddTodoFormListener = this.prepareAddTodoFormEvent.subscribe(() => this.prepareAddTodoForm());
     this.prepareRemovingAllTodosListener = this.prepareRemovingAllTodosEvent.subscribe(() => this.prepareRemovingAllTodos());
@@ -653,7 +709,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.prepareSearchTodoFormListener = this.prepareSearchTodoFormEvent.subscribe(() => this.prepareSearchTodoForm());
 
-    this.toggleReadonlyTodoListener = this.toggleReadonlyTodoEvent.subscribe((val) => { 
+    this.toggleReadonlyTodoListener = this.toggleReadonlyTodoEvent.subscribe((val) => {
       this.readonlyTodo = val;
       this.refreshTodoList();
     });
@@ -664,6 +720,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
+    this.prepareAddBoardFormListener.unsubscribe();
+    this.updateSelectedBoardListener.unsubscribe();
+
     this.prepareAddTodoFormListener.unsubscribe();
     this.prepareRemovingAllTodosListener.unsubscribe();
     this.initTodoListListener.unsubscribe();
