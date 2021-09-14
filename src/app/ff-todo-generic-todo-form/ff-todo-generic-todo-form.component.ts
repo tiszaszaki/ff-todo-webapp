@@ -35,8 +35,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public inputDateFormatDisp!: String;
 
-  private deadlineOld!: Date;
-
   public dateComponent!: Date;
   public timeComponent!: Date;
 
@@ -61,34 +59,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.name = '';
     this.model.description = '';
     this.model.phase = 0;
-  }
-
-  public updateDeadlineStr() {
-    if (this.model.deadlineObj)
-    {
-      this.model.deadline = this.model.deadlineObj.toJSON();
-    }
-  }
-
-  public updateDeadline() {
-    if (this.model.deadlineObj)
-    {
-      this.deadlineOld = this.model.deadlineObj;
-    }
-    this.model.deadlineObj = new Date();
-    this.updateDeadlineStr();
-  }
-
-  public revertDeadline() {
-    if (this.deadlineOld)
-    {
-      this.model.deadlineObj = this.deadlineOld;
-    }
-    else
-    {
-      this.model.deadlineObj = this.model.dateCreated;
-    }
-    this.updateDeadlineStr();
   }
 
   private updateModel() {

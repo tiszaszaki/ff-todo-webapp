@@ -18,11 +18,6 @@ export class FfTodoRealRequestService {
   private todoPath!: string;
   private taskPath!: string;
 
-  private boardTodoTaskPath(id1: number, id2: number): string
-  {
-    return `${this.boardPath}/${id1}/todo/${id2}/task`;
-  }
-
   private boardTodoPath(id: number): string
   {
     return `${this.boardPath}/${id}/todo`;

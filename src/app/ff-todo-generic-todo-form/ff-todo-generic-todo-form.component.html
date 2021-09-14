@@ -45,17 +45,11 @@
                 </div>
 
                 <label for="deadline">Deadline</label>
-                <div class="form-group d-flex justify-content-between">
-                    <div class="input-group">
-                        <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
-                                [(ngModel)]="model.deadlineObj" name="deadline" value="model.deadlineObj | date:inputDateFormat"
-                                (click)="deadlinePick.toggle()" [placeholder]="inputDateFormatDisp"
-                                [disabled]="!isOperatorIncluded(ADD,EDIT)">
-                    </div>
-                    <div [hidden]="!isOperatorIncluded(ADD,EDIT)">
-                        <button type="button" class="btn btn-primary" (click)="updateDeadline()">Update</button>
-                        <button type="button" class="btn btn-secondary" (click)="revertDeadline()">Revert</button>
-                    </div>
+                <div class="input-group">
+                    <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
+                            [(ngModel)]="model.deadline" name="deadline" value="model.deadline | date:inputDateFormat"
+                            (click)="deadlinePick.toggle()" [placeholder]="inputDateFormatDisp"
+                            [disabled]="!isOperatorIncluded(ADD,EDIT)">
                 </div>
             </form>
         </div>

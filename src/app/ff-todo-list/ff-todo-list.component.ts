@@ -486,11 +486,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
           todo.description = '';
         }
 
-        if (todo.deadline)
-        {
-          todo.deadlineObj = new Date(todo.deadline as string);
-        }
-
         if (phase)
         if (phase.size == 0)
         {
