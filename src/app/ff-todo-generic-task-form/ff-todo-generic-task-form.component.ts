@@ -12,8 +12,8 @@ import { TaskOperator } from '../task-operator';
 export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   @Input() mode!: TaskOperator;
 
-  @Input() data!: Task;
-  @Output() dataChange = new EventEmitter<Task>();
+  @Input() model!: Task;
+  @Output() modelChange = new EventEmitter<Task>();
 
   @Input() todoId!: number;
 
@@ -27,8 +27,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   @Input() preparingFormEvent!: Observable<void>;
 
   @ViewChild('genericTaskForm') formElement!: ElementRef;
-
-  public model!: Task;
 
   public modeStr!: String;
   public formId!: String;
@@ -54,13 +52,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
     this.model.done = false;
   }
 
-  private updateModel() {
-    if (this.data)
-    {
-      this.model = this.data;
-    }
-  }
-
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
     this.confirmMessage = '<Confirm message to be filled>';
@@ -72,16 +63,16 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
         this.formTitle = `Add a new Task for Todo with ID #${this.todoId+1}`;
       } break;
       case this.EDIT: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
+          let id=this.model.id;
           this.formTitle = `Edit Task with ID #${id+1}`;
         }
       } break;
       case this.REMOVE: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
+          let id=this.model.id;
           this.formTitle = `Remove Task with ID #${id+1}`;
           this.confirmMessage = `Are you sure to remove this Task?`;
           this.confirmButtonCaption = 'Remove';
@@ -139,7 +130,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.updateModel();
     this.updateDisplay();
   }
 

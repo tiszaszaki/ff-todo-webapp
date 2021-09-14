@@ -12,8 +12,8 @@ import { BoardOperator } from '../board-operator';
 export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges {
   @Input() mode!: BoardOperator;
 
-  @Input() data!: Board;
-  @Output() dataChange = new EventEmitter<Board>();
+  @Input() model!: Board;
+  @Output() modelChange = new EventEmitter<Board>();
 
   @Input() shown!: Boolean;
   @Output() shownChange = new EventEmitter<Boolean>();
@@ -27,8 +27,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges {
   @Input() preparingFormEvent!: Observable<void>;
 
   @ViewChild('genericBoardForm') formElement!: ElementRef;
-
-  public model!: Board;
 
   public modeStr!: String;
   public formId!: String;
@@ -53,13 +51,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges {
     this.model.author = '';
   }
 
-  private updateModel() {
-    if (this.data)
-    {
-      this.model = this.data;
-    }
-  }
-
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
     this.confirmMessage = '<Confirm message to be filled>';
@@ -71,17 +62,17 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges {
         this.formTitle = `Add a new Board`;
       } break;
       case this.EDIT: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
+          let id=this.model.id;
           this.formTitle = `Edit Board with ID #${id+1}`;
         }
       } break;
       case this.REMOVE: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
-          let name=this.data.name;
+          let id=this.model.id;
+          let name=this.model.name;
           this.formTitle = `Remove Board with ID #${id+1}`;
           this.confirmMessage = `Are you sure to remove this Board (${name})?`;
           this.confirmButtonCaption = 'Remove';
@@ -133,7 +124,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.updateModel();
     this.updateDisplay();
   }
 

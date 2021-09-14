@@ -12,8 +12,8 @@ import { TodoOperator } from '../todo-operator';
 export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() mode!: TodoOperator;
 
-  @Input() data!: Todo;
-  @Output() dataChange = new EventEmitter<Todo>();
+  @Input() model!: Todo;
+  @Output() modelChange = new EventEmitter<Todo>();
 
   @Input() phase_labels!: String[];
   @Input() descriptionMaxLength!: number;
@@ -28,15 +28,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   @ViewChild('genericTodoForm') formElement!: TemplateRef<FfTodoGenericTodoFormComponent>;
 
-  public model!: Todo;
-
   public modeStr!: String;
   public formId!: String;
 
   public inputDateFormatDisp!: String;
-
-  public dateComponent!: Date;
-  public timeComponent!: Date;
 
   public formTitle!: String;
   public confirmMessage!: String;
@@ -61,13 +56,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.phase = 0;
   }
 
-  private updateModel() {
-    if (this.data)
-    {
-      this.model = this.data;
-    }
-  }
-
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
     this.confirmMessage = '<Confirm message to be filled>';
@@ -79,23 +67,23 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         this.formTitle = 'Add a new Todo';
       } break;
       case this.EDIT: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
+          let id=this.model.id;
           this.formTitle = `Edit Todo with ID #${id+1}`;
         }
       } break;
       case this.CLONE: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
+          let id=this.model.id;
           this.formTitle = `Clone Todo with ID #${id+1}`;
         }
       } break;
       case this.REMOVE: {
-        if (this.data)
+        if (this.model)
         {
-          let id=this.data.id;
+          let id=this.model.id;
           this.formTitle = `Remove Todo with ID #${id+1}`;
           this.confirmMessage = `Are you sure to remove this Todo?`;
           this.confirmButtonCaption = 'Remove';
@@ -112,12 +100,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         this.confirmButtonCaption = '';
       } break;
     }
-  }
-
-  changeDeadlineComponent(compName: String, compValue: Date) {
-    if (compName == 'date') { this.dateComponent = compValue; }
-    else if (compName == 'time') { this.timeComponent = compValue; }
-    else { }
   }
 
   showModal()
@@ -168,7 +150,12 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.updateModel();
+    if (this.model)
+    if (this.model.deadline)
+    {
+      console.log(this.model.deadline);
+    }
+
     this.updateDisplay();
   }
 

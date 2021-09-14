@@ -48,8 +48,10 @@
                 <div class="input-group">
                     <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
                             [(ngModel)]="model.deadline" name="deadline" value="model.deadline | date:inputDateFormat"
-                            (click)="deadlinePick.toggle()" [placeholder]="inputDateFormatDisp"
-                            [disabled]="!isOperatorIncluded(ADD,EDIT)">
+                            [placeholder]="inputDateFormatDisp" [disabled]="!isOperatorIncluded(ADD,EDIT)">
+                    <button type="button" class="btn btn-primary" (click)="deadlinePick.toggle()">
+                        <i class="far fa-calendar-alt"></i>
+                    </button>
                 </div>
             </form>
         </div>
