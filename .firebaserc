@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "tiszaszaki-ff-todo-webapp-2021": {
+      "hosting": {
+        "ff-todo-webapp": [
+          "tiszaszaki-ff-todo-webapp-2021"
+        ]
+      }
+    }
+  }
+}
