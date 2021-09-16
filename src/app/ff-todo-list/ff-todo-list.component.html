@@ -9,10 +9,6 @@
 				[preparingFormEvent]="prepareRemoveBoardFormTrigger.asObservable()" (submitDataEvent)="removeBoard($event)">
 		</app-ff-todo-generic-board-form>
 
-		<app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO" [phase_labels]="phase_labels"
-				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
-				[preparingFormEvent]="prepareAddTodoFormTrigger.asObservable()" (submitDataEvent)="addTodo($event)">
-		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(model)]="todoSelected" [phase_labels]="phase_labels"
 				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
@@ -22,9 +18,6 @@
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(model)]="todoSelected"
 				[preparingFormEvent]="prepareRemoveTodoFormTrigger.asObservable()" (submitDataEvent)="removeTodo($event)">
-		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS"
-				[preparingFormEvent]="prepareRemoveAllTodosFormTrigger.asObservable()" (submitEvent)="removeAllTodos()">
 		</app-ff-todo-generic-todo-form>
 	</div>
 	<div>
@@ -41,16 +34,6 @@
 				[preparingFormEvent]="prepareRemoveAllTasksFormTrigger.asObservable()" (submitIdEvent)="removeAllTasks($event)">
 		</app-ff-todo-generic-task-form>
 	</div>
-	<app-ff-todo-searching-form [todo_list_count]="todo_count" [todosearchcase]="todo_searching_casesense"
-			[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="todo_searching_rules"
-			(todosearchcaseChange)="updateTodoSearchingCaseSense($event)"
-			(todosearchhighlightChange)="updateTodoSearchingHighlightMatches($event)"
-			(todosearchruleChange)="updateTodoSearchingRule($event)" (todosearchruleRemove)="removeTodoSearchingRule($event)"
-			(todosearchruleReset)="clearTodoSearchingRules()"
-			(updateSubmitStateEvent)="updateSearchSubmit($event)"
-			[preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
-			[resetFormEvent]="resetSearchTodoFormTrigger.asObservable()">
-	</app-ff-todo-searching-form>
 	<div *ngIf="boardContent">
 		<h2 class="text-muted text-center"
 				data-toggle="tooltip" data-placement="bottom" title="Board ID">{{ boardContent.id }}</h2>
@@ -112,7 +95,7 @@
 							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
 							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]"
 							[todosearchcase]="todo_searching_casesense" [todosearchexec]="searchSubmitted"
-							[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="todo_searching_rules"
+							[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="get_todo_searching_rules()"
 							[notifySearchResultsIn]="notifySearchTodoResultsTrigger[idx].asObservable()"
 							(notifySearchResultsOut)="notifyTodoSearchResults(idx, $event)"
 							(editTodoEvent)="prepareEditTodoForm($event)" (cloneTodoEvent)="prepareCloneTodoForm($event)"

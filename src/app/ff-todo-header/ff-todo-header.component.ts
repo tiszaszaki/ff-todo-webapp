@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
-import { TiszaSzakiAlert } from '../tsz-alert';
+import { Todo } from '../todo';
+import { TodoOperator } from '../todo-operator';
 
 @Component({
   selector: 'app-ff-todo-header',
@@ -13,73 +15,65 @@ import { TiszaSzakiAlert } from '../tsz-alert';
 })
 export class FfTodoHeaderComponent implements OnInit, OnChanges {
 
-  constructor(
-      private todoServ: FfTodoRealRequestService,
-      private common: FfTodoCommonService) {
-    this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
-  }
-
   @Input() title! : String;
 
-  @Input() todosearchexec!: Boolean;
-  @Input() readonlyTodo!: Boolean;
-  @Input() readonlyTask!: Boolean;
+  public todosearchexec!: Boolean;
+  public readonlyTodo!: Boolean;
+  public readonlyTask!: Boolean;
 
-  @Input() todo_count!: number;
-  @Input() enableRestoreTodos!: Boolean;
+  public boardSelected!: Number;
 
-  @Input() boardNameMapping!: Map<Number, String>;
+  public phase_labels!: String[];
+  public phaseNum!: number;
 
-  @Output() updateSelectedBoard = new EventEmitter<Number>();
+  public todo_count!: number;
+  public enableRestoreTodos!: Boolean;
 
-  @Output() prepareAddTodoForm = new EventEmitter<void>();
-  @Output() prepareRemovingAllTodos = new EventEmitter<void>();
-  @Output() initTodoList = new EventEmitter<void>();
-  @Output() restoreTodoList = new EventEmitter<void>();
-
-  @Output() prepareSearchTodoForm = new EventEmitter<void>();
-
-  @Output() toggleReadonlyTodo = new EventEmitter<Boolean>();
-  @Output() toggleReadonlyTask = new EventEmitter<Boolean>();
-
-  @Output() addAlertMessage = new EventEmitter<TiszaSzakiAlert>();
-
-  public readonly ADD_BOARD = BoardOperator.ADD;
+  public boardNameMapping!: Map<Number, String>;
 
   public boardDescriptionMaxLength! : number;
+  public todoDescriptionMaxLength! : number;
+
+  public inputDateFormat!: string;
 
   public prepareAddBoardFormTrigger = new Subject<void>();
 
-  public boardSelected!: Number;
+  public prepareAddTodoFormTrigger = new Subject<void>();
+  public prepareSearchTodoFormTrigger = new Subject<void>();
+  public prepareRemoveAllTodosFormTrigger = new Subject<void>();
+
+  public todo_searching_casesense!: Boolean;
+
   public toolbar_collapse_status = false;
 
-  updateReadonlyTodo() {
-    this.readonlyTodo = !this.readonlyTodo;
-    this.toggleReadonlyTodo.emit(this.readonlyTodo);
-  }
+  public readonly ADD_TODO = TodoOperator.ADD;
+  public readonly ADD_BOARD = BoardOperator.ADD;
+  public readonly REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
 
-  updateReadonlyTask() {
-    this.readonlyTask = !this.readonlyTask;
-    this.toggleReadonlyTask.emit(this.readonlyTask);
-  }
+  constructor(
+    private todoServ: FfTodoRealRequestService,
+    private common: FfTodoCommonService,
+    private alertServ: FfTodoAlertService) {
+  this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
+  this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
+
+  this.todosearchexec = this.common.todosearchexec;
+  this.readonlyTodo = this.common.readonlyTodo;
+  this.readonlyTask = this.common.readonlyTask;
+
+  this.enableRestoreTodos = this.common.enableRestoreTodos;
+
+  this.todo_count = this.common.todo_count;
+
+  this.boardSelected = this.common.boardSelected;
+
+  this.phase_labels = this.common.phase_labels;
+  this.phaseNum = this.common.phaseNum;
+
+  this.inputDateFormat = this.common.inputDateFormat;
+}
 
   ngOnInit(): void {
-  }
-
-  prepareAddBoardForm() {
-    console.log(`Preparing form for adding new Board...`);
-    this.prepareAddBoardFormTrigger.next();
-  }
-
-  addBoard(board : Board) {
-    console.log(`Trying to add new Board (${JSON.stringify(board)})...`);
-    this.todoServ.addBoard(board)
-    .subscribe(board => {
-      this.addAlertMessage.emit({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
-      //this.updateBoardList();
-    }, errorMsg => {
-      this.addAlertMessage.emit({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -89,10 +83,82 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
       for (let id of this.boardNameMapping.keys())
       {
         this.boardSelected = id;
-        this.updateSelectedBoard.emit(this.boardSelected);
         break;
       }
     }
+  }
+
+  initTodoList() {
+  }
+
+  updateSelectedBoard() {
+  }
+
+  prepareAddBoardForm() {
+    console.log(`Preparing form for adding new Board...`);
+    this.prepareAddBoardFormTrigger.next();
+  }
+
+  prepareAddTodoForm() {
+    console.log(`Preparing form for adding new Todo...`);
+    this.prepareAddTodoFormTrigger.next();
+  }
+
+  prepareSearchTodoForm() {
+    console.log(`Preparing form for searching Todos...`);
+    this.prepareSearchTodoFormTrigger.next();
+  }
+
+  prepareRemovingAllTodos() {
+    console.log(`Preparing form for removing all Todos...`);
+    this.prepareRemoveAllTodosFormTrigger.next();
+  }
+
+  resetSearchForm() {
+  }
+
+  updateReadonlyTodo() {
+    this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, !this.readonlyTodo).subscribe(_ => {});
+  }
+
+  updateReadonlyTask() {
+    this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, !this.readonlyTask).subscribe(_ => {});
+  }
+
+  restoreTodoList() {
+    this.alertServ.addAlertMessage({type:'warning', message: 'Trying to restore all Todos...'});
+  }
+
+  addBoard(board : Board) {
+    console.log(`Trying to add new Board (${JSON.stringify(board)})...`);
+    this.todoServ.addBoard(board)
+    .subscribe(board => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
+      //this.updateBoardList();
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
+    });
+  }
+
+  addTodo(todo : Todo) {
+    console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
+    this.todoServ.addTodo(this.boardSelected as number, todo)
+    .subscribe(todo => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Todo (${JSON.stringify(todo)}) to Board with ID (${this.boardSelected}).`});
+      //this.getTodos(new Set([todo.phase]));
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Todo. See browser console for details.`});
+    });
+  }
+
+  removeAllTodos() {
+    this.todoServ.removeAllTodos(this.boardSelected as number)
+    .subscribe(_ => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected}).`});
+      //this.getTodos();
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove all Todos. See browser console for details.`});
+    });
   }
 
 }

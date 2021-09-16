@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 import { TiszaSzakiAlert } from '../tsz-alert';
 
 @Component({
@@ -8,64 +8,30 @@ import { TiszaSzakiAlert } from '../tsz-alert';
   templateUrl: './ff-todo-alert-list.component.html',
   styleUrls: ['./ff-todo-alert-list.component.css']
 })
-export class FfTodoAlertListComponent implements OnInit, OnDestroy {
+export class FfTodoAlertListComponent implements OnInit {
 
-  @Input() maxAlerts!: Number;
-  @Input() closeAlertDelay!: Number;
+  public displayDateFormat!: string;
 
-  @Input() addAlertMessageEvent!: Observable<TiszaSzakiAlert>;
-
-  @Input() displayDateFormat!: string;
-
-  private closeAlertEvent = new Subject<TiszaSzakiAlert>();
-
-  private addAlertMessageListener!: Subscription;
-
-  private closeAlertListener!: Subscription;
-
-  public alerts: TiszaSzakiAlert[] = [];
-
-  private autoCloseAlerts!: Boolean;
-
-  constructor() { }
-
-  ngOnInit(): void {
-    this.closeAlertDelay = 5000;
-    this.autoCloseAlerts = (this.closeAlertDelay > 0);
-    this.addAlertMessageListener = this.addAlertMessageEvent.subscribe((msg) => this.addAlertMessage(msg));
-    this.closeAlertListener = this.closeAlertEvent.subscribe((msg) => {
-      setTimeout(() => this.close(msg), this.closeAlertDelay as number);
-    });
+  constructor(
+      private common: FfTodoCommonService,
+      private alertServ: FfTodoAlertService) {
+    this.displayDateFormat = this.common.displayDateFormat;
   }
 
-  ngOnDestroy(): void {
-    this.addAlertMessageListener.unsubscribe();
-    this.closeAlertListener.unsubscribe();
+  isAlertListEmpty()
+  {
+    return this.alertServ.isAlertListEmpty();
   }
 
-  addAlertMessage(msg: TiszaSzakiAlert) {
-    if (!msg.createdAt)
-    {
-      msg.createdAt = new Date();
-    }
-
-    if (this.alerts.length == this.maxAlerts)
-    {
-      this.alerts.shift();
-    }
-
-    this.alerts.push(msg);
-
-    if (this.autoCloseAlerts)
-    {
-      this.closeAlertEvent.next(msg);
-    }
+  getAlerts() : TiszaSzakiAlert[] {
+    return this.alertServ.getAlerts();
   }
 
-  close(alert: TiszaSzakiAlert) {
-    if (this.alerts.find(elem => elem == alert))
-    {
-      this.alerts.splice(this.alerts.indexOf(alert), 1);
-    }
+  close(msg: TiszaSzakiAlert)
+  {
+    this.alertServ.close(msg);
+  }
+
+  ngOnInit() {
   }
 }

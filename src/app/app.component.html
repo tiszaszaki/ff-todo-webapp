@@ -1,28 +1,5 @@
-<app-ff-todo-header [title]="title" [readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask"
-        [todo_count]="todo_count" [enableRestoreTodos]="enableRestoreTodos"
-        [todosearchexec]="todosearchexec" (prepareAddTodoForm)="prepareAddTodoForm()" (prepareRemovingAllTodos)="prepareRemovingAllTodos()"
-        (initTodoList)="initTodoList()" (restoreTodoList)="restoreTodoList()" (prepareSearchTodoForm)="prepareSearchTodoForm()"
-        (toggleReadonlyTodo)="toggleReadonlyTodo($event)" (toggleReadonlyTask)="toggleReadonlyTask($event)"
-        (updateSelectedBoard)="updateSelectedBoard($event)"
-        [boardNameMapping]="boardNameMapping" (addAlertMessage)="addAlertMessage($event)">
-</app-ff-todo-header>
+<app-ff-todo-header [title]="title"></app-ff-todo-header>
 
 <router-outlet></router-outlet>
 
-<!-- >
-<app-ff-todo-list (updateReadonlyTodo)="updateReadonlyTodo($event)" (updateReadonlyTask)="updateReadonlyTask($event)"
-        (updateTodoCount)="updateTodoCount($event)" (toggleRestoreTodos)="toggleRestoreTodos($event)"
-        (addAlertMessage)="addAlertMessage($event)" [displayDateFormat]="displayDateFormat" (updateTodoSearchExec)="updateTodoSearchExec($event)"
-        [prepareAddTodoFormEvent]="prepareAddTodoFormTrigger.asObservable()"
-        [prepareRemovingAllTodosEvent]="prepareRemovingAllTodosTrigger.asObservable()"
-        [initTodoListEvent]="initTodoListTrigger.asObservable()" [restoreTodoListEvent]="restoreTodoListTrigger.asObservable()"
-        [prepareSearchTodoFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
-        [toggleReadonlyTodoEvent]="toggleReadonlyTodoTrigger.asObservable()" [toggleReadonlyTaskEvent]="toggleReadonlyTaskTrigger.asObservable()"
-        [updateSelectedBoardEvent]="updateSelectedBoardTrigger.asObservable()"
-        (updateBoardNames)="updateBoardNames($event)">
-</app-ff-todo-list>
-< -->
-
-<app-ff-todo-footer [addAlertMessageEvent]="addAlertMessageTrigger.asObservable()" [maxAlerts]="maxAlerts"
-        [displayDateFormat]="displayDateFormat">
-</app-ff-todo-footer>
+<app-ff-todo-footer></app-ff-todo-footer>

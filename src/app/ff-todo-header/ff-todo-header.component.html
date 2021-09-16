@@ -3,6 +3,25 @@
   <app-ff-todo-generic-board-form #addBoardForm [mode]="ADD_BOARD" [descriptionMaxLength]="boardDescriptionMaxLength"
       [preparingFormEvent]="prepareAddBoardFormTrigger.asObservable()" (submitDataEvent)="addBoard($event)">
   </app-ff-todo-generic-board-form>
+  <app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO" [phase_labels]="phase_labels"
+      [descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
+      [preparingFormEvent]="prepareAddTodoFormTrigger.asObservable()" (submitDataEvent)="addTodo($event)">
+  </app-ff-todo-generic-todo-form>
+  <app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS"
+      [preparingFormEvent]="prepareRemoveAllTodosFormTrigger.asObservable()" (submitEvent)="removeAllTodos()">
+  </app-ff-todo-generic-todo-form>
+  <!-- >
+  <app-ff-todo-searching-form [todo_list_count]="todo_count" [todosearchcase]="todo_searching_casesense"
+      [todosearchhighlight]="todo_searching_highlight" [todosearchRules]="common.todo_searching_rules"
+      (todosearchcaseChange)="updateTodoSearchingCaseSense($event)"
+      (todosearchhighlightChange)="updateTodoSearchingHighlightMatches($event)"
+      (todosearchruleChange)="updateTodoSearchingRule($event)" (todosearchruleRemove)="removeTodoSearchingRule($event)"
+      (todosearchruleReset)="clearTodoSearchingRules()"
+      (updateSubmitStateEvent)="updateSearchSubmit($event)"
+      [preparingFormEvent]="prepareSearchTodoForm()"
+      [resetFormEvent]="resetSearchTodoForm()">
+  </app-ff-todo-searching-form>
+  < -->
 </div>
 <nav class="navbar fixed-top navbar-light bg-light">
   <div class="d-flex flex-column w-100 border border-2 border-primary rounded p-1">
@@ -31,7 +50,7 @@
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-warning w-50" (click)="updateSelectedBoard.emit(boardSelected)"
+        <button type="button" class="btn btn-warning w-50" (click)="updateSelectedBoard()"
             data-toggle="tooltip" data-placement="bottom" title="Refresh Board" [disabled]="!boardSelected">
           <i class="fas fa-sync-alt"></i>&nbsp;Board
         </button>
@@ -45,21 +64,21 @@
         </button>
       </div>
       <div class="d-flex justify-content-between" *ngIf="boardNameMapping.size">
-        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()" [disabled]="readonlyTodo || todosearchexec"
+        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm()" [disabled]="readonlyTodo || todosearchexec"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Todo
         </button>
-        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos.emit()" [disabled]="readonlyTodo || todosearchexec"
+        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos()" [disabled]="readonlyTodo || todosearchexec"
             data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
             [disabled]="!todo_count">
           <i class="fas fa-broom"></i>&nbsp;Todos
         </button>
-        <button type="button" class="btn btn-warning btn-sm w-25 mx-1" (click)="initTodoList.emit()"
+        <button type="button" class="btn btn-warning btn-sm w-25 mx-1" (click)="initTodoList()"
             data-toggle="tooltip" data-placement="bottom" title="Refresh Todo list"
             [disabled]="!todo_count">
             <i class="fas fa-sync-alt"></i>&nbsp;Todos
         </button>
-        <button type="button" class="btn btn-warning btn-sm w-25" (click)="restoreTodoList.emit()" [disabled]="!enableRestoreTodos"
+        <button type="button" class="btn btn-warning btn-sm w-25" (click)="restoreTodoList()" [disabled]="!enableRestoreTodos"
             data-toggle="tooltip" data-placement="bottom" title="Restore Todo list">
             <i class="fas fa-trash-restore-alt"></i>&nbsp;Todos
         </button>
@@ -75,7 +94,7 @@
           <span *ngIf="!readonlyTask"><i class="fas fa-unlock"></i></span>
           &nbsp;Tasks
         </button>
-        <button type="button" class="btn btn-primary w-25" (click)="prepareSearchTodoForm.emit()" [disabled]="!todo_count"
+        <button type="button" class="btn btn-primary w-25" (click)="prepareSearchTodoForm()" [disabled]="!todo_count"
             data-toggle="tooltip" data-placement="bottom" title="Search Todos">
           <i class="fas fa-search"></i>&nbsp;Todos
         </button>
