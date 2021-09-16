@@ -1,9 +1,5 @@
 <div class="container" role="main">
 	<div>
-		<app-ff-todo-generic-board-form #addBoardForm [mode]="ADD_BOARD" [descriptionMaxLength]="boardDescriptionMaxLength"
-				[preparingFormEvent]="prepareAddBoardFormTrigger.asObservable()" (submitDataEvent)="addBoard($event)">
-		</app-ff-todo-generic-board-form>
-
 		<app-ff-todo-generic-board-form #editBoardForm [mode]="EDIT_BOARD" [(model)]="boardContent"
 				[descriptionMaxLength]="boardDescriptionMaxLength"
 				[preparingFormEvent]="prepareEditBoardFormTrigger.asObservable()" (submitDataEvent)="editBoard($event)">

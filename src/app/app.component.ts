@@ -8,6 +8,9 @@ import { TiszaSzakiAlert } from './tsz-alert';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor() {
+  }
+
   public title = 'ff-todo-webapp';
 
   public displayDateFormat: string = 'yyyy-MM-dd HH:mm:ss.sss';
@@ -15,6 +18,8 @@ export class AppComponent {
   public maxAlerts: Number = 5;
 
   public todo_count!: number;
+
+  public boardSelected!: Number;
 
   public todosearchexec!: Boolean;
   public readonlyTodo!: Boolean;

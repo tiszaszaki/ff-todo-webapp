@@ -1,4 +1,9 @@
 <!-- Toolbar -->
+<div>
+  <app-ff-todo-generic-board-form #addBoardForm [mode]="ADD_BOARD" [descriptionMaxLength]="boardDescriptionMaxLength"
+      [preparingFormEvent]="prepareAddBoardFormTrigger.asObservable()" (submitDataEvent)="addBoard($event)">
+  </app-ff-todo-generic-board-form>
+</div>
 <nav class="navbar fixed-top navbar-light bg-light">
   <div class="d-flex flex-column w-100 border border-2 border-primary rounded p-1">
     <div class="d-flex justify-content-between">
@@ -22,7 +27,7 @@
 
     <div class="border border-3 border-secondary rounded p-2" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary w-50" (click)="prepareAddBoardForm.emit()"
+        <button type="button" class="btn btn-primary w-50" (click)="prepareAddBoardForm()"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>

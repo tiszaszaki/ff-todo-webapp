@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { SearchingRule } from '../searching-rule';
 import { ShiftDirection } from '../shift-direction';
@@ -31,7 +32,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() addAlertMessage = new EventEmitter<TiszaSzakiAlert>();
 
-  @Input() prepareAddBoardFormEvent!: Observable<void>;
   @Input() updateSelectedBoardEvent!: Observable<Number>;
 
   @Input() prepareAddTodoFormEvent!: Observable<void>;
@@ -46,7 +46,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() displayDateFormat!: string;
 
-  public prepareAddBoardFormTrigger = new Subject<void>();
   public prepareEditBoardFormTrigger = new Subject<void>();
   public prepareRemoveBoardFormTrigger = new Subject<void>();
 
@@ -70,7 +69,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareRemoveTaskFormTrigger = new Subject<void>();
   public prepareRemoveAllTasksFormTrigger = new Subject<void>();
 
-  private prepareAddBoardFormListener!: Subscription;
   private updateSelectedBoardListener!: Subscription;
 
   private prepareAddTodoFormListener!: Subscription;
@@ -85,10 +83,16 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public todoQuerySuccess!: Boolean;
 
-  public boardSelected!: Number;
   public boardNameMapping!: Map<Number, String>;
 
   public boardContent!: Board;
+
+  public boardSelected!: Number;
+
+  public phase_labels!: String[];
+  public phaseNum!: number;
+  public todoDescriptionMaxLength! : number;
+  public boardDescriptionMaxLength! : number;
 
   public todo_count!: number;
   public todo_list!: Todo[][];
@@ -117,12 +121,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public inputDateFormat: string = 'yyyy-MM-dd HH:mm:ss';
 
-  public phase_labels = ['Backlog', 'In progress', 'Done'];
-
-  public phaseNum!: number;
-  public todoDescriptionMaxLength! : number;
-  public boardDescriptionMaxLength! : number;
-
   public readonlyTodo!: Boolean;
   public readonlyTask!: Boolean;
 
@@ -132,7 +130,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public showTaskCount: Boolean[][] = [];
   public showDateCreated: Boolean[][] = [];
 
-  public readonly ADD_BOARD = BoardOperator.ADD;
   public readonly EDIT_BOARD = BoardOperator.EDIT;
   public readonly REMOVE_BOARD = BoardOperator.REMOVE;
 
@@ -151,14 +148,19 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public readonly LEFT = ShiftDirection.LEFT;
   public readonly RIGHT = ShiftDirection.RIGHT;
 
-  constructor(private todoServ: FfTodoRealRequestService, private route: ActivatedRoute) {
-    this.phaseNum = this.phase_labels.length;
-    this.todoDescriptionMaxLength = 1024;
-    this.boardDescriptionMaxLength = 1024;
-
+  constructor(
+      private todoServ: FfTodoRealRequestService,
+      private route: ActivatedRoute,
+      private common: FfTodoCommonService) {
     this.route.queryParams.subscribe(params => {
       this.boardSelected = params['id'];
     });
+
+    this.phase_labels = this.common.phase_labels;
+    this.phaseNum = this.common.phaseNum;
+
+    this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
+    this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
 
     this.todo_searching_casesense = false;
     this.todo_searching_highlight = false;
@@ -541,11 +543,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.prepareSortTaskFormTrigger[phase_idx].next();
   }
 
-  prepareAddBoardForm() {
-    console.log(`Preparing form for adding new Board...`);
-    this.prepareAddBoardFormTrigger.next();
-  }
-
   prepareEditBoardForm() {
     console.log(`Preparing form for editing new Board...`);
     this.prepareEditBoardFormTrigger.next();
@@ -617,17 +614,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
     this.todoId = id;
     this.prepareRemoveAllTasksFormTrigger.next();
-  }
-
-  addBoard(board : Board) {
-    console.log(`Trying to add new Board (${JSON.stringify(board)})...`);
-    this.todoServ.addBoard(board)
-    .subscribe(board => {
-      this.addAlertMessage.emit({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
-      this.updateBoardList();
-    }, errorMsg => {
-      this.addAlertMessage.emit({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
-    });
   }
 
   editBoard(board : Board) {
@@ -817,7 +803,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.updateBoardList();
 
-    this.prepareAddBoardFormListener = this.prepareAddBoardFormEvent.subscribe(() => this.prepareAddBoardForm());
     this.updateSelectedBoardListener = this.updateSelectedBoardEvent.subscribe((id) => this.updateBoard(id));
 
     this.prepareAddTodoFormListener = this.prepareAddTodoFormEvent.subscribe(() => this.prepareAddTodoForm());
@@ -850,7 +835,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.prepareAddBoardFormListener.unsubscribe();
     this.updateSelectedBoardListener.unsubscribe();
 
     this.prepareAddTodoFormListener.unsubscribe();

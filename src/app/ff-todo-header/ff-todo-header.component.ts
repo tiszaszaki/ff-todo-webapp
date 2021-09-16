@@ -1,4 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Board } from '../board';
+import { BoardOperator } from '../board-operator';
+import { FfTodoCommonService } from '../ff-todo-common.service';
+import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
+import { TiszaSzakiAlert } from '../tsz-alert';
 
 @Component({
   selector: 'app-ff-todo-header',
@@ -7,7 +13,11 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 })
 export class FfTodoHeaderComponent implements OnInit, OnChanges {
 
-  constructor() { }
+  constructor(
+      private todoServ: FfTodoRealRequestService,
+      private common: FfTodoCommonService) {
+    this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
+  }
 
   @Input() title! : String;
 
@@ -20,7 +30,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
 
   @Input() boardNameMapping!: Map<Number, String>;
 
-  @Output() prepareAddBoardForm = new EventEmitter<void>();
   @Output() updateSelectedBoard = new EventEmitter<Number>();
 
   @Output() prepareAddTodoForm = new EventEmitter<void>();
@@ -32,6 +41,14 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
 
   @Output() toggleReadonlyTodo = new EventEmitter<Boolean>();
   @Output() toggleReadonlyTask = new EventEmitter<Boolean>();
+
+  @Output() addAlertMessage = new EventEmitter<TiszaSzakiAlert>();
+
+  public readonly ADD_BOARD = BoardOperator.ADD;
+
+  public boardDescriptionMaxLength! : number;
+
+  public prepareAddBoardFormTrigger = new Subject<void>();
 
   public boardSelected!: Number;
   public toolbar_collapse_status = false;
@@ -47,6 +64,22 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+  }
+
+  prepareAddBoardForm() {
+    console.log(`Preparing form for adding new Board...`);
+    this.prepareAddBoardFormTrigger.next();
+  }
+
+  addBoard(board : Board) {
+    console.log(`Trying to add new Board (${JSON.stringify(board)})...`);
+    this.todoServ.addBoard(board)
+    .subscribe(board => {
+      this.addAlertMessage.emit({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
+      //this.updateBoardList();
+    }, errorMsg => {
+      this.addAlertMessage.emit({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

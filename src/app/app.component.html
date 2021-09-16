@@ -3,8 +3,8 @@
         [todosearchexec]="todosearchexec" (prepareAddTodoForm)="prepareAddTodoForm()" (prepareRemovingAllTodos)="prepareRemovingAllTodos()"
         (initTodoList)="initTodoList()" (restoreTodoList)="restoreTodoList()" (prepareSearchTodoForm)="prepareSearchTodoForm()"
         (toggleReadonlyTodo)="toggleReadonlyTodo($event)" (toggleReadonlyTask)="toggleReadonlyTask($event)"
-        (prepareAddBoardForm)="prepareAddBoardForm()" (updateSelectedBoard)="updateSelectedBoard($event)"
-        [boardNameMapping]="boardNameMapping">
+        (updateSelectedBoard)="updateSelectedBoard($event)"
+        [boardNameMapping]="boardNameMapping" (addAlertMessage)="addAlertMessage($event)">
 </app-ff-todo-header>
 
 <router-outlet></router-outlet>
@@ -18,7 +18,7 @@
         [initTodoListEvent]="initTodoListTrigger.asObservable()" [restoreTodoListEvent]="restoreTodoListTrigger.asObservable()"
         [prepareSearchTodoFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
         [toggleReadonlyTodoEvent]="toggleReadonlyTodoTrigger.asObservable()" [toggleReadonlyTaskEvent]="toggleReadonlyTaskTrigger.asObservable()"
-        [prepareAddBoardFormEvent]="prepareAddBoardFormTrigger.asObservable()" [updateSelectedBoardEvent]="updateSelectedBoardTrigger.asObservable()"
+        [updateSelectedBoardEvent]="updateSelectedBoardTrigger.asObservable()"
         (updateBoardNames)="updateBoardNames($event)">
 </app-ff-todo-list>
 < -->
