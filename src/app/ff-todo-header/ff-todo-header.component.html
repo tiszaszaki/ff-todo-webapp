@@ -34,6 +34,10 @@
             data-toggle="tooltip" data-placement="bottom" title="Selected Board ID">
           <option *ngFor="let field of boardNameMapping.keys()" [value]="field">{{ boardNameMapping.get(field) }}</option>
         </select>
+        <button type="button" class="btn btn-secondary w-50" [routerLink]="['']"
+            data-toggle="tooltip" data-placement="bottom" title="Return to Board list">
+            <i class="fas fa-undo"></i>&nbsp;
+        </button>
       </div>
       <div class="d-flex justify-content-between" *ngIf="boardNameMapping.size">
         <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm.emit()" [disabled]="readonlyTodo || todosearchexec"

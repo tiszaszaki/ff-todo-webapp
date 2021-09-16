@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
@@ -150,10 +151,14 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public readonly LEFT = ShiftDirection.LEFT;
   public readonly RIGHT = ShiftDirection.RIGHT;
 
-  constructor(private todoServ: FfTodoRealRequestService) {
+  constructor(private todoServ: FfTodoRealRequestService, private route: ActivatedRoute) {
     this.phaseNum = this.phase_labels.length;
     this.todoDescriptionMaxLength = 1024;
     this.boardDescriptionMaxLength = 1024;
+
+    this.route.queryParams.subscribe(params => {
+      this.boardSelected = params['id'];
+    });
 
     this.todo_searching_casesense = false;
     this.todo_searching_highlight = false;
@@ -360,12 +365,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
           if (idx == results.length)
           {
             this.updateBoardNames.emit(this.boardNameMapping);
-
-            for (let id of this.boardNameMapping.keys())
-            {
-              this.boardSelected = id;
-              break;
-            }
 
             this.todoServ.getBoardReadonlyTasksSetting(this.boardSelected as number)
             .subscribe((readonlyTask) => {

@@ -7,6 +7,9 @@
         [boardNameMapping]="boardNameMapping">
 </app-ff-todo-header>
 
+<router-outlet></router-outlet>
+
+<!-- >
 <app-ff-todo-list (updateReadonlyTodo)="updateReadonlyTodo($event)" (updateReadonlyTask)="updateReadonlyTask($event)"
         (updateTodoCount)="updateTodoCount($event)" (toggleRestoreTodos)="toggleRestoreTodos($event)"
         (addAlertMessage)="addAlertMessage($event)" [displayDateFormat]="displayDateFormat" (updateTodoSearchExec)="updateTodoSearchExec($event)"
@@ -18,6 +21,7 @@
         [prepareAddBoardFormEvent]="prepareAddBoardFormTrigger.asObservable()" [updateSelectedBoardEvent]="updateSelectedBoardTrigger.asObservable()"
         (updateBoardNames)="updateBoardNames($event)">
 </app-ff-todo-list>
+< -->
 
 <app-ff-todo-footer [addAlertMessageEvent]="addAlertMessageTrigger.asObservable()" [maxAlerts]="maxAlerts"
         [displayDateFormat]="displayDateFormat">

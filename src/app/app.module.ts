@@ -27,7 +27,9 @@ import { FfTodoAlertListComponent } from './ff-todo-alert-list/ff-todo-alert-lis
 import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { FfTodoSearchNoResultsComponent } from './ff-todo-search-no-results/ff-todo-search-no-results.component';
 import { FfTodoGenericBoardFormComponent } from './ff-todo-generic-board-form/ff-todo-generic-board-form.component';
-import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-list.component'
+import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-list.component';
+import { AppRoutingModule } from './app-routing.module';
+import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/ff-todo-page-does-not-exist.component'
 
 @NgModule({
   declarations: [
@@ -54,10 +56,11 @@ import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-lis
     ModalBasicComponent,
     FfTodoSearchNoResultsComponent,
     FfTodoGenericBoardFormComponent,
-    FfTodoBoardListComponent
+    FfTodoBoardListComponent,
+    FfTodoPageDoesNotExistComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, NgbModule
+    BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
