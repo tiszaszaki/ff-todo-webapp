@@ -47,7 +47,7 @@ export class FfTodoAlertService implements OnInit, OnDestroy {
       msg.createdAt = new Date();
     }
 
-    if (this.alerts.length == this.maxAlerts)
+    while (this.alerts.length >= this.maxAlerts)
     {
       this.alerts.shift();
     }
@@ -59,6 +59,11 @@ export class FfTodoAlertService implements OnInit, OnDestroy {
       this.closeAlertEvent.next(msg);
     }
 
+    this.alertsChange.emit(this.alerts);
+  }
+
+  clearMessages() {
+    this.alerts = [];
     this.alertsChange.emit(this.alerts);
   }
 

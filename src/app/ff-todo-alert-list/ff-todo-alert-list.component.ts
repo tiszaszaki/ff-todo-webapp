@@ -13,7 +13,7 @@ export class FfTodoAlertListComponent implements OnInit, OnDestroy {
 
   public displayDateFormat!: string;
 
-  private alerts!: TiszaSzakiAlert[];
+  public alerts!: TiszaSzakiAlert[];
   public alertsListener!: Subscription;
 
   constructor(
@@ -25,10 +25,6 @@ export class FfTodoAlertListComponent implements OnInit, OnDestroy {
   isAlertListEmpty()
   {
     return this.alertServ.isAlertListEmpty();
-  }
-
-  getAlerts() : TiszaSzakiAlert[] {
-    return this.alerts;
   }
 
   close(msg: TiszaSzakiAlert)

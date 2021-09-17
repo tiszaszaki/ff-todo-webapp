@@ -3,11 +3,17 @@
     <nav class="navbar fixed-bottom navbar-light bg-light">
         <div class="d-flex justify-content-between w-100">
             <div>Messages</div>
-            <button type="button" class="btn btn-secondary" (click)="toolbar.toggle()"
-                    data-toggle="tooltip" data-placement="bottom" title="Toggle footer">
-                <i *ngIf="!footer_collapse_status" class="fas fa-chevron-down"></i>
-                <i *ngIf="footer_collapse_status" class="fas fa-chevron-up"></i>
-            </button>
+            <div>
+                <button type="button" class="btn btn-danger" (click)="clearAlertList()" [disabled]="isAlertListEmpty()"
+                        data-toggle="tooltip" data-placement="bottom" title="Clear alert list">
+                    <i class="fas fa-broom"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="toolbar.toggle()"
+                        data-toggle="tooltip" data-placement="bottom" title="Toggle footer">
+                    <i *ngIf="!footer_collapse_status" class="fas fa-chevron-down"></i>
+                    <i *ngIf="footer_collapse_status" class="fas fa-chevron-up"></i>
+                </button>
+            </div>
         </div>
         <table class="table" #toolbar="ngbCollapse" [(ngbCollapse)]="footer_collapse_status">
             <tr class="row tsz-alert-col">

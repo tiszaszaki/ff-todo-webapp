@@ -16,6 +16,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public boardNameMapping!: Map<Number, String>;
   public boardNameMappingListener!: Subscription;
 
+  public updateBoardListTrigger!: Subscription;
+
   constructor(
       private todoServ: FfTodoRealRequestService,
       private common: FfTodoCommonService) {
@@ -25,6 +27,9 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.boardNameMappingListener = this.common.boardNameMappingChange.subscribe(results => this.boardNameMapping = results);
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
+
+    this.boardNameMappingListener = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
+
     this.updateBoardList();
   }
 
@@ -34,6 +39,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.boardNameMappingListener.unsubscribe();
     this.isRoutedToTodoListListener.unsubscribe();
+
+    this.boardNameMappingListener.unsubscribe();
   }
 
   public gotoTodoList() {

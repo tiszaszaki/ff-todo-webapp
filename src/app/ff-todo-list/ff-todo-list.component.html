@@ -37,22 +37,32 @@
 	<div *ngIf="boardContent">
 		<h2 class="text-muted text-center"
 				data-toggle="tooltip" data-placement="bottom" title="Board ID">{{ boardContent.id }}</h2>
-		<h2 class="text-center"
-				data-toggle="tooltip" data-placement="bottom" title="Board title">{{ boardContent.name }}</h2>
-		<div *ngIf="boardContent.description" class="border border-secondary rounded w-75"
-				data-toggle="tooltip" data-placement="bottom" title="Board description">{{ boardContent.description }}</div>
-		<div class="text-muted" *ngIf="boardContent.name && !boardContent.description">No description added</div>
-		<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
-		<div class="text-muted" *ngIf="boardContent.name && !boardContent.author">Unknown author</div>
-		<div *ngIf="boardContent.name">
-			<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
-					data-toggle="tooltip" data-placement="bottom" title="Edit Board">
-				<i class="fas fa-pencil-alt"></i>&nbsp;Board
+		<div class="d-flex justify-content-between">
+			<div></div>
+			<h2 class="text-center"
+					data-toggle="tooltip" data-placement="bottom" title="Board title">{{ boardContent.name }}</h2>
+			<button type="button" class="btn btn-secondary" (click)="boardDetails.toggle()"
+					data-toggle="tooltip" data-placement="bottom" title="Toggle Board details">
+				<i *ngIf="!board_details_collapse_status" class="fas fa-folder-minus"></i>
+		  		<i *ngIf="board_details_collapse_status" class="fas fa-folder-plus"></i>
 			</button>
-			<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveBoardForm()"
-					data-toggle="tooltip" data-placement="bottom" title="Remove Board">
-				<i class="fas fa-trash-alt"></i>&nbsp;Board
-			</button>
+	  </div>
+		<div #boardDetails="ngbCollapse" [(ngbCollapse)]="board_details_collapse_status">
+			<div *ngIf="boardContent.description" class="border border-secondary rounded w-75"
+					data-toggle="tooltip" data-placement="bottom" title="Board description">{{ boardContent.description }}</div>
+			<div class="text-muted" *ngIf="boardContent.name && !boardContent.description">No description added</div>
+			<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
+			<div class="text-muted" *ngIf="boardContent.name && !boardContent.author">Unknown author</div>
+			<div *ngIf="boardContent.name">
+				<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
+						data-toggle="tooltip" data-placement="bottom" title="Edit Board">
+					<i class="fas fa-pencil-alt"></i>&nbsp;Board
+				</button>
+				<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveBoardForm()"
+						data-toggle="tooltip" data-placement="bottom" title="Remove Board">
+					<i class="fas fa-trash-alt"></i>&nbsp;Board
+				</button>
+			</div>
 		</div>
 	</div>
 	<table class="table mt-3" *ngIf="this.boardSelected">

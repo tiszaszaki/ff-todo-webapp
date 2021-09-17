@@ -40,6 +40,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public updateBoardListener!: Subscription;
   public updateTodoListListener!: Subscription;
 
+  public board_details_collapse_status = false;
+
   public todoQuerySuccess!: Boolean;
 
   public boardContent!: Board;

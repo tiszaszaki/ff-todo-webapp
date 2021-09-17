@@ -10,6 +10,7 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   public updateBoardEvent = new EventEmitter<void>();
   public updateTodoListEvent = new EventEmitter<void>();
+  public updateBoardListEvent = new EventEmitter<void>();
 
   private isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListChange = new EventEmitter<Boolean>();
@@ -69,6 +70,10 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   updateTodoList() {
     this.updateTodoListEvent.emit();
+  }
+
+  updateBoardList() {
+    this.updateBoardListEvent.emit();
   }
 
   updateTodoSearchCase(val: Boolean) {

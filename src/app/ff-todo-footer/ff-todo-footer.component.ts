@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 
 @Component({
   selector: 'app-ff-todo-footer',
@@ -9,7 +10,15 @@ export class FfTodoFooterComponent implements OnInit, OnDestroy {
 
   public footer_collapse_status = true;
 
-  constructor() { }
+  constructor(private alertServ: FfTodoAlertService) { }
+
+  isAlertListEmpty() {
+    return this.alertServ.isAlertListEmpty();
+  }
+
+  clearAlertList() {
+    this.alertServ.clearMessages();
+  }
 
   ngOnInit(): void {
   }
