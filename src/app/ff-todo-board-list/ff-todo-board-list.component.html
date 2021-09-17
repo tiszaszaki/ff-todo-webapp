@@ -2,7 +2,8 @@
     <h1>Board list</h1>
     <ul class="list-group">
         <li class="list-group-item" *ngFor="let field of boardNameMapping.keys()">
-            <button type="button" class="btn btn-primary" [routerLink]="['/list-todos']" [queryParams]="{id: field}">
+            <button type="button" class="btn btn-primary" (click)="gotoTodoList()"
+                    [routerLink]="['/list-todos']" [queryParams]="{id:field}">
                 <i class="fas fa-share"></i>
             </button>
             {{ boardNameMapping.get(field) }}

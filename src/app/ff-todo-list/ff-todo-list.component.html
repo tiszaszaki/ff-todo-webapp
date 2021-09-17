@@ -62,7 +62,7 @@
 					<h2 class="mt-1 mb-3">{{phase}}</h2>
 				</td>
 			</tr>
-			<tr class="row border border-2 border-secondary" *ngIf="todo_count">
+			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<button type="button" class="btn btn-secondary" (click)="prepareSortTodoForm(idx)">
 						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Todos

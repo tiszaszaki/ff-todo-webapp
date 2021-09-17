@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
@@ -40,20 +40,24 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareRemoveTaskFormTrigger = new Subject<void>();
   public prepareRemoveAllTasksFormTrigger = new Subject<void>();
 
-  public todoQuerySuccess!: Boolean;
+  public updateBoardListener!: Subscription;
+  public updateTodoListListener!: Subscription;
 
-  public boardNameMapping!: Map<Number, String>;
+  public todoQuerySuccess!: Boolean;
 
   public boardContent!: Board;
 
   public boardSelected!: Number;
+  public boardSelectedListener!: Subscription;
 
   public phase_labels!: String[];
   public phaseNum!: number;
   public todoDescriptionMaxLength! : number;
   public boardDescriptionMaxLength! : number;
 
-  public todo_count!: number;
+  public todoCount!: number;
+  public todoCountListener!: Subscription;
+  
   public todo_list!: Todo[][];
   public task_count!: number[];
 
@@ -110,10 +114,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
-    this.route.queryParams.subscribe(params => {
-      this.boardSelected = params['id'];
-    });
-
     this.phase_labels = this.common.phase_labels;
     this.phaseNum = this.common.phaseNum;
 
@@ -291,46 +291,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     return this.todoServ.getTodo(id);
   }
 
-  private updateBoardList()
-  {
-    this.todoServ.getBoards().subscribe(results => {
-      let idx=0;
-
-      this.boardNameMapping = new Map<Number, String>();
-
-      if (!results.length)
-      {
-        this.boardSelected = NaN;
-        this.boardContent = new Board();
-
-        this.readonlyTask = false;
-        this.readonlyTodo = false;
-      }
-
-      for (let id of results)
-      {
-        this.todoServ.getBoard(id as number).subscribe(result => {
-          this.boardNameMapping.set(id, result.name);
-          idx++;
-          if (idx == results.length)
-          {
-            this.todoServ.getBoardReadonlyTasksSetting(this.boardSelected as number)
-            .subscribe((readonlyTask) => {
-              this.todoServ.getBoardReadonlyTodosSetting(this.boardSelected as number)
-              .subscribe((readonlyTodo) => {
-                this.readonlyTask = readonlyTask;
-
-                this.readonlyTodo = readonlyTodo;      
-              });
-            });  
-          }
-        });
-      }
-    });
-  }
-
-  private updateBoard(id: Number) {
-    this.boardSelected = id;
+  private updateBoard() {
     this.todoServ.getBoard(this.boardSelected as number).subscribe(board => {
       this.boardContent = board;
       this.getTodos();
@@ -340,6 +301,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   private getTodos(phase?: Set<number>): void {
     var todo_results: Observable<Todo[]>;
+    let todoCountTemp = 0;
 
     if (!phase)
     {
@@ -347,8 +309,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     todo_results = this.todoServ.getTodosFromBoard(this.boardSelected as number);
-
-    this.todo_count = 0;
 
     this.todoQuerySuccess = false;
 
@@ -448,8 +408,10 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
         for (let todo_phase of this.todo_list)
         {
-          this.todo_count += todo_phase.length;
+          todoCountTemp += todo_phase.length;
         }
+
+        this.common.updateTodoCount(todoCountTemp);
 
         if (phase)
         if (phase.size == 0)
@@ -547,7 +509,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.todoServ.editBoard(id, board)
     .subscribe(_ => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Board with ID (${id}) to (${JSON.stringify(board)}).`});
-      this.updateBoard(id);
+      this.updateBoard();
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Board with ID (${id}). See browser console for details.`});
     });
@@ -559,7 +521,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.todoServ.removeBoard(id)
     .subscribe(_ => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Board with ID (${id}).`});
-      this.updateBoardList();
+      this.common.deleteBoardName(id);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove Board with ID (${id}). See browser console for details.`});
     });
@@ -733,13 +695,29 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.updateBoardList();
-  }
+    this.updateBoardListener = this.common.updateBoardEvent.subscribe(() => this.updateBoard());
+    this.updateTodoListListener = this.common.updateTodoListEvent.subscribe(() => this.getTodos());
 
-  ngOnDestroy(): void {
+    this.todoCountListener = this.common.todoCountChange.subscribe(result => this.todoCount = result);
+    this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => {
+      this.boardSelected = result;
+      this.updateBoard();
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.common.setBoardSelected(params.id);
+    });
   }
 
   ngOnChanges(): void {
     this.enabledRestoreTodos &&= !this.readonlyTodo;
+  }
+
+  ngOnDestroy(): void {
+    this.updateBoardListener.unsubscribe();
+    this.updateTodoListListener.unsubscribe();
+
+    this.todoCountListener.unsubscribe();
+    this.boardSelectedListener.unsubscribe();
   }
 }

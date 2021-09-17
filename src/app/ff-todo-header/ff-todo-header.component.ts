@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
@@ -13,23 +13,27 @@ import { TodoOperator } from '../todo-operator';
   templateUrl: './ff-todo-header.component.html',
   styleUrls: ['./ff-todo-header.component.css', '../app.component.css']
 })
-export class FfTodoHeaderComponent implements OnInit, OnChanges {
+export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() title! : String;
+
+  public isRoutedToTodoList!: Boolean;
+  public isRoutedToTodoListListener!: Subscription;
 
   public todosearchexec!: Boolean;
   public readonlyTodo!: Boolean;
   public readonlyTask!: Boolean;
 
   public boardSelected!: Number;
+  public boardSelectedListener!: Subscription;
 
   public phase_labels!: String[];
   public phaseNum!: number;
 
-  public todo_count!: number;
-  public enableRestoreTodos!: Boolean;
+  public todoCount!: number;
+  public todoCountListener!: Subscription;
 
-  public boardNameMapping!: Map<Number, String>;
+  public enableRestoreTodos!: Boolean;
 
   public boardDescriptionMaxLength! : number;
   public todoDescriptionMaxLength! : number;
@@ -51,47 +55,44 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
   public readonly REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
 
   constructor(
-    private todoServ: FfTodoRealRequestService,
-    private common: FfTodoCommonService,
-    private alertServ: FfTodoAlertService) {
-  this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
-  this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
+      private todoServ: FfTodoRealRequestService,
+      private common: FfTodoCommonService,
+      private alertServ: FfTodoAlertService) {
 
-  this.todosearchexec = this.common.todosearchexec;
-  this.readonlyTodo = this.common.readonlyTodo;
-  this.readonlyTask = this.common.readonlyTask;
+    this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
+    this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
 
-  this.enableRestoreTodos = this.common.enableRestoreTodos;
+    this.todosearchexec = this.common.todosearchexec;
+    this.readonlyTodo = this.common.readonlyTodo;
+    this.readonlyTask = this.common.readonlyTask;
 
-  this.todo_count = this.common.todo_count;
+    this.enableRestoreTodos = this.common.enableRestoreTodos;
 
-  this.boardSelected = this.common.boardSelected;
+    this.phase_labels = this.common.phase_labels;
+    this.phaseNum = this.common.phaseNum;
 
-  this.phase_labels = this.common.phase_labels;
-  this.phaseNum = this.common.phaseNum;
+    this.inputDateFormat = this.common.inputDateFormat;
 
-  this.inputDateFormat = this.common.inputDateFormat;
-}
+    this.isRoutedToTodoList = false;
+  }
 
   ngOnInit(): void {
+    this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => this.boardSelected = result);
+    this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
+    this.todoCountListener = this.common.todoCountChange.subscribe(result => this.todoCount = result);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.boardNameMapping)
-    {
-      this.boardSelected = NaN;
-      for (let id of this.boardNameMapping.keys())
-      {
-        this.boardSelected = id;
-        break;
-      }
-    }
   }
 
-  initTodoList() {
+  ngOnDestroy(): void {
+    this.boardSelectedListener.unsubscribe();
+    this.isRoutedToTodoListListener.unsubscribe();
+    this.todoCountListener.unsubscribe();
   }
 
-  updateSelectedBoard() {
+  refreshTodoList() {
+    this.common.updateTodoList();
   }
 
   prepareAddBoardForm() {
@@ -117,6 +118,14 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
   resetSearchForm() {
   }
 
+  returnToBoardList() {
+    this.common.changeRouteStatus(false);
+  }
+
+  updateSelectedBoard() {
+    this.common.updateBoard();
+  }
+
   updateReadonlyTodo() {
     this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, !this.readonlyTodo).subscribe(_ => {});
   }
@@ -134,18 +143,17 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
     this.todoServ.addBoard(board)
     .subscribe(board => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
-      //this.updateBoardList();
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
     });
   }
 
   addTodo(todo : Todo) {
-    console.log(`Trying to add new Todo (${JSON.stringify(todo)})...`);
+    console.log(`Trying to add new Todo (${JSON.stringify(todo)}) to Board with ID (${this.boardSelected})...`);
     this.todoServ.addTodo(this.boardSelected as number, todo)
     .subscribe(todo => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Todo (${JSON.stringify(todo)}) to Board with ID (${this.boardSelected}).`});
-      //this.getTodos(new Set([todo.phase]));
+      this.common.updateTodoList();
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Todo. See browser console for details.`});
     });
@@ -155,7 +163,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges {
     this.todoServ.removeAllTodos(this.boardSelected as number)
     .subscribe(_ => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected}).`});
-      //this.getTodos();
+      this.common.updateTodoList();
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove all Todos. See browser console for details.`});
     });
