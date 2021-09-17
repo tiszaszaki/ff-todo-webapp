@@ -17,6 +17,7 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
       result = [array];
     }
 
+    if (rules)
     for (let [field,term] of rules) {
       if (field.trim() != '') {
         let temp: any[];

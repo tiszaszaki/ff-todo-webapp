@@ -20,7 +20,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListListener!: Subscription;
 
-  public todosearchexec!: Boolean;
   public readonlyTodo!: Boolean;
   public readonlyTask!: Boolean;
 
@@ -43,10 +42,11 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public prepareAddBoardFormTrigger = new Subject<void>();
 
   public prepareAddTodoFormTrigger = new Subject<void>();
-  public prepareSearchTodoFormTrigger = new Subject<void>();
-  public prepareRemoveAllTodosFormTrigger = new Subject<void>();
 
-  public todo_searching_casesense!: Boolean;
+  public prepareSearchTodoFormTrigger = new Subject<void>();
+  public resetSearchTodoFormTrigger = new Subject<void>();
+
+  public prepareRemoveAllTodosFormTrigger = new Subject<void>();
 
   public toolbar_collapse_status = false;
 
@@ -62,7 +62,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
     this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
 
-    this.todosearchexec = this.common.todosearchexec;
     this.readonlyTodo = this.common.readonlyTodo;
     this.readonlyTask = this.common.readonlyTask;
 
@@ -78,8 +77,9 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => this.boardSelected = result);
-    this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
     this.todoCountListener = this.common.todoCountChange.subscribe(result => this.todoCount = result);
+
+    this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -87,8 +87,9 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.boardSelectedListener.unsubscribe();
-    this.isRoutedToTodoListListener.unsubscribe();
     this.todoCountListener.unsubscribe();
+
+    this.isRoutedToTodoListListener.unsubscribe();
   }
 
   refreshTodoList() {
@@ -110,12 +111,20 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.prepareSearchTodoFormTrigger.next();
   }
 
+  resetSearchTodoForm() {
+    console.log(`Trying to reset Todo searching form...`);
+    this.resetSearchTodoFormTrigger.next();
+
+    this.common.clearSearchRules();
+  }
+
+  isTodoSearchExec() {
+    return this.common.hasSearchRules();
+  }
+
   prepareRemovingAllTodos() {
     console.log(`Preparing form for removing all Todos...`);
     this.prepareRemoveAllTodosFormTrigger.next();
-  }
-
-  resetSearchForm() {
   }
 
   returnToBoardList() {

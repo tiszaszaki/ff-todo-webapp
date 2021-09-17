@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { FfTodoCommonService } from './ff-todo-common.service';
 import { TiszaSzakiAlert } from './tsz-alert';
@@ -16,6 +16,7 @@ export class FfTodoAlertService implements OnInit, OnDestroy {
   private closeAlertListener!: Subscription;
 
   private alerts: TiszaSzakiAlert[] = [];
+  public alertsChange = new EventEmitter< TiszaSzakiAlert[] >();
 
   private autoCloseAlerts!: Boolean;
 
@@ -40,10 +41,6 @@ export class FfTodoAlertService implements OnInit, OnDestroy {
     return !this.alerts.length;
   }
 
-  getAlerts() : TiszaSzakiAlert[] {
-    return this.alerts;
-  }
-
   addAlertMessage(msg: TiszaSzakiAlert) {
     if (!msg.createdAt)
     {
@@ -61,12 +58,16 @@ export class FfTodoAlertService implements OnInit, OnDestroy {
     {
       this.closeAlertEvent.next(msg);
     }
+
+    this.alertsChange.emit(this.alerts);
   }
 
   close(alert: TiszaSzakiAlert) {
     if (this.alerts.find(elem => elem == alert))
     {
       this.alerts.splice(this.alerts.indexOf(alert), 1);
+
+      this.alertsChange.emit(this.alerts);
     }
   }
 }

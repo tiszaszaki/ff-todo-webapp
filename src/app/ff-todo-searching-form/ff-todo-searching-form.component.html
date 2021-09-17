@@ -26,17 +26,17 @@
             <div class="d-flex justify-content-between">
                 <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
                     <input class="form-check-input" type="checkbox" id="todo_search_casesense"
-                            [(ngModel)]="todosearchcase" name="casesense" (click)="todosearchcaseChange.emit(todosearchcase)">
+                            [(ngModel)]="todoSearchingCaseSense" name="casesense">
                     <label for="todo_search_casesense">Case sensitive</label>
                 </div>
                 <div data-toggle="tooltip" data-placement="bottom" title="Toggle highlighting matches">
                     <input class="form-check-input" type="checkbox" id="todo_search_highlight"
-                            [(ngModel)]="todosearchhighlight" name="todosearchhighlight" (click)="todosearchhighlightChange.emit(todosearchhighlight)">
+                            [(ngModel)]="todoSearchingHighlight" name="todosearchhighlight">
                     <label for="todo_search_highlight">Highlight matches</label>
                 </div>
             </div>
         </div>
-        <div class="form-group" *ngIf="todosearchRules.size">
+        <div class="form-group" *ngIf="todoSearchRules && todoSearchRules.size">
             <h5>Active searching rules:</h5>
             <div class="border border-secondary rounded">
                 <table class="table table-bordered table-hover">
@@ -48,10 +48,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let field of todosearchRules.keys()">
+                        <tr *ngFor="let field of todoSearchRules.keys()">
                             <td>{{ field }}</td>
                             <td>{{ getTodoSearchingFieldDisplay(field) }}</td>
-                            <td>{{ todosearchRules.get(field) }}</td>
+                            <td>{{ todoSearchRules.get(field) }}</td>
                         </tr>
                     </tbody>
                 </table>

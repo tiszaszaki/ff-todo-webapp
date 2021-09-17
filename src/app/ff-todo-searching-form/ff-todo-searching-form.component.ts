@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
-import { SearchingRule } from '../searching-rule';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 
 @Component({
   selector: 'app-ff-todo-searching-form',
@@ -10,13 +10,6 @@ import { SearchingRule } from '../searching-rule';
 })
 export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
-  @Output() todosearchcaseChange = new EventEmitter<Boolean>();
-  @Output() todosearchhighlightChange = new EventEmitter<Boolean>();
-
-  @Output() todosearchruleRemove = new EventEmitter<String>();
-  @Output() todosearchruleChange = new EventEmitter<SearchingRule>();
-  @Output() todosearchruleReset = new EventEmitter<void>();
-
   @Output() updateSubmitStateEvent = new EventEmitter<Boolean>();
 
   @Input() preparingFormEvent!: Observable<void>;
@@ -24,15 +17,18 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   @Input() todo_list_count!: number;
 
-  @Input() todosearchcase!: Boolean;
-  @Input() todosearchhighlight!: Boolean;
-
-  @Input() todosearchRules!: Map<String,String>;
-
   @ViewChild('searchTodoForm') formElement!: TemplateRef<FfTodoSearchingFormComponent>;
 
-  public todosearchterm!: String;
-  public todosearchfield!: String;
+  public todoSearchingCaseSense!: Boolean;
+  public todoSearchingCaseSenseListener!: Subscription;
+  public todoSearchingHighlight!: Boolean;
+  public todoSearchingHighlightListener!: Subscription;
+
+  public todoSearchRules!: Map<String,String>;
+  public todoSearchingRulesListener!: Subscription;
+
+  public todosearchterm: String = '';
+  public todosearchfield: String = '';
 
   public submitted: Boolean = false;
 
@@ -52,8 +48,9 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     {name: 'tasks.done', display: 'Task checked'}
   ];
 
-  constructor(private modalService: NgbModal) {
-    this.resetTodoSearching();
+  constructor(
+      private modalService: NgbModal,
+      private common: FfTodoCommonService) {
   }
 
   getTodoSearchingFieldDisplay(field: String): String {
@@ -72,26 +69,22 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   }
 
   removeTodoSearchRule() {
-    this.todosearchruleRemove.emit(this.todosearchfield);
-
-    this.resetTodoSearchRule();
+    this.common.deleteSearchRule(this.todosearchfield);
   }
 
   updateSubmitState(state: Boolean)
   {
-    this.submitted = state;
-
-    if (!state)
+    if (state)
+    {
+      this.common.addSearchRule(this.todosearchfield, this.todosearchterm);
+    }
+    else
     {
       this.resetTodoSearching();
     }
 
-    this.todosearchcaseChange.emit(this.todosearchcase);
-    this.todosearchhighlightChange.emit(this.todosearchhighlight);
-
-    this.todosearchruleChange.emit({term: this.todosearchterm, field: this.todosearchfield});
-
-    this.updateSubmitStateEvent.emit(state);
+    this.common.updateTodoSearchCase(this.todoSearchingCaseSense);
+    this.common.updateTodoSearchHighlight(this.todoSearchingHighlight);
   }
 
   private resetTodoSearchRule() {
@@ -100,10 +93,10 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   }
 
   private resetTodoSearching() {
-    this.todosearchcase = false;
-    this.todosearchhighlight = false;
+    this.todoSearchingCaseSense = false;
+    this.todoSearchingHighlight = false;
     this.resetTodoSearchRule();
-    this.todosearchruleReset.emit();
+    this.common.clearSearchRules();
   }
 
   showModal()
@@ -134,10 +127,23 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
     this.resetFormListener = this.resetFormEvent.subscribe(() => this.resetTodoSearching());
+
+    this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => this.todoSearchingCaseSense = result);
+    this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => this.todoSearchingHighlight = result);
+
+    this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
+      this.todoSearchRules = results;
+      this.resetTodoSearchRule();
+    });
   }
 
   ngOnDestroy(): void {
     this.preparingFormListener.unsubscribe();
     this.resetFormListener.unsubscribe();
+
+    this.todoSearchingCaseSenseListener.unsubscribe();
+    this.todoSearchingHighlightListener.unsubscribe();
+
+    this.todoSearchingRulesListener.unsubscribe();
   }
 }

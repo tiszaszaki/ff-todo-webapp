@@ -87,17 +87,14 @@
 			</tr>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum" [readonlyTodo]="readonlyTodo"
+					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum" [phase_idx]="idx"
+							[readonlyTodo]="readonlyTodo"
 							[readonlyTask]="readonlyTask" [displayDateFormat]="displayDateFormat"
 							[todoQuerySuccess]="todoQuerySuccess" [showDescriptionLength]="showDescriptionLength[idx]"
-							[showDateCreated]="showDateCreated[idx]" [showTaskCount]="showTaskCount[idx]"
+							[showTaskCount]="showTaskCount[idx]" [showDateCreated]="showDateCreated[idx]"
 							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"
 							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
 							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							[todosearchcase]="todo_searching_casesense" [todosearchexec]="searchSubmitted"
-							[todosearchhighlight]="todo_searching_highlight" [todosearchRules]="get_todo_searching_rules()"
-							[notifySearchResultsIn]="notifySearchTodoResultsTrigger[idx].asObservable()"
-							(notifySearchResultsOut)="notifyTodoSearchResults(idx, $event)"
 							(editTodoEvent)="prepareEditTodoForm($event)" (cloneTodoEvent)="prepareCloneTodoForm($event)"
 							(removeTodoEvent)="prepareRemoveTodoForm($event)"
 							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"

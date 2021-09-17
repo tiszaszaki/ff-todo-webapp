@@ -28,16 +28,18 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   public enableRestoreTodos!: Boolean;
 
-  public todosearchexec!: Boolean;
   public readonlyTodo!: Boolean;
   public readonlyTask!: Boolean;
 
   private todoCount!: number;
   public todoCountChange = new EventEmitter<number>();
 
-  public todo_searching_casesense!: Boolean;
-  public todo_searching_highlight!: Boolean;
-  public todo_searching_rules!: Map<String,String>;
+  private todoSearchingCaseSense!: Boolean;
+  public todoSearchingCaseSenseChange = new EventEmitter<Boolean>();
+  private todoSearchingHighlight!: Boolean;
+  public todoSearchingHighlightChange = new EventEmitter<Boolean>();
+  private todoSearchingRules!: Map<String,String>;
+  public todoSearchingRulesChange = new EventEmitter< Map<String,String> >();
 
   constructor() {
     this.phase_labels = ['Backlog', 'In progress', 'Done'];
@@ -49,11 +51,8 @@ export class FfTodoCommonService implements OnInit, OnChanges {
     this.todoDescriptionMaxLength = 1024;
     this.boardDescriptionMaxLength = 1024;
 
-    this.todo_searching_casesense = false;
-    this.todo_searching_highlight = false;
-
     this.boardNameMapping = new Map<Number,String>();
-    this.todo_searching_rules = new Map<String,String>();
+    this.todoSearchingRules = new Map<String,String>();
 
     this.todoCount = 0;
   }
@@ -70,6 +69,41 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   updateTodoList() {
     this.updateTodoListEvent.emit();
+  }
+
+  updateTodoSearchCase(val: Boolean) {
+    this.todoSearchingCaseSense = val;
+    this.todoSearchingCaseSenseChange.emit(this.todoSearchingCaseSense);
+  }
+
+  updateTodoSearchHighlight(val: Boolean) {
+    this.todoSearchingHighlight = val;
+    this.todoSearchingHighlightChange.emit(this.todoSearchingHighlight);
+  }
+
+  private updateSearchRules() {
+    this.todoSearchingRulesChange.emit(this.todoSearchingRules);
+  }
+
+  hasSearchRules() {
+    return (this.todoSearchingRules.size > 0);
+  }
+
+  addSearchRule(field: String, term: String) {
+    this.todoSearchingRules.set(field, term);
+    this.updateSearchRules();
+  }
+
+  deleteSearchRule(field: String)
+  {
+    this.todoSearchingRules.delete(field);
+    this.updateSearchRules();
+  }
+
+  clearSearchRules()
+  {
+    this.todoSearchingRules.clear();
+    this.updateSearchRules();
   }
 
   updateTodoCount(val: number) {

@@ -10,18 +10,9 @@
   <app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS"
       [preparingFormEvent]="prepareRemoveAllTodosFormTrigger.asObservable()" (submitEvent)="removeAllTodos()">
   </app-ff-todo-generic-todo-form>
-  <!-- >
-  <app-ff-todo-searching-form [todo_list_count]="todo_count" [todosearchcase]="todo_searching_casesense"
-      [todosearchhighlight]="todo_searching_highlight" [todosearchRules]="common.todo_searching_rules"
-      (todosearchcaseChange)="updateTodoSearchingCaseSense($event)"
-      (todosearchhighlightChange)="updateTodoSearchingHighlightMatches($event)"
-      (todosearchruleChange)="updateTodoSearchingRule($event)" (todosearchruleRemove)="removeTodoSearchingRule($event)"
-      (todosearchruleReset)="clearTodoSearchingRules()"
-      (updateSubmitStateEvent)="updateSearchSubmit($event)"
-      [preparingFormEvent]="prepareSearchTodoForm()"
-      [resetFormEvent]="resetSearchTodoForm()">
+  <app-ff-todo-searching-form [todo_list_count]="todoCount" [preparingFormEvent]="prepareSearchTodoFormTrigger.asObservable()"
+      [resetFormEvent]="resetSearchTodoFormTrigger.asObservable()">
   </app-ff-todo-searching-form>
-  < -->
 </div>
 <nav class="navbar fixed-top navbar-light bg-light">
   <div class="d-flex flex-column w-100 border border-2 border-primary rounded p-1">
@@ -61,11 +52,11 @@
         </button>
       </div>
       <div class="d-flex justify-content-between" *ngIf="isRoutedToTodoList">
-        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm()" [disabled]="readonlyTodo || todosearchexec"
+        <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm()" [disabled]="readonlyTodo || isTodoSearchExec()"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Todo
         </button>
-        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos()" [disabled]="readonlyTodo || todosearchexec"
+        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos()" [disabled]="readonlyTodo || isTodoSearchExec()"
             data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
             [disabled]="!todoCount">
           <i class="fas fa-broom"></i>&nbsp;Todos

@@ -6,7 +6,6 @@ import { BoardOperator } from '../board-operator';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
-import { SearchingRule } from '../searching-rule';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
@@ -32,8 +31,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public prepareSortTodoFormTrigger!: Array< Subject<void> >;
   public prepareSortTaskFormTrigger!: Array< Subject<void> >;
-
-  public notifySearchTodoResultsTrigger!: Array< Subject<void> >;
 
   public prepareAddTaskFormTrigger = new Subject<void>();
   public prepareEditTaskFormTrigger = new Subject<void>();
@@ -75,11 +72,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public task_sorting_field: String[] = [];
   public task_sorting_direction: Boolean[] = [];
   public task_sorting_executed: Boolean[] = [];
-
-  public todo_searching_casesense!: Boolean;
-  public todo_searching_highlight!: Boolean;
-
-  public searchSubmitted: Boolean = false;
 
   public displayDateFormat!: string;
   public inputDateFormat!: string;
@@ -125,94 +117,17 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];
-    this.notifySearchTodoResultsTrigger = [];
 
     for (let phase of this.phase_labels)
     {
       this.prepareSortTodoFormTrigger.push(new Subject<void>());
       this.prepareSortTaskFormTrigger.push(new Subject<void>());
-      this.notifySearchTodoResultsTrigger.push(new Subject<void>());
     }
   }
 
   refreshTodoList() {
     this.alertServ.addAlertMessage({type:'warning', message: 'Trying to refresh all Todos...'});
     this.getTodos();
-  }
-
-  resetSearchSubmit() {
-    this.searchSubmitted = false;
-
-    this.common.todo_searching_rules.clear();
-  }
-
-  updateSearchSubmit(state: Boolean) {
-    this.searchSubmitted = state;
-
-    if (!this.searchSubmitted)
-    {
-      this.common.todo_searching_rules.clear();
-    }
-
-    this.getTodos();
-  }
-
-  updateTodoSearchingCaseSense(casesense: Boolean) {
-    this.todo_searching_casesense = casesense;
-    console.log(`updateTodoSearchingCaseSense: "${casesense}"`);
-  }
-
-  updateTodoSearchingHighlightMatches(highlight: Boolean) {
-    this.todo_searching_highlight = highlight;
-    console.log(`updateTodoSearchingHighlightMatches: "${highlight}"`);
-  }
-
-  clearTodoSearchingRules() {
-    this.common.todo_searching_rules.clear();
-  }
-
-  removeTodoSearchingRule(fieldName: String) {
-
-    this.common.todo_searching_rules.delete(fieldName);
-
-    console.log(`removeTodoSearchingRule: "${fieldName}"`);
-
-    for (let idx in this.phase_labels)
-    {
-      this.showDescriptionLength[idx][1] = !(fieldName == 'descriptionLength');
-      this.showDateCreated[idx][1] = !(fieldName == 'dateCreated');
-      this.showTaskCount[idx][1] = !(fieldName == 'taskCount');
-
-      console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
-    }
-  }
-
-  notifyTodoSearchResults(phase_idx: number, results: Number) {
-    this.alertServ.addAlertMessage({type: 'info',
-        message: `Searching resulted ${results} Todo(s) in phase '${this.phase_labels[phase_idx]}'.`});
-  }
-
-  updateTodoSearchingRule(rule: SearchingRule) {
-    let term = rule.term;
-    let fieldName = rule.field;
-
-    if ((fieldName != '') && (term != ''))
-    {
-      this.common.todo_searching_rules.set(fieldName, term);
-
-      console.log(`updateTodoSearchingRule: "${fieldName}" -> "${term}"`);
-
-      for (let idx in this.phase_labels)
-      {
-        this.showDescriptionLength[idx][1] = (fieldName == 'descriptionLength');
-        this.showDateCreated[idx][1] = (fieldName == 'dateCreated');
-        this.showTaskCount[idx][1] = (fieldName == 'taskCount');
-
-        this.notifySearchTodoResultsTrigger[idx].next();
-
-        console.log(`updateTodoShowingField(${idx}, 'searching'): [${[this.showDescriptionLength[idx][1], this.showDateCreated[idx][1], this.showTaskCount[idx][1]]}]`);
-      }
-    }
   }
 
   updateTodoSortingField(idx : number, fieldName: String) {
@@ -688,10 +603,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
     });
-  }
-
-  get_todo_searching_rules() {
-    return this.common.todo_searching_rules;
   }
 
   ngOnInit(): void {

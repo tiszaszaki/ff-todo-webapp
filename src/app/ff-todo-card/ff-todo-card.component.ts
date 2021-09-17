@@ -22,7 +22,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
 
   @Input() displayDateFormat!: string;
 
-  @Input() todosearchexec!: Boolean;
+  public todosearchexec!: Boolean;
 
   @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
   @Input('readonlyTask') _readonlyTask?: Boolean = false;

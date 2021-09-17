@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { TiszaSzakiAlert } from '../tsz-alert';
@@ -8,9 +9,12 @@ import { TiszaSzakiAlert } from '../tsz-alert';
   templateUrl: './ff-todo-alert-list.component.html',
   styleUrls: ['./ff-todo-alert-list.component.css']
 })
-export class FfTodoAlertListComponent implements OnInit {
+export class FfTodoAlertListComponent implements OnInit, OnDestroy {
 
   public displayDateFormat!: string;
+
+  private alerts!: TiszaSzakiAlert[];
+  public alertsListener!: Subscription;
 
   constructor(
       private common: FfTodoCommonService,
@@ -24,7 +28,7 @@ export class FfTodoAlertListComponent implements OnInit {
   }
 
   getAlerts() : TiszaSzakiAlert[] {
-    return this.alertServ.getAlerts();
+    return this.alerts;
   }
 
   close(msg: TiszaSzakiAlert)
@@ -33,5 +37,10 @@ export class FfTodoAlertListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.alertsListener = this.alertServ.alertsChange.subscribe(results => this.alerts = results);
+  }
+
+  ngOnDestroy() {
+    this.alertsListener.unsubscribe();
   }
 }
