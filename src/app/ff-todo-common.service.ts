@@ -29,8 +29,10 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   public enableRestoreTodos!: Boolean;
 
-  public readonlyTodo!: Boolean;
-  public readonlyTask!: Boolean;
+  private readonlyTodo!: Boolean;
+  public readonlyTodoChange = new EventEmitter<Boolean>();
+  private readonlyTask!: Boolean;
+  public readonlyTaskChange = new EventEmitter<Boolean>();
 
   private todoCount!: number;
   public todoCountChange = new EventEmitter<number>();
@@ -109,6 +111,26 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   {
     this.todoSearchingRules.clear();
     this.updateSearchRules();
+  }
+
+  updateReadonlyTodo(val?: Boolean): Boolean {
+    if (val !== undefined)
+      this.readonlyTodo = val;
+    else
+      this.readonlyTodo = !this.readonlyTodo;
+
+    this.readonlyTodoChange.emit(this.readonlyTodo);
+    return this.readonlyTodo;
+  }
+
+  updateReadonlyTask(val?: Boolean): Boolean {
+    if (val !== undefined)
+      this.readonlyTask = val;
+    else
+      this.readonlyTask = !this.readonlyTask;
+
+    this.readonlyTaskChange.emit(this.readonlyTask);
+    return this.readonlyTask;
   }
 
   updateTodoCount(val: number) {

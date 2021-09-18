@@ -79,7 +79,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public inputDateFormat!: string;
 
   public readonlyTodo!: Boolean;
+  public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
+  public readonlyTaskListener!: Subscription;
 
   public enabledRestoreTodos: Boolean = false;
 
@@ -617,13 +619,19 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.updateBoard();
     });
 
+    this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => {
+      this.readonlyTodo = result;
+
+      this.enabledRestoreTodos &&= !this.readonlyTodo;
+    });
+    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
+
     this.route.queryParams.subscribe(params => {
       this.common.setBoardSelected(params.id);
     });
   }
 
   ngOnChanges(): void {
-    this.enabledRestoreTodos &&= !this.readonlyTodo;
   }
 
   ngOnDestroy(): void {
@@ -632,5 +640,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.todoCountListener.unsubscribe();
     this.boardSelectedListener.unsubscribe();
+
+    this.readonlyTodoListener.unsubscribe();
+    this.readonlyTaskListener.unsubscribe();
   }
 }

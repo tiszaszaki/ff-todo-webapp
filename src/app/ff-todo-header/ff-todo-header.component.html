@@ -46,7 +46,7 @@
             data-toggle="tooltip" data-placement="bottom" title="Refresh Board" [disabled]="!boardSelected">
           <i class="fas fa-sync-alt"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-secondary w-50" [routerLink]="['']" (click)="returnToBoardList()"
+        <button type="button" class="btn btn-secondary w-50" [routerLink]="['']" (click)="returnToBoardList()" [disabled]="!isRoutedToTodoList"
             data-toggle="tooltip" data-placement="bottom" title="Return to Board list">
             <i class="fas fa-undo"></i>&nbsp;
         </button>

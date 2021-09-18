@@ -21,7 +21,9 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public isRoutedToTodoListListener!: Subscription;
 
   public readonlyTodo!: Boolean;
+  public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
+  public readonlyTaskListener!: Subscription;
 
   public boardSelected!: Number;
   public boardSelectedListener!: Subscription;
@@ -62,22 +64,25 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
     this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
 
-    this.readonlyTodo = this.common.readonlyTodo;
-    this.readonlyTask = this.common.readonlyTask;
-
     this.enableRestoreTodos = this.common.enableRestoreTodos;
 
     this.phase_labels = this.common.phase_labels;
     this.phaseNum = this.common.phaseNum;
 
     this.inputDateFormat = this.common.inputDateFormat;
-
-    this.isRoutedToTodoList = false;
   }
 
   ngOnInit(): void {
-    this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => this.boardSelected = result);
+    this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => {
+      this.boardSelected = result;
+
+      this.queryReadonlyTodo();
+      this.queryReadonlyTask();
+    });
     this.todoCountListener = this.common.todoCountChange.subscribe(result => this.todoCount = result);
+
+    this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
+    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
   }
@@ -88,6 +93,9 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.boardSelectedListener.unsubscribe();
     this.todoCountListener.unsubscribe();
+
+    this.readonlyTodoListener.unsubscribe();
+    this.readonlyTaskListener.unsubscribe();
 
     this.isRoutedToTodoListListener.unsubscribe();
   }
@@ -135,12 +143,24 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.common.updateBoard();
   }
 
+  queryReadonlyTodo() {
+    this.todoServ.getBoardReadonlyTodosSetting(this.boardSelected as number).subscribe(result => this.common.updateReadonlyTodo(result));
+  }
+
+  queryReadonlyTask() {
+    this.todoServ.getBoardReadonlyTasksSetting(this.boardSelected as number).subscribe(result => this.common.updateReadonlyTask(result));
+  }
+
   updateReadonlyTodo() {
-    this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, !this.readonlyTodo).subscribe(_ => {});
+    this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, this.common.updateReadonlyTodo()).subscribe(() => {
+      this.common.updateTodoList();
+    });
   }
 
   updateReadonlyTask() {
-    this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, !this.readonlyTask).subscribe(_ => {});
+    this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, this.common.updateReadonlyTask()).subscribe(() => {
+      this.common.updateTodoList();
+    });
   }
 
   restoreTodoList() {
