@@ -633,6 +633,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       result = this.todoDescriptionMaxLength = result as number;
     })
 
+    this.common.triggerTodoDescriptionMaxLength();
+
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => {
       this.readonlyTodo = result;
 
