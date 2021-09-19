@@ -28,6 +28,9 @@
                         </textarea>
                     </div>
                 </div>
+                <div *ngIf="descriptionMaxLength" class="d-flex justify-content-end">
+                    <span class="badge badge-pill bg-secondary">{{ model.description.length }} / {{ descriptionMaxLength }}</span>
+                </div>
 
                 <div class="form-group">
                     <label for="phase">Todo phase</label>
