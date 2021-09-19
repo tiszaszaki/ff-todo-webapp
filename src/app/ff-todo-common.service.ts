@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +7,9 @@ import { Injectable, EventEmitter, OnChanges, OnInit } from '@angular/core';
 export class FfTodoCommonService implements OnInit, OnChanges {
 
   public phase_labels!: String[];
-  public phaseNum!: number;
+
+  private phaseRange!: Array<Number>;
+  public todoPhaseValRangeChange = new EventEmitter< Array<Number> >();
 
   public updateBoardEvent = new EventEmitter<void>();
   public updateTodoListEvent = new EventEmitter<void>();
@@ -24,8 +27,10 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   public displayDateFormat!: string;
   public inputDateFormat!: string;
 
-  public boardDescriptionMaxLength! : number;
-  public todoDescriptionMaxLength! : number;
+  private boardDescriptionMaxLength! : Number;
+  public boardDescriptionMaxLengthChange = new EventEmitter<Number>();
+  private todoDescriptionMaxLength! : Number;
+  public todoDescriptionMaxLengthChange = new EventEmitter<Number>();
 
   public enableRestoreTodos!: Boolean;
 
@@ -46,13 +51,9 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   constructor() {
     this.phase_labels = ['Backlog', 'In progress', 'Done'];
-    this.phaseNum = this.phase_labels.length;
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
     this.displayDateFormat = 'yyyy-MM-dd HH:mm:ss.sss';
-
-    this.todoDescriptionMaxLength = 1024;
-    this.boardDescriptionMaxLength = 1024;
 
     this.boardNameMapping = new Map<Number,String>();
     this.todoSearchingRules = new Map<String,String>();
@@ -111,6 +112,39 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   {
     this.todoSearchingRules.clear();
     this.updateSearchRules();
+  }
+
+  updateBoardDescriptionMaxLength(val: Number) {
+    if (val > 0)
+    {
+      this.boardDescriptionMaxLength = val;
+      this.boardDescriptionMaxLengthChange.emit(this.boardDescriptionMaxLength);
+    }
+  }
+
+  triggerBoardDescriptionMaxLength() {
+    this.boardDescriptionMaxLengthChange.emit(this.boardDescriptionMaxLength);
+  }
+
+  updateTodoDescriptionMaxLength(val: Number) {
+    if (val > 0)
+    {
+      this.todoDescriptionMaxLength = val;
+      this.todoDescriptionMaxLengthChange.emit(this.todoDescriptionMaxLength);
+    }
+  }
+
+  triggerTodoDescriptionMaxLength() {
+    this.todoDescriptionMaxLengthChange.emit(this.todoDescriptionMaxLength);
+  }
+
+  updateTodoPhaseValRange(minVal: Number, maxVal: Number) {
+    this.phaseRange = [minVal,maxVal];
+    this.todoPhaseValRangeChange.emit(this.phaseRange);
+  }
+
+  triggerTodoPhaseValRange() {
+    this.todoPhaseValRangeChange.emit(this.phaseRange);
   }
 
   updateReadonlyTodo(val?: Boolean): Boolean {

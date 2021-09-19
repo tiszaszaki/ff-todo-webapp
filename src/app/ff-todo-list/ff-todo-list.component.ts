@@ -50,9 +50,15 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public boardSelectedListener!: Subscription;
 
   public phase_labels!: String[];
-  public phaseNum!: number;
+
+  public phaseMin!: number;
+  public phaseMax!: number;
+  public todoPhaseValRangeListener!: Subscription;
+
   public todoDescriptionMaxLength! : number;
+  public todoDescriptionMaxLengthListener!: Subscription;
   public boardDescriptionMaxLength! : number;
+  public boardDescriptionMaxLengthListener!: Subscription;
 
   public todoCount!: number;
   public todoCountListener!: Subscription;
@@ -111,13 +117,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
     this.phase_labels = this.common.phase_labels;
-    this.phaseNum = this.common.phaseNum;
 
     this.inputDateFormat = this.common.inputDateFormat;
     this.displayDateFormat = this.common.displayDateFormat;
-
-    this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
-    this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
 
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];
@@ -272,7 +274,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       if (phase)
       if (phase.size > 0) {
         for (let _phase of phase) {
-          if ((_phase >= 0) && (_phase < this.phaseNum)) {
+          if ((_phase >= this.phaseMin) && (_phase <= this.phaseMax)) {
             delete this.todo_list[_phase];
 
             this.todo_list[_phase] = [];
@@ -318,7 +320,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         else
         {
           for (let _phase of phase) {
-            if ((_phase >= 0) && (_phase < this.phaseNum) && (todo.phase == _phase)) {
+            if ((_phase >= this.phaseMin) && (_phase <= this.phaseMax) && (todo.phase == _phase)) {
               this.todo_list[_phase].push(todo);
               this.task_count[_phase] += taskCountPerPhase;
             }
@@ -491,7 +493,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     let new_phase = todo.phase += dir;
     todo.phase = new_phase;
     console.log(`Trying to shift Todo with ID (${id})...`);
-    if ((new_phase >= 0) && (new_phase < this.phaseNum))
+    if ((new_phase >= this.phaseMin) && (new_phase <= this.phaseMax))
     {
       this.todoServ.editTodo(id, todo)
       .subscribe(_ => {
@@ -619,6 +621,18 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.updateBoard();
     });
 
+    this.todoPhaseValRangeListener = this.common.todoPhaseValRangeChange.subscribe(results => {
+      this.phaseMin = results[0] as number;
+      this.phaseMax = results[1] as number;
+    });
+
+    this.boardDescriptionMaxLengthListener = this.common.boardDescriptionMaxLengthChange.subscribe(result => {
+      result = this.boardDescriptionMaxLength = result as number;
+    })
+    this.todoDescriptionMaxLengthListener = this.common.todoDescriptionMaxLengthChange.subscribe(result => {
+      result = this.todoDescriptionMaxLength = result as number;
+    })
+
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => {
       this.readonlyTodo = result;
 
@@ -640,6 +654,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.todoCountListener.unsubscribe();
     this.boardSelectedListener.unsubscribe();
+
+    this.todoPhaseValRangeListener.unsubscribe();
+
+    this.boardDescriptionMaxLengthListener.unsubscribe();
+    this.todoDescriptionMaxLengthListener.unsubscribe();
 
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();

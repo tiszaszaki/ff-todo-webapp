@@ -18,7 +18,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   @Input() content! : Todo[];
   @Input() phase_idx!: number;
-  @Input() phaseNum!: number;
 
   @Input() displayDateFormat!: string;
 
@@ -68,7 +67,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
         message: `Searching resulted ${this.searchresCount} Todo(s) in phase '${this.common.phase_labels[this.phase_idx]}'.`});
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => this.todoSearchingCaseSense = result);
     this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => this.todoSearchingHighlight = result);
 

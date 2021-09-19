@@ -91,6 +91,36 @@ export class FfTodoRealRequestService {
     );
   }
 
+  getBoardDescriptionMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.boardPath}/description-max-length`).pipe(
+        tap((maxLength : Number) => console.log(`Fetched maximum description length for all Boards: (${maxLength})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
+  getTodoDescriptionMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.todoPath}/description-max-length`).pipe(
+        tap((maxLength : Number) => console.log(`Fetched maximum description length for all Todos: (${maxLength})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
+  getTodoPhaseRange() : Observable< Array<Number> > {
+    return this.http.get< Array<Number> >(`${this.todoPath}/phase-val-range`).pipe(
+        tap((result : Array<Number>) => console.log(`Fetched phase range for all Todos: (${result})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+    );
+  }
+
   getBoardReadonlyTodosSetting(id : number) : Observable<Boolean> {
     return this.http.get<Boolean>(`${this.boardPath}/${id}/readonly-todos`).pipe(
         tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),

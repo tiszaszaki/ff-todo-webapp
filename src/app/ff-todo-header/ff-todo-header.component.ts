@@ -29,7 +29,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public boardSelectedListener!: Subscription;
 
   public phase_labels!: String[];
-  public phaseNum!: number;
 
   public todoCount!: number;
   public todoCountListener!: Subscription;
@@ -61,14 +60,11 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
 
-    this.boardDescriptionMaxLength = this.common.boardDescriptionMaxLength;
-    this.todoDescriptionMaxLength = this.common.todoDescriptionMaxLength;
+    this.queryDescriptionMaxLengths();
+    this.queryTodoPhaseRange();
 
     this.enableRestoreTodos = this.common.enableRestoreTodos;
-
     this.phase_labels = this.common.phase_labels;
-    this.phaseNum = this.common.phaseNum;
-
     this.inputDateFormat = this.common.inputDateFormat;
   }
 
@@ -141,6 +137,18 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   updateSelectedBoard() {
     this.common.updateBoard();
+  }
+
+  queryDescriptionMaxLengths() {
+    this.todoServ.getBoardDescriptionMaxLength().subscribe(result => this.common.updateBoardDescriptionMaxLength(result));
+    this.todoServ.getTodoDescriptionMaxLength().subscribe(result => this.common.updateTodoDescriptionMaxLength(result));
+  }
+
+  queryTodoPhaseRange() {
+    this.todoServ.getTodoPhaseRange().subscribe(results => {
+      if (results.length == 2)
+        this.common.updateTodoPhaseValRange(results[0], results[1]);
+    });
   }
 
   queryReadonlyTodo() {

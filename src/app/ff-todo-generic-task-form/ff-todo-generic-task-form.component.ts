@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { Task } from '../task';
@@ -9,7 +9,7 @@ import { TaskOperator } from '../task-operator';
   templateUrl: './ff-todo-generic-task-form.component.html',
   styleUrls: ['./ff-todo-generic-task-form.component.css']
 })
-export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
+export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() mode!: TaskOperator;
 
   @Input() model!: Task;
@@ -131,6 +131,10 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.updateDisplay();
+  }
+
+  ngOnDestroy() {
+    this.preparingFormListener.unsubscribe();
   }
 
   dismissForm() {

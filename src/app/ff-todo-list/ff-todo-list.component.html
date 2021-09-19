@@ -97,7 +97,7 @@
 			</tr>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-list-per-phase [content]="todo_phase" [phaseNum]="phaseNum" [phase_idx]="idx"
+					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"
 							[readonlyTodo]="readonlyTodo"
 							[readonlyTask]="readonlyTask" [displayDateFormat]="displayDateFormat"
 							[todoQuerySuccess]="todoQuerySuccess" [showDescriptionLength]="showDescriptionLength[idx]"

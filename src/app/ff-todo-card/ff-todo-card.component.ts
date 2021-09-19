@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { Todo } from '../todo';
@@ -9,20 +11,19 @@ import { Todo } from '../todo';
   templateUrl: './ff-todo-card.component.html',
   styleUrls: ['./ff-todo-card.component.css']
 })
-export class FfTodoCardComponent implements OnInit, OnChanges {
+export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
-  constructor(private highlighter: DomSanitizer) { }
+  constructor(
+      private highlighter: DomSanitizer,
+      private common: FfTodoCommonService) { }
 
   @Input() content!: Todo;
-  @Input() phaseNum!: number;
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
   @Input() tasksortexec!: Boolean;
 
   @Input() displayDateFormat!: string;
-
-  public todosearchexec!: Boolean;
 
   @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
   @Input('readonlyTask') _readonlyTask?: Boolean = false;
@@ -49,6 +50,12 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
 
   @Output() searchresCountUpdate = new EventEmitter<number>();
 
+  public phaseMin!: number;
+  public phaseMax!: number;
+  public todoPhaseValRangeListener!: Subscription;
+
+  public todosearchexec!: Boolean;
+
   public highlightedName!: SafeHtml;
   public highlightedDescription!: SafeHtml;
 
@@ -57,7 +64,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
 
   public contentStr!: String;
 
-  public isCardValid: Boolean = true;
+  public isCardValid!: Boolean;
 
   public phaseLeftExists!: Boolean;
   public phaseRightExists!: Boolean;
@@ -71,19 +78,24 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
   public readonly RIGHT = ShiftDirection.RIGHT;
 
   ngOnInit(): void {
+    this.todoPhaseValRangeListener = this.common.todoPhaseValRangeChange.subscribe(results => {
+      this.phaseMin = results[0] as number;
+      this.phaseMax = results[1] as number;
+
+      this.isCardValid = true;
+      this.isCardValid &&= (this.content.name != '');
+      this.isCardValid &&= ((this.content.phase >= this.phaseMin) && (this.content.phase <= this.phaseMax));
+
+      this.phaseLeftExists = ((this.content.phase - 1) >= this.phaseMin);
+      this.phaseRightExists = ((this.content.phase + 1) < this.phaseMax);
+    });
+
+    this.common.triggerTodoPhaseValRange();
+
     this.contentStr = JSON.stringify(this.content);
 
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
     this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
-
-    if (this.isCardValid)
-    {
-      this.isCardValid &&= (this.content.name != '');
-      this.isCardValid &&= ((this.content.phase >= 0) && (this.content.phase < this.phaseNum));
-    }
-
-    this.phaseLeftExists = ((this.content.phase - 1) >= 0);
-    this.phaseRightExists = ((this.content.phase + 1) < this.phaseNum);
 
     this.descriptionLength = this.content.description.length;
 
@@ -121,6 +133,10 @@ export class FfTodoCardComponent implements OnInit, OnChanges {
     {
       this.searchresCountUpdate.emit(this.searchresCount);
     }
+  }
+
+  ngOnDestroy() {
+    this.todoPhaseValRangeListener.unsubscribe();
   }
 
   addTask() {
