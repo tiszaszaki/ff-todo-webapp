@@ -49,8 +49,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public boardSelected!: Number;
   public boardSelectedListener!: Subscription;
 
-  public phase_labels!: String[];
-
   public phaseMin!: number;
   public phaseMax!: number;
   public todoPhaseValRangeListener!: Subscription;
@@ -116,19 +114,25 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
-    this.phase_labels = this.common.phase_labels;
-
     this.inputDateFormat = this.common.inputDateFormat;
     this.displayDateFormat = this.common.displayDateFormat;
 
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];
 
-    for (let phase of this.phase_labels)
+    for (let phase of this.common.iterateTodoPhases())
     {
       this.prepareSortTodoFormTrigger.push(new Subject<void>());
       this.prepareSortTaskFormTrigger.push(new Subject<void>());
     }
+  }
+
+  iterateTodoPhases() {
+    return this.common.iterateTodoPhases();
+  }
+
+  getTodoPhaseLabel(idx: number) {
+    return this.common.getTodoPhaseLabel(idx);
   }
 
   refreshTodoList() {
@@ -245,7 +249,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.task_sorting_direction = [];
       this.task_sorting_executed = [];
 
-      for (let todo_phase of this.phase_labels) {
+      for (let phase of this.common.iterateTodoPhases()) {
         this.todo_list.push([]);
         this.task_count.push(0);
 

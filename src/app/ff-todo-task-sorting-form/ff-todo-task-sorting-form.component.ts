@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 
 @Component({
   selector: 'app-ff-todo-task-sorting-form',
@@ -20,7 +21,7 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnDestroy {
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
 
-  @Input() phase_label!: String;
+  @Input() phase_idx!: number;
 
   @ViewChild('sortTaskForm') formElement!: TemplateRef<FfTodoTaskSortingFormComponent>;
 
@@ -32,9 +33,15 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnDestroy {
     {name: 'done', display: 'Task checked'}
   ];
 
-  constructor(private modalService: NgbModal) {
+  constructor(
+      private modalService: NgbModal,
+      private common: FfTodoCommonService) {
     this.tasksortfield = '';
     this.tasksortdir = false;
+  }
+
+  getTodoPhaseLabel() {
+    return this.common.getTodoPhaseLabel(this.phase_idx);
   }
 
   resetTaskSorting() {

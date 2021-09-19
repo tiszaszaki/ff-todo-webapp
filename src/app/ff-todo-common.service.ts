@@ -1,12 +1,11 @@
 import { Injectable, EventEmitter, OnChanges, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FfTodoCommonService implements OnInit, OnChanges {
 
-  public phase_labels!: String[];
+  private phase_labels!: String[];
 
   private phaseRange!: Array<Number>;
   public todoPhaseValRangeChange = new EventEmitter< Array<Number> >();
@@ -32,7 +31,8 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   private todoDescriptionMaxLength! : Number;
   public todoDescriptionMaxLengthChange = new EventEmitter<Number>();
 
-  public enableRestoreTodos!: Boolean;
+  private enableRestoreTodos!: Boolean;
+  public enableRestoreTodosChange = new EventEmitter<Boolean>();
 
   private readonlyTodo!: Boolean;
   public readonlyTodoChange = new EventEmitter<Boolean>();
@@ -77,6 +77,61 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   updateBoardList() {
     this.updateBoardListEvent.emit();
+  }
+
+  iterateTodoPhases(): Array<number> {
+    let result: Array<number> = [];
+
+    if (this.phaseRange.length == 2)
+    {
+      let phaseMin = this.phaseRange[0] as number;
+      let phaseMax = this.phaseRange[1] as number;
+
+      if (phaseMax >= phaseMin)
+      {
+        for (let phase=phaseMin;phase<=phaseMax;phase++)
+          result.push(phase);
+      }
+    }
+
+    return result;
+  }
+
+  getTodoPhaseSpread(): number {
+    let result: number = -1;
+
+    if (this.phaseRange.length == 2)
+    {
+      let phaseMin = this.phaseRange[0] as number;
+      let phaseMax = this.phaseRange[1] as number;
+
+      result = phaseMax - phaseMin;
+    }
+
+    return result;
+  }
+
+  getTodoPhaseLabel(idx: number) {
+    let result: String = "<unknown phase>";
+
+    if (this.phaseRange.length == 2)
+    {
+      let phaseMin = this.phaseRange[0] as number;
+      let phaseMax = this.phaseRange[1] as number;
+
+      if (phaseMin <= phaseMax)
+      if ((idx >= phaseMin) && (idx <= phaseMax))
+      {
+        let idx_temp = idx - phaseMin;
+
+        if (idx_temp < this.phase_labels.length)
+          result = this.phase_labels[idx_temp];
+        else
+          result = `Phase #${idx_temp+1}`;
+      }
+    }
+
+    return result;
   }
 
   updateTodoSearchCase(val: Boolean) {
@@ -145,6 +200,16 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   triggerTodoPhaseValRange() {
     this.todoPhaseValRangeChange.emit(this.phaseRange);
+  }
+
+  updateEnableRestoreTodos(val?: Boolean): Boolean {
+    if (val !== undefined)
+      this.enableRestoreTodos = val;
+    else
+      this.enableRestoreTodos = !this.enableRestoreTodos;
+
+    this.readonlyTodoChange.emit(this.enableRestoreTodos);
+    return this.enableRestoreTodos;
   }
 
   updateReadonlyTodo(val?: Boolean): Boolean {

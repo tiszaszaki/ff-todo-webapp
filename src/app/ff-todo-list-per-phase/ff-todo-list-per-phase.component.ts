@@ -64,7 +64,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   notifyTodoSearchResults() {
     this.alertServ.addAlertMessage({type: 'info',
-        message: `Searching resulted ${this.searchresCount} Todo(s) in phase '${this.common.phase_labels[this.phase_idx]}'.`});
+        message: `Searching resulted ${this.searchresCount} Todo(s) in phase '${this.common.getTodoPhaseLabel(this.phase_idx)}'.`});
   }
 
   ngOnInit(): void {

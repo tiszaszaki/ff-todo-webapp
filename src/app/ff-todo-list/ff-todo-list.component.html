@@ -9,11 +9,11 @@
 				[preparingFormEvent]="prepareRemoveBoardFormTrigger.asObservable()" (submitDataEvent)="removeBoard($event)">
 		</app-ff-todo-generic-board-form>
 
-		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(model)]="todoSelected" [phase_labels]="phase_labels"
+		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(model)]="todoSelected"
 				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
 		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(model)]="todoSelected" [phase_labels]="phase_labels"
+		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(model)]="todoSelected"
 				[preparingFormEvent]="prepareCloneTodoFormTrigger.asObservable()" (submitDataEvent)="cloneTodo($event)">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(model)]="todoSelected"
@@ -68,8 +68,8 @@
 	<table class="table mt-3" *ngIf="this.boardSelected">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
-				<td class="col border border-secondary" *ngFor="let phase of phase_labels">
-					<h2 class="mt-1 mb-3">{{phase}}</h2>
+				<td class="col border border-secondary" *ngFor="let phase of iterateTodoPhases()">
+					<h2 class="mt-1 mb-3">{{ getTodoPhaseLabel(phase) }}</h2>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
@@ -81,13 +81,13 @@
 						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Tasks
 					</button>
 
-					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length" [phase_label]="phase_labels[idx]"
+					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length" [phase_idx]="idx"
 							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
 							(todosortfieldChange)="updateTodoSortingField(idx, $event)"
 							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"
 							(todosortResetTrigger)="resetTodoSorting(idx)"
 							[preparingFormEvent]="prepareSortTodoFormTrigger[idx].asObservable()"></app-ff-todo-sorting-form>
-					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]" [phase_label]="phase_labels[idx]"
+					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]" [phase_idx]="idx"
 							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
 							(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
 							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"

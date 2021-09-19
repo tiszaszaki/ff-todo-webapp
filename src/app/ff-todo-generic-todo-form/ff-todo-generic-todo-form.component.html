@@ -37,8 +37,8 @@
                     <div class="input-group">
                         <div class="btn-group btn-group-toggle" ngbRadioGroup id="phase" [(ngModel)]="model.phase" name="phase"
                                 value="model.phase" #phase="ngModel" required>
-                            <label ngbButtonLabel class="btn-primary" *ngFor="let phase of phase_labels; let idx=index">
-                                <input ngbButton type="radio" [value]="idx">{{ phase }}
+                            <label ngbButtonLabel class="btn-primary" *ngFor="let phase of iterateTodoPhases(); let idx=index">
+                                <input ngbButton type="radio" [value]="idx">{{ getTodoPhaseLabel(phase) }}
                             </label>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
   <app-ff-todo-generic-board-form #addBoardForm [mode]="ADD_BOARD" [descriptionMaxLength]="boardDescriptionMaxLength"
       [preparingFormEvent]="prepareAddBoardFormTrigger.asObservable()" (submitDataEvent)="addBoard($event)">
   </app-ff-todo-generic-board-form>
-  <app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO" [phase_labels]="phase_labels"
+  <app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO"
       [descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
       [preparingFormEvent]="prepareAddTodoFormTrigger.asObservable()" (submitDataEvent)="addTodo($event)">
   </app-ff-todo-generic-todo-form>

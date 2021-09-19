@@ -28,12 +28,11 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public boardSelected!: Number;
   public boardSelectedListener!: Subscription;
 
-  public phase_labels!: String[];
-
   public todoCount!: number;
   public todoCountListener!: Subscription;
 
   public enableRestoreTodos!: Boolean;
+  public enableRestoreTodosListener!: Subscription;
 
   public todoDescriptionMaxLength! : number;
   public todoDescriptionMaxLengthListener!: Subscription;
@@ -65,8 +64,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.queryDescriptionMaxLengths();
     this.queryTodoPhaseRange();
 
-    this.enableRestoreTodos = this.common.enableRestoreTodos;
-    this.phase_labels = this.common.phase_labels;
+    this.common.updateEnableRestoreTodos(false);
+
     this.inputDateFormat = this.common.inputDateFormat;
   }
 
@@ -79,6 +78,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.todoCountListener = this.common.todoCountChange.subscribe(result => this.todoCount = result);
 
+    this.enableRestoreTodosListener = this.common.enableRestoreTodosChange.subscribe(result => this.enableRestoreTodos = result);
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
@@ -101,6 +101,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.boardSelectedListener.unsubscribe();
     this.todoCountListener.unsubscribe();
 
+    this.enableRestoreTodosListener.unsubscribe();
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
 

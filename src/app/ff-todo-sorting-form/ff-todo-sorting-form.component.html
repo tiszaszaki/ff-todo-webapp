@@ -1,6 +1,6 @@
 <ng-template #sortTodoForm let-modal>
     <div class="modal-header">
-        <h5 class="mb-3">Sorting of Todos in '{{ phase_label }}' phase</h5>
+        <h5 class="mb-3">Sorting of Todos in '{{ getTodoPhaseLabel() }}' phase</h5>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Closed by cross')">
             <span aria-hidden="true">&times;</span>
         </button>

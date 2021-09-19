@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
 
@@ -15,7 +16,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   @Input() model!: Todo;
   @Output() modelChange = new EventEmitter<Todo>();
 
-  @Input() phase_labels!: String[];
   @Input() descriptionMaxLength!: number;
 
   @Input() inputDateFormat!: string;
@@ -46,7 +46,16 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public readonly REMOVE = TodoOperator.REMOVE;
   public readonly REMOVE_ALL = TodoOperator.REMOVE_ALL;
 
-  constructor(private modalService: NgbModal) {
+  constructor(
+      private modalService: NgbModal,
+      private common: FfTodoCommonService) { }
+
+  iterateTodoPhases() {
+    return this.common.iterateTodoPhases();
+  }
+
+  getTodoPhaseLabel(idx: number) {
+    return this.common.getTodoPhaseLabel(idx);
   }
 
   private resetModel() {
