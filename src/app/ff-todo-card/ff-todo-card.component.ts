@@ -25,9 +25,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() tasksortdir!: Boolean;
   @Input() tasksortexec!: Boolean;
 
-  @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
-  @Input('readonlyTask') _readonlyTask?: Boolean = false;
-
   @Input() showDescriptionLength!: Boolean[];
   @Input() showTaskCount!: Boolean[];
   @Input() showDateCreated!: Boolean[];
@@ -62,7 +59,9 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public highlightedDescription!: SafeHtml;
 
   public readonlyTodo!: Boolean;
+  public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
+  public readonlyTaskListener!: Subscription;
 
   public contentStr!: String;
 
@@ -94,6 +93,9 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.common.triggerTodoPhaseValRange();
 
+    this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
+    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
+
     this.contentStr = JSON.stringify(this.content);
 
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
@@ -112,12 +114,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.tasklistStr = JSON.stringify(this.content.tasks);
-
-    this.readonlyTodo = (this._readonlyTodo ? this._readonlyTodo : false);
-    this.readonlyTask = (this._readonlyTask ? this._readonlyTask : false);
-
-    this.readonlyTodo ||= this.todosearchexec;
-    this.readonlyTask ||= this.readonlyTodo;
 
     if (this.showDescriptionLength.length == 0)
       this.showDescriptionLength.push(false, false);
@@ -139,6 +135,9 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.todoPhaseValRangeListener.unsubscribe();
+
+    this.readonlyTodoListener.unsubscribe();
+    this.readonlyTaskListener.unsubscribe();
   }
 
   addTask() {

@@ -172,13 +172,17 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   updateReadonlyTodo() {
     this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, this.common.updateReadonlyTodo()).subscribe(() => {
-      this.common.updateTodoList();
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
+    }, () => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
     });
   }
 
   updateReadonlyTask() {
     this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, this.common.updateReadonlyTask()).subscribe(() => {
-      this.common.updateTodoList();
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
+    }, () => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
     });
   }
 

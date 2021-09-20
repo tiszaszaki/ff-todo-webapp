@@ -79,13 +79,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public task_sorting_direction: Boolean[] = [];
   public task_sorting_executed: Boolean[] = [];
 
-  public readonlyTodo!: Boolean;
-  public readonlyTodoListener!: Subscription;
-  public readonlyTask!: Boolean;
-  public readonlyTaskListener!: Subscription;
-
-  public enabledRestoreTodos: Boolean = false;
-
   public showDescriptionLength: Boolean[][] = [];
   public showTaskCount: Boolean[][] = [];
   public showDateCreated: Boolean[][] = [];
@@ -586,30 +579,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  toggleReadonlyTodo(val: Boolean)
-  {
-    this.readonlyTodo = val;
-    this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, this.readonlyTodo)
-    .subscribe(_ => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
-      //this.refreshTodoList();
-    }, errorMsg => {
-      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
-    });
-  }
-
-  toggleReadonlyTask(val: Boolean)
-  {
-    this.readonlyTask = val;
-    this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, this.readonlyTask)
-    .subscribe(_ => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
-      //this.refreshTodoList();
-    }, errorMsg => {
-      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
-    });
-  }
-
   ngOnInit(): void {
     this.updateBoardListener = this.common.updateBoardEvent.subscribe(() => this.updateBoard());
     this.updateTodoListListener = this.common.updateTodoListEvent.subscribe(() => this.getTodos());
@@ -634,13 +603,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.common.triggerTodoDescriptionMaxLength();
 
-    this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => {
-      this.readonlyTodo = result;
-
-      this.enabledRestoreTodos &&= !this.readonlyTodo;
-    });
-    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
-
     this.route.queryParams.subscribe(params => {
       this.common.setBoardSelected(params.id);
     });
@@ -660,8 +622,5 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.boardDescriptionMaxLengthListener.unsubscribe();
     this.todoDescriptionMaxLengthListener.unsubscribe();
-
-    this.readonlyTodoListener.unsubscribe();
-    this.readonlyTaskListener.unsubscribe();
   }
 }

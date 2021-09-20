@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 import { Task } from '../task';
 
 @Component({
@@ -7,25 +9,30 @@ import { Task } from '../task';
   templateUrl: './ff-todo-task-list.component.html',
   styleUrls: ['./ff-todo-task-list.component.css']
 })
-export class FfTodoTaskListComponent implements OnInit {
+export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
-  constructor(private highlighter: DomSanitizer) { }
+  constructor(
+      private highlighter: DomSanitizer,
+      private common: FfTodoCommonService) { }
 
   @Input() todoId!: number;
 
   @Input('tasks') tasklistString! : String;
-  @Input() taskCount!: Number;
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
   @Input() tasksortexec!: Boolean;
 
-  @Input() readonlyTask?: Boolean = false;
   @Input() showTaskCount!: Boolean[];
 
   @Output() editTaskEvent = new EventEmitter<Task>();
   @Output() checkTaskEvent = new EventEmitter<Task>();
   @Output() removeTaskEvent = new EventEmitter<Task>();
+
+  public taskCount!: Number;
+
+  public readonlyTask!: Boolean;
+  public readonlyTaskListener!: Subscription;
 
   public highlightedNames = new Map<Number,SafeHtml>();
 
@@ -34,7 +41,11 @@ export class FfTodoTaskListComponent implements OnInit {
   public tasklist_collapse_status: boolean = true;
 
   ngOnInit(): void {
+    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
+
     this.tasks = JSON.parse(this.tasklistString as string);
+
+    this.taskCount = this.tasks.length;
 
     for (let task of this.tasks)
     {
@@ -45,6 +56,10 @@ export class FfTodoTaskListComponent implements OnInit {
       this.showTaskCount.push(false, false);
     if (this.showTaskCount.length == 1)
       this.showTaskCount.push(false);
+  }
+
+  ngOnDestroy(): void {
+    this.readonlyTaskListener.unsubscribe();
   }
 
   editTask(t : Task)

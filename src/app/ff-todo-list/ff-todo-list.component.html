@@ -98,7 +98,6 @@
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"
-							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask"
 							[todoQuerySuccess]="todoQuerySuccess" [showDescriptionLength]="showDescriptionLength[idx]"
 							[showTaskCount]="showTaskCount[idx]" [showDateCreated]="showDateCreated[idx]"
 							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"
