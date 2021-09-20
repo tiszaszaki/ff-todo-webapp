@@ -19,8 +19,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   @Input() content! : Todo[];
   @Input() phase_idx!: number;
 
-  @Input() displayDateFormat!: string;
-
   @Input() todoQuerySuccess!: Boolean;
 
   @Input() readonlyTodo!: Boolean;

@@ -57,8 +57,6 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
     this.boardNameMapping = new Map<Number,String>();
     this.todoSearchingRules = new Map<String,String>();
-
-    this.todoCount = 0;
   }
 
   ngOnInit(): void {

@@ -10,7 +10,7 @@
 		</app-ff-todo-generic-board-form>
 
 		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(model)]="todoSelected"
-				[descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
+				[descriptionMaxLength]="todoDescriptionMaxLength"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(model)]="todoSelected"
@@ -98,8 +98,7 @@
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"
-							[readonlyTodo]="readonlyTodo"
-							[readonlyTask]="readonlyTask" [displayDateFormat]="displayDateFormat"
+							[readonlyTodo]="readonlyTodo" [readonlyTask]="readonlyTask"
 							[todoQuerySuccess]="todoQuerySuccess" [showDescriptionLength]="showDescriptionLength[idx]"
 							[showTaskCount]="showTaskCount[idx]" [showDateCreated]="showDateCreated[idx]"
 							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"

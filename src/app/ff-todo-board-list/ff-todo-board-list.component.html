@@ -1,12 +1,22 @@
 <div class="container">
-    <h1>Board list</h1>
-    <ul class="list-group">
-        <li class="list-group-item" *ngFor="let field of boardNameMapping.keys()">
-            <button type="button" class="btn btn-primary" (click)="gotoTodoList()"
-                    [routerLink]="['/list-todos']" [queryParams]="{id:field}">
-                <i class="fas fa-share"></i>
-            </button>
-            {{ boardNameMapping.get(field) }}
-        </li>
-    </ul>
+    <div *ngIf="boardNameMapping.size">
+        <h1>Board list</h1>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let field of boardNameMapping.keys()">
+                <button type="button" class="btn btn-primary" (click)="gotoTodoList()"
+                        [routerLink]="['/list-todos']" [queryParams]="{id:field}">
+                    <i class="fas fa-share"></i>
+                </button>
+                {{ boardNameMapping.get(field) }}
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="!boardNameMapping.size">
+        <div *ngIf="boardQuerySuccess">
+            There are no Boards.
+        </div>
+        <div class="text-danger" *ngIf="!boardQuerySuccess">
+            Cannot query Board list.
+        </div>
+    </div>
 </div>

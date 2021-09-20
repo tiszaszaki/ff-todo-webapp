@@ -15,15 +15,15 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
       private highlighter: DomSanitizer,
-      private common: FfTodoCommonService) { }
+      private common: FfTodoCommonService) {
+    this.displayDateFormat = this.common.displayDateFormat;
+  }
 
   @Input() content!: Todo;
 
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
   @Input() tasksortexec!: Boolean;
-
-  @Input() displayDateFormat!: string;
 
   @Input('readonlyTodo') _readonlyTodo?: Boolean = false;
   @Input('readonlyTask') _readonlyTask?: Boolean = false;
@@ -53,6 +53,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public phaseMin!: number;
   public phaseMax!: number;
   public todoPhaseValRangeListener!: Subscription;
+
+  public displayDateFormat!: string;
 
   public todosearchexec!: Boolean;
 

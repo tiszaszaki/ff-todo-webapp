@@ -79,9 +79,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public task_sorting_direction: Boolean[] = [];
   public task_sorting_executed: Boolean[] = [];
 
-  public displayDateFormat!: string;
-  public inputDateFormat!: string;
-
   public readonlyTodo!: Boolean;
   public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
@@ -114,8 +111,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
-    this.inputDateFormat = this.common.inputDateFormat;
-    this.displayDateFormat = this.common.displayDateFormat;
 
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];

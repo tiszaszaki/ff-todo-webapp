@@ -39,8 +39,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public boardDescriptionMaxLength! : number;
   public boardDescriptionMaxLengthListener!: Subscription;
 
-  public inputDateFormat!: string;
-
   public prepareAddBoardFormTrigger = new Subject<void>();
 
   public prepareAddTodoFormTrigger = new Subject<void>();
@@ -65,8 +63,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.queryTodoPhaseRange();
 
     this.common.updateEnableRestoreTodos(false);
-
-    this.inputDateFormat = this.common.inputDateFormat;
   }
 
   ngOnInit(): void {

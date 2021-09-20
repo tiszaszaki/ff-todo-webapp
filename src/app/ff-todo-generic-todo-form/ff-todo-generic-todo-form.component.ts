@@ -18,8 +18,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   @Input() descriptionMaxLength!: number;
 
-  @Input() inputDateFormat!: string;
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
@@ -31,6 +29,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public modeStr!: String;
   public formId!: String;
 
+  public inputDateFormat!: string;
   public inputDateFormatDisp!: String;
 
   public formTitle!: String;
@@ -48,7 +47,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   constructor(
       private modalService: NgbModal,
-      private common: FfTodoCommonService) { }
+      private common: FfTodoCommonService) {
+    this.inputDateFormat = this.common.inputDateFormat;
+  }
 
   iterateTodoPhases() {
     return this.common.iterateTodoPhases();

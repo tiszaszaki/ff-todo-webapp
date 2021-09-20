@@ -4,7 +4,7 @@
       [preparingFormEvent]="prepareAddBoardFormTrigger.asObservable()" (submitDataEvent)="addBoard($event)">
   </app-ff-todo-generic-board-form>
   <app-ff-todo-generic-todo-form #addTodoForm [mode]="ADD_TODO"
-      [descriptionMaxLength]="todoDescriptionMaxLength" [inputDateFormat]="inputDateFormat"
+      [descriptionMaxLength]="todoDescriptionMaxLength"
       [preparingFormEvent]="prepareAddTodoFormTrigger.asObservable()" (submitDataEvent)="addTodo($event)">
   </app-ff-todo-generic-todo-form>
   <app-ff-todo-generic-todo-form #removeAllTodosForm [mode]="REMOVE_ALL_TODOS"

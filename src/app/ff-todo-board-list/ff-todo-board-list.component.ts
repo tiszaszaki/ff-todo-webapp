@@ -18,6 +18,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   public updateBoardListTrigger!: Subscription;
 
+  public boardQuerySuccess!: Boolean;
+
   constructor(
       private todoServ: FfTodoRealRequestService,
       private common: FfTodoCommonService) {
@@ -49,8 +51,12 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateBoardList()
   {
+    this.boardQuerySuccess = false;
+
     this.todoServ.getBoards().subscribe(results => {
       this.common.clearBoardNames();
+
+      this.boardQuerySuccess = true;
 
       for (let id of results)
       {
