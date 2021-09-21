@@ -26,30 +26,13 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   @Input() content!: Todo;
-
-  @Input() tasksortfield!: String;
-  @Input() tasksortdir!: Boolean;
-  @Input() tasksortexec!: Boolean;
+  @Input() phase_idx!: number;
 
   @Input() showDescriptionLength!: Boolean[];
   @Input() showTaskCount!: Boolean[];
   @Input() showDateCreated!: Boolean[];
 
   @Input() searchresCount!: number;
-
-  @Output() editTodoEvent = new EventEmitter<number>();
-  @Output() cloneTodoEvent = new EventEmitter<number>();
-  @Output() removeTodoEvent = new EventEmitter<number>();
-
-  @Output() shiftLeftTodoEvent = new EventEmitter<Todo>();
-  @Output() shiftRightTodoEvent = new EventEmitter<Todo>();
-
-  @Output() addTaskEvent = new EventEmitter<number>();
-  @Output() removeAllTasksEvent = new EventEmitter<number>();
-
-  @Output() editTaskEvent = new EventEmitter<Task>();
-  @Output() checkTaskEvent = new EventEmitter<Task>();
-  @Output() removeTaskEvent = new EventEmitter<Task>();
 
   @Output() searchresCountUpdate = new EventEmitter<number>();
 
@@ -135,6 +118,11 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.tasklistStr = JSON.stringify(this.content.tasks);
+
+    if (!this.showDescriptionLength)
+      this.showDescriptionLength = [];
+    if (!this.showDateCreated)
+      this.showDateCreated = [];
 
     if (this.showDescriptionLength.length == 0)
       this.showDescriptionLength.push(false, false);

@@ -35,12 +35,8 @@
                 <p class="card-text">Description length: {{ descriptionLength }}</p>
             </li>
             <li class="list-group-item">
-				<app-ff-todo-task-list [tasks]="tasklistStr"
-						[showTaskCount]="showTaskCount" [tasksortexec]="tasksortexec"
-						[tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir" [todoId]="content.id"
-						(editTaskEvent)="editTaskEvent.emit($event)"
-						(checkTaskEvent)="checkTaskEvent.emit($event)"
-						(removeTaskEvent)="removeTaskEvent.emit($event)"></app-ff-todo-task-list>
+				<app-ff-todo-task-list [tasks]="tasklistStr" [phase_idx]="phase_idx" [todoId]="content.id">
+				</app-ff-todo-task-list>
             </li>
             <li class="list-group-item" *ngIf="!readonlyTodo">
 				<div class="d-flex justify-content-between">

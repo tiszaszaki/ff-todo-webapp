@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
@@ -21,21 +21,19 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
       private alertServ: FfTodoAlertService) { }
 
   @Input() todoId!: number;
+  @Input() phase_idx!: number;
 
   @Input('tasks') tasklistString! : String;
 
-  @Input() tasksortfield!: String;
-  @Input() tasksortdir!: Boolean;
-  @Input() tasksortexec!: Boolean;
-
-  @Input() showTaskCount!: Boolean[];
-
-  @Output() editTaskEvent = new EventEmitter<Task>();
-  @Output() checkTaskEvent = new EventEmitter<Task>();
-  @Output() removeTaskEvent = new EventEmitter<Task>();
-
   public prepareEditTaskFormTrigger = new Subject<void>();
   public prepareRemoveTaskFormTrigger = new Subject<void>();
+
+  public tasksortfield!: String;
+  public tasksortdir!: Boolean;
+  public tasksortexec!: Boolean;
+  public taskSortingSettingsListener!: Subscription;
+
+  public showTaskCount!: Boolean[];
 
   public taskSelected!: Task;
 
@@ -56,6 +54,12 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
+    this.taskSortingSettingsListener = this.common.taskSortingSettingsChange.subscribe(result => {
+      this.tasksortexec = result.exec;
+      this.tasksortfield = result.field;
+      this.tasksortdir = result.dir;
+    });
+
     this.tasks = JSON.parse(this.tasklistString as string);
 
     this.taskCount = this.tasks.length;
@@ -65,6 +69,9 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
       this.highlightedNames.set(task.id, this.highlighter.bypassSecurityTrustHtml(task.name as string));
     }
 
+    if (!this.showTaskCount)
+      this.showTaskCount = [];
+
     if (this.showTaskCount.length == 0)
       this.showTaskCount.push(false, false);
     if (this.showTaskCount.length == 1)
@@ -73,6 +80,8 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.readonlyTaskListener.unsubscribe();
+
+    this.taskSortingSettingsListener.unsubscribe();
   }
 
   prepareEditTaskForm(task : Task) {
@@ -134,5 +143,4 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
       });
     });
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -8,22 +8,19 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
   templateUrl: './ff-todo-sorting-form.component.html',
   styleUrls: ['./ff-todo-sorting-form.component.css']
 })
-export class FfTodoSortingFormComponent implements OnInit, OnDestroy {
-
-  @Output() todosortfieldChange = new EventEmitter<String>();
-  @Output() todosortdirChange = new EventEmitter<Boolean>();
-  @Output() todosortResetTrigger = new EventEmitter<void>();
+export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() preparingFormEvent!: Observable<void>;
 
   @Input() todo_list_count!: number;
 
-  @Input() todosortfield!: String;
-  @Input() todosortdir!: Boolean;
-
   @Input() phase_idx!: number;
 
   @ViewChild('sortTodoForm') formElement!: TemplateRef<FfTodoSortingFormComponent>;
+
+  public todosortfield!: String;
+  public todosortdir!: Boolean;
+  public todoSortingSettingsListener!: Subscription;
 
   private preparingFormListener!: Subscription;
 
@@ -50,7 +47,7 @@ export class FfTodoSortingFormComponent implements OnInit, OnDestroy {
   }
 
   resetTodoSorting() {
-    this.todosortResetTrigger.emit();
+    this.common.resetTodoSortingSettings(this.phase_idx);
   }
 
   showModal()
@@ -78,10 +75,21 @@ export class FfTodoSortingFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+
+    this.todoSortingSettingsListener = this.common.todoSortingSettingsChange.subscribe(result => {
+      this.todosortfield = result.field;
+      this.todosortdir = result.dir;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.common.updateTodoSortingSettings(this.phase_idx, this.todosortfield, this.todosortdir);
   }
 
   ngOnDestroy(): void {
     this.preparingFormListener.unsubscribe();
+
+    this.todoSortingSettingsListener.unsubscribe();
   }
 
 }

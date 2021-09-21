@@ -7,7 +7,6 @@
 		<app-ff-todo-generic-board-form #removeBoardForm [mode]="REMOVE_BOARD" [(model)]="boardContent"
 				[preparingFormEvent]="prepareRemoveBoardFormTrigger.asObservable()" (submitDataEvent)="removeBoard($event)">
 		</app-ff-todo-generic-board-form>
-
 	</div>
 	<div *ngIf="boardContent">
 		<h2 class="text-muted text-center"
@@ -49,35 +48,24 @@
 			</tr>
 			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<button type="button" class="btn btn-secondary" (click)="prepareSortTodoForm(idx)">
+					<button type="button" class="btn btn-secondary" (click)="prepareSortTodoForm(idx)"
+							[disabled]="!todo_phase.length">
 						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Todos
 					</button>
-					<button type="button" class="btn btn-secondary" (click)="prepareSortTaskForm(idx)">
+					<button type="button" class="btn btn-secondary" (click)="prepareSortTaskForm(idx)"
+							[disabled]="!task_count[idx]">
 						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Tasks
 					</button>
 
 					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length" [phase_idx]="idx"
-							[todosortfield]="todo_sorting_field[idx]" [todosortdir]="todo_sorting_direction[idx]"
-							(todosortfieldChange)="updateTodoSortingField(idx, $event)"
-							(todosortdirChange)="updateTodoSortingDirection(idx, $event)"
-							(todosortResetTrigger)="resetTodoSorting(idx)"
 							[preparingFormEvent]="prepareSortTodoFormTrigger[idx].asObservable()"></app-ff-todo-sorting-form>
 					<app-ff-todo-task-sorting-form [task_list_count]="task_count[idx]" [phase_idx]="idx"
-							[tasksortfield]="task_sorting_field[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							(tasksortfieldChange)="updateTaskSortingField(idx, $event)"
-							(tasksortdirChange)="updateTaskSortingDirection(idx, $event)"
-							(tasksortResetTrigger)="resetTaskSorting(idx)"
 							[preparingFormEvent]="prepareSortTaskFormTrigger[idx].asObservable()"></app-ff-todo-task-sorting-form>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"
-							[todoQuerySuccess]="todoQuerySuccess" [showDescriptionLength]="showDescriptionLength[idx]"
-							[showTaskCount]="showTaskCount[idx]" [showDateCreated]="showDateCreated[idx]"
-							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"
-							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
-							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]">
+					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx" [todoQuerySuccess]="todoQuerySuccess">
 					</app-ff-todo-list-per-phase>
 				</td>
 			<tr>

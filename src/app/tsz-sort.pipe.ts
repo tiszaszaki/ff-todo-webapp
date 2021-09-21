@@ -10,7 +10,7 @@ export class TiszaSzakiSortPipe implements PipeTransform {
       return [array];
     }
 
-    //if (executed)
+    if (executed)
     if (field && (reversed !== undefined))
     if (field != "")
     {

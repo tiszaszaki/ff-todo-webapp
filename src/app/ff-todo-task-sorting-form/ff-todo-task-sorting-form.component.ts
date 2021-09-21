@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -8,27 +8,25 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
   templateUrl: './ff-todo-task-sorting-form.component.html',
   styleUrls: ['./ff-todo-task-sorting-form.component.css']
 })
-export class FfTodoTaskSortingFormComponent implements OnInit, OnDestroy {
-
-  @Output() tasksortfieldChange = new EventEmitter<String>();
-  @Output() tasksortdirChange = new EventEmitter<Boolean>();
-  @Output() tasksortResetTrigger = new EventEmitter<void>();
+export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() preparingFormEvent!: Observable<void>;
 
   @Input() task_list_count!: number;
 
-  @Input() tasksortfield!: String;
-  @Input() tasksortdir!: Boolean;
-
   @Input() phase_idx!: number;
 
   @ViewChild('sortTaskForm') formElement!: TemplateRef<FfTodoTaskSortingFormComponent>;
+
+  public tasksortfield!: String;
+  public tasksortdir!: Boolean;
+  public taskSortingSettingsListener!: Subscription;
 
   private preparingFormListener!: Subscription;
 
   public readonly taskSortingFields = [
     {name: '', display: '(unsorted)'},
+    {name: 'id', display: 'Task ID'},
     {name: 'name', display: 'Task name'},
     {name: 'done', display: 'Task checked'}
   ];
@@ -45,7 +43,7 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnDestroy {
   }
 
   resetTaskSorting() {
-    this.tasksortResetTrigger.emit();
+    this.common.resetTaskSortingSettings(this.phase_idx);
   }
 
   showModal()
@@ -73,10 +71,21 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+
+    this.taskSortingSettingsListener = this.common.taskSortingSettingsChange.subscribe(result => {
+      this.tasksortfield = result.field;
+      this.tasksortdir = result.dir;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.common.updateTaskSortingSettings(this.phase_idx, this.tasksortfield, this.tasksortdir);
   }
 
   ngOnDestroy(): void {
     this.preparingFormListener.unsubscribe();
+
+    this.taskSortingSettingsListener.unsubscribe();
   }
 
 }

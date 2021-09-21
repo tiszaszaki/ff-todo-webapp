@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Subject } from 'rxjs';
-import { TiszaSzakiAlert } from './tsz-alert';
 
 @Component({
   selector: 'app-root',

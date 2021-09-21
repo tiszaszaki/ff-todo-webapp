@@ -42,6 +42,16 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   private todoCount!: number;
   public todoCountChange = new EventEmitter<number>();
 
+  private todoSortExec: Boolean[] = [];
+  private todoSortField: String[] = [];
+  private todoSortDir: Boolean[] = [];
+  public todoSortingSettingsChange = new EventEmitter<{exec:Boolean, field:String, dir:Boolean}>();
+
+  private taskSortExec: Boolean[] = [];
+  private taskSortField: String[] = [];
+  private taskSortDir: Boolean[] = [];
+  public taskSortingSettingsChange = new EventEmitter<{exec:Boolean, field:String, dir:Boolean}>();
+
   private todoSearchingCaseSense!: Boolean;
   public todoSearchingCaseSenseChange = new EventEmitter<Boolean>();
   private todoSearchingHighlight!: Boolean;
@@ -132,6 +142,58 @@ export class FfTodoCommonService implements OnInit, OnChanges {
     return result;
   }
 
+  updateTodoSortingSettings(phase: Number, field: String, dir: Boolean)
+  {
+    this.todoSortExec[phase as number] = (field != '');
+
+    if (this.todoSortExec[phase as number])
+    {
+      this.todoSortField[phase as number] = field;
+      this.todoSortDir[phase as number] = dir;
+    }
+    else
+    {
+      this.todoSortField[phase as number] = '';
+      this.todoSortDir[phase as number] = false;
+    }
+
+    this.todoSortingSettingsChange.emit({
+      exec: this.todoSortExec[phase as number],
+      field: this.todoSortField[phase as number],
+      dir: this.todoSortDir[phase as number]
+    });
+  }
+
+  updateTaskSortingSettings(phase: Number, field: String, dir: Boolean)
+  {
+    this.taskSortExec[phase as number] = (field != '');
+
+    if (this.taskSortExec[phase as number])
+    {
+      this.taskSortField[phase as number] = field;
+      this.taskSortDir[phase as number] = dir;
+    }
+    else
+    {
+      this.taskSortField[phase as number] = '';
+      this.taskSortDir[phase as number] = false;
+    }
+
+    this.taskSortingSettingsChange.emit({
+      exec: this.taskSortExec[phase as number],
+      field: this.taskSortField[phase as number],
+      dir: this.taskSortDir[phase as number]}
+    );
+  }
+
+  resetTodoSortingSettings(phase: Number) {
+    this.updateTodoSortingSettings(phase, '', false);
+  }
+
+  resetTaskSortingSettings(phase: Number) {
+    this.updateTaskSortingSettings(phase, '', false);
+  }
+
   updateTodoSearchCase(val: Boolean) {
     this.todoSearchingCaseSense = val;
     this.todoSearchingCaseSenseChange.emit(this.todoSearchingCaseSense);
@@ -193,6 +255,18 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
   updateTodoPhaseValRange(minVal: Number, maxVal: Number) {
     this.phaseRange = [minVal,maxVal];
+
+    for (let phase in this.iterateTodoPhases())
+    {
+      this.todoSortExec.push(false);
+      this.todoSortField.push("");
+      this.todoSortDir.push(false);
+
+      this.taskSortExec.push(false);
+      this.taskSortField.push("");
+      this.taskSortDir.push(false);
+    }
+
     this.todoPhaseValRangeChange.emit(this.phaseRange);
   }
 

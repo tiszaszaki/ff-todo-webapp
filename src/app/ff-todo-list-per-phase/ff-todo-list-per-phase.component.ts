@@ -20,17 +20,14 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   @Input() todoQuerySuccess!: Boolean;
 
-  @Input() showDescriptionLength!: Boolean[];
-  @Input() showTaskCount!: Boolean[];
-  @Input() showDateCreated!: Boolean[];
+  public showDescriptionLength: Boolean[] = [];
+  public showTaskCount: Boolean[] = [];
+  public showDateCreated: Boolean[] = [];
 
-  @Input() todosortfield!: String;
-  @Input() todosortdir!: Boolean;
-  @Input() todosortexec!: Boolean;
-
-  @Input() tasksortfield!: String;
-  @Input() tasksortdir!: Boolean;
-  @Input() tasksortexec!: Boolean;
+  public todoSortExec!: Boolean;
+  public todoSortField!: String;
+  public todoSortDir!: Boolean;
+  public todoSortingSettingsListener!: Subscription;
 
   public todoSearchingCaseSense!: Boolean;
   public todoSearchingCaseSenseListener!: Subscription;
@@ -48,8 +45,28 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.todoSortExec = false;
+    this.todoSortField = '';
+    this.todoSortDir = false;
+
+    this.showDescriptionLength.push(false, false);
+    this.showDateCreated.push(false, false);
+    this.showTaskCount.push(false, false);
+
     this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => this.todoSearchingCaseSense = result);
     this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => this.todoSearchingHighlight = result);
+
+    this.todoSortingSettingsListener = this.common.todoSortingSettingsChange.subscribe(result => {
+      this.todoSortExec = result.exec;
+      this.todoSortField = result.field;
+      this.todoSortDir = result.dir;
+
+      this.showDescriptionLength[0] = (this.todoSortField == 'descriptionLength');
+      this.showDateCreated[0] = (this.todoSortField == 'dateCreated');
+      this.showTaskCount[0] = (this.todoSortField == 'taskCount');
+
+      console.log(`updateTodoShowingField(${this.phase_idx}, 'sorting'): [${[this.showDescriptionLength[0], this.showDateCreated[0], this.showTaskCount[0]]}]`);
+    });
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
       this.todoSearchRules = results;
@@ -63,9 +80,9 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
         this.showDescriptionLength[1] ||= (fieldName == 'descriptionLength');
         this.showDateCreated[1] ||= (fieldName == 'dateCreated');
         this.showTaskCount[1] ||= (fieldName == 'taskCount');
-
-        console.log(`updateTodoShowingField(${this.phase_idx}, 'searching'): [${[this.showDescriptionLength[1], this.showDateCreated[1], this.showTaskCount[1]]}]`);
       }
+
+      console.log(`updateTodoShowingField(${this.phase_idx}, 'searching'): [${[this.showDescriptionLength[1], this.showDateCreated[1], this.showTaskCount[1]]}]`);
 
       this.notifyTodoSearchResults();
     });
@@ -74,6 +91,8 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.todoSearchingCaseSenseListener.unsubscribe();
     this.todoSearchingHighlightListener.unsubscribe();
+
+    this.todoSortingSettingsListener.unsubscribe();
 
     this.todoSearchingRulesListener.unsubscribe();
   }
