@@ -3,6 +3,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 
 @Component({
   selector: 'app-ff-todo-generic-board-form',
@@ -18,8 +19,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   @Input() shown!: Boolean;
   @Output() shownChange = new EventEmitter<Boolean>();
 
-  @Input() descriptionMaxLength!: number;
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Board>();
@@ -31,6 +30,9 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   public modeStr!: String;
   public formId!: String;
 
+  public descriptionMaxLength!: number;
+  public descriptionMaxLengthListener!: Subscription;
+
   public formTitle!: String;
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
@@ -41,8 +43,9 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   public readonly EDIT = BoardOperator.EDIT;
   public readonly REMOVE = BoardOperator.REMOVE;
 
-  constructor(private modalService: NgbModal) {
-  }
+  constructor(
+      private modalService: NgbModal,
+      private common: FfTodoCommonService) { }
 
   private resetModel() {
     this.model = new Board();
@@ -114,6 +117,16 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   ngOnInit(): void {
     this.modeStr = BoardOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}BoardForm`;
+
+    this.descriptionMaxLengthListener = this.common.boardDescriptionMaxLengthChange.subscribe(result => {
+      result = this.descriptionMaxLength = result as number;
+    });
+
+    if (this.isOperatorIncluded(this.ADD,this.EDIT))
+    {
+      this.common.triggerBoardDescriptionMaxLength();
+    }
+
     this.resetModel();
 
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
@@ -128,6 +141,8 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   }
 
   ngOnDestroy() {
+    this.descriptionMaxLengthListener.unsubscribe();
+
     this.preparingFormListener.unsubscribe();
   }
 

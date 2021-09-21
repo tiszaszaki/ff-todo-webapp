@@ -16,8 +16,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   @Input() model!: Todo;
   @Output() modelChange = new EventEmitter<Todo>();
 
-  @Input() descriptionMaxLength!: number;
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
@@ -28,6 +26,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public modeStr!: String;
   public formId!: String;
+
+  public descriptionMaxLength!: number;
+  public descriptionMaxLengthListener!: Subscription;
 
   public inputDateFormat!: string;
   public inputDateFormatDisp!: String;
@@ -141,8 +142,14 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.modeStr = TodoOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}TodoForm`;
 
+    this.descriptionMaxLengthListener = this.common.todoDescriptionMaxLengthChange.subscribe(result => {
+      result = this.descriptionMaxLength = result as number;
+    });
+
     if (this.isOperatorIncluded(this.ADD,this.EDIT))
     {
+      this.common.triggerTodoDescriptionMaxLength();
+      
       this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
     }
 
@@ -152,6 +159,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnDestroy(): void {
+    this.descriptionMaxLengthListener.unsubscribe();
+
     this.preparingFormListener.unsubscribe();
   }
 

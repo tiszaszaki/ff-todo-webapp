@@ -66,9 +66,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public phaseMax!: number;
   public todoPhaseValRangeListener!: Subscription;
 
-  public todoDescriptionMaxLength! : number;
-  public todoDescriptionMaxLengthListener!: Subscription;
-
   public displayDateFormat!: string;
 
   public todosearchexec!: Boolean;
@@ -80,8 +77,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
   public readonlyTaskListener!: Subscription;
-
-  public contentStr!: String;
 
   private oldPhase! : number;
 
@@ -118,17 +113,11 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.phaseLeftExists = ((this.content.phase - 1) >= this.phaseMin);
       this.phaseRightExists = ((this.content.phase + 1) <= this.phaseMax);
     });
-    this.todoDescriptionMaxLengthListener = this.common.todoDescriptionMaxLengthChange.subscribe(result => {
-      result = this.todoDescriptionMaxLength = result as number;
-    });
 
     this.common.triggerTodoPhaseValRange();
-    this.common.triggerTodoDescriptionMaxLength();
 
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
-
-    this.contentStr = JSON.stringify(this.content);
 
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
     this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
@@ -167,47 +156,32 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.todoPhaseValRangeListener.unsubscribe();
-    this.todoDescriptionMaxLengthListener.unsubscribe();
 
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
   }
 
-  private getTodo(id : number) {
-    return this.todoServ.getTodo(id);
-  }
-
   prepareEditTodoForm() {
-    let id=this.content.id;
     console.log(`Preparing form for editing Todo...`);
-    this.getTodo(id).subscribe(todo => {
-      this.oldPhase = todo.phase;
-      this.todoSelected = todo;
-      this.prepareEditTodoFormTrigger.next();
-    });
+    this.oldPhase = this.content.phase;
+    this.todoSelected = this.content;
+    this.prepareEditTodoFormTrigger.next();
   }
 
   prepareCloneTodoForm() {
-    let id=this.content.id;
     console.log(`Preparing form for cloning Todo...`);
-    this.getTodo(id).subscribe(todo => {
-      this.oldPhase = todo.phase;
-      this.todoSelected = todo;
-      this.prepareCloneTodoFormTrigger.next();
-    });
+    this.oldPhase = this.content.phase;
+    this.todoSelected = this.content;
+    this.prepareCloneTodoFormTrigger.next();
   }
 
   prepareRemoveTodoForm() {
-    let id=this.content.id;
     console.log(`Preparing form for removing Todo...`);
-    this.getTodo(id).subscribe(todo => {
-      this.todoSelected = todo;
-      this.prepareRemoveTodoFormTrigger.next();
-    });
+    this.todoSelected = this.content;
+    this.prepareRemoveTodoFormTrigger.next();
   }
 
   prepareAddTaskForm() {
-    let id=this.content.id;
     console.log(`Preparing form for editing Task...`);
     this.prepareAddTaskFormTrigger.next();
   }
@@ -216,6 +190,32 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     let id=this.content.id;
     console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
     this.prepareRemoveAllTasksFormTrigger.next();
+  }
+
+  refreshTodo() {
+    this.todoServ.getTodo(this.content.id)
+    .subscribe(todo => {
+      this.content = todo;
+
+      this.common.triggerTodoPhaseValRange();
+
+      this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
+      this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
+
+      this.descriptionLength = this.content.description.length;
+
+      if (this.content.tasks)
+      {
+        this.taskCount = this.content.tasks.length;
+      }
+      else
+      {
+        this.content.tasks = [];
+        this.taskCount = 0;
+      }
+
+      this.tasklistStr = JSON.stringify(this.content.tasks);
+    });
   }
 
   updateTodo(todo : Todo) {

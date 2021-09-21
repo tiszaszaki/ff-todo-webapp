@@ -54,9 +54,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public phaseMax!: number;
   public todoPhaseValRangeListener!: Subscription;
 
-  public boardDescriptionMaxLength! : number;
-  public boardDescriptionMaxLengthListener!: Subscription;
-
   public todoCount!: number;
   public todoCountListener!: Subscription;
   
@@ -361,10 +358,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       this.phaseMax = results[1] as number;
     });
 
-    this.boardDescriptionMaxLengthListener = this.common.boardDescriptionMaxLengthChange.subscribe(result => {
-      result = this.boardDescriptionMaxLength = result as number;
-    });
-
     this.route.queryParams.subscribe(params => {
       this.common.setBoardSelected(params.id);
 
@@ -383,7 +376,5 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.boardSelectedListener.unsubscribe();
 
     this.todoPhaseValRangeListener.unsubscribe();
-
-    this.boardDescriptionMaxLengthListener.unsubscribe();
   }
 }

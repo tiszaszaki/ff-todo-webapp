@@ -34,11 +34,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public enableRestoreTodos!: Boolean;
   public enableRestoreTodosListener!: Subscription;
 
-  public todoDescriptionMaxLength! : number;
-  public todoDescriptionMaxLengthListener!: Subscription;
-  public boardDescriptionMaxLength! : number;
-  public boardDescriptionMaxLengthListener!: Subscription;
-
   public prepareAddBoardFormTrigger = new Subject<void>();
 
   public prepareAddTodoFormTrigger = new Subject<void>();
@@ -78,15 +73,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
-    this.boardDescriptionMaxLengthListener = this.common.boardDescriptionMaxLengthChange.subscribe(result => {
-      result = this.boardDescriptionMaxLength = result as number;
-    })
-    this.todoDescriptionMaxLengthListener = this.common.todoDescriptionMaxLengthChange.subscribe(result => {
-      result = this.todoDescriptionMaxLength = result as number;
-    })
-
-    this.common.triggerTodoDescriptionMaxLength();
-
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
   }
 
@@ -100,9 +86,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.enableRestoreTodosListener.unsubscribe();
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
-
-    this.boardDescriptionMaxLengthListener.unsubscribe();
-    this.todoDescriptionMaxLengthListener.unsubscribe();
 
     this.isRoutedToTodoListListener.unsubscribe();
   }
