@@ -142,10 +142,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.prepareRemoveAllTodosFormTrigger.next();
   }
 
-  returnToBoardList() {
-    this.common.changeRouteStatus(false);
-  }
-
   updateSelectedBoard() {
     this.common.updateBoard();
   }

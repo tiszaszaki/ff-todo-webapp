@@ -11,7 +11,7 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   public todoPhaseValRangeChange = new EventEmitter< Array<Number> >();
 
   public updateBoardEvent = new EventEmitter<void>();
-  public updateTodoListEvent = new EventEmitter<void>();
+  public updateTodoListEvent = new EventEmitter< Set<Number> >();
   public updateBoardListEvent = new EventEmitter<void>();
 
   private isRoutedToTodoList!: Boolean;
@@ -69,8 +69,8 @@ export class FfTodoCommonService implements OnInit, OnChanges {
     this.updateBoardEvent.emit();
   }
 
-  updateTodoList() {
-    this.updateTodoListEvent.emit();
+  updateTodoList(phase?: Set<Number>) {
+    this.updateTodoListEvent.emit(phase);
   }
 
   updateBoardList() {

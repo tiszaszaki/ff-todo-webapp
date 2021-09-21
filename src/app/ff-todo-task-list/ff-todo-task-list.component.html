@@ -1,19 +1,29 @@
-<button class="btn btn-secondary mb-3" type="button" (click)="taskList.toggle()"
-        data-toggle="tooltip" data-placement="bottom" title="Toggle Task list">
-    <i *ngIf="!tasklist_collapse_status" class="fas fa-folder-minus"></i>
-    <i *ngIf="tasklist_collapse_status" class="fas fa-folder-plus"></i>
-</button>
+<div>
+    <app-ff-todo-generic-task-form #editTaskForm [mode]="EDIT_TASK" [todoId]="todoId" [(model)]="taskSelected"
+            [preparingFormEvent]="prepareEditTaskFormTrigger.asObservable()" (submitDataEvent)="updateTask($event)">
+    </app-ff-todo-generic-task-form>
+    <app-ff-todo-generic-task-form #removeTaskForm [mode]="REMOVE_TASK" [todoId]="todoId" [(model)]="taskSelected"
+            [preparingFormEvent]="prepareRemoveTaskFormTrigger.asObservable()" (submitDataEvent)="removeTask($event)">
+    </app-ff-todo-generic-task-form>
+</div>
+<div>
+    <button class="btn btn-secondary mb-3" type="button" (click)="taskList.toggle()"
+            data-toggle="tooltip" data-placement="bottom" title="Toggle Task list">
+        <i *ngIf="!tasklist_collapse_status" class="fas fa-folder-minus"></i>
+        <i *ngIf="tasklist_collapse_status" class="fas fa-folder-plus"></i>
+    </button>
+</div>
 <div #taskList="ngbCollapse" [(ngbCollapse)]="tasklist_collapse_status">
     <ul class="list-group border border-primary"
             data-toggle="tooltip" data-placement="bottom" title="Task list">
         <li class="list-group-item" *ngFor="let task of tasks | tszSort:tasksortexec:tasksortfield:tasksortdir">
             <div>
                 <div class="d-flex justify-content-start">
-                    <button type="button" class="btn btn-primary btn-sm text-end" (click)="editTask(task)"
+                    <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditTaskForm(task)"
                             data-toggle="tooltip" data-placement="bottom" title="View Task details" *ngIf="!readonlyTask">
                         <i class="fas fa-pencil-alt"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm text-end" (click)="removeTask(task)"
+                    <button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTaskForm(task)"
                             data-toggle="tooltip" data-placement="bottom" title="Remove Task" *ngIf="!readonlyTask">
                         <i class="fas fa-trash-alt"></i>
                     </button>

@@ -45,13 +45,11 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.boardNameMappingListener.unsubscribe();
   }
 
-  public gotoTodoList() {
-    this.common.changeRouteStatus(true);
-  }
-
   private updateBoardList()
   {
     this.boardQuerySuccess = false;
+
+    this.common.changeRouteStatus(false);
 
     this.todoServ.getBoards().subscribe(results => {
       this.common.clearBoardNames();

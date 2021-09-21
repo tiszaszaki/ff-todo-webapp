@@ -9,30 +9,6 @@
 				[preparingFormEvent]="prepareRemoveBoardFormTrigger.asObservable()" (submitDataEvent)="removeBoard($event)">
 		</app-ff-todo-generic-board-form>
 
-		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(model)]="todoSelected"
-				[descriptionMaxLength]="todoDescriptionMaxLength"
-				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
-		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(model)]="todoSelected"
-				[preparingFormEvent]="prepareCloneTodoFormTrigger.asObservable()" (submitDataEvent)="cloneTodo($event)">
-		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(model)]="todoSelected"
-				[preparingFormEvent]="prepareRemoveTodoFormTrigger.asObservable()" (submitDataEvent)="removeTodo($event)">
-		</app-ff-todo-generic-todo-form>
-	</div>
-	<div>
-		<app-ff-todo-generic-task-form #addTaskForm [mode]="ADD_TASK" [todoId]="todoId"
-				[preparingFormEvent]="prepareAddTaskFormTrigger.asObservable()" (submitDataEvent)="addTask($event)">
-		</app-ff-todo-generic-task-form>
-		<app-ff-todo-generic-task-form #editTaskForm [mode]="EDIT_TASK" [todoId]="todoId" [(model)]="taskSelected"
-				[preparingFormEvent]="prepareEditTaskFormTrigger.asObservable()" (submitDataEvent)="updateTask($event)">
-		</app-ff-todo-generic-task-form>
-		<app-ff-todo-generic-task-form #removeTaskForm [mode]="REMOVE_TASK" [todoId]="todoId" [(model)]="taskSelected"
-				[preparingFormEvent]="prepareRemoveTaskFormTrigger.asObservable()" (submitDataEvent)="removeTask($event)">
-		</app-ff-todo-generic-task-form>
-		<app-ff-todo-generic-task-form #removeAllTasksForm [mode]="REMOVE_ALL_TASKS" [todoId]="todoId"
-				[preparingFormEvent]="prepareRemoveAllTasksFormTrigger.asObservable()" (submitIdEvent)="removeAllTasks($event)">
-		</app-ff-todo-generic-task-form>
 	</div>
 	<div *ngIf="boardContent">
 		<h2 class="text-muted text-center"
@@ -102,13 +78,7 @@
 							[showTaskCount]="showTaskCount[idx]" [showDateCreated]="showDateCreated[idx]"
 							[todosortexec]="todo_sorting_executed[idx]" [tasksortexec]="task_sorting_executed[idx]"
 							[todosortfield]="todo_sorting_field[idx]" [tasksortfield]="task_sorting_field[idx]"
-							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]"
-							(editTodoEvent)="prepareEditTodoForm($event)" (cloneTodoEvent)="prepareCloneTodoForm($event)"
-							(removeTodoEvent)="prepareRemoveTodoForm($event)"
-							(shiftLeftTodoEvent)="shiftTodo($event, LEFT)" (shiftRightTodoEvent)="shiftTodo($event, RIGHT)"
-							(addTaskEvent)="prepareAddTaskForm($event)" (editTaskEvent)="prepareEditTaskForm($event)"
-							(checkTaskEvent)="checkTask($event)" (removeTaskEvent)="removeTask($event)"
-							(removeAllTasksEvent)="prepareRemoveAllTasksForm($event)">
+							[todosortdir]="todo_sorting_direction[idx]" [tasksortdir]="task_sorting_direction[idx]">
 					</app-ff-todo-list-per-phase>
 				</td>
 			<tr>

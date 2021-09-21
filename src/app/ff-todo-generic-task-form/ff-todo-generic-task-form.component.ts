@@ -150,7 +150,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
       }
       if (this.isOperatorIncluded(this.REMOVE_ALL))
       {
-        this.submitIdEvent.emit(this.todoId);
+        this.submitEvent.emit();
       }
       if (this.isOperatorIncluded())
       {

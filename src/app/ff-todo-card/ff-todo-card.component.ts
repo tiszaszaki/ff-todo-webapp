@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
+import { TaskOperator } from '../task-operator';
 import { Todo } from '../todo';
+import { TodoOperator } from '../todo-operator';
 
 @Component({
   selector: 'app-ff-todo-card',
@@ -15,7 +19,9 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
       private highlighter: DomSanitizer,
-      private common: FfTodoCommonService) {
+      private common: FfTodoCommonService,
+      private todoServ: FfTodoRealRequestService,
+      private alertServ: FfTodoAlertService) {
     this.displayDateFormat = this.common.displayDateFormat;
   }
 
@@ -47,9 +53,21 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() searchresCountUpdate = new EventEmitter<number>();
 
+  public todoSelected!: Todo;
+
+  public prepareEditTodoFormTrigger = new Subject<void>();
+  public prepareCloneTodoFormTrigger = new Subject<void>(); 
+  public prepareRemoveTodoFormTrigger = new Subject<void>();
+
+  public prepareAddTaskFormTrigger = new Subject<void>();
+  public prepareRemoveAllTasksFormTrigger = new Subject<void>();
+
   public phaseMin!: number;
   public phaseMax!: number;
   public todoPhaseValRangeListener!: Subscription;
+
+  public todoDescriptionMaxLength! : number;
+  public todoDescriptionMaxLengthListener!: Subscription;
 
   public displayDateFormat!: string;
 
@@ -65,6 +83,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public contentStr!: String;
 
+  private oldPhase! : number;
+
   public isCardValid!: Boolean;
 
   public phaseLeftExists!: Boolean;
@@ -78,6 +98,14 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public readonly LEFT = ShiftDirection.LEFT;
   public readonly RIGHT = ShiftDirection.RIGHT;
 
+  public readonly EDIT_TODO = TodoOperator.EDIT;
+  public readonly CLONE_TODO = TodoOperator.CLONE;
+
+  public readonly REMOVE_TODO = TodoOperator.REMOVE;
+
+  public readonly ADD_TASK = TaskOperator.ADD;
+  public readonly REMOVE_ALL_TASKS = TaskOperator.REMOVE_ALL;
+
   ngOnInit(): void {
     this.todoPhaseValRangeListener = this.common.todoPhaseValRangeChange.subscribe(results => {
       this.phaseMin = results[0] as number;
@@ -88,10 +116,14 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.isCardValid &&= ((this.content.phase >= this.phaseMin) && (this.content.phase <= this.phaseMax));
 
       this.phaseLeftExists = ((this.content.phase - 1) >= this.phaseMin);
-      this.phaseRightExists = ((this.content.phase + 1) < this.phaseMax);
+      this.phaseRightExists = ((this.content.phase + 1) <= this.phaseMax);
+    });
+    this.todoDescriptionMaxLengthListener = this.common.todoDescriptionMaxLengthChange.subscribe(result => {
+      result = this.todoDescriptionMaxLength = result as number;
     });
 
     this.common.triggerTodoPhaseValRange();
+    this.common.triggerTodoDescriptionMaxLength();
 
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
@@ -135,55 +167,145 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.todoPhaseValRangeListener.unsubscribe();
+    this.todoDescriptionMaxLengthListener.unsubscribe();
 
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
   }
 
-  addTask() {
-    console.log(`Trying to add a new Task for this Todo (${this.contentStr})...`);
-    this.addTaskEvent.emit(this.content.id);
-  }
-  editTodo() {
-    console.log(`Trying to edit this Todo (${this.contentStr})...`);
-    this.editTodoEvent.emit(this.content.id);
-  }
-  cloneTodo() {
-    console.log(`Trying to clone this Todo (${this.contentStr})...`);
-    this.cloneTodoEvent.emit(this.content.id);
+  private getTodo(id : number) {
+    return this.todoServ.getTodo(id);
   }
 
-  removeTodo() {
-    this.removeTodoEvent.emit(this.content.id);
+  prepareEditTodoForm() {
+    let id=this.content.id;
+    console.log(`Preparing form for editing Todo...`);
+    this.getTodo(id).subscribe(todo => {
+      this.oldPhase = todo.phase;
+      this.todoSelected = todo;
+      this.prepareEditTodoFormTrigger.next();
+    });
   }
-  removeAllTasks() {
-    console.log(`Trying to clear Task list for this Todo (${this.contentStr})...`);
-    this.removeAllTasksEvent.emit(this.content.id);
+
+  prepareCloneTodoForm() {
+    let id=this.content.id;
+    console.log(`Preparing form for cloning Todo...`);
+    this.getTodo(id).subscribe(todo => {
+      this.oldPhase = todo.phase;
+      this.todoSelected = todo;
+      this.prepareCloneTodoFormTrigger.next();
+    });
+  }
+
+  prepareRemoveTodoForm() {
+    let id=this.content.id;
+    console.log(`Preparing form for removing Todo...`);
+    this.getTodo(id).subscribe(todo => {
+      this.todoSelected = todo;
+      this.prepareRemoveTodoFormTrigger.next();
+    });
+  }
+
+  prepareAddTaskForm() {
+    let id=this.content.id;
+    console.log(`Preparing form for editing Task...`);
+    this.prepareAddTaskFormTrigger.next();
+  }
+
+  prepareRemoveAllTasksForm() {
+    let id=this.content.id;
+    console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
+    this.prepareRemoveAllTasksFormTrigger.next();
+  }
+
+  updateTodo(todo : Todo) {
+    let id = todo.id;
+    console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
+    this.todoServ.editTodo(id, todo)
+    .subscribe(_ => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
+      this.common.updateTodoList(new Set([this.oldPhase, todo.phase]));
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Todo with ID (${id}). See browser console for details.`});
+    });
+  }
+
+  cloneTodo(todo : Todo) {
+    let id = todo.id;
+    let phase = todo.phase;
+    console.log(`Trying to clone Todo with ID (${id})...`);
+    /*
+    this.todoServ.cloneTodo(id, phase as number)
+    .subscribe(todo => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
+      this.getTodos(new Set([this.oldPhase, todo.phase]));
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to clone Todo with ID (${id}). See browser console for details.`});
+    });
+    */
+  }
+
+  removeTodo(todo : Todo) {
+    let id = todo.id;
+    console.log(`Trying to remove Todo with ID (${id})...`);
+    this.todoServ.removeTodo(id)
+    .subscribe(_ => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Todo with ID (${id}).`});
+      this.common.updateTodoList(new Set([todo.phase]));
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove Todo with ID (${id}). See browser console for details.`});
+    });
   }
 
   shiftTodo(dir : ShiftDirection) {
-    let shiftDirStr = new Map([[-1,'left'],[1,'right']]);
-    console.log(`Trying to shift ${shiftDirStr.get(dir)} this Todo (${this.contentStr})...`);
-    switch (dir)
+    let id = this.content.id;
+    this.oldPhase = this.content.phase;
+    let new_phase = this.content.phase += dir;
+    this.content.phase = new_phase;
+    console.log(`Trying to shift Todo with ID (${id})...`);
+    if ((new_phase >= this.phaseMin) && (new_phase <= this.phaseMax))
     {
-      case this.LEFT: this.shiftLeftTodoEvent.emit(this.content); break;
-      case this.RIGHT: this.shiftRightTodoEvent.emit(this.content); break;
-      default: break;
+      this.todoServ.editTodo(id, this.content)
+      .subscribe(_ => {
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`});
+        this.common.updateTodoList(new Set([this.oldPhase, new_phase]));
+      }, errorMsg => {
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to shift Todo with ID (${id}). See browser console for details.`});
+      });
     }
   }
 
-  editTask(task : Task) {
-    let taskStr = JSON.stringify(task);
-    console.log(`Trying to edit this Task (${taskStr})...`);
+  addTask(task : Task) {
+    console.log(`Trying to add new Task (${JSON.stringify(task)}) for Todo with ID (${this.content.id})...`);
+    this.todoServ.addTask(task, this.content.id)
+    .subscribe(task => {
+      this.todoServ.getTodo(this.content.id)
+      .subscribe(todo => { 
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Task (${JSON.stringify(task)}) for Todo with ID (${todo.id}).`});
+        this.common.updateTodoList(new Set([todo.phase]));
+      });
+    }, errorMsg => {
+      this.todoServ.getTodo(this.content.id)
+      .subscribe(todo => { 
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Task for Todo with ID (${todo.id}). See browser console for details.`});
+      });
+    });
   }
-  checkTask(task : Task) {
-    let taskStr = JSON.stringify(task);
-    console.log(`Trying to check this Task (${taskStr})...`);
-    this.checkTaskEvent.emit(task);
-  }
-  removeTask(task : Task) {
-    let taskStr = JSON.stringify(task);
-    console.log(`Trying to check this Task (${taskStr})...`);
-    this.removeTaskEvent.emit(task);
+
+  removeAllTasks() {
+    this.todoServ.removeAllTasks(this.content.id)
+    .subscribe(_ => {
+        console.log(`Successfully removed all Tasks from Todo with ID (${(this.content.id)}).`);
+        this.todoServ.getTodo(this.content.id)
+        .subscribe(todo => {
+          this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Tasks from Todo with ID (${todo.id}).`});
+          this.common.updateTodoList(new Set([todo.phase]));
+        });
+    }, errorMsg => {
+      this.todoServ.getTodo(this.content.id)
+      .subscribe(todo => { 
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove all Tasks from Todo with ID (${todo.id}). See browser console for details.`});
+      });
+    });
   }
 }

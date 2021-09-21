@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
-import { Task } from '../task';
 import { Todo } from '../todo';
 
 @Component({
@@ -32,20 +31,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   @Input() tasksortfield!: String;
   @Input() tasksortdir!: Boolean;
   @Input() tasksortexec!: Boolean;
-
-  @Output() editTodoEvent = new EventEmitter<number>();
-  @Output() cloneTodoEvent = new EventEmitter<number>();
-  @Output() removeTodoEvent = new EventEmitter<number>();
-
-  @Output() shiftLeftTodoEvent = new EventEmitter<Todo>();
-  @Output() shiftRightTodoEvent = new EventEmitter<Todo>();
-
-  @Output() addTaskEvent = new EventEmitter<number>();
-  @Output() removeAllTasksEvent = new EventEmitter<number>();
-
-  @Output() editTaskEvent = new EventEmitter<Task>();
-  @Output() checkTaskEvent = new EventEmitter<Task>();
-  @Output() removeTaskEvent = new EventEmitter<Task>();
 
   public todoSearchingCaseSense!: Boolean;
   public todoSearchingCaseSenseListener!: Subscription;

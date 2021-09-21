@@ -3,12 +3,6 @@
         <app-ff-todo-card [content]="todo"
                 [showDescriptionLength]="showDescriptionLength" [showDateCreated]="showDateCreated" [showTaskCount]="showTaskCount"
                 [tasksortexec]="tasksortexec" [tasksortfield]="tasksortfield" [tasksortdir]="tasksortdir"
-                (editTodoEvent)="editTodoEvent.emit($event)" (cloneTodoEvent)="cloneTodoEvent.emit($event)"
-                (removeTodoEvent)="removeTodoEvent.emit($event)"
-                (shiftLeftTodoEvent)="shiftLeftTodoEvent.emit($event)" (shiftRightTodoEvent)="shiftRightTodoEvent.emit($event)"
-                (addTaskEvent)="addTaskEvent.emit($event)" (editTaskEvent)="editTaskEvent.emit($event)"
-                (checkTaskEvent)="checkTaskEvent.emit($event)" (removeTaskEvent)="removeTaskEvent.emit($event)"
-                (removeAllTasksEvent)="removeAllTasksEvent.emit($event)"
                 [searchresCount]="searchres.length" (searchresCountUpdate)="searchresCount = $event">
         </app-ff-todo-card>
     </div>
