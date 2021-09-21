@@ -75,6 +75,21 @@ export class FfTodoCommonService implements OnInit, OnChanges {
   ngOnChanges(): void {
   }
 
+  getCommonModalSettings(ariaTitleLabel?: String) {
+    let result = {
+      ariaLabelledBy: "",
+      size: "lg",
+      backdropClass: "tsz-modal-backdrop"
+    };
+
+    if (ariaTitleLabel)
+    {
+      result.ariaLabelledBy = ariaTitleLabel as string;
+    }
+
+    return result;
+  }
+
   updateBoard() {
     this.updateBoardEvent.emit();
   }

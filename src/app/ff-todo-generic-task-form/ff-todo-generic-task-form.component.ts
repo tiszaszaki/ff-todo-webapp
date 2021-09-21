@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { FfTodoCommonService } from '../ff-todo-common.service';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
 
@@ -43,8 +44,9 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   public readonly CHECK = TaskOperator.CHECK;
   public readonly REMOVE_ALL = TaskOperator.REMOVE_ALL;
 
-  constructor(private modalService: NgbModal) {
-  }
+  constructor(
+      private modalService: NgbModal,
+      private common: FfTodoCommonService) { }
 
   private resetModel() {
     this.model = new Task();
@@ -96,7 +98,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   {
     console.log(`Trying to open a modal with ID (${this.formId})...`);
 
-    const tempModal = this.modalService.open(this.formElement);
+    const tempModal = this.modalService.open(this.formElement, this.common.getCommonModalSettings());
 
     tempModal.result.then((result) => {
       console.log(`${this.formId}: ${result}`);

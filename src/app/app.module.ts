@@ -24,7 +24,6 @@ import { TiszaSzakiSearchPipe } from './tsz-search.pipe';
 import { TiszaSzakiFocusDirective } from './tszfocus.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FfTodoAlertListComponent } from './ff-todo-alert-list/ff-todo-alert-list.component';
-import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { FfTodoSearchNoResultsComponent } from './ff-todo-search-no-results/ff-todo-search-no-results.component';
 import { FfTodoGenericBoardFormComponent } from './ff-todo-generic-board-form/ff-todo-generic-board-form.component';
 import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-list.component';
@@ -53,7 +52,6 @@ import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/f
     TiszaSzakiSearchPipe,
     TiszaSzakiFocusDirective,
     FfTodoAlertListComponent,
-    ModalBasicComponent,
     FfTodoSearchNoResultsComponent,
     FfTodoGenericBoardFormComponent,
     FfTodoBoardListComponent,
