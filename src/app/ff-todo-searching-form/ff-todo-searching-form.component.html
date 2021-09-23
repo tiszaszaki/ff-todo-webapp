@@ -8,7 +8,7 @@
 
     <div class="modal-body">
         <div class="form-group">
-            <label for="todo_searching_field">Field:</label>
+            <label for="todo_searching_field">Field</label>
             <select class="form-select form-control" [(ngModel)]="todosearchfield" name="field" id="todo_searching_field"
                     data-toggle="tooltip" data-placement="bottom" title="Todo searching field">
                 <option *ngFor="let field of todoSearchingFields" [value]="field.name">{{ field.display }}</option>
@@ -16,14 +16,16 @@
         </div>
         <div class="form-group">
             <div data-toggle="tooltip" data-placement="bottom" title="Todo searching term">
-                <label for="todo_searching_term">Search for:</label>
-                <input class="form-text-input form-control" type="text" id="todo_searching_term"
+                <label for="todo_searching_term">Search for</label>
+                <input class="form-text-input form-control" type="text" id="todo_searching_term" [placeholder]="placeholderTerm"
                         [(ngModel)]="todosearchterm" name="term" #term="ngModel" required>
             </div>
             <div [hidden]="term.valid || term.pristine" class="alert alert-danger">
                 Searching term is required
             </div>
-            <div class="d-flex justify-content-between">
+        </div>
+        <div class="form-group d-flex justify-content-end">
+            <div class="d-flex flex-column">
                 <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
                     <input class="form-check-input" type="checkbox" id="todo_search_casesense"
                             [(ngModel)]="todoSearchingCaseSense" name="casesense">

@@ -13,7 +13,8 @@
                     <label for="name">Name</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
-                                #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')" required tszfocus>
+                                #name="ngModel" [placeholder]="placeholderName" (keyup.enter)="modal.close('Saved by pressing Enter')"
+                                required tszfocus>
                     </div>
                     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                         Name is required
@@ -23,8 +24,8 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <div class="input-group">
-                        <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description"
-                                name="description" value="model.description" maxlength="{{ descriptionMaxLength }}"
+                        <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description" name="description"
+                                value="model.description" [placeholder]="placeholderDescription" maxlength="{{ descriptionMaxLength }}"
                                 [disabled]="!isOperatorIncluded(ADD,EDIT)"></textarea>
                     </div>
                 </div>
@@ -35,7 +36,8 @@
                 <div class="form-group">
                     <label for="author">Author</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="author" [(ngModel)]="model.author" name="author" value="model.author">
+                        <input type="text" class="form-control" id="author" [(ngModel)]="model.author" name="author" value="model.author"
+                                [placeholder]="placeholderAuthor" [disabled]="!isOperatorIncluded(ADD,EDIT)">
                     </div>
                 </div>
             </form>

@@ -34,6 +34,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public inputDateFormatDisp!: String;
 
   public formTitle!: String;
+
+  public placeholderName!: String;
+  public placeholderDescription!: String;
+
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
 
@@ -69,6 +73,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
+
+    this.placeholderName = '<Name placeholder to be filled>';
+    this.placeholderDescription = '<Description placeholder to be filled>';
+
     this.confirmMessage = '<Confirm message to be filled>';
     this.confirmButtonCaption = "<Confirm>";
 
@@ -76,12 +84,18 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     {
       case this.ADD: {
         this.formTitle = 'Add a new Todo';
+
+        this.placeholderName = "Enter name for new Todo...";
+        this.placeholderDescription = "Enter description for new Todo (optional)..."
       } break;
       case this.EDIT: {
         if (this.model)
         {
           let id=this.model.id;
           this.formTitle = `Edit Todo with ID #${id+1}`;
+
+          this.placeholderName = "Change name for this Todo...";
+          this.placeholderDescription = "Change description for this Todo..."
         }
       } break;
       case this.CLONE: {
@@ -89,6 +103,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         {
           let id=this.model.id;
           this.formTitle = `Clone Todo with ID #${id+1}`;
+
+          this.placeholderName = "Name for this Todo left blank...";
+          this.placeholderDescription = "Description for this Todo left blank...";
         }
       } break;
       case this.REMOVE: {

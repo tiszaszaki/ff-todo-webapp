@@ -8,12 +8,11 @@
 
     <div class="modal-body">
         <div class="form-group">
-            <div class="mb-2">
-                <select class="form-select form-control" [(ngModel)]="tasksortfield" name="field"
-                        data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
-                    <option *ngFor="let field of taskSortingFields" [value]="field.name">{{ field.display }}</option>
-                </select>
-            </div>
+            <label for="task_sorting_field">Field</label>
+            <select class="form-select form-control" [(ngModel)]="tasksortfield" name="field" id="task_sorting_field"
+                    data-toggle="tooltip" data-placement="bottom" title="Task sorting field">
+                <option *ngFor="let field of taskSortingFields" [value]="field.name">{{ field.display }}</option>
+            </select>
         </div>
         <div class="form-group">
             <div class="d-flex justify-content-end">

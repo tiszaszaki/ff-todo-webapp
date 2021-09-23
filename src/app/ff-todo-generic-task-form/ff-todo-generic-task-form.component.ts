@@ -33,6 +33,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   public formId!: String;
 
   public formTitle!: String;
+  public placeholderName!: String;
+
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
 
@@ -56,6 +58,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
 
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
+    this.placeholderName = '<Name placeholder to be filled>';
+
     this.confirmMessage = '<Confirm message to be filled>';
     this.confirmButtonCaption = "<Confirm>";
 
@@ -63,12 +67,14 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
     {
       case this.ADD: {
         this.formTitle = `Add a new Task for Todo with ID #${this.todoId+1}`;
+        this.placeholderName = "Enter name for new Task...";
       } break;
       case this.EDIT: {
         if (this.model)
         {
           let id=this.model.id;
           this.formTitle = `Edit Task with ID #${id+1}`;
+          this.placeholderName = "Change name for this Task...";
         }
       } break;
       case this.REMOVE: {

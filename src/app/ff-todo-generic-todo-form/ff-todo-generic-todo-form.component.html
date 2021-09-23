@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
-                            #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')"
+                            #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')" [placeholder]="placeholderName"
                             [disabled]="!isOperatorIncluded(ADD,EDIT)" required tszfocus>
                     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                         Name is required
@@ -24,7 +24,7 @@
                     <div class="input-group">
                         <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description"
                                 name="description" value="model.description" #description="ngModel" maxlength="{{ descriptionMaxLength }}"
-                                [disabled]="!isOperatorIncluded(ADD,EDIT)">
+                                [placeholder]="placeholderDescription" [disabled]="!isOperatorIncluded(ADD,EDIT)">
                         </textarea>
                     </div>
                 </div>

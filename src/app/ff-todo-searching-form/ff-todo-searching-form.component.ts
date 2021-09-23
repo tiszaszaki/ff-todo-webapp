@@ -32,6 +32,8 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   public submitted: Boolean = false;
 
+  public placeholderTerm: String = "What are you searching for?";
+
   private preparingFormListener!: Subscription;
   private resetFormListener!: Subscription;
 

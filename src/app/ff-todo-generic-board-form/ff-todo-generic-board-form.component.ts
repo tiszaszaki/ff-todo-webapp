@@ -34,6 +34,11 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   public descriptionMaxLengthListener!: Subscription;
 
   public formTitle!: String;
+
+  public placeholderName!: String;
+  public placeholderDescription!: String;
+  public placeholderAuthor!: String;
+
   public confirmMessage!: String;
   public confirmButtonCaption! : String;
 
@@ -56,6 +61,11 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
 
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
+
+    this.placeholderName = '<Name placeholder to be filled>';
+    this.placeholderDescription = '<Description placeholder to be filled>';
+    this.placeholderAuthor = '<Author placeholder to be filled>';
+
     this.confirmMessage = '<Confirm message to be filled>';
     this.confirmButtonCaption = "<Confirm>";
 
@@ -63,12 +73,20 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
     {
       case this.ADD: {
         this.formTitle = `Add a new Board`;
+
+        this.placeholderName = "Enter name for new Board...";
+        this.placeholderDescription = "Enter description for new Board (optional)..."
+        this.placeholderAuthor = "Enter author's name for new Board (optional)..."
       } break;
       case this.EDIT: {
         if (this.model)
         {
           let id=this.model.id;
           this.formTitle = `Edit Board with ID #${id+1}`;
+
+          this.placeholderName = "Change name for this Board...";
+          this.placeholderDescription = "Change description for this Board..."
+          this.placeholderAuthor = "Change author's name for this Board..."
         }
       } break;
       case this.REMOVE: {
