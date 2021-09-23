@@ -150,33 +150,27 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   prepareEditTodoForm() {
-    console.log(`Preparing form for editing Todo...`);
     this.oldPhase = this.content.phase;
     this.todoSelected = this.content;
     this.prepareEditTodoFormTrigger.next();
   }
 
   prepareCloneTodoForm() {
-    console.log(`Preparing form for cloning Todo...`);
     this.oldPhase = this.content.phase;
     this.todoSelected = this.content;
     this.prepareCloneTodoFormTrigger.next();
   }
 
   prepareRemoveTodoForm() {
-    console.log(`Preparing form for removing Todo...`);
     this.todoSelected = this.content;
     this.prepareRemoveTodoFormTrigger.next();
   }
 
   prepareAddTaskForm() {
-    console.log(`Preparing form for editing Task...`);
     this.prepareAddTaskFormTrigger.next();
   }
 
   prepareRemoveAllTasksForm() {
-    let id=this.content.id;
-    console.log(`Preparing form for removing all Tasks for Todo with ID (${id})...`);
     this.prepareRemoveAllTasksFormTrigger.next();
   }
 

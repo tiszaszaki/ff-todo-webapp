@@ -65,7 +65,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
       this.showDateCreated[0] = (this.todoSortField == 'dateCreated');
       this.showTaskCount[0] = (this.todoSortField == 'taskCount');
 
-      console.log(`updateTodoShowingField(${this.phase_idx}, 'sorting'): [${[this.showDescriptionLength[0], this.showDateCreated[0], this.showTaskCount[0]]}]`);
+      //console.log(`updateTodoShowingField(${this.phase_idx}, 'sorting'): [${[this.showDescriptionLength[0], this.showDateCreated[0], this.showTaskCount[0]]}]`);
     });
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
@@ -82,7 +82,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
         this.showTaskCount[1] ||= (fieldName == 'taskCount');
       }
 
-      console.log(`updateTodoShowingField(${this.phase_idx}, 'searching'): [${[this.showDescriptionLength[1], this.showDateCreated[1], this.showTaskCount[1]]}]`);
+      //console.log(`updateTodoShowingField(${this.phase_idx}, 'searching'): [${[this.showDescriptionLength[1], this.showDateCreated[1], this.showTaskCount[1]]}]`);
 
       this.notifyTodoSearchResults();
     });

@@ -101,8 +101,10 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
           }
         }
 
+        /*
         console.log(`Filtered ${result.length} Todo(s) with TiszaSzakiSearchPipe(${(caseSense ? 'CASE_SENSITIVE' : 'CASE_INSENSITIVE')}, `
             + `${term}, ${field}, ${(highlight ? 'HIGHLIGHTING' : 'NON_HIGHLIGHTING')})`);
+        */
       }
     }
 

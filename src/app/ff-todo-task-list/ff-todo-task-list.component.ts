@@ -85,13 +85,11 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   }
 
   prepareEditTaskForm(task : Task) {
-    console.log(`Preparing form for editing Task...`);
     this.taskSelected = task;
     this.prepareEditTaskFormTrigger.next();
   }
 
   prepareRemoveTaskForm(task : Task) {
-    console.log(`Preparing form for removing Task...`);
     this.taskSelected = task;
     this.prepareRemoveTaskFormTrigger.next();
   }

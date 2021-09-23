@@ -52,14 +52,14 @@ export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy 
 
   showModal()
   {
-    console.log(`Trying to open a modal with ID (sortTodoForm)...`);
+    //console.log(`Trying to open a modal with ID (sortTodoForm)...`);
 
     const tempModal = this.modalService.open(this.formElement);
 
     tempModal.result.then((result) => {
-      console.log(`sortTodoForm: ${result}`);
+      //console.log(`sortTodoForm: ${result}`);
     }, (reason) => {
-      console.log(`sortTodoForm: ${this.getDismissReason(reason)}`);
+      //console.log(`sortTodoForm: ${this.getDismissReason(reason)}`);
     });
   }
 

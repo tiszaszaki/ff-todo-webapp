@@ -48,14 +48,14 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDest
 
   showModal()
   {
-    console.log(`Trying to open a modal with ID (sortTaskForm)...`);
+    //console.log(`Trying to open a modal with ID (sortTaskForm)...`);
 
     const tempModal = this.modalService.open(this.formElement);
 
     tempModal.result.then((result) => {
-      console.log(`sortTaskForm: ${result}`);
+      //console.log(`sortTaskForm: ${result}`);
     }, (reason) => {
-      console.log(`sortTaskForm: ${this.getDismissReason(reason)}`);
+      //console.log(`sortTaskForm: ${this.getDismissReason(reason)}`);
     });
   }
 

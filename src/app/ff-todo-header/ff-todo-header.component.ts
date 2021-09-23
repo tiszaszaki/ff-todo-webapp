@@ -95,34 +95,29 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   prepareAddBoardForm() {
-    console.log(`Preparing form for adding new Board...`);
     this.prepareAddBoardFormTrigger.next();
   }
 
   prepareAddTodoForm() {
-    console.log(`Preparing form for adding new Todo...`);
     this.prepareAddTodoFormTrigger.next();
   }
 
   prepareSearchTodoForm() {
-    console.log(`Preparing form for searching Todos...`);
     this.prepareSearchTodoFormTrigger.next();
   }
 
   resetSearchTodoForm() {
-    console.log(`Trying to reset Todo searching form...`);
     this.resetSearchTodoFormTrigger.next();
 
     this.common.clearSearchRules();
   }
 
-  isTodoSearchExec() {
-    return this.common.hasSearchRules();
+  prepareRemovingAllTodos() {
+    this.prepareRemoveAllTodosFormTrigger.next();
   }
 
-  prepareRemovingAllTodos() {
-    console.log(`Preparing form for removing all Todos...`);
-    this.prepareRemoveAllTodosFormTrigger.next();
+  isTodoSearchExec() {
+    return this.common.hasSearchRules();
   }
 
   updateSelectedBoard() {
@@ -192,6 +187,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   removeAllTodos() {
+    console.log(`Trying to remove all Todos from Board with ID (${this.boardSelected})...`);
     this.todoServ.removeAllTodos(this.boardSelected as number)
     .subscribe(_ => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected}).`});

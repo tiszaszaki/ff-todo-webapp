@@ -1,15 +1,15 @@
-import { EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { FfTodoCommonService } from './ff-todo-common.service';
 import { TiszaSzakiAlert } from './tsz-alert';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FfTodoAlertService implements OnInit, OnDestroy {
+export class FfTodoAlertService implements OnDestroy {
 
-  private maxAlerts!: Number;
-  private closeAlertDelay!: Number;
+  private maxAlerts = 5;
+  private closeAlertDelay = 5000;
+  private closeAlertDelayGap = 500;
 
   private closeAlertEvent = new Subject<TiszaSzakiAlert>();
 
@@ -18,18 +18,15 @@ export class FfTodoAlertService implements OnInit, OnDestroy {
   private alerts: TiszaSzakiAlert[] = [];
   public alertsChange = new EventEmitter< TiszaSzakiAlert[] >();
 
-  private autoCloseAlerts!: Boolean;
+  private autoCloseAlerts = true;
 
-  constructor(private common: FfTodoCommonService) {
+  constructor() {
+    this.autoCloseAlerts &&= ((this.closeAlertDelay !== undefined) && (this.closeAlertDelayGap !== undefined));
+    this.autoCloseAlerts &&= ((this.closeAlertDelay > 0) && (this.closeAlertDelayGap > 0));
 
-  }
-
-  ngOnInit(): void {
-    this.maxAlerts = 5;
-    this.closeAlertDelay = 5000;
-    this.autoCloseAlerts = (this.closeAlertDelay > 0);
     this.closeAlertListener = this.closeAlertEvent.subscribe((msg) => {
-      setTimeout(() => this.close(msg), this.closeAlertDelay as number);
+      let delayAmount = this.closeAlertDelay + this.closeAlertDelayGap * this.alerts.length;
+      setTimeout(() => this.close(msg), delayAmount);
     });
   }
 

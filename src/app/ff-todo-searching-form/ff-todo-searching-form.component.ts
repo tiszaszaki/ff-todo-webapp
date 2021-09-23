@@ -103,16 +103,16 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   showModal()
   {
-    console.log(`Trying to open a modal with ID (searchTodoForm)...`);
+    //console.log(`Trying to open a modal with ID (searchTodoForm)...`);
 
     const tempModal = this.modalService.open(this.formElement);
 
     tempModal.result.then((result) => {
-      console.log(`searchTodoForm: ${result}`);
+      //console.log(`searchTodoForm: ${result}`);
       this.updateSubmitState(true);
       this.resetTodoSearchRule();
     }, (reason) => {
-      console.log(`searchTodoForm: ${this.getDismissReason(reason)}`);
+      //console.log(`searchTodoForm: ${this.getDismissReason(reason)}`);
     });
   }
 

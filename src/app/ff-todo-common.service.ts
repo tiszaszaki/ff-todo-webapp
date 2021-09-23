@@ -1,9 +1,9 @@
-import { Injectable, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FfTodoCommonService implements OnInit, OnChanges {
+export class FfTodoCommonService {
 
   private phase_labels!: String[];
 
@@ -67,12 +67,6 @@ export class FfTodoCommonService implements OnInit, OnChanges {
 
     this.boardNameMapping = new Map<Number,String>();
     this.todoSearchingRules = new Map<String,String>();
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngOnChanges(): void {
   }
 
   getCommonModalSettings(ariaTitleLabel?: String) {

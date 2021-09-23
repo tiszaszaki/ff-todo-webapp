@@ -173,6 +173,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
         this.common.updateTodoCount(todoCountTemp);
 
+        /*
         if (phase)
         if (phase.size == 0)
         {
@@ -186,27 +187,24 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
           phase_arr.sort();
           console.log(`Tried to fill Todo list only in phases (${phase_arr}).`);
         }
+        */
       }
     });
   }
 
   prepareSortTodoForm(phase_idx: number) {
-    console.log(`Preparing form for sorting Todos...`);
     this.prepareSortTodoFormTrigger[phase_idx].next();
   }
 
   prepareSortTaskForm(phase_idx: number) {
-    console.log(`Preparing form for sorting Tasks...`);
     this.prepareSortTaskFormTrigger[phase_idx].next();
   }
 
   prepareEditBoardForm() {
-    console.log(`Preparing form for editing new Board...`);
     this.prepareEditBoardFormTrigger.next();
   }
 
   prepareRemoveBoardForm() {
-    console.log(`Preparing form for removing new Board...`);
     this.prepareRemoveBoardFormTrigger.next();
   }
 

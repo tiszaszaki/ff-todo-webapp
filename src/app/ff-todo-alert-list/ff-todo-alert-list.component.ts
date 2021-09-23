@@ -33,7 +33,9 @@ export class FfTodoAlertListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.alertsListener = this.alertServ.alertsChange.subscribe(results => this.alerts = results);
+    this.alertsListener = this.alertServ.alertsChange.subscribe(results => {
+      this.alerts = results;
+    });
   }
 
   ngOnDestroy() {
