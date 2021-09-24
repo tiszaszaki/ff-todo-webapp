@@ -52,14 +52,14 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
                   matches ||= (caseSense && (leftval.search(rightval as string) >= 0));
                   matches ||= (!caseSense && (leftval.toLowerCase().search(rightval.toLowerCase()) >= 0));
       
-                  if (matches) {
-                    if (highlight) {
-                      const re = RegExp(`${rightval}`, 'g' + (caseSense ? '' : 'i'));
-                      const match = leftval.match(re);
-                      const res = `<mark>${match[0]}</mark>`;
-      
-                      elem2[elemField] = leftval.replace(re, res);
-                    }
+                  if (matches)
+                  if (highlight)
+                  if ((elemField == "name") || (elemField == "description")) {
+                    const re = RegExp(`${rightval}`, 'g' + (caseSense ? '' : 'i'));
+                    const match = leftval.match(re);
+                    const res = `<mark>${match[0]}</mark>`;
+    
+                    elem2[elemField] = leftval.replace(re, res);
                   }
 
                   pushable ||= matches;
@@ -88,7 +88,8 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
             matches ||= (!caseSense && (leftval.toLowerCase().search(rightval.toLowerCase()) >= 0));
 
             if (matches) {
-              if (highlight) {
+              if (highlight)
+              if ((field == "name") || (field == "description")) {
                 const re = RegExp(`${rightval}`, 'g' + (caseSense ? '' : 'i'));
                 const match = leftval.match(re);
                 const res = `<mark>${match[0]}</mark>`;
@@ -100,11 +101,6 @@ export class TiszaSzakiSearchPipe implements PipeTransform {
             }
           }
         }
-
-        /*
-        console.log(`Filtered ${result.length} Todo(s) with TiszaSzakiSearchPipe(${(caseSense ? 'CASE_SENSITIVE' : 'CASE_INSENSITIVE')}, `
-            + `${term}, ${field}, ${(highlight ? 'HIGHLIGHTING' : 'NON_HIGHLIGHTING')})`);
-        */
       }
     }
 

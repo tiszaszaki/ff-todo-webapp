@@ -40,8 +40,6 @@ export class TiszaSzakiSortPipe implements PipeTransform {
         return res;
       });
 
-      //console.log(`Sorting with TiszaSzakiSortPipe(${field},${(reversed ? 'DESCENDING' : 'ASCENDING')})...`);
-
       return result;
     }
 
