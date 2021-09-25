@@ -28,7 +28,8 @@ import { FfTodoSearchNoResultsComponent } from './ff-todo-search-no-results/ff-t
 import { FfTodoGenericBoardFormComponent } from './ff-todo-generic-board-form/ff-todo-generic-board-form.component';
 import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-list.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/ff-todo-page-does-not-exist.component'
+import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/ff-todo-page-does-not-exist.component';
+import { FfTodoQueryStatusComponent } from './ff-todo-query-status/ff-todo-query-status.component'
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/f
     FfTodoSearchNoResultsComponent,
     FfTodoGenericBoardFormComponent,
     FfTodoBoardListComponent,
-    FfTodoPageDoesNotExistComponent
+    FfTodoPageDoesNotExistComponent,
+    FfTodoQueryStatusComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule

@@ -6,5 +6,5 @@
         </app-ff-todo-card>
     </div>
 </div>
-<app-ff-todo-list-empty *ngIf="!content.length" [todoQuerySuccess]="todoQuerySuccess"></app-ff-todo-list-empty>
+<app-ff-todo-list-empty *ngIf="!content.length"></app-ff-todo-list-empty>
 <app-ff-todo-search-no-results *ngIf="content.length && !searchresCount"></app-ff-todo-search-no-results>

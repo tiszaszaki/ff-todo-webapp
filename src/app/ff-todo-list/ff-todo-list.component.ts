@@ -41,6 +41,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public board_details_collapse_status = false;
 
+  public todoQueryFinished!: Boolean;
   public todoQuerySuccess!: Boolean;
 
   public boardContent!: Board;
@@ -112,8 +113,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
       if (!todo_records)
         todo_records = [];
-
-      this.todoQuerySuccess = true;
 
       if (phase)
       if (phase.size > 0) {
@@ -189,6 +188,12 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         }
         */
       }
+
+      this.todoQuerySuccess = true;
+      this.todoQueryFinished = true;
+    }, errorMsg => {
+      this.todoQuerySuccess = false;
+      this.todoQueryFinished = true;
     });
   }
 

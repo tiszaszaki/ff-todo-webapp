@@ -39,7 +39,9 @@
 			</div>
 		</div>
 	</div>
-	<table class="table mt-3" *ngIf="this.boardSelected">
+	<app-ff-todo-query-status [todoQueryFinished]="todoQueryFinished" [todoQuerySuccess]="todoQuerySuccess">
+	</app-ff-todo-query-status>
+	<table class="table mt-3" *ngIf="todoQueryFinished && todoQuerySuccess && boardSelected">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let phase of iterateTodoPhases()">
@@ -65,7 +67,7 @@
 			</tr>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx" [todoQuerySuccess]="todoQuerySuccess">
+					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx">
 					</app-ff-todo-list-per-phase>
 				</td>
 			<tr>
