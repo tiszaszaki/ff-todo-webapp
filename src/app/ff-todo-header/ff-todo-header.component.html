@@ -42,9 +42,14 @@
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-warning w-50" (click)="updateSelectedBoard()" [disabled]="!isRoutedToTodoList"
+        <button type="button" class="btn btn-warning w-50" (click)="updateBoardList()"
+            data-toggle="tooltip" data-placement="bottom" title="Refresh Boards">
+          <i class="fas fa-sync-alt"></i>&nbsp;Boards
+        </button>
+        <button type="button" class="btn btn-warning w-50" (click)="updateSelectedBoard()"
             [routerLink]="['/list-todos']" [queryParams]="{id: boardSelected}"
-            data-toggle="tooltip" data-placement="bottom" title="Refresh Board" [disabled]="!boardSelected">
+            data-toggle="tooltip" data-placement="bottom" title="Refresh Board"
+            [disabled]="!isRoutedToTodoList || !boardSelected">
           <i class="fas fa-sync-alt"></i>&nbsp;Board
         </button>
         <button type="button" class="btn btn-secondary w-50" [routerLink]="['']" [disabled]="!isRoutedToTodoList"

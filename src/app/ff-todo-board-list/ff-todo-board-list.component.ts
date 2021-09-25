@@ -18,6 +18,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   public updateBoardListTrigger!: Subscription;
 
+  public boardQueryFinished!: Boolean;
   public boardQuerySuccess!: Boolean;
 
   constructor(
@@ -47,6 +48,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateBoardList()
   {
+    this.boardQueryFinished = false;
     this.boardQuerySuccess = false;
 
     this.common.changeRouteStatus(false);
@@ -54,6 +56,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.todoServ.getBoards().subscribe(results => {
       this.common.clearBoardNames();
 
+      this.boardQueryFinished = true;
       this.boardQuerySuccess = true;
 
       for (let id of results)
@@ -62,6 +65,9 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
           this.boardNameMapping.set(id, result.name);
         });
       }
+    }, errorMsg => {
+      this.boardQueryFinished = true;
+      this.boardQuerySuccess = false;
     });
   }
 

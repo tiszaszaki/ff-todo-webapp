@@ -12,11 +12,16 @@
         </ul>
     </div>
     <div *ngIf="!boardNameMapping.size">
-        <div *ngIf="boardQuerySuccess">
-            There are no Boards.
+        <div *ngIf="!boardQueryFinished">
+            Loading Boards...
         </div>
-        <div class="text-danger" *ngIf="!boardQuerySuccess">
-            Cannot query Board list.
+        <div *ngIf="boardQueryFinished">
+            <div class="text-muted" *ngIf="boardQuerySuccess">
+                There are no Boards.
+            </div>
+            <div class="text-danger" *ngIf="!boardQuerySuccess">
+                Cannot query Board list.
+            </div>
         </div>
     </div>
 </div>

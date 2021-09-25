@@ -94,6 +94,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     todo_results = this.todoServ.getTodosFromBoard(this.boardSelected as number);
 
     this.todoQuerySuccess = false;
+    this.todoQueryFinished = false;
 
     if (phase.size == 0) {
       this.todo_list = [];
