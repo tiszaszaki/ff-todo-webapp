@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class FfTodoCommonService {
   private todoSearchingRules!: Map<String,String>;
   public todoSearchingRulesChange = new EventEmitter< Map<String,String> >();
 
-  constructor() {
+  constructor(private router: Router) {
     this.phase_labels = ['Backlog', 'In progress', 'Done'];
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
@@ -222,14 +223,20 @@ export class FfTodoCommonService {
   }
 
   addSearchRule(field: String, term: String) {
-    this.todoSearchingRules.set(field, term);
-    this.updateSearchRules();
+    if (field.trim() != "")
+    {
+      this.todoSearchingRules.set(field, term);
+      this.updateSearchRules();
+    }
   }
 
   deleteSearchRule(field: String)
   {
-    this.todoSearchingRules.delete(field);
-    this.updateSearchRules();
+    if (field.trim() != "")
+    {
+      this.todoSearchingRules.delete(field);
+      this.updateSearchRules();
+    }
   }
 
   clearSearchRules()
@@ -340,13 +347,18 @@ export class FfTodoCommonService {
     this.boardSelectedChange.emit(this.boardSelected);
   }
 
-  addBoardName(id: Number, name: String) {
-    this.boardNameMapping.set(id, name);
-    this.boardNameMappingChange.emit(this.boardNameMapping);
+  navigateToBoard(id: Number) {
+    this.setBoardSelected(id);
+    this.router.navigate(['/list-todos'], { queryParams: {id:this.boardSelected}});
   }
 
   deleteBoardName(id: Number)
   {
+    if (id == this.boardSelected)
+    {
+      this.router.navigate(['/']);
+    }
+
     this.boardNameMapping.delete(id);
     this.boardNameMappingChange.emit(this.boardNameMapping);
   }

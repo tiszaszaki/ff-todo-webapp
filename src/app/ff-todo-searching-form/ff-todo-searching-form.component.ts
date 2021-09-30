@@ -127,6 +127,9 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.todoSearchingCaseSense = false;
+    this.todoSearchingHighlight = false;
+
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
     this.resetFormListener = this.resetFormEvent.subscribe(() => this.resetTodoSearching());
 

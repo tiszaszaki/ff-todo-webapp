@@ -174,6 +174,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(board => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
       this.updateBoardList();
+      this.common.navigateToBoard(board.id);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
     });
