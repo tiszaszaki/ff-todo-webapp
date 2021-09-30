@@ -23,6 +23,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       private todoServ: FfTodoRealRequestService,
       private alertServ: FfTodoAlertService) {
     this.displayDateFormat = this.common.displayDateFormat;
+    this.todoRefreshing = false;
   }
 
   @Input() content!: Todo;
@@ -64,6 +65,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   private oldPhase! : number;
 
   public isCardValid!: Boolean;
+  public todoRefreshing!: Boolean;
 
   public phaseLeftExists!: Boolean;
   public phaseRightExists!: Boolean;
@@ -175,7 +177,17 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   refreshTodo() {
-    this.todoServ.getTodo(this.content.id)
+    let id=this.content.id;
+
+    this.todoRefreshing = true;
+
+    this.content = new Todo();
+
+    this.highlightedName = this.highlighter.bypassSecurityTrustHtml("");
+    this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml("");
+
+    setTimeout(() =>
+    this.todoServ.getTodo(id)
     .subscribe(todo => {
       this.content = todo;
 
@@ -197,7 +209,10 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       this.tasklistStr = JSON.stringify(this.content.tasks);
-    });
+
+      this.todoRefreshing = false;
+    }), 250
+    );
   }
 
   updateTodo(todo : Todo) {
