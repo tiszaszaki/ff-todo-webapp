@@ -57,6 +57,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public highlightedName!: SafeHtml;
   public highlightedDescription!: SafeHtml;
 
+  public todoSearchHighlightListener!: Subscription;
+
   public readonlyTodo!: Boolean;
   public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
@@ -104,6 +106,11 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
+    this.todoSearchHighlightListener = this.common.todoSearchingHighlightChange.subscribe(() => {
+      this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
+      this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
+    });
+
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
     this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
 
@@ -149,6 +156,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
+
+    this.todoSearchHighlightListener.unsubscribe();
   }
 
   prepareEditTodoForm() {

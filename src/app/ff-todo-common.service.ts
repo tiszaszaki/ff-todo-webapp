@@ -245,6 +245,14 @@ export class FfTodoCommonService {
     this.updateSearchRules();
   }
 
+  resetTodoSearching()
+  {
+    this.updateTodoSearchCase(false);
+    this.updateTodoSearchHighlight(false);
+    this.clearSearchRules();
+    this.updateTodoList();
+  }
+
   updateBoardDescriptionMaxLength(val: Number) {
     if (val > 0)
     {

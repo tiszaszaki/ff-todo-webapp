@@ -128,6 +128,10 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.common.updateBoard();
   }
 
+  resetTodoSearching() {
+    this.common.resetTodoSearching();
+  }
+
   queryDescriptionMaxLengths() {
     this.todoServ.getBoardDescriptionMaxLength().subscribe(result => this.common.updateBoardDescriptionMaxLength(result));
     this.todoServ.getTodoDescriptionMaxLength().subscribe(result => this.common.updateTodoDescriptionMaxLength(result));

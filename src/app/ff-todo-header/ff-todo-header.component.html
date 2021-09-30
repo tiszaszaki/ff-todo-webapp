@@ -36,48 +36,48 @@
         </div>
     </div>
 
-    <div class="border border-3 border-secondary rounded p-2" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
-      <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary w-50" (click)="prepareAddBoardForm()" [disabled]="isRoutedToTodoList"
+    <table class="table" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
+      <tr class="row">
+        <button type="button" class="btn btn-primary w-25" (click)="prepareAddBoardForm()" [disabled]="isRoutedToTodoList"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-warning w-50" (click)="updateBoardList()"
+        <button type="button" class="btn btn-warning w-25" (click)="updateBoardList()"
             data-toggle="tooltip" data-placement="bottom" title="Refresh Boards">
           <i class="fas fa-sync-alt"></i>&nbsp;Boards
         </button>
-        <button type="button" class="btn btn-warning w-50" (click)="updateSelectedBoard()"
+        <button type="button" class="btn btn-warning w-25" (click)="updateSelectedBoard()"
             [routerLink]="['/list-todos']" [queryParams]="{id: boardSelected}"
             data-toggle="tooltip" data-placement="bottom" title="Refresh Board"
             [disabled]="!isRoutedToTodoList || !boardSelected">
           <i class="fas fa-sync-alt"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-secondary w-50" [routerLink]="['']" [disabled]="!isRoutedToTodoList"
+        <button type="button" class="btn btn-secondary w-25" [routerLink]="['']" [disabled]="!isRoutedToTodoList"
             data-toggle="tooltip" data-placement="bottom" title="Return to Board list">
             <i class="fas fa-home"></i>&nbsp;
         </button>
-      </div>
-      <div class="d-flex justify-content-between" *ngIf="isRoutedToTodoList">
+      </tr>
+      <tr class="row" *ngIf="isRoutedToTodoList">
         <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm()" [disabled]="readonlyTodo || isTodoSearchExec()"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Todo
         </button>
-        <button type="button" class="btn btn-danger btn-sm w-25 mx-1" (click)="prepareRemovingAllTodos()" [disabled]="readonlyTodo || isTodoSearchExec()"
+        <button type="button" class="btn btn-danger w-25" (click)="prepareRemovingAllTodos()" [disabled]="readonlyTodo || isTodoSearchExec()"
             data-toggle="tooltip" data-placement="bottom" title="Remove all Todos"
             [disabled]="!todoCount">
           <i class="fas fa-broom"></i>&nbsp;Todos
         </button>
-        <button type="button" class="btn btn-warning btn-sm w-25 mx-1" (click)="refreshTodoList()"
+        <button type="button" class="btn btn-warning w-25" (click)="refreshTodoList()"
             data-toggle="tooltip" data-placement="bottom" title="Refresh Todo list"
             [disabled]="!todoCount">
             <i class="fas fa-sync-alt"></i>&nbsp;Todos
         </button>
-        <button type="button" class="btn btn-warning btn-sm w-25" (click)="restoreTodoList()" [disabled]="!enableRestoreTodos"
+        <button type="button" class="btn btn-warning w-25" (click)="restoreTodoList()" [disabled]="!enableRestoreTodos"
             data-toggle="tooltip" data-placement="bottom" title="Restore Todo list">
             <i class="fas fa-trash-restore-alt"></i>&nbsp;Todos
         </button>
-      </div>
-      <div class="d-flex justify-content-start" *ngIf="isRoutedToTodoList">
+      </tr>
+      <tr class="row" *ngIf="isRoutedToTodoList">
         <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTodo()">
           <span *ngIf="readonlyTodo"><i class="fas fa-lock"></i></span>
           <span *ngIf="!readonlyTodo"><i class="fas fa-unlock"></i></span>
@@ -92,7 +92,16 @@
             data-toggle="tooltip" data-placement="bottom" title="Search Todos">
           <i class="fas fa-search"></i>&nbsp;Todos
         </button>
-      </div>
-    </div>
+        <button type="button" class="btn btn-warning w-25" (click)="resetTodoSearching()" [disabled]="!todoCount || !isTodoSearchExec()"
+            data-toggle="tooltip" data-placement="bottom" title="Reset Todo searching">
+          <div class="d-flex justify-content-center">
+            <i class="fas fa-sync-alt"></i>
+            <i class="fas fa-search"></i>
+            &nbsp;
+            <span>Todos</span>
+          </div>
+        </button>
+      </tr>
+    </table>
   </div>
 </nav>
