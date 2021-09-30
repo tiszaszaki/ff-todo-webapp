@@ -53,7 +53,7 @@
 					</div>
 					<div class="btn-group" role="group">
 						<button type="button" class="btn btn-warning btn-sm text-end" (click)="prepareCloneTodoForm()"
-								data-toggle="tooltip" data-placement="bottom" title="Clone Todo">
+								data-toggle="tooltip" data-placement="bottom" title="Clone Todo" [disabled]="!enableTodoCloning">
 								<i class="far fa-copy"></i>
 						</button>
 						<button type="button" class="btn btn-warning btn-sm text-end" (click)="refreshTodo()"

@@ -222,7 +222,7 @@ export class FfTodoRealRequestService {
   }
 
   cloneTodo(id : number, phase: number): Observable<Todo> {
-    return this.http.patch<Todo>(`${this.todoPath}/${id}/phase/${phase}`, undefined).pipe(
+    return this.http.patch<Todo>(`${this.todoPath}/${id}/clone/${phase}`, undefined).pipe(
       timeout(this.timeoutInterval),
       tap((clonedTodo: Todo) => console.log(`Cloned Todo with ID (${clonedTodo.id}): (${JSON.stringify(clonedTodo)})`)),
       catchError((error: HttpErrorResponse) => {

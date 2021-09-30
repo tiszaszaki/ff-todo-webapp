@@ -22,8 +22,10 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       private common: FfTodoCommonService,
       private todoServ: FfTodoRealRequestService,
       private alertServ: FfTodoAlertService) {
+
     this.displayDateFormat = this.common.displayDateFormat;
     this.todoRefreshing = false;
+    this.enableTodoCloning = false;
   }
 
   @Input() content!: Todo;
@@ -38,6 +40,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Output() searchresCountUpdate = new EventEmitter<number>();
 
   public todoSelected!: Todo;
+
+  public enableTodoCloning!: Boolean;
 
   public prepareEditTodoFormTrigger = new Subject<void>();
   public prepareCloneTodoFormTrigger = new Subject<void>(); 
@@ -240,15 +244,13 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     let id = todo.id;
     let phase = todo.phase;
     console.log(`Trying to clone Todo with ID (${id})...`);
-    /*
     this.todoServ.cloneTodo(id, phase as number)
     .subscribe(todo => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
-      this.getTodos(new Set([this.oldPhase, todo.phase]));
+      this.common.updateTodoList(new Set([this.oldPhase, todo.phase]));
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to clone Todo with ID (${id}). See browser console for details.`});
     });
-    */
   }
 
   removeTodo(todo : Todo) {
