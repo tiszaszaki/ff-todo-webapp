@@ -42,6 +42,10 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDest
     return this.common.getTodoPhaseLabel(this.phase_idx);
   }
 
+  updateTaskSorting() {
+    this.common.updateTaskSortingSettings(this.phase_idx, this.tasksortfield, this.tasksortdir);
+  }
+
   resetTaskSorting() {
     this.common.resetTaskSortingSettings(this.phase_idx);
   }
@@ -79,7 +83,6 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.common.updateTaskSortingSettings(this.phase_idx, this.tasksortfield, this.tasksortdir);
   }
 
   ngOnDestroy(): void {

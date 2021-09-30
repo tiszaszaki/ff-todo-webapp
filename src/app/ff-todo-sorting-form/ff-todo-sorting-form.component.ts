@@ -46,6 +46,10 @@ export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy 
     return this.common.getTodoPhaseLabel(this.phase_idx);
   }
 
+  updateTodoSorting() {
+    this.common.updateTodoSortingSettings(this.phase_idx, this.todosortfield, this.todosortdir);
+  }
+
   resetTodoSorting() {
     this.common.resetTodoSortingSettings(this.phase_idx);
   }
@@ -83,7 +87,6 @@ export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.common.updateTodoSortingSettings(this.phase_idx, this.todosortfield, this.todosortdir);
   }
 
   ngOnDestroy(): void {

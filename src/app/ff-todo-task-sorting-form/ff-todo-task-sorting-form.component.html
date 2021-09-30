@@ -27,6 +27,7 @@
 
     <div class="modal-footer">
         <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="updateTaskSorting(); modal.close('Submitted by button click')">Sort</button>
             <button type="button" class="btn btn-warning" (click)="resetTaskSorting()">Reset</button>
             <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
         </div>
