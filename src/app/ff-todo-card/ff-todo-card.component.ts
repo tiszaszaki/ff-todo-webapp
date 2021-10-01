@@ -25,7 +25,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.displayDateFormat = this.common.displayDateFormat;
     this.todoRefreshing = false;
-    this.enableTodoCloning = false;
+    this.enableTodoCloning = true;
   }
 
   @Input() content!: Todo;
@@ -245,7 +245,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     let phase = todo.phase;
     console.log(`Trying to clone Todo with ID (${id})...`);
     this.todoServ.cloneTodo(id, phase as number)
-    .subscribe(todo => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
       this.common.updateTodoList(new Set([this.oldPhase, todo.phase]));
     }, errorMsg => {
