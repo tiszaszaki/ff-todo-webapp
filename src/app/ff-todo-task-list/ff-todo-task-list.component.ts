@@ -55,9 +55,12 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
     this.taskSortingSettingsListener = this.common.taskSortingSettingsChange.subscribe(result => {
-      this.tasksortexec = result.exec;
-      this.tasksortfield = result.field;
-      this.tasksortdir = result.dir;
+      if (this.phase_idx == result.phase)
+      {
+        this.tasksortexec = result.exec;
+        this.tasksortfield = result.field;
+        this.tasksortdir = result.dir;
+      }
     });
 
     this.tasks = JSON.parse(this.tasklistString as string);

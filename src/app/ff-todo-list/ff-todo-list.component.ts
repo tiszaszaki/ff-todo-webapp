@@ -75,6 +75,14 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.getTodos();
   }
 
+  getTodoSortingButtonStatus(phase: Number) {
+    return this.todo_list[phase as number].length && this.common.getIfTodoSortingExecuted(phase);
+  }
+
+  getTaskSortingButtonStatus(phase: Number) {
+    return this.task_count[phase as number] && this.common.getIfTaskSortingExecuted(phase);
+  }
+
   private updateBoard() {
     this.todoServ.getBoard(this.boardSelected as number).subscribe(board => {
       this.boardContent = board;

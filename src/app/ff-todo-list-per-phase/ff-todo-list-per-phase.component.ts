@@ -55,15 +55,16 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
     this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => this.todoSearchingHighlight = result);
 
     this.todoSortingSettingsListener = this.common.todoSortingSettingsChange.subscribe(result => {
-      this.todoSortExec = result.exec;
-      this.todoSortField = result.field;
-      this.todoSortDir = result.dir;
+      if (this.phase_idx == result.phase)
+      {
+        this.todoSortExec = result.exec;
+        this.todoSortField = result.field;
+        this.todoSortDir = result.dir;
 
-      this.showDescriptionLength[0] = (this.todoSortField == 'descriptionLength');
-      this.showDateCreated[0] = (this.todoSortField == 'dateCreated');
-      this.showTaskCount[0] = (this.todoSortField == 'taskCount');
-
-      //console.log(`updateTodoShowingField(${this.phase_idx}, 'sorting'): [${[this.showDescriptionLength[0], this.showDateCreated[0], this.showTaskCount[0]]}]`);
+        this.showDescriptionLength[0] = (this.todoSortField == 'descriptionLength');
+        this.showDateCreated[0] = (this.todoSortField == 'dateCreated');
+        this.showTaskCount[0] = (this.todoSortField == 'taskCount');
+      }
     });
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {

@@ -50,12 +50,12 @@
 			</tr>
 			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<button type="button" class="btn btn-secondary" (click)="prepareSortTodoForm(idx)"
-							[disabled]="!todo_phase.length">
+					<button type="button" (click)="prepareSortTodoForm(idx)" [disabled]="!todo_phase.length"
+							[ngClass]="{'btn': true, 'btn-success': getTodoSortingButtonStatus(idx), 'btn-secondary': !getTodoSortingButtonStatus(idx)}">
 						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Todos
 					</button>
-					<button type="button" class="btn btn-secondary" (click)="prepareSortTaskForm(idx)"
-							[disabled]="!task_count[idx]">
+					<button type="button" (click)="prepareSortTaskForm(idx)" [disabled]="!task_count[idx]"
+							[ngClass]="{'btn': true, 'btn-success': getTaskSortingButtonStatus(idx), 'btn-secondary': !getTaskSortingButtonStatus(idx)}">
 						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Tasks
 					</button>
 

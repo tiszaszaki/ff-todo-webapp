@@ -46,12 +46,12 @@ export class FfTodoCommonService {
   private todoSortExec: Boolean[] = [];
   private todoSortField: String[] = [];
   private todoSortDir: Boolean[] = [];
-  public todoSortingSettingsChange = new EventEmitter<{exec:Boolean, field:String, dir:Boolean}>();
+  public todoSortingSettingsChange = new EventEmitter<{phase: Number, exec:Boolean, field:String, dir:Boolean}>();
 
   private taskSortExec: Boolean[] = [];
   private taskSortField: String[] = [];
   private taskSortDir: Boolean[] = [];
-  public taskSortingSettingsChange = new EventEmitter<{exec:Boolean, field:String, dir:Boolean}>();
+  public taskSortingSettingsChange = new EventEmitter<{phase: Number, exec:Boolean, field:String, dir:Boolean}>();
 
   private todoSearchingCaseSense!: Boolean;
   public todoSearchingCaseSenseChange = new EventEmitter<Boolean>();
@@ -152,6 +152,10 @@ export class FfTodoCommonService {
     return result;
   }
 
+  getIfTodoSortingExecuted(phase: Number) {
+    return this.todoSortExec[phase as number];
+  }
+
   updateTodoSortingSettings(phase: Number, field: String, dir: Boolean)
   {
     this.todoSortExec[phase as number] = (field != '');
@@ -168,10 +172,15 @@ export class FfTodoCommonService {
     }
 
     this.todoSortingSettingsChange.emit({
+      phase: phase,
       exec: this.todoSortExec[phase as number],
       field: this.todoSortField[phase as number],
       dir: this.todoSortDir[phase as number]
     });
+  }
+
+  getIfTaskSortingExecuted(phase: Number) {
+    return this.taskSortExec[phase as number];
   }
 
   updateTaskSortingSettings(phase: Number, field: String, dir: Boolean)
@@ -190,6 +199,7 @@ export class FfTodoCommonService {
     }
 
     this.taskSortingSettingsChange.emit({
+      phase: phase,
       exec: this.taskSortExec[phase as number],
       field: this.taskSortField[phase as number],
       dir: this.taskSortDir[phase as number]}
