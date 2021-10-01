@@ -62,6 +62,7 @@ export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy 
 
     tempModal.result.then((result) => {
       //console.log(`sortTodoForm: ${result}`);
+      this.updateTodoSorting();
     }, (reason) => {
       //console.log(`sortTodoForm: ${this.getDismissReason(reason)}`);
     });
@@ -81,8 +82,11 @@ export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy 
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
 
     this.todoSortingSettingsListener = this.common.todoSortingSettingsChange.subscribe(result => {
-      this.todosortfield = result.field;
-      this.todosortdir = result.dir;
+      if (this.phase_idx == result.phase)
+      {
+        this.todosortfield = result.field;
+        this.todosortdir = result.dir;
+      }
     });
   }
 

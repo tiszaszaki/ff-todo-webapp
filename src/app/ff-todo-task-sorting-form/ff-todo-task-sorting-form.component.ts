@@ -58,6 +58,7 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDest
 
     tempModal.result.then((result) => {
       //console.log(`sortTaskForm: ${result}`);
+      this.updateTaskSorting();
     }, (reason) => {
       //console.log(`sortTaskForm: ${this.getDismissReason(reason)}`);
     });
@@ -77,8 +78,11 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDest
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
 
     this.taskSortingSettingsListener = this.common.taskSortingSettingsChange.subscribe(result => {
-      this.tasksortfield = result.field;
-      this.tasksortdir = result.dir;
+      if (this.phase_idx == result.phase)
+      {
+        this.tasksortfield = result.field;
+        this.tasksortdir = result.dir;
+      }
     });
   }
 
