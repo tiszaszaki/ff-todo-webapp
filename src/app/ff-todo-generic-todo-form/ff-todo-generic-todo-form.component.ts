@@ -106,6 +106,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
           this.placeholderName = "Name for this Todo left blank...";
           this.placeholderDescription = "Description for this Todo left blank...";
+          this.inputDateFormatDisp = "TBD";
         }
       } break;
       case this.REMOVE: {

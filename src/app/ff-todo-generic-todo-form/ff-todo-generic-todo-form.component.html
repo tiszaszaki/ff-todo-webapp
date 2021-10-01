@@ -13,7 +13,8 @@
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
                             #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')" [placeholder]="placeholderName"
-                            [disabled]="!isOperatorIncluded(ADD,EDIT)" required tszfocus>
+                            [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)"
+                            [readonly]="isOperatorIncluded(CLONE)" required ngbAutoFocus>
                     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                         Name is required
                     </div>
@@ -24,7 +25,8 @@
                     <div class="input-group">
                         <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description"
                                 name="description" value="model.description" #description="ngModel" maxlength="{{ descriptionMaxLength }}"
-                                [placeholder]="placeholderDescription" [disabled]="!isOperatorIncluded(ADD,EDIT)">
+                                [placeholder]="placeholderDescription" [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)"
+                                [readonly]="isOperatorIncluded(CLONE)">
                         </textarea>
                     </div>
                 </div>
@@ -51,8 +53,10 @@
                 <div class="input-group">
                     <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
                             [(ngModel)]="model.deadline" name="deadline" value="model.deadline | date:inputDateFormat"
-                            [placeholder]="inputDateFormatDisp" [disabled]="!isOperatorIncluded(ADD,EDIT)">
-                    <button type="button" class="btn btn-primary" (click)="deadlinePick.toggle()">
+                            [placeholder]="inputDateFormatDisp" [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)"
+                            [readonly]="isOperatorIncluded(CLONE)">
+                    <button type="button" class="btn btn-primary" (click)="deadlinePick.toggle()"
+                            [disabled]="!isOperatorIncluded(ADD,EDIT)">
                         <i class="far fa-calendar-alt"></i>
                     </button>
                 </div>
