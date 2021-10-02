@@ -126,7 +126,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.boardId = result;
     });
 
-    //this.boardId = this.common.getBoardSelected();
+    this.boardId = this.common.getBoardSelected();
 
     this.descriptionLength = this.content.description.length;
 

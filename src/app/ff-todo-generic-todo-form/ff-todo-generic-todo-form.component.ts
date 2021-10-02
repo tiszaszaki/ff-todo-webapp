@@ -80,6 +80,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.name = '';
     this.model.description = '';
     this.model.phase = 0;
+
+    this.boardId = -1;
   }
 
   private updateDisplay() {

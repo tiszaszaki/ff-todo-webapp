@@ -113,8 +113,7 @@ export class FfTodoCommonService {
 
     if (this.boardNameMapping.has(id))
     {
-      result = id.toString();
-      //result = this.boardNameMapping.get(id);
+      result = this.boardNameMapping.get(id)!;
     }
 
     return result;
