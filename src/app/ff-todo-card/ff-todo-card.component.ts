@@ -65,8 +65,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public todoSearchHighlightListener!: Subscription;
 
-  public boardSelectedListener!: Subscription;
-
   public readonlyTodo!: Boolean;
   public readonlyTodoListener!: Subscription;
   public readonlyTask!: Boolean;
@@ -122,10 +120,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
     this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
 
-    this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => {
-      this.boardId = result;
-    });
-
     this.boardId = this.common.getBoardSelected();
 
     this.descriptionLength = this.content.description.length;
@@ -172,8 +166,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTaskListener.unsubscribe();
 
     this.todoSearchHighlightListener.unsubscribe();
-
-    this.boardSelectedListener.unsubscribe();
   }
 
   prepareEditTodoForm() {
@@ -236,8 +228,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.tasklistStr = JSON.stringify(this.content.tasks);
 
       this.todoRefreshing = false;
-    }), 250
-    );
+    }), 250);
   }
 
   updateTodo(todo : Todo) {
@@ -255,11 +246,11 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   cloneTodo(todo : Todo) {
     let id = todo.id;
     let phase = todo.phase;
-    console.log(`Trying to clone Todo with ID (${id})...`);
-    this.todoServ.cloneTodo(id, phase as number)
+    console.log(`Trying to clone Todo with ID (${id}) to phase (${phase}) on board with ID (${this.boardId})...`);
+    this.todoServ.cloneTodo(id, phase as number, this.boardId as number)
     .subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
-      this.common.updateTodoList(new Set([this.oldPhase, todo.phase]));
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}).`});
+      this.common.updateTodoList(new Set([todo.phase]));
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to clone Todo with ID (${id}). See browser console for details.`});
     });

@@ -13,9 +13,9 @@
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
                             #name="ngModel" (keyup.enter)="modal.close('Saved by pressing Enter')" [placeholder]="placeholderName"
-                            [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)"
-                            [readonly]="isOperatorIncluded(CLONE)" required ngbAutoFocus>
-                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                            [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)" [readonly]="isOperatorIncluded(CLONE)"
+                            [required]="!isOperatorIncluded(CLONE)" ngbAutoFocus>
+                    <div *ngIf="!isOperatorIncluded(CLONE)" [hidden]="name.valid || name.pristine" class="alert alert-danger">
                         Name is required
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                         </textarea>
                     </div>
                 </div>
-                <div *ngIf="descriptionMaxLength" class="d-flex justify-content-end">
+                <div *ngIf="descriptionMaxLength && !isOperatorIncluded(CLONE)" class="d-flex justify-content-end">
                     <span class="badge badge-pill bg-secondary">{{ model.description.length }} / {{ descriptionMaxLength }}</span>
                 </div>
 
@@ -38,7 +38,7 @@
                     <label for="phase">Todo phase</label>
                     <div class="input-group">
                         <div class="btn-group btn-group-toggle" ngbRadioGroup id="phase" [(ngModel)]="model.phase" name="phase"
-                                value="model.phase" #phase="ngModel" required>
+                                #phase="ngModel" required>
                             <label ngbButtonLabel class="btn-primary" *ngFor="let phase of iterateTodoPhases()">
                                 <input ngbButton type="radio" [value]="phase">{{ getTodoPhaseLabel(phase) }}
                             </label>
@@ -50,12 +50,12 @@
                 </div>
 
                 <div class="form-group" *ngIf="isOperatorIncluded(CLONE)">
-                    <label for="board">Board</label>
+                    <label for="board">Board&nbsp;{{ boardId }}</label>
                     <div class="input-group">
                         <div class="btn-group btn-group-toggle" ngbRadioGroup id="board" [(ngModel)]="boardId" name="board"
-                                value="boardId" #board="ngModel" required>
+                                #board="ngModel" required>
                             <label ngbButtonLabel class="btn-primary" *ngFor="let board of iterateBoardList()">
-                                <input ngbButton type="radio" [value]="board">{{ getBoardName(board) }}
+                                <input ngbButton type="radio" [value]="board">{{ board }}&nbsp;{{ getBoardName(board) }}
                             </label>
                         </div>
                     </div>
