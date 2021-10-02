@@ -7,7 +7,8 @@
                         [routerLink]="['/list-todos']" [queryParams]="{id:field}">
                     <i class="fas fa-share"></i>
                 </button>
-                {{ boardNameMapping.get(field) }}
+                <span class="mx-1 text-muted">{{ field }}</span>
+                <span>{{ boardNameMapping.get(field) }}</span>
             </li>
         </ul>
     </div>

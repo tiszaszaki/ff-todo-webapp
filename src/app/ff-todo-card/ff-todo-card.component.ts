@@ -41,6 +41,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public todoSelected!: Todo;
 
+  public boardId!: Number;
+
   public enableTodoCloning!: Boolean;
 
   public prepareEditTodoFormTrigger = new Subject<void>();
@@ -62,6 +64,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public highlightedDescription!: SafeHtml;
 
   public todoSearchHighlightListener!: Subscription;
+
+  public boardSelectedListener!: Subscription;
 
   public readonlyTodo!: Boolean;
   public readonlyTodoListener!: Subscription;
@@ -118,6 +122,12 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
     this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
 
+    this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => {
+      this.boardId = result;
+    });
+
+    //this.boardId = this.common.getBoardSelected();
+
     this.descriptionLength = this.content.description.length;
 
     if (this.content.tasks)
@@ -162,6 +172,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTaskListener.unsubscribe();
 
     this.todoSearchHighlightListener.unsubscribe();
+
+    this.boardSelectedListener.unsubscribe();
   }
 
   prepareEditTodoForm() {

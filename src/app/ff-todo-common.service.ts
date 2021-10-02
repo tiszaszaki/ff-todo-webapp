@@ -13,7 +13,7 @@ export class FfTodoCommonService {
 
   public updateBoardEvent = new EventEmitter<void>();
   public updateTodoListEvent = new EventEmitter< Set<Number> >();
-  public updateBoardListEvent = new EventEmitter<void>();
+  public updateBoardListEvent = new EventEmitter<Number>();
 
   private isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListChange = new EventEmitter<Boolean>();
@@ -93,8 +93,31 @@ export class FfTodoCommonService {
     this.updateTodoListEvent.emit(phase);
   }
 
-  updateBoardList() {
-    this.updateBoardListEvent.emit();
+  updateBoardList(id?: Number) {
+    this.updateBoardListEvent.emit(id);
+  }
+
+  iterateBoardList(): Array<number> {
+    let result: Array<number> = [];
+
+    for (let id of this.boardNameMapping.keys())
+    {
+      result.push(id as number);
+    }
+
+    return result;
+  }
+
+  getBoardName(id: Number): String {
+    let result: String = "<unknown board>";
+
+    if (this.boardNameMapping.has(id))
+    {
+      result = id.toString();
+      //result = this.boardNameMapping.get(id);
+    }
+
+    return result;
   }
 
   iterateTodoPhases(): Array<number> {
@@ -365,9 +388,19 @@ export class FfTodoCommonService {
     this.boardSelectedChange.emit(this.boardSelected);
   }
 
+  getBoardSelected() {
+    return this.boardSelected;
+  }
+
   navigateToBoard(id: Number) {
     this.setBoardSelected(id);
     this.router.navigate(['/list-todos'], { queryParams: {id:this.boardSelected}});
+  }
+
+  addBoardName(id: Number, name: String)
+  {
+    this.boardNameMapping.set(id, name);
+    this.boardNameMappingChange.emit(this.boardNameMapping);
   }
 
   deleteBoardName(id: Number)

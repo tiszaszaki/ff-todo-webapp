@@ -24,14 +24,13 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
       private todoServ: FfTodoRealRequestService,
       private common: FfTodoCommonService) {
-    this.boardNameMapping = new Map<Number,String>();
   }
 
   ngOnInit(): void {
     this.boardNameMappingListener = this.common.boardNameMappingChange.subscribe(results => this.boardNameMapping = results);
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
 
-    this.boardNameMappingListener = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
+    this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(id => this.updateBoardList(id));
 
     this.updateBoardList();
   }
@@ -43,10 +42,10 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.boardNameMappingListener.unsubscribe();
     this.isRoutedToTodoListListener.unsubscribe();
 
-    this.boardNameMappingListener.unsubscribe();
+    this.updateBoardListTrigger.unsubscribe();
   }
 
-  private updateBoardList()
+  private updateBoardList(board_id?: Number)
   {
     this.boardQueryFinished = false;
     this.boardQuerySuccess = false;
@@ -54,6 +53,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.common.changeRouteStatus(false);
 
     this.todoServ.getBoards().subscribe(results => {
+      let idx=0;
+
       this.common.clearBoardNames();
 
       this.boardQueryFinished = true;
@@ -62,8 +63,15 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
       for (let id of results)
       {
         this.todoServ.getBoard(id as number).subscribe(result => {
-          this.boardNameMapping.set(id, result.name);
+          this.common.addBoardName(id, result.name);
         });
+
+        idx++;
+        if (idx == results.length)
+        {
+          if (board_id)
+            this.common.navigateToBoard(board_id);
+        }
       }
     }, errorMsg => {
       this.boardQueryFinished = true;

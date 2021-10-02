@@ -118,7 +118,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
       this.submitForm();
     }, (reason) => {
       //console.log(`${this.formId}: ${this.getDismissReason(reason)}`);
-      this.dismissForm();
     });
   }
 

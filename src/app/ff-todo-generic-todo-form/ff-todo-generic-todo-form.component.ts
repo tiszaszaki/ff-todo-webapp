@@ -16,6 +16,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   @Input() model!: Todo;
   @Output() modelChange = new EventEmitter<Todo>();
 
+  @Input() boardId!: Number;
+  @Output() boardIdChange = new EventEmitter<Number>();
+
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
@@ -54,6 +57,14 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       private modalService: NgbModal,
       private common: FfTodoCommonService) {
     this.inputDateFormat = this.common.inputDateFormat;
+  }
+
+  iterateBoardList() {
+    return this.common.iterateBoardList();
+  }
+
+  getBoardName(idx: number) {
+    return this.common.getBoardName(idx);
   }
 
   iterateTodoPhases() {
@@ -142,7 +153,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       this.submitForm();
     }, (reason) => {
       //console.log(`${this.formId}: ${this.getDismissReason(reason)}`);
-      this.dismissForm();
     });
   }
 

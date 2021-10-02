@@ -3,7 +3,7 @@
 		<app-ff-todo-generic-todo-form #editTodoForm [mode]="EDIT_TODO" [(model)]="todoSelected"
 				[preparingFormEvent]="prepareEditTodoFormTrigger.asObservable()" (submitDataEvent)="updateTodo($event)">
 		</app-ff-todo-generic-todo-form>
-		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(model)]="todoSelected"
+		<app-ff-todo-generic-todo-form #cloneTodoForm [mode]="CLONE_TODO" [(model)]="todoSelected" [(boardId)]="boardId"
 				[preparingFormEvent]="prepareCloneTodoFormTrigger.asObservable()" (submitDataEvent)="cloneTodo($event)">
 		</app-ff-todo-generic-todo-form>
 		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(model)]="todoSelected"

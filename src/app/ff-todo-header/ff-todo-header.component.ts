@@ -120,8 +120,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     return this.common.hasSearchRules();
   }
 
-  updateBoardList() {
-    this.common.updateBoardList();
+  updateBoardList(id?: Number) {
+    this.common.updateBoardList(id);
   }
 
   updateSelectedBoard() {
@@ -177,8 +177,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.todoServ.addBoard(board)
     .subscribe(board => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
-      this.updateBoardList();
-      this.common.navigateToBoard(board.id);
+      this.updateBoardList(board.id);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
     });

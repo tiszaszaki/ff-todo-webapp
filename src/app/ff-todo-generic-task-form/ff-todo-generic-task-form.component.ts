@@ -111,7 +111,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
       this.submitForm();
     }, (reason) => {
       //console.log(`${this.formId}: ${this.getDismissReason(reason)}`);
-      this.dismissForm();
     });
   }
 
