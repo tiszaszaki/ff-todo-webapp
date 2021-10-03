@@ -61,7 +61,13 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   }
 
   getBoardName(idx: number) {
-    return this.common.getBoardName(idx);
+    let result=this.common.getBoardName(idx);
+
+    if (this.isOperatorIncluded(this.CLONE))
+    if (idx == this.common.getBoardSelected())
+      result += " (default)";
+
+    return result;
   }
 
   iterateTodoPhases() {
@@ -69,7 +75,13 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   }
 
   getTodoPhaseLabel(idx: number) {
-    return this.common.getTodoPhaseLabel(idx);
+    let result=this.common.getTodoPhaseLabel(idx);
+
+    if (this.isOperatorIncluded(this.CLONE))
+    if (idx == this.model.phase)
+      result += " (default)";
+
+    return result;
   }
 
   private resetModel() {

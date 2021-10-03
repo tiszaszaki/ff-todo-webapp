@@ -13,9 +13,6 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListListener!: Subscription;
 
-  public boardNameMapping!: Map<Number, String>;
-  public boardNameMappingListener!: Subscription;
-
   public updateBoardListTrigger!: Subscription;
 
   public boardQueryFinished!: Boolean;
@@ -27,7 +24,6 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.boardNameMappingListener = this.common.boardNameMappingChange.subscribe(results => this.boardNameMapping = results);
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
 
     this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(id => this.updateBoardList(id));
@@ -39,10 +35,21 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.boardNameMappingListener.unsubscribe();
     this.isRoutedToTodoListListener.unsubscribe();
 
     this.updateBoardListTrigger.unsubscribe();
+  }
+
+  getBoardListSize() {
+    return this.common.getBoardListSize();
+  }
+
+  iterateBoardList() {
+    return this.common.iterateBoardList();
+  }
+
+  getBoardName(idx: number) {
+    return this.common.getBoardName(idx);
   }
 
   private updateBoardList(board_id?: Number)

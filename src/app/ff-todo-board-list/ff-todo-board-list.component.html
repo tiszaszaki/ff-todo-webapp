@@ -1,18 +1,18 @@
 <div class="container">
-    <div *ngIf="boardNameMapping.size">
+    <div *ngIf="getBoardListSize()">
         <h1>Board list</h1>
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let field of boardNameMapping.keys()">
+            <li class="list-group-item" *ngFor="let field of iterateBoardList()">
                 <button type="button" class="btn btn-primary"
                         [routerLink]="['/list-todos']" [queryParams]="{id:field}">
                     <i class="fas fa-share"></i>
                 </button>
                 <span class="mx-1 text-muted">{{ field }}</span>
-                <span>{{ boardNameMapping.get(field) }}</span>
+                <span>{{ getBoardName(field) }}</span>
             </li>
         </ul>
     </div>
-    <div *ngIf="!boardNameMapping.size">
+    <div *ngIf="!getBoardListSize()">
         <div *ngIf="!boardQueryFinished">
             Loading Boards...
         </div>

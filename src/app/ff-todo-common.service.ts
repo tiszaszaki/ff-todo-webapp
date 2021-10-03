@@ -97,6 +97,10 @@ export class FfTodoCommonService {
     this.updateBoardListEvent.emit(id);
   }
 
+  getBoardListSize() {
+    return this.boardNameMapping.size;
+  }
+
   iterateBoardList(): Array<number> {
     let result: Array<number> = [];
 
@@ -105,7 +109,7 @@ export class FfTodoCommonService {
       result.push(id as number);
     }
 
-    return result;
+    return result.sort();
   }
 
   getBoardName(id: Number): String {
