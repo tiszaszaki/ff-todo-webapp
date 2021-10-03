@@ -16,9 +16,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   @Input() model!: Todo;
   @Output() modelChange = new EventEmitter<Todo>();
 
-  @Input() boardId!: Number;
-  @Output() boardIdChange = new EventEmitter<Number>();
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Todo>();
@@ -80,6 +77,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.name = '';
     this.model.description = '';
     this.model.phase = 0;
+    this.model.boardId = this.common.getBoardSelected() as number;
   }
 
   private updateDisplay() {
@@ -117,7 +115,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
           this.placeholderName = "Name for this Todo left blank...";
           this.placeholderDescription = "Description for this Todo left blank...";
-          this.inputDateFormatDisp = "TBD";
         }
       } break;
       case this.REMOVE: {
@@ -179,6 +176,11 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       this.common.triggerTodoDescriptionMaxLength();
       
       this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
+    }
+
+    if (this.isOperatorIncluded(this.CLONE))
+    {
+      this.inputDateFormatDisp = "TBD";
     }
 
     this.resetModel();

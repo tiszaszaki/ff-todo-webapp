@@ -7,5 +7,7 @@ export class Todo {
   public dateCreated!: Date;
   public deadline?: Date;
 
+  public boardId?: number;
+
   tasks?: Task[];
 }

@@ -41,8 +41,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public todoSelected!: Todo;
 
-  public boardId!: Number;
-
   public enableTodoCloning!: Boolean;
 
   public prepareEditTodoFormTrigger = new Subject<void>();
@@ -119,8 +117,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
     this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
-
-    this.boardId = this.common.getBoardSelected();
 
     this.descriptionLength = this.content.description.length;
 
@@ -246,11 +242,15 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   cloneTodo(todo : Todo) {
     let id = todo.id;
     let phase = todo.phase;
-    console.log(`Trying to clone Todo with ID (${id}) to phase (${phase}) on board with ID (${this.boardId})...`);
-    this.todoServ.cloneTodo(id, phase as number, this.boardId as number)
+    let boardId = todo.boardId;
+    console.log(`Trying to clone Todo with ID (${id}) to phase (${phase}) on board with ID (${boardId})...`);
+    this.todoServ.cloneTodo(id, phase as number, boardId as number)
     .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}).`});
-      this.common.updateTodoList(new Set([todo.phase]));
+      if (boardId == this.common.getBoardSelected())
+        this.common.updateTodoList(new Set([todo.phase]));
+      else
+        this.common.setBoardSelected(boardId as number);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to clone Todo with ID (${id}). See browser console for details.`});
     });
