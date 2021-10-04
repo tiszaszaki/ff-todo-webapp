@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 
 @Component({
@@ -9,8 +10,6 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
   styleUrls: ['./ff-todo-searching-form.component.css']
 })
 export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
-
-  @Output() updateSubmitStateEvent = new EventEmitter<Boolean>();
 
   @Input() preparingFormEvent!: Observable<void>;
   @Input() resetFormEvent!: Observable<void>;
@@ -27,10 +26,10 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   public todoSearchRules!: Map<String,String>;
   public todoSearchingRulesListener!: Subscription;
 
-  public todosearchterm: String = '';
-  public todosearchfield: String = '';
+  public todosearchterm!: String;
+  public todosearchfield!: String;
 
-  public submitted: Boolean = false;
+  public submitted!: Boolean;
 
   public placeholderTerm: String = "What are you searching for?";
 
@@ -52,7 +51,8 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
   constructor(
       private modalService: NgbModal,
-      private common: FfTodoCommonService) {
+      private common: FfTodoCommonService,
+      private alertServ: FfTodoAlertService) {
   }
 
   getTodoSearchingFieldDisplay(field: String): String {
@@ -83,6 +83,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     }
     else
     {
+      this.alertServ.addAlertMessage({type: 'info', message: 'Successfully reseted searching settings.'});
       this.resetTodoSearching();
     }
 
@@ -106,7 +107,10 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
     const tempModal = this.modalService.open(this.formElement);
 
-    this.common.triggerTodoSearchingSettings();
+    if (this.submitted)
+    {
+      this.common.triggerTodoSearchingSettings();
+    }
 
     tempModal.result.then((result) => {
       //console.log(`searchTodoForm: ${result}`);
@@ -127,6 +131,8 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.resetTodoSearchRule();
+
     this.todoSearchingCaseSense = false;
     this.todoSearchingHighlight = false;
 
@@ -147,6 +153,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     });
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
+      this.submitted = this.common.hasSearchRules();
       if (this.modalService.hasOpenModals())
       {
         this.todoSearchRules = results;

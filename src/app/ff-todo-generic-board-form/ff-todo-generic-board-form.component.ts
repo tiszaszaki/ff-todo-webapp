@@ -16,9 +16,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   @Input() model!: Board;
   @Output() modelChange = new EventEmitter<Board>();
 
-  @Input() shown!: Boolean;
-  @Output() shownChange = new EventEmitter<Boolean>();
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Board>();

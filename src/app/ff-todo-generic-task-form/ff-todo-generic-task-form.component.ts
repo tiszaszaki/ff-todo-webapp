@@ -18,9 +18,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
 
   @Input() todoId!: number;
 
-  @Input() shown!: Boolean;
-  @Output() shownChange = new EventEmitter<Boolean>();
-
   @Output() submitEvent = new EventEmitter<void>();
   @Output() submitIdEvent = new EventEmitter<number>();
   @Output() submitDataEvent = new EventEmitter<Task>();

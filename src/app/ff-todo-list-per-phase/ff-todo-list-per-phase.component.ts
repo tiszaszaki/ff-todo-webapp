@@ -38,8 +38,11 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   public searchresCount: number = 0;
 
   notifyTodoSearchResults() {
-    this.alertServ.addAlertMessage({type: 'info',
-        message: `Searching resulted ${this.searchresCount} Todo(s) in phase '${this.common.getTodoPhaseLabel(this.phase_idx)}'.`});
+    if (this.common.hasSearchRules())
+    {
+      this.alertServ.addAlertMessage({type: 'info',
+          message: `Searching resulted ${this.searchresCount} Todo(s) in phase '${this.common.getTodoPhaseLabel(this.phase_idx)}'.`});
+    }
   }
 
   ngOnInit(): void {
@@ -84,8 +87,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
       }
 
       //console.log(`updateTodoShowingField(${this.phase_idx}, 'searching'): [${[this.showDescriptionLength[1], this.showDateCreated[1], this.showTaskCount[1]]}]`);
-
-      this.notifyTodoSearchResults();
     });
   }
 
