@@ -257,7 +257,18 @@ export class FfTodoCommonService {
   triggerTodoSearchingSettings() {
     this.todoSearchingCaseSenseChange.emit(this.todoSearchingCaseSense);
     this.todoSearchingHighlightChange.emit(this.todoSearchingHighlight);
+  }
+
+  getTodoSearchingSettings() {
+    return {casesense: this.todoSearchingCaseSense, highlight: this.todoSearchingHighlight};
+  }
+
+  triggerTodoSearchingRules() {
     this.todoSearchingRulesChange.emit(this.todoSearchingRules);
+  }
+
+  getTodoSearchingRules() {
+    return this.todoSearchingRules;
   }
 
   hasSearchRules() {

@@ -32,12 +32,12 @@
                 <div class="d-flex flex-column">
                     <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
                         <input class="form-check-input" type="checkbox" id="todo_search_casesense"
-                                [(ngModel)]="todoSearchingCaseSense" name="casesense">
+                                [(ngModel)]="todoSearchingCaseSense" name="casesense" #casesense="ngModel">
                         <label for="todo_search_casesense">Case sensitive</label>
                     </div>
                     <div data-toggle="tooltip" data-placement="bottom" title="Toggle highlighting matches">
                         <input class="form-check-input" type="checkbox" id="todo_search_highlight"
-                                [(ngModel)]="todoSearchingHighlight" name="todosearchhighlight">
+                                [(ngModel)]="todoSearchingHighlight" name="todosearchhighlight" #highlight="ngModel">
                         <label for="todo_search_highlight">Highlight matches</label>
                     </div>
                 </div>
@@ -67,8 +67,8 @@
 
         <div class="modal-footer">
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-primary" (click)="modal.close('Submitted by button click')"
-                        [disabled]="!searchForm.valid">Search</button>
+                <button type="button" class="btn btn-primary" (click)="updateSubmitState(true); modal.close('Submitted by button click')"
+                        [disabled]="!searchForm.valid && ((casesense.pristine && highlight.pristine) || !todoSearchRules.size)">Search</button>
                 <button type="button" class="btn btn-danger" (click)="removeTodoSearchRule()">Remove rule</button>
             </div>
             <div class="d-flex justify-content-end">

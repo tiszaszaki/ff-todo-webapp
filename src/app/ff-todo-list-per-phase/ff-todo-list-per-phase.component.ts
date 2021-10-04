@@ -35,7 +35,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   public todoSearchRules!: Map<String,String>;
   public todoSearchingRulesListener!: Subscription;
 
-  public searchresCount: number = 0;
+  public searchresCount!: number;
 
   notifyTodoSearchResults() {
     if (this.common.hasSearchRules())

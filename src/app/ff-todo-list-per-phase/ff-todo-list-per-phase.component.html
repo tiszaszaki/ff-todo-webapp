@@ -1,10 +1,12 @@
 <div *ngIf="content.length">
-    <div *ngFor="let todo of content | tszSort:todoSortExec:todoSortField:todoSortDir | tszSearch:todoSearchingCaseSense:todoSearchRules:todoSearchingHighlight as searchres">
-        <app-ff-todo-card [content]="todo" [phase_idx]="phase_idx"
-                [showDescriptionLength]="showDescriptionLength" [showDateCreated]="showDateCreated" [showTaskCount]="showTaskCount"
-                [searchresCount]="searchres.length" (searchresCountUpdate)="searchresCount = $event; notifyTodoSearchResults()">
-        </app-ff-todo-card>
-    </div>
+    <ng-container *ngIf="(content | tszSort:todoSortExec:todoSortField:todoSortDir | tszSearch:todoSearchingCaseSense:todoSearchRules:todoSearchingHighlight) as searchres">
+        <div *ngFor="let todo of searchres">
+            <app-ff-todo-card [content]="todo" [phase_idx]="phase_idx"
+                    [showDescriptionLength]="showDescriptionLength" [showDateCreated]="showDateCreated" [showTaskCount]="showTaskCount"
+                    [searchresCount]="searchres.length" (searchresCountUpdate)="searchresCount = $event; notifyTodoSearchResults()">
+            </app-ff-todo-card>
+        </div>
+        <app-ff-todo-search-no-results *ngIf="content.length && !searchres.length"></app-ff-todo-search-no-results>
+    </ng-container>
 </div>
 <app-ff-todo-list-empty *ngIf="!content.length"></app-ff-todo-list-empty>
-<app-ff-todo-search-no-results *ngIf="content.length && !searchresCount"></app-ff-todo-search-no-results>

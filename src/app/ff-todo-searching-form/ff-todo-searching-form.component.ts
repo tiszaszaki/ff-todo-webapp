@@ -19,12 +19,12 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   @ViewChild('searchTodoForm') formElement!: TemplateRef<FfTodoSearchingFormComponent>;
 
   public todoSearchingCaseSense!: Boolean;
-  public todoSearchingCaseSenseListener!: Subscription;
+  //public todoSearchingCaseSenseListener!: Subscription;
   public todoSearchingHighlight!: Boolean;
-  public todoSearchingHighlightListener!: Subscription;
+  //public todoSearchingHighlightListener!: Subscription;
 
   public todoSearchRules!: Map<String,String>;
-  public todoSearchingRulesListener!: Subscription;
+  //public todoSearchingRulesListener!: Subscription;
 
   public todosearchterm!: String;
   public todosearchfield!: String;
@@ -79,6 +79,10 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     if (state)
     {
       this.common.addSearchRule(this.todosearchfield, this.todosearchterm);
+
+      this.common.updateTodoSearchCase(this.todoSearchingCaseSense);
+      this.common.updateTodoSearchHighlight(this.todoSearchingHighlight);
+
       this.resetTodoSearchRule();
     }
     else
@@ -86,9 +90,6 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
       this.alertServ.addAlertMessage({type: 'info', message: 'Successfully reseted searching settings.'});
       this.resetTodoSearching();
     }
-
-    this.common.updateTodoSearchCase(this.todoSearchingCaseSense);
-    this.common.updateTodoSearchHighlight(this.todoSearchingHighlight);
   }
 
   private resetTodoSearchRule() {
@@ -107,14 +108,19 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
     const tempModal = this.modalService.open(this.formElement);
 
+    this.submitted = this.common.hasSearchRules();
+
     if (this.submitted)
     {
-      this.common.triggerTodoSearchingSettings();
+      let temp = this.common.getTodoSearchingSettings();
+
+      this.todoSearchRules = this.common.getTodoSearchingRules();
+      this.todoSearchingCaseSense = temp.casesense;
+      this.todoSearchingHighlight = temp.highlight;
     }
 
     tempModal.result.then((result) => {
       //console.log(`searchTodoForm: ${result}`);
-      this.updateSubmitState(true);
     }, (reason) => {
       //console.log(`searchTodoForm: ${this.getDismissReason(reason)}`);
     });
@@ -139,6 +145,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
     this.resetFormListener = this.resetFormEvent.subscribe(() => this.resetTodoSearching());
 
+    /*
     this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => {
       if (this.modalService.hasOpenModals())
       {
@@ -157,18 +164,20 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
       if (this.modalService.hasOpenModals())
       {
         this.todoSearchRules = results;
-        this.resetTodoSearchRule();
       }
     });
+    */
   }
 
   ngOnDestroy(): void {
     this.preparingFormListener.unsubscribe();
     this.resetFormListener.unsubscribe();
 
+    /*
     this.todoSearchingCaseSenseListener.unsubscribe();
     this.todoSearchingHighlightListener.unsubscribe();
 
     this.todoSearchingRulesListener.unsubscribe();
+    */
   }
 }
