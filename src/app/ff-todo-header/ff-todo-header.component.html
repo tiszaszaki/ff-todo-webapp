@@ -36,8 +36,8 @@
         </div>
     </div>
 
-    <table class="table" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
-      <tr class="row">
+    <div class="btn-group-vertical" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
+      <div class="btn-group">
         <button type="button" class="btn btn-primary w-25" (click)="prepareAddBoardForm()" [disabled]="isRoutedToTodoList"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Board
@@ -56,8 +56,8 @@
             data-toggle="tooltip" data-placement="bottom" title="Return to Board list">
             <i class="fas fa-home"></i>&nbsp;
         </button>
-      </tr>
-      <tr class="row" *ngIf="isRoutedToTodoList">
+      </div>
+      <div class="btn-group" *ngIf="isRoutedToTodoList">
         <button type="button" class="btn btn-primary w-25" (click)="prepareAddTodoForm()" [disabled]="readonlyTodo || isTodoSearchExec()"
             data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
           <i class="fas fa-plus"></i>&nbsp;Todo
@@ -76,8 +76,8 @@
             data-toggle="tooltip" data-placement="bottom" title="Restore Todo list">
             <i class="fas fa-trash-restore-alt"></i>&nbsp;Todos
         </button>
-      </tr>
-      <tr class="row" *ngIf="isRoutedToTodoList">
+      </div>
+      <div class="btn-group" *ngIf="isRoutedToTodoList">
         <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTodo()">
           <span *ngIf="readonlyTodo"><i class="fas fa-lock"></i></span>
           <span *ngIf="!readonlyTodo"><i class="fas fa-unlock"></i></span>
@@ -101,7 +101,7 @@
             <span>Todos</span>
           </div>
         </button>
-      </tr>
-    </table>
+      </div>
+    </div>
   </div>
 </nav>

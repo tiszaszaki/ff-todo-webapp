@@ -1,74 +1,80 @@
 <ng-template #searchTodoForm let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="search-todo-title">Searching for Todos</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Closed by cross')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <form #searchForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="search-todo-title">Searching for Todos</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Closed by cross')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="todo_searching_field">Field</label>
-            <select class="form-select form-control" [(ngModel)]="todosearchfield" name="field" id="todo_searching_field"
-                    data-toggle="tooltip" data-placement="bottom" title="Todo searching field">
-                <option *ngFor="let field of todoSearchingFields" [value]="field.name">{{ field.display }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <div data-toggle="tooltip" data-placement="bottom" title="Todo searching term">
-                <label for="todo_searching_term">Search for</label>
-                <input class="form-text-input form-control" type="text" id="todo_searching_term" [placeholder]="placeholderTerm"
-                        [(ngModel)]="todosearchterm" name="term" #term="ngModel" required>
-            </div>
-            <div [hidden]="term.valid || term.pristine" class="alert alert-danger">
-                Searching term is required
-            </div>
-        </div>
-        <div class="form-group d-flex justify-content-end">
-            <div class="d-flex flex-column">
-                <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
-                    <input class="form-check-input" type="checkbox" id="todo_search_casesense"
-                            [(ngModel)]="todoSearchingCaseSense" name="casesense">
-                    <label for="todo_search_casesense">Case sensitive</label>
-                </div>
-                <div data-toggle="tooltip" data-placement="bottom" title="Toggle highlighting matches">
-                    <input class="form-check-input" type="checkbox" id="todo_search_highlight"
-                            [(ngModel)]="todoSearchingHighlight" name="todosearchhighlight">
-                    <label for="todo_search_highlight">Highlight matches</label>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="todo_searching_field">Field</label>
+                <select class="form-select form-control" [(ngModel)]="todosearchfield" name="field" id="todo_searching_field"
+                        data-toggle="tooltip" data-placement="bottom" title="Todo searching field" #field="ngModel" required>
+                    <option *ngFor="let field of todoSearchingFields" [value]="field.name">{{ field.display }}</option>
+                </select>
+                <div [hidden]="field.valid || field.pristine" class="alert alert-danger">
+                    Searching field is required
                 </div>
             </div>
-        </div>
-        <div class="form-group" *ngIf="todoSearchRules && todoSearchRules.size">
-            <h5>Active searching rules:</h5>
-            <div class="border border-secondary rounded">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Field</th>
-                            <th scope="col">Display</th>
-                            <th scope="col">Term</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let field of todoSearchRules.keys()">
-                            <td>{{ field }}</td>
-                            <td>{{ getTodoSearchingFieldDisplay(field) }}</td>
-                            <td>{{ todoSearchRules.get(field) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="form-group">
+                <div data-toggle="tooltip" data-placement="bottom" title="Todo searching term">
+                    <label for="todo_searching_term">Search for</label>
+                    <input class="form-text-input form-control" type="text" id="todo_searching_term" [placeholder]="placeholderTerm"
+                            [(ngModel)]="todosearchterm" name="term" #term="ngModel" required>
+                </div>
+                <div [hidden]="term.valid || term.pristine" class="alert alert-danger">
+                    Searching term is required
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-end">
+                <div class="d-flex flex-column">
+                    <div data-toggle="tooltip" data-placement="bottom" title="Toggle case sensitive">
+                        <input class="form-check-input" type="checkbox" id="todo_search_casesense"
+                                [(ngModel)]="todoSearchingCaseSense" name="casesense">
+                        <label for="todo_search_casesense">Case sensitive</label>
+                    </div>
+                    <div data-toggle="tooltip" data-placement="bottom" title="Toggle highlighting matches">
+                        <input class="form-check-input" type="checkbox" id="todo_search_highlight"
+                                [(ngModel)]="todoSearchingHighlight" name="todosearchhighlight">
+                        <label for="todo_search_highlight">Highlight matches</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="todoSearchRules && todoSearchRules.size">
+                <h5>Active searching rules:</h5>
+                <div class="border border-secondary rounded">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Field</th>
+                                <th scope="col">Display</th>
+                                <th scope="col">Term</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let field of todoSearchRules.keys()">
+                                <td>{{ field }}</td>
+                                <td>{{ getTodoSearchingFieldDisplay(field) }}</td>
+                                <td>{{ todoSearchRules.get(field) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal-footer">
-        <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-primary" (click)="modal.close('Submitted by button click')">Search</button>
-            <button type="button" class="btn btn-danger" (click)="removeTodoSearchRule()">Remove rule</button>
+        <div class="modal-footer">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" (click)="modal.close('Submitted by button click')"
+                        [disabled]="!searchForm.valid">Search</button>
+                <button type="button" class="btn btn-danger" (click)="removeTodoSearchRule()">Remove rule</button>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-warning" (click)="updateSubmitState(false); modal.dismiss('Reseted by button click')">Reset</button>
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
+            </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-warning" (click)="updateSubmitState(false); modal.dismiss('Reseted by button click')">Reset</button>
-            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
-        </div>
-    </div>
+    </form>
 </ng-template>

@@ -79,6 +79,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     if (state)
     {
       this.common.addSearchRule(this.todosearchfield, this.todosearchterm);
+      this.resetTodoSearchRule();
     }
     else
     {
@@ -95,10 +96,8 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
   }
 
   private resetTodoSearching() {
-    this.todoSearchingCaseSense = false;
-    this.todoSearchingHighlight = false;
     this.resetTodoSearchRule();
-    this.common.clearSearchRules();
+    this.common.resetTodoSearching();
   }
 
   showModal()
@@ -107,10 +106,11 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
 
     const tempModal = this.modalService.open(this.formElement);
 
+    this.common.triggerTodoSearchingSettings();
+
     tempModal.result.then((result) => {
       //console.log(`searchTodoForm: ${result}`);
       this.updateSubmitState(true);
-      this.resetTodoSearchRule();
     }, (reason) => {
       //console.log(`searchTodoForm: ${this.getDismissReason(reason)}`);
     });
@@ -133,12 +133,25 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
     this.resetFormListener = this.resetFormEvent.subscribe(() => this.resetTodoSearching());
 
-    this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => this.todoSearchingCaseSense = result);
-    this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => this.todoSearchingHighlight = result);
+    this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => {
+      if (this.modalService.hasOpenModals())
+      {
+        this.todoSearchingCaseSense = result;
+      }
+    });
+    this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => {
+      if (this.modalService.hasOpenModals())
+      {
+        this.todoSearchingHighlight = result;
+      }
+    });
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
-      this.todoSearchRules = results;
-      this.resetTodoSearchRule();
+      if (this.modalService.hasOpenModals())
+      {
+        this.todoSearchRules = results;
+        this.resetTodoSearchRule();
+      }
     });
   }
 

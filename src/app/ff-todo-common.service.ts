@@ -254,6 +254,12 @@ export class FfTodoCommonService {
     this.todoSearchingRulesChange.emit(this.todoSearchingRules);
   }
 
+  triggerTodoSearchingSettings() {
+    this.todoSearchingCaseSenseChange.emit(this.todoSearchingCaseSense);
+    this.todoSearchingHighlightChange.emit(this.todoSearchingHighlight);
+    this.todoSearchingRulesChange.emit(this.todoSearchingRules);
+  }
+
   hasSearchRules() {
     return (this.todoSearchingRules.size > 0);
   }

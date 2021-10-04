@@ -43,6 +43,8 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.searchresCount = this.content.length;
+
     this.todoSortExec = false;
     this.todoSortField = '';
     this.todoSortDir = false;

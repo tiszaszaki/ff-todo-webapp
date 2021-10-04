@@ -228,7 +228,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.todoServ.editBoard(id, board)
     .subscribe(_ => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Board with ID (${id}) to (${JSON.stringify(board)}).`});
-      this.common.updateBoard();
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Board with ID (${id}). See browser console for details.`});
     });
