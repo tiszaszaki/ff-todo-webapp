@@ -46,7 +46,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
   public tasks! : Task[];
 
-  public tasklist_collapse_status: boolean = true;
+  public tasklist_collapse_status: boolean = false;
 
   public readonly EDIT_TASK = TaskOperator.EDIT;
   public readonly REMOVE_TASK = TaskOperator.REMOVE;

@@ -32,7 +32,7 @@
 				<div class="text-muted" *ngIf="!boardContent.author">Unknown author</div>
 			</div>
 			<div *ngIf="boardContent.name">
-				<div *ngIf="boardContent.dateCreated">Date created: {{ boardContent.dateCreated }}</div>
+				<div *ngIf="boardContent.dateCreated">Date created: {{ boardContent.dateCreated | date:displayDateFormat }}</div>
 			</div>
 			<div *ngIf="boardContent.name">
 				<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
@@ -46,8 +46,7 @@
 			</div>
 		</div>
 	</div>
-	<app-ff-todo-query-status [todoQueryFinished]="todoQueryFinished" [todoQuerySuccess]="todoQuerySuccess">
-	</app-ff-todo-query-status>
+	<app-ff-todo-query-status [todoQueryFinished]="todoQueryFinished" [todoQuerySuccess]="todoQuerySuccess"></app-ff-todo-query-status>
 	<table class="table mt-3" *ngIf="todoQueryFinished && todoQuerySuccess && boardSelected">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
@@ -57,14 +56,16 @@
 			</tr>
 			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<button type="button" (click)="prepareSortTodoForm(idx)" [disabled]="!todo_phase.length"
-							[ngClass]="{'btn': true, 'btn-success': getTodoSortingButtonStatus(idx), 'btn-secondary': !getTodoSortingButtonStatus(idx)}">
-						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Todos
-					</button>
-					<button type="button" (click)="prepareSortTaskForm(idx)" [disabled]="!task_count[idx]"
-							[ngClass]="{'btn': true, 'btn-success': getTaskSortingButtonStatus(idx), 'btn-secondary': !getTaskSortingButtonStatus(idx)}">
-						<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Tasks
-					</button>
+					<div class="d-flex">
+						<button type="button w-50" (click)="prepareSortTodoForm(idx)" [disabled]="!todo_phase.length"
+								[ngClass]="{'btn': true, 'btn-success': getTodoSortingButtonStatus(idx), 'btn-secondary': !getTodoSortingButtonStatus(idx)}">
+							<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Todos
+						</button>
+						<button type="button w-50" (click)="prepareSortTaskForm(idx)" [disabled]="!task_count[idx]"
+								[ngClass]="{'btn': true, 'btn-success': getTaskSortingButtonStatus(idx), 'btn-secondary': !getTaskSortingButtonStatus(idx)}">
+							<i class="fas fa-sort-amount-up-alt"></i>&nbsp;Tasks
+						</button>
+					</div>
 
 					<app-ff-todo-sorting-form [todo_list_count]="todo_phase.length" [phase_idx]="idx"
 							[preparingFormEvent]="prepareSortTodoFormTrigger[idx].asObservable()"></app-ff-todo-sorting-form>
@@ -74,10 +75,9 @@
 			</tr>
 			<tr class="row border border-2 border-secondary">
 				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
-					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx">
-					</app-ff-todo-list-per-phase>
+					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"></app-ff-todo-list-per-phase>
 				</td>
-			<tr>
+			</tr>
 		</tbody>
 	</table>
 </div>

@@ -6,14 +6,7 @@
             [preparingFormEvent]="prepareRemoveTaskFormTrigger.asObservable()" (submitDataEvent)="removeTask($event)">
     </app-ff-todo-generic-task-form>
 </div>
-<div>
-    <button class="btn btn-secondary mb-3" type="button" (click)="taskList.toggle()"
-            data-toggle="tooltip" data-placement="bottom" title="Toggle Task list">
-        <i *ngIf="!tasklist_collapse_status" class="fas fa-folder-minus"></i>
-        <i *ngIf="tasklist_collapse_status" class="fas fa-folder-plus"></i>
-    </button>
-</div>
-<div #taskList="ngbCollapse" [(ngbCollapse)]="tasklist_collapse_status">
+<div class="mt-1" #taskList="ngbCollapse" [(ngbCollapse)]="tasklist_collapse_status">
     <ul class="list-group border border-primary"
             data-toggle="tooltip" data-placement="bottom" title="Task list">
         <li class="list-group-item" *ngFor="let task of tasks | tszSort:tasksortexec:tasksortfield:tasksortdir">
@@ -48,4 +41,11 @@
             <p class="card-text">Task count: {{ taskCount }}</p>
         </li>
     </ul>
+</div>
+<div class="d-flex justify-content-end my-3">
+    <button class="btn btn-sm btn-secondary" type="button" (click)="taskList.toggle()"
+            data-toggle="tooltip" data-placement="bottom" title="Toggle Task list">
+        <i *ngIf="!tasklist_collapse_status" class="fas fa-folder-minus"></i>
+        <i *ngIf="tasklist_collapse_status" class="fas fa-folder-plus"></i>
+    </button>
 </div>

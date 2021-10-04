@@ -20,6 +20,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
+    this.displayDateFormat = this.common.displayDateFormat;
+    
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];
 
@@ -53,6 +55,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public phaseMax!: number;
   public todoPhaseValRangeListener!: Subscription;
 
+  public displayDateFormat!: string;
+  
   public todoCount!: number;
   public todoCountListener!: Subscription;
   
