@@ -13,7 +13,7 @@ export class FfTodoCommonService {
 
   public updateBoardEvent = new EventEmitter<void>();
   public updateTodoListEvent = new EventEmitter< Set<Number> >();
-  public updateBoardListEvent = new EventEmitter<Number>();
+  public updateBoardListEvent = new EventEmitter<void>();
 
   private isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListChange = new EventEmitter<Boolean>();
@@ -93,8 +93,8 @@ export class FfTodoCommonService {
     this.updateTodoListEvent.emit(phase);
   }
 
-  updateBoardList(id?: Number) {
-    this.updateBoardListEvent.emit(id);
+  updateBoardList() {
+    this.updateBoardListEvent.emit();
   }
 
   getBoardListSize() {
@@ -410,11 +410,6 @@ export class FfTodoCommonService {
 
   getBoardSelected() {
     return this.boardSelected;
-  }
-
-  navigateToBoard(id: Number) {
-    this.setBoardSelected(id);
-    this.router.navigate(['/list-todos'], { queryParams: {id:this.boardSelected}});
   }
 
   addBoardName(id: Number, name: String)

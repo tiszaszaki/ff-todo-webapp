@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
@@ -52,6 +53,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
       private todoServ: FfTodoRealRequestService,
       private common: FfTodoCommonService,
+      private router: Router,
       private alertServ: FfTodoAlertService) {
 
     this.queryDescriptionMaxLengths();
@@ -74,6 +76,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
+
+    this.router.navigate(["/"], undefined);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -120,8 +124,13 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     return this.common.hasSearchRules();
   }
 
-  updateBoardList(id?: Number) {
-    this.common.updateBoardList(id);
+  updateBoardList() {
+    this.common.updateBoardList();
+  }
+
+  navigateToBoard(id: Number) {
+    this.common.setBoardSelected(id);
+    this.router.navigate(['/list-todos'], { queryParams: {id:this.boardSelected}});
   }
 
   updateSelectedBoard() {
@@ -177,7 +186,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.todoServ.addBoard(board)
     .subscribe(board => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
-      this.updateBoardList(board.id);
+      this.navigateToBoard(board.id);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Board. See browser console for details.`});
     });

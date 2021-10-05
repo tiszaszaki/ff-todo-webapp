@@ -38,8 +38,8 @@
 
     <div class="btn-group-vertical" #toolbar="ngbCollapse" [(ngbCollapse)]="toolbar_collapse_status">
       <div class="btn-group">
-        <button type="button" class="btn btn-primary w-25" (click)="prepareAddBoardForm()" [disabled]="isRoutedToTodoList"
-            data-toggle="tooltip" data-placement="bottom" title="Add new Todo">
+        <button type="button" class="btn btn-primary w-25" (click)="prepareAddBoardForm()"
+            data-toggle="tooltip" data-placement="bottom" title="Add new Board">
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>
         <button type="button" class="btn btn-warning w-25" (click)="updateBoardList()"

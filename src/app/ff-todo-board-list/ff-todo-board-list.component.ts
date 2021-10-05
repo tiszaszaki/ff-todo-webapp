@@ -26,7 +26,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
 
-    this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(id => this.updateBoardList(id));
+    this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
 
     this.updateBoardList();
   }
@@ -52,7 +52,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     return this.common.getBoardName(idx);
   }
 
-  private updateBoardList(board_id?: Number)
+  private updateBoardList()
   {
     this.boardQueryFinished = false;
     this.boardQuerySuccess = false;
@@ -72,13 +72,6 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
         this.todoServ.getBoard(id as number).subscribe(result => {
           this.common.addBoardName(id, result.name);
         });
-
-        idx++;
-        if (idx == results.length)
-        {
-          if (board_id)
-            this.common.navigateToBoard(board_id);
-        }
       }
     }, errorMsg => {
       this.boardQueryFinished = true;
