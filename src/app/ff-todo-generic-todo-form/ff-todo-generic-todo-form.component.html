@@ -67,9 +67,9 @@
                     <label for="deadline">Deadline</label>
                     <div class="input-group">
                         <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
-                                [(ngModel)]="model.deadline" name="deadline" value="model.deadline | date:inputDateFormat" #deadline="ngModel"
+                                [(ngModel)]="deadlineTemp" name="deadline" value="deadlineTemp | date:inputDateFormat" #deadline="ngModel"
                                 [placeholder]="inputDateFormatDisp" [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)"
-                                [readonly]="isOperatorIncluded(CLONE)">
+                                (dateSelect)="updateDeadline($event)" [readonly]="isOperatorIncluded(CLONE)">
                         <button type="button" class="btn btn-primary" (click)="deadlinePick.toggle()"
                                 [disabled]="!isOperatorIncluded(ADD,EDIT)">
                             <i class="far fa-calendar-alt"></i>

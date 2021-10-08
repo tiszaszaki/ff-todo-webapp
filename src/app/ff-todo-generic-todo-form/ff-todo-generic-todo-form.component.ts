@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStructAdapter } from '@ng-bootstrap/ng-bootstrap/datepicker/adapters/ngb-date-adapter';
 import { Observable, Subscription } from 'rxjs';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { Todo } from '../todo';
@@ -26,6 +27,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public modeStr!: String;
   public formId!: String;
+
+  public deadlineTemp!: NgbDateStruct;
 
   public descriptionMaxLength!: number;
   public descriptionMaxLengthListener!: Subscription;
@@ -83,6 +86,24 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       result += " (default)";
 
     return result;
+  }
+
+  private fetchDeadline() {
+    if (this.model)
+    if (this.model.deadline)
+    {
+      let deadline=this.model.deadline;
+      this.deadlineTemp = {year: deadline.getUTCFullYear(), month: deadline.getUTCMonth() + 1, day: deadline.getUTCDate()};
+      console.log(this.deadlineTemp);
+    }
+  }
+
+  updateDeadline(event: NgbDateStruct) {
+    console.log(event);
+
+    this.model.deadline = new Date(event.year+'-'+event.month+'-'+event.day);
+
+    console.log(this.model.deadline);
   }
 
   private resetModel() {
@@ -219,12 +240,11 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.model)
-    if (this.model.deadline)
+    if (changes.model)
     {
-      //console.log(this.model.deadline);
+      this.fetchDeadline();
     }
-
+    
     this.updateDisplay();
   }
 
