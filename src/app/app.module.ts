@@ -30,7 +30,8 @@ import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-lis
 import { AppRoutingModule } from './app-routing.module';
 import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/ff-todo-page-does-not-exist.component';
 import { FfTodoQueryStatusComponent } from './ff-todo-query-status/ff-todo-query-status.component';
-import { FfTodoCardRefreshingComponent } from './ff-todo-card-refreshing/ff-todo-card-refreshing.component'
+import { FfTodoCardRefreshingComponent } from './ff-todo-card-refreshing/ff-todo-card-refreshing.component';
+import { FfTodoBootstrapDateTimePickerComponent } from './ff-todo-bootstrap-date-time-picker/ff-todo-bootstrap-date-time-picker.component'
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { FfTodoCardRefreshingComponent } from './ff-todo-card-refreshing/ff-todo
     FfTodoBoardListComponent,
     FfTodoPageDoesNotExistComponent,
     FfTodoQueryStatusComponent,
-    FfTodoCardRefreshingComponent
+    FfTodoCardRefreshingComponent,
+    FfTodoBootstrapDateTimePickerComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule
