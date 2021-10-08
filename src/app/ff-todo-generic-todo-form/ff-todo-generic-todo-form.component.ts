@@ -39,6 +39,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public placeholderDescription!: String;
 
   public confirmMessage!: String;
+  public submitButtonCaption! : String;
   public confirmButtonCaption! : String;
 
   private preparingFormListener!: Subscription;
@@ -99,6 +100,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.placeholderDescription = '<Description placeholder to be filled>';
 
     this.confirmMessage = '<Confirm message to be filled>';
+    this.submitButtonCaption = "<Submit>";
     this.confirmButtonCaption = "<Confirm>";
 
     switch (this.mode)
@@ -107,7 +109,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         this.formTitle = 'Add a new Todo';
 
         this.placeholderName = "Enter name for new Todo...";
-        this.placeholderDescription = "Enter description for new Todo (optional)..."
+        this.placeholderDescription = "Enter description for new Todo (optional)...";
+
+        this.submitButtonCaption = "Save";
       } break;
       case this.EDIT: {
         if (this.model)
@@ -116,7 +120,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
           this.formTitle = `Edit Todo with ID #${id+1}`;
 
           this.placeholderName = "Change name for this Todo...";
-          this.placeholderDescription = "Change description for this Todo..."
+          this.placeholderDescription = "Change description for this Todo...";
+
+          this.submitButtonCaption = "Update";
         }
       } break;
       case this.CLONE: {
@@ -127,6 +133,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
           this.placeholderName = "Name for this Todo left blank...";
           this.placeholderDescription = "Description for this Todo left blank...";
+
+          this.submitButtonCaption = "Clone";
         }
       } break;
       case this.REMOVE: {

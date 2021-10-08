@@ -67,7 +67,7 @@
                     <label for="deadline">Deadline</label>
                     <div class="input-group">
                         <input type="text" ngbDatepicker #deadlinePick="ngbDatepicker"
-                                [(ngModel)]="model.deadline" name="deadline" value="model.deadline | date:inputDateFormat"
+                                [(ngModel)]="model.deadline" name="deadline" value="model.deadline | date:inputDateFormat" #deadline="ngModel"
                                 [placeholder]="inputDateFormatDisp" [disabled]="!isOperatorIncluded(ADD,EDIT,CLONE)"
                                 [readonly]="isOperatorIncluded(CLONE)">
                         <button type="button" class="btn btn-primary" (click)="deadlinePick.toggle()"
@@ -84,7 +84,7 @@
         <div class="modal-footer">
             <div *ngIf="isOperatorIncluded(ADD,EDIT,CLONE)">
                 <button type="button" class="btn btn-primary" (click)="modal.close('Saved by button click')"
-                        [disabled]="!todoForm.valid">Submit</button>
+                        [disabled]="!todoForm.valid || (isOperatorIncluded(EDIT) && todoForm.pristine)">{{ submitButtonCaption }}</button>
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
             </div>
             <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">

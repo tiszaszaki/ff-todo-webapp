@@ -37,6 +37,7 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   public placeholderAuthor!: String;
 
   public confirmMessage!: String;
+  public submitButtonCaption! : String;
   public confirmButtonCaption! : String;
 
   private preparingFormListener!: Subscription;
@@ -64,6 +65,7 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
     this.placeholderAuthor = '<Author placeholder to be filled>';
 
     this.confirmMessage = '<Confirm message to be filled>';
+    this.submitButtonCaption = "<Submit>";
     this.confirmButtonCaption = "<Confirm>";
 
     switch (this.mode)
@@ -72,8 +74,10 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
         this.formTitle = `Add a new Board`;
 
         this.placeholderName = "Enter name for new Board...";
-        this.placeholderDescription = "Enter description for new Board (optional)..."
-        this.placeholderAuthor = "Enter author's name for new Board (optional)..."
+        this.placeholderDescription = "Enter description for new Board (optional)...";
+        this.placeholderAuthor = "Enter author's name for new Board (optional)...";
+
+        this.submitButtonCaption = "Save";
       } break;
       case this.EDIT: {
         if (this.model)
@@ -82,8 +86,10 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
           this.formTitle = `Edit Board with ID #${id+1}`;
 
           this.placeholderName = "Change name for this Board...";
-          this.placeholderDescription = "Change description for this Board..."
-          this.placeholderAuthor = "Change author's name for this Board..."
+          this.placeholderDescription = "Change description for this Board...";
+          this.placeholderAuthor = "Change author's name for this Board...";
+
+          this.submitButtonCaption = "Update";
         }
       } break;
       case this.REMOVE: {

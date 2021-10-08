@@ -22,7 +22,7 @@
                     <div class="form-group d-flex justify-content-begin">
                         <label for="done">Checked</label>
                         <input type="checkbox" class="form-check-input" id="done" [(ngModel)]="model.done" name="done"
-                                value="model.done" #name="ngModel">
+                                value="model.done" #checked="ngModel">
                     </div>
                </div>
             <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">
@@ -33,7 +33,7 @@
         <div class="modal-footer">
             <div *ngIf="isOperatorIncluded(ADD,EDIT)">
                 <button type="button" class="btn btn-primary" (click)="modal.close('Saved by button click')"
-                        [disabled]="!taskForm.valid">Submit</button>
+                        [disabled]="!taskForm.valid || (isOperatorIncluded(EDIT) && taskForm.pristine)">{{ submitButtonCaption }}</button>
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
             </div>
             <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">       
