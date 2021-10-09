@@ -29,12 +29,17 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   public modeStr!: String;
   public formId!: String;
 
+  public inputDateFormat!: string;
+  public inputDateFormatDisp!: String;
+
   public formTitle!: String;
   public placeholderName!: String;
 
   public confirmMessage!: String;
   public submitButtonCaption! : String;
   public confirmButtonCaption! : String;
+
+  public changedDeadline: Boolean = false;
 
   private preparingFormListener!: Subscription;
 
@@ -46,7 +51,9 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
 
   constructor(
       private modalService: NgbModal,
-      private common: FfTodoCommonService) { }
+      private common: FfTodoCommonService) {
+  this.inputDateFormat = this.common.inputDateFormat;
+}
 
   private resetModel() {
     this.model = new Task();
@@ -130,6 +137,14 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   ngOnInit(): void {
     this.modeStr = TaskOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}TaskForm`;
+
+    if (this.isOperatorIncluded(this.ADD,this.EDIT))
+    {
+      this.common.triggerTodoDescriptionMaxLength();
+      
+      this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
+    }
+
     this.resetModel();
 
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());

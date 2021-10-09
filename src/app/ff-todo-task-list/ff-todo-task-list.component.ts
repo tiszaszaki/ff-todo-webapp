@@ -87,6 +87,17 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     this.taskSortingSettingsListener.unsubscribe();
   }
 
+  getTaskPlaceholder(task : Task): String {
+    if (task.deadline)
+    {
+      return `This Task is due on ${task.deadline}.`;
+    }
+    else
+    {
+      return "???";
+    }
+  }
+
   prepareEditTaskForm(task : Task) {
     this.taskSelected = task;
     this.prepareEditTaskFormTrigger.next();
