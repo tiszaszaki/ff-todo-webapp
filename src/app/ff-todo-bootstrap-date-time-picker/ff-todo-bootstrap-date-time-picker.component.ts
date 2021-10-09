@@ -19,6 +19,8 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   public dateModel!: NgbDateStruct;
   public timeModel!: NgbTimeStruct;
 
+  public modelStr!: String;
+
   public deadlinePicker_collapse_status: boolean = true;
 
   constructor() { }
@@ -26,14 +28,29 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   private fetchDeadline() {
     if (this.model)
     {
+      this.model = new Date(Date.parse(this.model.toString()));
+  
       this.dateModel = {year: this.model.getFullYear(), month: this.model.getMonth() + 1, day: this.model.getDate()};
       this.timeModel = {hour: this.model.getHours(), minute: this.model.getMinutes(), second: this.model.getSeconds()};
+  
+      this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
+        this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
     }
   }
 
-  updateDeadlineDate(event?: NgbDateStruct) {
-    let dateStr: string;
+  private leadingZero(n: Number): String {
+    return ((n < 10) ? "0" + n : n.toString());
+  }
 
+  private formatDeadlineStr(year: Number, month: Number, day: Number, hour: Number, minute: Number, second: Number) {
+    let result =
+      year + '-' + this.leadingZero(month) + '-' + this.leadingZero(day) +
+      ' ' + this.leadingZero(hour) + ':' + this.leadingZero(minute) + ':' + this.leadingZero(second);
+
+    return result;
+  }
+
+  updateDeadlineDate(event?: NgbDateStruct) {
     if (!this.timeModel)
     {
       let deadline=new Date();
@@ -42,22 +59,20 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
 
     if (event)
     {
-      dateStr = event.year+'-'+event.month+'-'+event.day+
-        ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second;
+      this.modelStr = this.formatDeadlineStr(event.year,event.month,event.day,
+        this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
     }
     else
     {
-      dateStr = this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
-        ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second;
+      this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
+        this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
     }
 
-    this.model = new Date(dateStr);
+    this.model = new Date(this.modelStr as string);
     this.modelChange.emit(this.model);
   }
 
   updateDeadlineTime(event?: NgbTimeStruct) {
-    let dateStr: string;
-
     if (!this.dateModel)
     {
       let deadline=new Date();
@@ -66,16 +81,16 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
 
     if (event)
     {
-      dateStr = this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
-        ' '+event.hour+':'+event.minute+':'+event.second;
+      this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
+        event.hour,event.minute,event.second);
     }
     else
     {
-      dateStr = this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
-        ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second;
+      this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
+        this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
     }
 
-    this.model = new Date(dateStr);
+    this.model = new Date(this.modelStr as string);
     this.modelChange.emit(this.model);
   }
 

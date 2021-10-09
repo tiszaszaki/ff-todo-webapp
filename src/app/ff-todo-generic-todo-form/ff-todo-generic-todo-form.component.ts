@@ -44,6 +44,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public submitButtonCaption! : String;
   public confirmButtonCaption! : String;
 
+  public changedDeadline: Boolean = false;
+
   private preparingFormListener!: Subscription;
 
   public readonly ADD = TodoOperator.ADD;

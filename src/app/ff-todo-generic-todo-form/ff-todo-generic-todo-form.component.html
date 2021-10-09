@@ -67,7 +67,8 @@
                     <label for="deadline">Deadline</label>
                     <div class="input-group">
                         <app-ff-todo-bootstrap-date-time-picker [(model)]="model.deadline" [readonlyModel]="isOperatorIncluded(CLONE)"
-                                [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp">
+                                [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                (modelChange)="changedDeadline = true">
                         </app-ff-todo-bootstrap-date-time-picker>
                     </div>
                 </div>
@@ -79,7 +80,7 @@
         <div class="modal-footer">
             <div *ngIf="isOperatorIncluded(ADD,EDIT,CLONE)">
                 <button type="button" class="btn btn-primary" (click)="modal.close('Saved by button click')"
-                        [disabled]="(true && !todoForm.valid) || (true && isOperatorIncluded(EDIT) && todoForm.pristine)">{{ submitButtonCaption }}</button>
+                        [disabled]="(true && !todoForm.valid) || (true && isOperatorIncluded(EDIT) && todoForm.pristine && !changedDeadline)">{{ submitButtonCaption }}</button>
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
             </div>
             <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">

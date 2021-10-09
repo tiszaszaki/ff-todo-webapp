@@ -1,6 +1,6 @@
 <form #deadlineForm="ngForm">
     <div class="d-flex justify-content-start">
-        <input type="datetime" [(ngModel)]="model" name="deadline" [readonly]="readonlyModel"
+        <input type="datetime" [(ngModel)]="modelStr" name="deadline" [readonly]="true"
                 [placeholder]="inputDateFormatDisp" #deadline="ngModel">
         <button type="button" class="btn btn-primary" (click)="deadlinePicker.toggle()" [disabled]="readonlyModel">
             <i class="far fa-calendar-alt"></i>
