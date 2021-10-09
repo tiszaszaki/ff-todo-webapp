@@ -39,7 +39,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
   public taskCount!: Number;
 
-  public readonlyTask!: Boolean;
+  public readonlyTask!: boolean;
   public readonlyTaskListener!: Subscription;
 
   public highlightedNames = new Map<Number,SafeHtml>();
@@ -52,7 +52,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   public readonly REMOVE_TASK = TaskOperator.REMOVE;
 
   ngOnInit(): void {
-    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
+    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result as boolean);
 
     this.taskSortingSettingsListener = this.common.taskSortingSettingsChange.subscribe(result => {
       if (this.phase_idx == result.phase)

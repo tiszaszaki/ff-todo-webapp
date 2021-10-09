@@ -32,7 +32,8 @@ export class FfTodoSortingFormComponent implements OnInit, OnChanges, OnDestroy 
     {name: 'descriptionLength', display: 'Todo description length'},
     {name: 'taskCount', display: 'Task count in Todo'},
     {name: 'dateCreated', display: 'Date of Todo created'},
-    {name: 'dateModified', display: 'Date of Todo updated'}
+    {name: 'dateModified', display: 'Date of Todo updated'},
+    {name: 'deadline', display: 'Deadline of Todo'}
   ];
 
   constructor(

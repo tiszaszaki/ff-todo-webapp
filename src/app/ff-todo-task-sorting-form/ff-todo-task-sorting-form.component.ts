@@ -28,7 +28,8 @@ export class FfTodoTaskSortingFormComponent implements OnInit, OnChanges, OnDest
     {name: '', display: '(unsorted)'},
     {name: 'id', display: 'Task ID'},
     {name: 'name', display: 'Task name'},
-    {name: 'done', display: 'Task checked'}
+    {name: 'done', display: 'Task checked'},
+    {name: 'deadline', display: 'Deadline of Task'}
   ];
 
   constructor(

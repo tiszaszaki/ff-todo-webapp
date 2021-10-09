@@ -45,6 +45,7 @@ export class FfTodoSearchingFormComponent implements OnInit, OnDestroy {
     {name: 'taskCount', display: 'Task count in Todo'},
     {name: 'dateCreated', display: 'Date of Todo created'},
     {name: 'dateModified', display: 'Date of Todo updated'},
+    {name: 'deadline', display: 'Deadline of Todo'},
     {name: 'tasks.name', display: 'Task name'},
     {name: 'tasks.done', display: 'Task checked'}
   ];
