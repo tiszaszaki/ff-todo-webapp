@@ -37,7 +37,8 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
   public taskSelected!: Task;
 
-  public taskCount!: Number;
+  public taskCount!: number;
+  public taskChecked!: number;
 
   public readonlyTask!: boolean;
   public readonlyTaskListener!: Subscription;
@@ -67,8 +68,12 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
     this.taskCount = this.tasks.length;
 
+    this.taskChecked = 0;
+
     for (let task of this.tasks)
     {
+      this.taskChecked += (task.done ? 1 : 0);
+
       this.highlightedNames.set(task.id, this.highlighter.bypassSecurityTrustHtml(task.name as string));
     }
 

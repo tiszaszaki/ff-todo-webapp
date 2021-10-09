@@ -2,15 +2,22 @@
     <div class="d-flex justify-content-start">
         <input type="datetime" [(ngModel)]="modelStr" name="deadline" [readonly]="true"
                 [placeholder]="inputDateFormatDisp" #deadline="ngModel">
-        <button type="button" class="btn btn-primary" (click)="deadlinePicker.toggle()" [disabled]="readonlyModel">
+        <button type="button" class="btn btn-primary" [ngbPopover]="deadlinePicker" [popoverTitle]="deadlinePickerTitle"
+                [disabled]="readonlyModel">
             <i class="far fa-calendar-alt"></i>
         </button>
     </div>
-    <div [(ngbCollapse)]="deadlinePicker_collapse_status" #deadlinePicker="ngbCollapse">
-        <div class="d-flex flex-column" *ngIf="!readonlyModel">
+    <ng-template #deadlinePickerTitle>
+        <p>Deadline</p>
+    </ng-template>
+    <ng-template #deadlinePicker>
+        <div *ngIf="readonlyModel">
+            <p class="text-muted">This date-time picker is disabled.</p>
+        </div>
+        <div *ngIf="!readonlyModel">
             <ngb-datepicker [(ngModel)]="dateModel" (dateSelect)="updateDeadlineDate($event)" name="dateModel"></ngb-datepicker>
             <ngb-timepicker [(ngModel)]="timeModel" (ngModelChange)="updateDeadlineTime($event)" name="timeModel"
                     [seconds]="true" [spinners]="true"></ngb-timepicker>
         </div>
-    </div>
+    </ng-template>
 </form>

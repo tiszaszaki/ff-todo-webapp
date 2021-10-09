@@ -50,6 +50,10 @@
     </ul>
 </div>
 <div class="d-flex justify-content-end my-3">
+    <div class="mx-1" *ngIf="taskCount">
+        <span>Checked Task count:&nbsp;</span>
+        <span class="badge badge-pill bg-secondary">{{ taskChecked }} / {{ taskCount }}</span>
+    </div>
     <button class="btn btn-sm btn-secondary" type="button" (click)="taskList.toggle()"
             data-toggle="tooltip" data-placement="bottom" title="Toggle Task list">
         <i *ngIf="!tasklist_collapse_status" class="fas fa-folder-minus"></i>
