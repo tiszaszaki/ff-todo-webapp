@@ -79,7 +79,7 @@
         <div class="modal-footer">
             <div *ngIf="isOperatorIncluded(ADD,EDIT,CLONE)">
                 <button type="button" class="btn btn-primary" (click)="modal.close('Saved by button click')"
-                        [disabled]="(false && !todoForm.valid) || (false && isOperatorIncluded(EDIT) && todoForm.pristine)">{{ submitButtonCaption }}</button>
+                        [disabled]="(true && !todoForm.valid) || (true && isOperatorIncluded(EDIT) && todoForm.pristine)">{{ submitButtonCaption }}</button>
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
             </div>
             <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">

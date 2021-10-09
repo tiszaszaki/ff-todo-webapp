@@ -26,44 +26,67 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   private fetchDeadline() {
     if (this.model)
     {
-      let deadline: Date = this.model;
-      this.dateModel = {year: deadline.getUTCFullYear(), month: deadline.getUTCMonth() + 1, day: deadline.getUTCDate()};
-      this.timeModel = {hour: deadline.getUTCHours(), minute: deadline.getUTCMinutes(), second: deadline.getUTCSeconds()};
+      this.dateModel = {year: this.model.getFullYear(), month: this.model.getMonth() + 1, day: this.model.getDate()};
+      this.timeModel = {hour: this.model.getHours(), minute: this.model.getMinutes(), second: this.model.getSeconds()};
     }
   }
 
-  updateDeadlineDate(event: NgbDateStruct) {
+  updateDeadlineDate(event?: NgbDateStruct) {
+    let dateStr: string;
+
     if (!this.timeModel)
     {
       let deadline=new Date();
-      this.timeModel = {hour: deadline.getUTCHours(), minute: deadline.getUTCMinutes(), second: deadline.getUTCSeconds()};
+      this.timeModel = {hour: deadline.getHours(), minute: deadline.getMinutes(), second: deadline.getSeconds()};
     }
-    this.model = new Date(
-      event.year+'-'+event.month+'-'+event.day+
-      ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second
-    );
+
+    if (event)
+    {
+      dateStr = event.year+'-'+event.month+'-'+event.day+
+        ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second;
+    }
+    else
+    {
+      dateStr = this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
+        ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second;
+    }
+
+    this.model = new Date(dateStr);
     this.modelChange.emit(this.model);
-    this.fetchDeadline();
   }
 
-  updateDeadlineTime(event: NgbTimeStruct) {
+  updateDeadlineTime(event?: NgbTimeStruct) {
+    let dateStr: string;
+
     if (!this.dateModel)
     {
       let deadline=new Date();
-      this.dateModel = {year: deadline.getUTCFullYear(), month: deadline.getUTCMonth() + 1, day: deadline.getUTCDate()};
+      this.dateModel = {year: deadline.getFullYear(), month: deadline.getMonth() + 1, day: deadline.getDate()};
     }
-    this.model = new Date(
-      this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
-      ' '+event.hour+':'+event.minute+':'+event.second
-    );
+
+    if (event)
+    {
+      dateStr = this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
+        ' '+event.hour+':'+event.minute+':'+event.second;
+    }
+    else
+    {
+      dateStr = this.dateModel.year+'-'+this.dateModel.month+'-'+this.dateModel.day+
+        ' '+this.timeModel.hour+':'+this.timeModel.minute+':'+this.timeModel.second;
+    }
+
+    this.model = new Date(dateStr);
     this.modelChange.emit(this.model);
-    this.fetchDeadline();
   }
 
   ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.model)
+    {
+      this.fetchDeadline();
+    }
   }
 
 }
