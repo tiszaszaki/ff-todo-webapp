@@ -1,0 +1,16 @@
+<form #deadlineForm="ngForm">
+    <div class="d-flex justify-content-start">
+        <input type="datetime" [(ngModel)]="model" name="deadline" [readonly]="readonlyModel"
+                [placeholder]="inputDateFormatDisp" #deadline="ngModel">
+        <button type="button" class="btn btn-primary" (click)="deadlinePicker.toggle()" [disabled]="readonlyModel">
+            <i class="far fa-calendar-alt"></i>
+        </button>
+    </div>
+    <div [(ngbCollapse)]="deadlinePicker_collapse_status" #deadlinePicker="ngbCollapse">
+        <div class="d-flex flex-column" *ngIf="!readonlyModel">
+            <ngb-datepicker [(ngModel)]="dateModel" (dateSelect)="updateDeadlineDate($event)"></ngb-datepicker>
+            <ngb-timepicker [(ngModel)]="timeModel" (ngModelChange)="updateDeadlineTime($event)"
+                    [seconds]="true"></ngb-timepicker>
+        </div>
+    </div>
+</form>
