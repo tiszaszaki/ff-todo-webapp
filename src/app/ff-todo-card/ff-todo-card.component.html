@@ -37,7 +37,7 @@
 										data-toggle="tooltip" data-placement="bottom" title="Todo description">
 									<p class="card-text" [innerHTML]="highlightedDescription">{{ content.description }}</p>
 								</div>
-								<div class="list-group-item" *ngIf="showDescriptionLength[0] || showDescriptionLength[1]">
+								<div class="list-group-item" *ngIf="isDescriptionLengthShown()">
 									<p class="card-text">Description length: {{ descriptionLength }}</p>
 								</div>
 							</div>
@@ -110,7 +110,7 @@
     </div>
     <div class="card-footer text-muted">
         <p>Date updated: {{ content.dateModified | date:displayDateFormat }}</p>
-        <p *ngIf="showDateCreated[0] || showDateCreated[1]">Date created: {{ content.dateCreated | date:displayDateFormat }}</p>
+        <p *ngIf="isDateCreatedShown()">Date created: {{ content.dateCreated | date:displayDateFormat }}</p>
     </div>
 </div>
 <app-ff-todo-card-invalid *ngIf="!todoRefreshing && !isCardValid"></app-ff-todo-card-invalid>

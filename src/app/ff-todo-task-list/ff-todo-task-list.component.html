@@ -44,7 +44,7 @@
         <li class="list-group-item" *ngIf="!taskCount">
             <app-ff-todo-task-list-empty></app-ff-todo-task-list-empty>
         </li>
-        <li class="list-group-item border border-primary" *ngIf="showTaskCount[0] || showTaskCount[1]">
+        <li class="list-group-item border border-primary" *ngIf="isTaskCountShown()">
             <p class="card-text">Task count: {{ taskCount }}</p>
         </li>
     </ul>

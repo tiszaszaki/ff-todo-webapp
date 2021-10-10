@@ -240,6 +240,15 @@ export class FfTodoCommonService {
     this.updateTaskSortingSettings(phase, '', false);
   }
 
+  triggerTodoSortingSettings(phase: Number) {
+    this.todoSortingSettingsChange.emit({
+      phase: phase,
+      exec: this.todoSortExec[phase as number],
+      field: this.todoSortField[phase as number],
+      dir: this.todoSortDir[phase as number]
+    });
+  }
+
   updateTodoSearchCase(val: Boolean) {
     this.todoSearchingCaseSense = val;
     this.todoSearchingCaseSenseChange.emit(this.todoSearchingCaseSense);

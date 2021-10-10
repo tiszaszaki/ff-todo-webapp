@@ -31,10 +31,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() content!: Todo;
   @Input() phase_idx!: number;
 
-  @Input() showDescriptionLength!: Boolean[];
-  @Input() showTaskCount!: Boolean[];
-  @Input() showDateCreated!: Boolean[];
-
   @Input() searchresCount!: number;
 
   @Output() searchresCountUpdate = new EventEmitter<number>();
@@ -58,10 +54,16 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public todosearchexec!: Boolean;
 
+  public showDescriptionLength!: Boolean[];
+  public showDateCreated!: Boolean[];
+
   public highlightedName!: SafeHtml;
   public highlightedDescription!: SafeHtml;
 
+  public todoSortingSettingsListener!: Subscription;
+
   public todoSearchHighlightListener!: Subscription;
+  public todoSearchingRulesListener!: Subscription;
 
   public readonlyTodo!: Boolean;
   public readonlyTodoListener!: Subscription;
@@ -110,6 +112,32 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
+    this.showDescriptionLength = [false, false];
+    this.showDateCreated = [false, false];
+
+    this.todoSortingSettingsListener = this.common.todoSortingSettingsChange.subscribe(result => {
+      if (this.phase_idx == result.phase)
+      {
+        this.showDescriptionLength[0] = (result.field == 'descriptionLength');
+        this.showDateCreated[0] = (result.field == 'dateCreated');
+      }
+    });
+
+    this.common.triggerTodoSortingSettings(this.phase_idx);
+
+    this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
+      this.showDescriptionLength[1] = false;
+      this.showDateCreated[1] = false;
+
+      for (let fieldName of results.keys())
+      {
+        this.showDescriptionLength[1] ||= (fieldName == 'descriptionLength');
+        this.showDateCreated[1] ||= (fieldName == 'dateCreated');
+      }
+    });
+
+    this.common.triggerTodoSearchingRules();
+
     this.todoSearchHighlightListener = this.common.todoSearchingHighlightChange.subscribe(() => {
       this.highlightedName = this.highlighter.bypassSecurityTrustHtml(this.content.name as string);
       this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml(this.content.description as string);
@@ -131,21 +159,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.tasklistStr = JSON.stringify(this.content.tasks);
-
-    if (!this.showDescriptionLength)
-      this.showDescriptionLength = [];
-    if (!this.showDateCreated)
-      this.showDateCreated = [];
-
-    if (this.showDescriptionLength.length == 0)
-      this.showDescriptionLength.push(false, false);
-    if (this.showDescriptionLength.length == 1)
-      this.showDescriptionLength.push(false);
-
-    if (this.showDateCreated.length == 0)
-      this.showDateCreated.push(false, false);
-    if (this.showDateCreated.length == 1)
-      this.showDateCreated.push(false);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -161,7 +174,18 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
 
+    this.todoSortingSettingsListener.unsubscribe();
+
     this.todoSearchHighlightListener.unsubscribe();
+    this.todoSearchingRulesListener.unsubscribe();
+  }
+
+  isDescriptionLengthShown() {
+    return (this.showDescriptionLength.length == 2) && (this.showDescriptionLength[0] || this.showDescriptionLength[1]);
+  }
+
+  isDateCreatedShown() {
+    return (this.showDateCreated.length == 2) && (this.showDateCreated[0] || this.showDateCreated[1]);
   }
 
   prepareEditTodoForm() {

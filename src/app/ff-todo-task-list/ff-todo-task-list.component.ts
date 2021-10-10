@@ -28,6 +28,9 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   public prepareEditTaskFormTrigger = new Subject<void>();
   public prepareRemoveTaskFormTrigger = new Subject<void>();
 
+  public todoSortingSettingsListener!: Subscription;
+  public todoSearchingRulesListener!: Subscription;
+
   public tasksortfield!: String;
   public tasksortdir!: Boolean;
   public tasksortexec!: Boolean;
@@ -55,6 +58,26 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result as boolean);
 
+    this.showTaskCount = [false, false];
+
+    this.todoSortingSettingsListener = this.common.todoSortingSettingsChange.subscribe(result => {
+      if (this.phase_idx == result.phase)
+      {
+        this.showTaskCount[0] = (result.field == 'taskCount');
+      }
+    });
+
+    this.common.triggerTodoSortingSettings(this.phase_idx);
+
+    this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
+      for (let fieldName of results.keys())
+      {
+        this.showTaskCount[1] ||= (fieldName == 'taskCount');
+      }
+    });
+
+    this.common.triggerTodoSearchingRules();
+
     this.taskSortingSettingsListener = this.common.taskSortingSettingsChange.subscribe(result => {
       if (this.phase_idx == result.phase)
       {
@@ -65,6 +88,17 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     });
 
     this.tasks = JSON.parse(this.tasklistString as string);
+    this.tasks.sort((a: Task, b: Task) => {
+      let res;
+      if (a.id < b.id) {
+        res = -1;
+      } else if (a.id > b.id) {
+        res = 1;
+      } else {
+        res = 0;
+      }
+      return res;
+    });
 
     this.taskCount = this.tasks.length;
 
@@ -76,20 +110,19 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
       this.highlightedNames.set(task.id, this.highlighter.bypassSecurityTrustHtml(task.name as string));
     }
-
-    if (!this.showTaskCount)
-      this.showTaskCount = [];
-
-    if (this.showTaskCount.length == 0)
-      this.showTaskCount.push(false, false);
-    if (this.showTaskCount.length == 1)
-      this.showTaskCount.push(false);
   }
 
   ngOnDestroy(): void {
     this.readonlyTaskListener.unsubscribe();
 
+    this.todoSortingSettingsListener.unsubscribe();
+    this.todoSearchingRulesListener.unsubscribe();
+
     this.taskSortingSettingsListener.unsubscribe();
+  }
+
+  isTaskCountShown() {
+    return (this.showTaskCount.length == 2) && (this.showTaskCount[0] || this.showTaskCount[1]);
   }
 
   getTaskPlaceholder(task : Task): String {

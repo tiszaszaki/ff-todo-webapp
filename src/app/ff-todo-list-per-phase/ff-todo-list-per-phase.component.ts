@@ -18,10 +18,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
   @Input() content! : Todo[];
   @Input() phase_idx!: number;
 
-  public showDescriptionLength: Boolean[] = [];
-  public showTaskCount: Boolean[] = [];
-  public showDateCreated: Boolean[] = [];
-
   public todoSortExec!: Boolean;
   public todoSortField!: String;
   public todoSortDir!: Boolean;
@@ -52,10 +48,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
     this.todoSortField = '';
     this.todoSortDir = false;
 
-    this.showDescriptionLength.push(false, false);
-    this.showDateCreated.push(false, false);
-    this.showTaskCount.push(false, false);
-
     this.todoSearchingCaseSenseListener = this.common.todoSearchingCaseSenseChange.subscribe(result => this.todoSearchingCaseSense = result);
     this.todoSearchingHighlightListener = this.common.todoSearchingHighlightChange.subscribe(result => this.todoSearchingHighlight = result);
 
@@ -65,28 +57,11 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
         this.todoSortExec = result.exec;
         this.todoSortField = result.field;
         this.todoSortDir = result.dir;
-
-        this.showDescriptionLength[0] = (this.todoSortField == 'descriptionLength');
-        this.showDateCreated[0] = (this.todoSortField == 'dateCreated');
-        this.showTaskCount[0] = (this.todoSortField == 'taskCount');
       }
     });
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
       this.todoSearchRules = results;
-
-      this.showDescriptionLength[1] = false;
-      this.showDateCreated[1] = false;
-      this.showTaskCount[1] = false;
-
-      for (let fieldName of results.keys())
-      {
-        this.showDescriptionLength[1] ||= (fieldName == 'descriptionLength');
-        this.showDateCreated[1] ||= (fieldName == 'dateCreated');
-        this.showTaskCount[1] ||= (fieldName == 'taskCount');
-      }
-
-      //console.log(`updateTodoShowingField(${this.phase_idx}, 'searching'): [${[this.showDescriptionLength[1], this.showDateCreated[1], this.showTaskCount[1]]}]`);
     });
   }
 
@@ -95,7 +70,6 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
     this.todoSearchingHighlightListener.unsubscribe();
 
     this.todoSortingSettingsListener.unsubscribe();
-
     this.todoSearchingRulesListener.unsubscribe();
   }
 }
