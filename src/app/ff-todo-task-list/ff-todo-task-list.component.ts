@@ -18,7 +18,9 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
       private highlighter: DomSanitizer,
       private common: FfTodoCommonService,
       private todoServ: FfTodoRealRequestService,
-      private alertServ: FfTodoAlertService) { }
+      private alertServ: FfTodoAlertService) {
+    this.displayDateFormat = this.common.displayDateFormat;
+  }
 
   @Input() todoId!: number;
   @Input() phase_idx!: number;
@@ -42,6 +44,8 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
   public taskCount!: number;
   public taskChecked!: number;
+
+  public displayDateFormat!: string;
 
   public readonlyTask!: boolean;
   public readonlyTaskListener!: Subscription;
@@ -125,15 +129,8 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     return (this.showTaskCount.length == 2) && (this.showTaskCount[0] || this.showTaskCount[1]);
   }
 
-  getTaskPlaceholder(task : Task): String {
-    if (task.deadline)
-    {
-      return `This Task is due on ${task.deadline}.`;
-    }
-    else
-    {
-      return "???";
-    }
+  getTaskDeadline(task : Task) {
+    return task.deadline;
   }
 
   prepareEditTaskForm(task : Task) {
@@ -152,10 +149,13 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     this.todoServ.editTask(patchedTask)
     .subscribe(_=> {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${this.todoId}).`});
+      /*
       this.todoServ.getTodo(this.todoId)
       .subscribe(todo => { 
         this.common.updateTodoList(new Set([todo.phase]));
       });
+      */
+      this.common.updateTodo(this.todoId);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Task with ID (${id}). See browser console for details.`});
     });
@@ -167,10 +167,13 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     this.todoServ.checkTask(id)
     .subscribe(_=> {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully checked Task with ID (${id}) for Todo with ID (${this.todoId}).`});
+      /*
       this.todoServ.getTodo(this.todoId)
       .subscribe(todo => { 
         this.common.updateTodoList(new Set([todo.phase]));
       });
+      */
+      this.common.updateTodo(this.todoId);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to check Task with ID (${id}). See browser console for details.`});
     });
@@ -181,11 +184,14 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${this.todoId}})...`);
     this.todoServ.removeTask(id)
     .subscribe(_ => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Task with ID (${id}) from Todo with ID (${this.todoId}).`});
+      /*
       this.todoServ.getTodo(this.todoId)
-      .subscribe(todo => { 
-        this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Task with ID (${id}) from Todo with ID (${todo.id}).`});
+      .subscribe(todo => {         
         this.common.updateTodoList(new Set([todo.phase]));
       });
+      */
+      this.common.updateTodo(this.todoId);
     }, errorMsg => {
       this.todoServ.getTodo(this.todoId)
       .subscribe(todo => { 

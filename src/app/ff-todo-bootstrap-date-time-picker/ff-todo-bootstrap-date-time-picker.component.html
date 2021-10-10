@@ -3,12 +3,17 @@
         <input type="datetime" [(ngModel)]="modelStr" name="deadline" [readonly]="true"
                 [placeholder]="inputDateFormatDisp" #deadline="ngModel">
         <button type="button" class="btn btn-primary" [ngbPopover]="deadlinePicker" [popoverTitle]="deadlinePickerTitle"
-                [disabled]="readonlyModel">
+                data-toggle="tooltip" data-placement="bottom" title="Toggle date-time picker"
+                [disabled]="readonlyModel" (click)="initModelOnDemand()">
             <i class="far fa-calendar-alt"></i>
+        </button>
+        <button type="button" class="btn btn-danger" [disabled]="readonlyModel" (click)="clearModel()"
+                data-toggle="tooltip" data-placement="bottom" title="Reset date-time picker">
+            <i class="fas fa-trash-alt"></i>
         </button>
     </div>
     <ng-template #deadlinePickerTitle>
-        <p>Deadline</p>
+        <p>{{ getPopoverTitle() }}</p>
     </ng-template>
     <ng-template #deadlinePicker>
         <div *ngIf="readonlyModel">

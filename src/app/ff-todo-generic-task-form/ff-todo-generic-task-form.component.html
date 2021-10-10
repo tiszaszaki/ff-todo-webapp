@@ -29,7 +29,7 @@
                     <div class="input-group">
                         <app-ff-todo-bootstrap-date-time-picker [(model)]="model.deadline" [readonlyModel]="false"
                                 [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
-                                (modelChange)="changedDeadline = true">
+                                (modelChange)="changedDeadline = true" customPopoverTitle="Deadline of Task">
                         </app-ff-todo-bootstrap-date-time-picker>
                     </div>
                </div>

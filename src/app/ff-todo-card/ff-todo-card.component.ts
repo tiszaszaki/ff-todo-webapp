@@ -70,6 +70,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   public readonlyTask!: Boolean;
   public readonlyTaskListener!: Subscription;
 
+  public updateTodoListener!: Subscription;
+
   private oldPhase! : number;
 
   public isCardValid!: Boolean;
@@ -111,6 +113,11 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.readonlyTodoListener = this.common.readonlyTodoChange.subscribe(result => this.readonlyTodo = result);
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
+
+    this.updateTodoListener = this.common.updateTodoEvent.subscribe(id => {
+      if (id == this.content.id)
+        this.refreshTodo();
+    });
 
     this.showDescriptionLength = [false, false];
     this.showDateCreated = [false, false];
@@ -173,6 +180,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.readonlyTodoListener.unsubscribe();
     this.readonlyTaskListener.unsubscribe();
+
+    this.updateTodoListener.unsubscribe();
 
     this.todoSortingSettingsListener.unsubscribe();
 
@@ -317,7 +326,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.todoServ.getTodo(this.content.id)
       .subscribe(todo => { 
         this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Task (${JSON.stringify(task)}) for Todo with ID (${todo.id}).`});
-        this.common.updateTodoList(new Set([todo.phase]));
+        this.refreshTodo();
       });
     }, errorMsg => {
       this.todoServ.getTodo(this.content.id)
@@ -334,7 +343,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
         this.todoServ.getTodo(this.content.id)
         .subscribe(todo => {
           this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Tasks from Todo with ID (${todo.id}).`});
-          this.common.updateTodoList(new Set([todo.phase]));
+          this.refreshTodo();
         });
     }, errorMsg => {
       this.todoServ.getTodo(this.content.id)

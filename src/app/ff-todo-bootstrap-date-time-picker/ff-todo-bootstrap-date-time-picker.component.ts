@@ -16,6 +16,8 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   @Input() inputDateFormat!: String;
   @Input() inputDateFormatDisp!: String;
 
+  @Input() customPopoverTitle!: String;
+
   public dateModel!: NgbDateStruct;
   public timeModel!: NgbTimeStruct;
 
@@ -24,6 +26,35 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   public deadlinePicker_collapse_status: boolean = true;
 
   constructor() { }
+
+  public getPopoverTitle() {
+    if (this.customPopoverTitle)
+    {
+      return this.customPopoverTitle;
+    }
+    else
+    {
+      return "<popover title>";
+    }
+  }
+
+  public clearModel() {
+    if (this.model)
+    {
+      this.model = undefined;
+      this.modelChange.emit(this.model);
+      this.fetchDeadline();
+    }
+  }
+
+  public initModelOnDemand() {
+    if (!this.model)
+    {
+      this.model = new Date();
+      this.modelChange.emit(this.model);
+      this.fetchDeadline();
+    }
+  }
 
   private fetchDeadline() {
     if (this.model)
@@ -35,6 +66,11 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   
       this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
         this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
+    }
+    else
+    {
+      this.dateModel = {year: -1, month: -1, day: -1};
+      this.timeModel = {hour: -1, minute: -1, second: -1};
     }
   }
 

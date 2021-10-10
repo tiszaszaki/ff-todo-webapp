@@ -11,6 +11,7 @@ export class FfTodoCommonService {
   private phaseRange!: Array<Number>;
   public todoPhaseValRangeChange = new EventEmitter< Array<Number> >();
 
+  public updateTodoEvent = new EventEmitter<Number>();
   public updateBoardEvent = new EventEmitter<void>();
   public updateTodoListEvent = new EventEmitter< Set<Number> >();
   public updateBoardListEvent = new EventEmitter<void>();
@@ -83,6 +84,11 @@ export class FfTodoCommonService {
     }
 
     return result;
+  }
+
+  updateTodo(id: Number)
+  {
+    this.updateTodoEvent.emit(id);
   }
 
   updateBoard() {

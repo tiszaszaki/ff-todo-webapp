@@ -35,7 +35,7 @@
                             </span>
                         </label>
                     </div>
-                    <div *ngIf="task.deadline" data-toggle="tooltip" data-placement="bottom" title="{{ getTaskPlaceholder(task) }}">
+                    <div *ngIf="task.deadline" data-toggle="tooltip" data-placement="bottom" title="This Task is due to {{ getTaskDeadline(task) | date:displayDateFormat }}.">
                         <i class="far fa-calendar-alt"></i>
                     </div>
                 </div>
