@@ -26,85 +26,83 @@
         </h5>
     </div>
     <div class="card-body">
-        <ul class="list-group list-group-flush">
-			<li class="list-group">
-				<ul ngbNav #todoTabs="ngbNav" class="nav nav-pills">
-					<li ngbNavItem>
-						<a ngbNavLink>Description</a>
-						<ng-template ngbNavContent>
-							<div *ngIf="descriptionLength">
-								<div class="list-group-item rounded border border-secondary mt-1"
-										data-toggle="tooltip" data-placement="bottom" title="Todo description">
-									<p class="card-text" [innerHTML]="highlightedDescription">{{ content.description }}</p>
-								</div>
-								<div class="list-group-item" *ngIf="isDescriptionLengthShown()">
-									<p class="card-text">Description length: {{ descriptionLength }}</p>
-								</div>
+		<div>
+			<ul ngbNav #todoTabs="ngbNav" class="nav nav-pills">
+				<li ngbNavItem>
+					<a ngbNavLink>Description</a>
+					<ng-template ngbNavContent>
+						<div *ngIf="descriptionLength">
+							<div class="list-group-item rounded border border-secondary mt-1"
+									data-toggle="tooltip" data-placement="bottom" title="Todo description">
+								<p class="card-text" [innerHTML]="highlightedDescription">{{ content.description }}</p>
 							</div>
-							<div *ngIf="!descriptionLength" class="text-muted">
-								There is no description for this Todo.
+							<div class="list-group-item" *ngIf="isDescriptionLengthShown()">
+								<p class="card-text">Description length: {{ descriptionLength }}</p>
 							</div>
-						</ng-template>
-					</li>
-					<li ngbNavItem>
-						<a ngbNavLink>Tasks</a>
-						<ng-template ngbNavContent>
-							<app-ff-todo-task-list [tasks]="tasklistStr" [phase_idx]="phase_idx" [todoId]="content.id">
-							</app-ff-todo-task-list>
-						</ng-template>
-					</li>
-				</ul>
-				<div [ngbNavOutlet]="todoTabs"></div>
-			</li>
-            <li class="list-group-item" *ngIf="!readonlyTodo">
-				<div class="d-flex justify-content-between">
-					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareAddTaskForm()"
-								data-toggle="tooltip" data-placement="bottom" title="Add new Task"
-								[disabled]="readonlyTask">
-							<i class="fas fa-plus"></i>
-						</button>
-						<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditTodoForm()"
-								data-toggle="tooltip" data-placement="bottom" title="Edit Todo">
-							<i class="fas fa-pencil-alt"></i>
-						</button>
-					</div>
-					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-warning btn-sm text-end" (click)="prepareCloneTodoForm()"
-								data-toggle="tooltip" data-placement="bottom" title="Clone Todo" [disabled]="!enableTodoCloning">
-								<i class="far fa-copy"></i>
-						</button>
-						<button type="button" class="btn btn-warning btn-sm text-end" (click)="refreshTodo()"
-								data-toggle="tooltip" data-placement="bottom" title="Refresh Todo card">
-								<i class="fas fa-sync-alt"></i>
-						</button>
-					</div>
-					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTodoForm()"
-								data-toggle="tooltip" data-placement="bottom" title="Remove Todo">
-							<i class="fas fa-trash-alt"></i>
-						</button>
-						<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveAllTasksForm()"
-								data-toggle="tooltip" data-placement="bottom" title="Remove All Tasks" [disabled]="readonlyTask || !taskCount">
-							<i class="fas fa-broom"></i>
-						</button>
-					</div>
-					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-primary btn-sm text-end" (click)="shiftTodo(LEFT)"
-								data-toggle="tooltip" data-placement="bottom" title="Shift Todo to the left"
-								[disabled]="!phaseLeftExists">
-							<i class="fas fa-arrow-left"></i>
-						</button>
-						<button type="button" class="btn btn-primary btn-sm text-end" (click)="shiftTodo(RIGHT)"
-								data-toggle="tooltip" data-placement="bottom" title="Shift Todo to the right"
-								[disabled]="!phaseRightExists">
-							<i class="fas fa-arrow-right"></i>
-						</button>
-					</div>
+						</div>
+						<div *ngIf="!descriptionLength" class="text-muted">
+							There is no description for this Todo.
+						</div>
+					</ng-template>
+				</li>
+				<li ngbNavItem>
+					<a ngbNavLink>Tasks</a>
+					<ng-template ngbNavContent>
+						<app-ff-todo-task-list [tasks]="tasklistStr" [phase_idx]="phase_idx" [todoId]="content.id">
+						</app-ff-todo-task-list>
+					</ng-template>
+				</li>
+			</ul>
+			<div [ngbNavOutlet]="todoTabs"></div>
+		</div>
+		<div *ngIf="!readonlyTodo">
+			<div class="d-flex justify-content-between">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareAddTaskForm()"
+							data-toggle="tooltip" data-placement="bottom" title="Add new Task"
+							[disabled]="readonlyTask">
+						<i class="fas fa-plus"></i>
+					</button>
+					<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditTodoForm()"
+							data-toggle="tooltip" data-placement="bottom" title="Edit Todo">
+						<i class="fas fa-pencil-alt"></i>
+					</button>
 				</div>
-			</li>
-        </ul>
-		<div *ngIf="content.deadline">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-warning btn-sm text-end" (click)="prepareCloneTodoForm()"
+							data-toggle="tooltip" data-placement="bottom" title="Clone Todo" [disabled]="!enableTodoCloning">
+							<i class="far fa-copy"></i>
+					</button>
+					<button type="button" class="btn btn-warning btn-sm text-end" (click)="refreshTodo()"
+							data-toggle="tooltip" data-placement="bottom" title="Refresh Todo card">
+							<i class="fas fa-sync-alt"></i>
+					</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTodoForm()"
+							data-toggle="tooltip" data-placement="bottom" title="Remove Todo">
+						<i class="fas fa-trash-alt"></i>
+					</button>
+					<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveAllTasksForm()"
+							data-toggle="tooltip" data-placement="bottom" title="Remove All Tasks" [disabled]="readonlyTask || !taskCount">
+						<i class="fas fa-broom"></i>
+					</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-sm text-end" (click)="shiftTodo(LEFT)"
+							data-toggle="tooltip" data-placement="bottom" title="Shift Todo to the left"
+							[disabled]="!phaseLeftExists">
+						<i class="fas fa-arrow-left"></i>
+					</button>
+					<button type="button" class="btn btn-primary btn-sm text-end" (click)="shiftTodo(RIGHT)"
+							data-toggle="tooltip" data-placement="bottom" title="Shift Todo to the right"
+							[disabled]="!phaseRightExists">
+						<i class="fas fa-arrow-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="border border-secondary rounded mt-2 p-2" *ngIf="content.deadline">
 			Deadline: {{ content.deadline | date:displayDateFormat }}
 		</div>
     </div>

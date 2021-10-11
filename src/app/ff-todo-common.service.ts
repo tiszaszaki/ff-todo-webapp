@@ -383,17 +383,23 @@ export class FfTodoCommonService {
       this.readonlyTodo = !this.readonlyTodo;
 
     this.readonlyTodoChange.emit(this.readonlyTodo);
+    this.readonlyTaskChange.emit(this.readonlyTask || this.readonlyTodo);
+
     return this.readonlyTodo;
   }
 
   updateReadonlyTask(val?: Boolean): Boolean {
+    let result;
+
     if (val !== undefined)
       this.readonlyTask = val;
     else
       this.readonlyTask = !this.readonlyTask;
 
-    this.readonlyTaskChange.emit(this.readonlyTask);
-    return this.readonlyTask;
+    result = this.readonlyTask || this.readonlyTodo;
+
+    this.readonlyTaskChange.emit(result);
+    return result;
   }
 
   updateTodoCount(val: number) {
