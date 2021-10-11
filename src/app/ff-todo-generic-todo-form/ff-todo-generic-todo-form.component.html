@@ -39,7 +39,8 @@
                         <div class="input-group">
                             <div class="btn-group btn-group-toggle" ngbRadioGroup id="phase" [(ngModel)]="model.phase" name="phase"
                                     #phase="ngModel" required>
-                                <label ngbButtonLabel class="btn-primary" *ngFor="let phase of iterateTodoPhases()">
+                                <label ngbButtonLabel class="btn-primary" *ngFor="let phase of iterateTodoPhases()"
+                                        data-toggle="tooltip" data-placement="bottom" title="{{ getTodoPhaseTooltip(phase) }}">
                                     <input ngbButton type="radio" [value]="phase">{{ getTodoPhaseLabel(phase) }}
                                 </label>
                             </div>
@@ -54,7 +55,8 @@
                         <div class="input-group">
                             <div class="btn-group btn-group-toggle" ngbRadioGroup id="board" [(ngModel)]="model.boardId" name="board"
                                     #board="ngModel" required>
-                                <label ngbButtonLabel class="btn-primary" *ngFor="let board of iterateBoardList()">
+                                <label ngbButtonLabel class="btn-primary" *ngFor="let board of iterateBoardList()"
+                                        data-toggle="tooltip" data-placement="bottom" title="{{ getBoardTooltip(board) }}">
                                     <input ngbButton type="radio" [value]="board">{{ getBoardName(board) }}
                                 </label>
                             </div>

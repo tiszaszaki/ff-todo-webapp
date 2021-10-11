@@ -83,7 +83,7 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
         if (this.model)
         {
           let id=this.model.id;
-          this.formTitle = `Edit Board with ID #${id+1}`;
+          this.formTitle = `Edit Board with ID ${id}`;
 
           this.placeholderName = "Change name for this Board...";
           this.placeholderDescription = "Change description for this Board...";
@@ -97,7 +97,7 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
         {
           let id=this.model.id;
           let name=this.model.name;
-          this.formTitle = `Remove Board with ID #${id+1}`;
+          this.formTitle = `Remove Board with ID ${id}`;
           this.confirmMessage = `Are you sure to remove this Board (${name})?`;
           this.confirmButtonCaption = 'Remove';
         }

@@ -75,6 +75,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     return result;
   }
 
+  getBoardTooltip(id: number) {
+    return `Board with ID ${id}`;
+  }
+
   iterateTodoPhases() {
     return this.common.iterateTodoPhases();
   }
@@ -87,6 +91,10 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       result += " (default)";
 
     return result;
+  }
+
+  getTodoPhaseTooltip(idx: number) {
+    return `Phase #${idx + 1}`;
   }
 
   private resetModel() {
@@ -121,7 +129,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         if (this.model)
         {
           let id=this.model.id;
-          this.formTitle = `Edit Todo with ID #${id+1}`;
+          this.formTitle = `Edit Todo with ID ${id}`;
 
           this.placeholderName = "Change name for this Todo...";
           this.placeholderDescription = "Change description for this Todo...";
@@ -133,7 +141,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         if (this.model)
         {
           let id=this.model.id;
-          this.formTitle = `Clone Todo with ID #${id+1}`;
+          this.formTitle = `Clone Todo with ID ${id}`;
 
           this.placeholderName = "Name for this Todo left blank...";
           this.placeholderDescription = "Description for this Todo left blank...";
@@ -145,7 +153,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
         if (this.model)
         {
           let id=this.model.id;
-          this.formTitle = `Remove Todo with ID #${id+1}`;
+          this.formTitle = `Remove Todo with ID ${id}`;
           this.confirmMessage = `Are you sure to remove this Todo?`;
           this.confirmButtonCaption = 'Remove';
         }

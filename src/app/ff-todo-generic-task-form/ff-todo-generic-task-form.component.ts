@@ -72,7 +72,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
     switch (this.mode)
     {
       case this.ADD: {
-        this.formTitle = `Add a new Task for Todo with ID #${this.todoId+1}`;
+        this.formTitle = `Add a new Task for Todo with ID ${this.todoId}`;
         this.placeholderName = "Enter name for new Task...";
 
         this.submitButtonCaption = "Save";
@@ -81,7 +81,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
         if (this.model)
         {
           let id=this.model.id;
-          this.formTitle = `Edit Task with ID #${id+1}`;
+          this.formTitle = `Edit Task with ID ${id}`;
           this.placeholderName = "Change name for this Task...";
 
           this.submitButtonCaption = "Update";
@@ -91,14 +91,14 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
         if (this.model)
         {
           let id=this.model.id;
-          this.formTitle = `Remove Task with ID #${id+1}`;
+          this.formTitle = `Remove Task with ID ${id}`;
           this.confirmMessage = `Are you sure to remove this Task?`;
           this.confirmButtonCaption = 'Remove';
         }
       } break;
       case this.REMOVE_ALL: {
         let id=this.todoId;
-        this.formTitle = `Remove all Tasks from Todo with ID #${id+1}`;
+        this.formTitle = `Remove all Tasks from Todo with ID ${id}`;
         this.confirmMessage = `Are you sure to remove all Tasks?`;
         this.confirmButtonCaption = 'Remove All';
       } break;
