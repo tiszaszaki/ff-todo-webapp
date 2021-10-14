@@ -19,6 +19,8 @@ export class FfTodoCommonService {
   private isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListChange = new EventEmitter<Boolean>();
 
+  private isRealService!: Boolean;
+
   private boardSelected!: Number;
   public boardSelectedChange = new EventEmitter<Number>();
 
@@ -410,6 +412,14 @@ export class FfTodoCommonService {
   changeRouteStatus(val: Boolean) {
     this.isRoutedToTodoList = val;
     this.isRoutedToTodoListChange.emit(this.isRoutedToTodoList);
+  }
+
+  setRealServiceStatus(val: Boolean) {
+    this.isRealService = val;
+  }
+
+  getRealServiceStatus() {
+    return this.isRealService;
   }
 
   setBoardSelected(id: Number) {

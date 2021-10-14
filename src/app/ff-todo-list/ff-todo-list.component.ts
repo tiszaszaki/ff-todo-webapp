@@ -5,6 +5,7 @@ import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { Todo } from '../todo';
 
@@ -16,7 +17,7 @@ import { Todo } from '../todo';
 export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoMockRequestService,
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {

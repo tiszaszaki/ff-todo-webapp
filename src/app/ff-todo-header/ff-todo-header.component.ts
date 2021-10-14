@@ -5,6 +5,7 @@ import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
@@ -51,7 +52,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public readonly REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
 
   constructor(
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoMockRequestService,
       private common: FfTodoCommonService,
       private router: Router,
       private alertServ: FfTodoAlertService) {
@@ -92,6 +93,14 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTaskListener.unsubscribe();
 
     this.isRoutedToTodoListListener.unsubscribe();
+  }
+
+  public defRealService() {
+    return (this.common.getRealServiceStatus() !== undefined);
+  }
+
+  public isRealService() {
+    return this.common.getRealServiceStatus();
   }
 
   refreshTodoList() {

@@ -3,6 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
@@ -17,7 +18,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   constructor(
       private highlighter: DomSanitizer,
       private common: FfTodoCommonService,
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoMockRequestService,
       private alertServ: FfTodoAlertService) {
     this.displayDateFormat = this.common.displayDateFormat;
   }

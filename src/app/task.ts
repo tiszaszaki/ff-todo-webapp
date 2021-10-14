@@ -3,4 +3,6 @@ export class Task {
     public name!: String;
     public done!: Boolean;
     public deadline?: Date;
+
+    public todoId?: number;
 }

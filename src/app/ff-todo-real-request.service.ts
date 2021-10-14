@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.stage';
 import { Board } from './board';
+import { FfTodoCommonService } from './ff-todo-common.service';
 import { ShiftDirection } from './shift-direction';
 import { Task } from './task';
 import { Todo } from './todo';
@@ -36,13 +37,17 @@ export class FfTodoRealRequestService {
     })
   };
 
-  constructor(private http: HttpClient) {
+  constructor(
+      private http: HttpClient,
+      private common: FfTodoCommonService) {
     this.backendUrl = environment.apiUrl;
     this.boardPath = this.backendUrl + 'board';
     this.todoPath = this.backendUrl + 'todo';
     this.taskPath = this.backendUrl + 'task';
 
     this.timeoutInterval = 5000;
+
+    this.common.setRealServiceStatus(true);
   }
 
   getBoard(id : number) : Observable<Board> {

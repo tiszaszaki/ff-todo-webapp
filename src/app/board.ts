@@ -6,8 +6,8 @@ export class Board {
     public description!: String;
     public author!: String;
     public dateCreated!: Date;
-    public readonlyTodos!: String;
-    public readonlyTasks!: String;
+    public readonlyTodos!: Boolean;
+    public readonlyTasks!: Boolean;
 
     todos?: Todo[];
 }

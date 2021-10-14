@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
 import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public boardQuerySuccess!: Boolean;
 
   constructor(
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoMockRequestService,
       private common: FfTodoCommonService) {
   }
 
