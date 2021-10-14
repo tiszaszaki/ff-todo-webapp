@@ -32,6 +32,8 @@ import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/f
 import { FfTodoQueryStatusComponent } from './ff-todo-query-status/ff-todo-query-status.component';
 import { FfTodoCardRefreshingComponent } from './ff-todo-card-refreshing/ff-todo-card-refreshing.component';
 import { FfTodoBootstrapDateTimePickerComponent } from './ff-todo-bootstrap-date-time-picker/ff-todo-bootstrap-date-time-picker.component'
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,8 @@ import { FfTodoBootstrapDateTimePickerComponent } from './ff-todo-bootstrap-date
     FfTodoBootstrapDateTimePickerComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule
+    BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule,
+    HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
   ],
   providers: [],
   bootstrap: [AppComponent]
