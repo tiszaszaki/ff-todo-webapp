@@ -38,8 +38,8 @@ export class FfTodoMockRequestService {
         map((board : Board) => { return board; }),
         tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -58,8 +58,8 @@ export class FfTodoMockRequestService {
         }),
         tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -68,8 +68,8 @@ export class FfTodoMockRequestService {
     return this.http.post<Board>(`${this.boardPath}`, board, this.httpOptions).pipe(
       tap((newBoard: Board) => console.log(`Added new Board: ${JSON.stringify(newBoard)}`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     )
   }
@@ -78,8 +78,8 @@ export class FfTodoMockRequestService {
     return this.http.put(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
       tap(_ => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -88,8 +88,8 @@ export class FfTodoMockRequestService {
     return this.http.delete(`${this.boardPath}/${id}`).pipe(
       tap(_ => console.log(`Removed Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -111,8 +111,8 @@ export class FfTodoMockRequestService {
       map((board : Board) => { return board.readonlyTodos; }),
       tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -125,14 +125,14 @@ export class FfTodoMockRequestService {
         this.http.put(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
           tap(_ => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
           catchError((error: HttpErrorResponse) => {
-            console.error(error);
-            return throwError(error);
+            console.error(error.message);
+            return throwError(error.message);
           })
         );
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -141,8 +141,8 @@ export class FfTodoMockRequestService {
     return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
       map((board : Board) => { return board.readonlyTasks; }),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
   );
   }
@@ -155,8 +155,8 @@ export class FfTodoMockRequestService {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
         tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -168,8 +168,8 @@ export class FfTodoMockRequestService {
         }),
         tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -191,49 +191,83 @@ export class FfTodoMockRequestService {
       }),
       tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s) from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
 
   addTodo(id : number, todo: Todo): Observable<Todo> {
+    todo.dateCreated = todo.dateModified = new Date();
+    todo.boardId = id;
     return this.http.post<Todo>(`${this.todoPath}`, todo, this.httpOptions).pipe(
       tap((newTodo: Todo) => console.log(`Added new Todo: ${JSON.stringify(newTodo)}`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     )
   }
 
   editTodo(id : number, patchedTodo: Todo): Observable<any> {
     patchedTodo.dateModified = new Date();
-    return this.http.put(`${this.todoPath}/${patchedTodo.id}`, patchedTodo).pipe(
+    return this.http.put(`${this.todoPath}/${id}`, patchedTodo).pipe(
       tap(_ => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
 
-  cloneTodo(id : number, phase : number, boardId : number): Observable<void> {
-    return of();
+  cloneTodo(id : number, phase : number, boardId : number): Observable<Todo> {
+    return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
+      map((todo : Todo) => {
+        let clonedTodo = todo;
+
+        clonedTodo.name += " (cloned)";
+        clonedTodo.phase = phase;
+        clonedTodo.boardId = boardId;
+
+        this.addTodo(boardId, clonedTodo).subscribe();
+    
+        return clonedTodo;
+      }),
+      tap(() => console.log(`Cloned Todo with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
   }
 
   removeTodo(id: number): Observable<any> {
     return this.http.delete(`${this.todoPath}/${id}`).pipe(
       tap(_ => console.log(`Removed Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
 
   removeAllTodos(id: number): Observable<any> {
-    return of([]);
+    return this.http.get<Todo[]>(`${this.todoPath}`).pipe(
+      map((todos : Todo[]) => {
+        for (let todo of todos)
+        {
+          if (todo.boardId == id)
+          {
+            this.removeTodo(todo.id).subscribe();
+          }
+        }
+      }),
+      tap(_ => console.log(`Removed all Todos from Board with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
   }
 
   getTasksFromTodo(todoId: number): Observable<Task[]> {
@@ -247,52 +281,67 @@ export class FfTodoMockRequestService {
             filtered_tasks.push(task);
           }
         }
-        console.log(`Fetched ${filtered_tasks.length} Task(s) from Todo with ID (${todoId})`);
+        if (filtered_tasks.length)
+        {
+          console.log(`Fetched ${filtered_tasks.length} Task(s) from Todo with ID (${todoId})`);
+        }
         return filtered_tasks;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
 
   addTask(task: Task, todoId: number): Observable<Task> {
-    return this.http.post<Task>(`this.taskPath`, task, this.httpOptions).pipe(
+    task.todoId = todoId;
+    return this.http.post<Task>(`${this.taskPath}`, task, this.httpOptions).pipe(
       tap((newTask: Task) => console.log(`Added new Task for Todo with ID (${todoId}): ${JSON.stringify(newTask)}`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     )
   }
 
   editTask(patchedTask: Task): Observable<any> {
-    return this.http.put(`this.taskPath/patchedTask.id`, patchedTask).pipe(
+    return this.http.put(`${this.taskPath}/${patchedTask.id}`, patchedTask).pipe(
       tap(_ => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
-  }
-
-  checkTask(id: number): Observable<any> {
-    return of([]);
   }
 
   removeTask(id: number): Observable<any> {
     return this.http.delete(`this.taskPath/id`).pipe(
       tap(_ => console.log(`Removed Task with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
 
   removeAllTasks(id: number): Observable<any> {
-    return of([]);
+    return this.http.get<Task[]>(`${this.taskPath}`).pipe(
+      map((tasks : Task[]) => {
+        for (let task of tasks)
+        {
+          if (task.todoId == id)
+          {
+            this.removeTask(task.id).subscribe();
+          }
+        }
+      }),
+      tap(_ => console.log(`Removed all Tasks from Todo with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
   }
 
 }

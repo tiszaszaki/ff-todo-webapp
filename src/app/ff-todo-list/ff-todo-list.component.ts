@@ -17,7 +17,7 @@ import { Todo } from '../todo';
 export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
-      private todoServ: FfTodoMockRequestService,
+      private todoServ: FfTodoRealRequestService,
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
@@ -190,21 +190,17 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
 
+      this.todoQueryFinished = true;
+      if (this.todoCount > 0)
+        this.todoQueryFinished &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
+
       this.todoQuerySuccess = true;
-      this.todoQueryFinished = true;
     }, errorMsg => {
-      this.todoQuerySuccess = false;
       this.todoQueryFinished = true;
+      this.todoQuerySuccess = false;
 
       this.dumpErrorMessage = JSON.stringify(errorMsg);
     });
-  }
-
-  checkIfTodoQueryFinished() {
-    let result = this.todoQueryFinished;
-    if (this.todoCount > 0)
-      result &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
-    return result;
   }
 
   prepareSortTodoForm(phase_idx: number) {

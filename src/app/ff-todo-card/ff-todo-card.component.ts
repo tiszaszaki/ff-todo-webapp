@@ -21,7 +21,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
       private highlighter: DomSanitizer,
       private common: FfTodoCommonService,
-      private todoServ: FfTodoMockRequestService,
+      private todoServ: FfTodoRealRequestService,
       private alertServ: FfTodoAlertService) {
 
     this.displayDateFormat = this.common.displayDateFormat;

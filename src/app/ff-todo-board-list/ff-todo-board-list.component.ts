@@ -22,7 +22,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public dumpErrorMessage!: String;
 
   constructor(
-      private todoServ: FfTodoMockRequestService,
+      private todoServ: FfTodoRealRequestService,
       private common: FfTodoCommonService) {
   }
 
@@ -73,11 +73,12 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
           this.common.addBoardName(id, result.name);
         });
         idx++;
-        if (idx == results.length)
-        {
-          this.boardQueryFinished = true;
-          this.boardQuerySuccess = true;
-        }
+      }
+
+      if (idx == results.length)
+      {
+        this.boardQueryFinished = true;
+        this.boardQuerySuccess = true;
       }
     }, errorMsg => {
       this.boardQueryFinished = true;

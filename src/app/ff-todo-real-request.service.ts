@@ -5,7 +5,6 @@ import { catchError, tap, timeout } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.stage';
 import { Board } from './board';
 import { FfTodoCommonService } from './ff-todo-common.service';
-import { ShiftDirection } from './shift-direction';
 import { Task } from './task';
 import { Todo } from './todo';
 
@@ -55,8 +54,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -66,8 +65,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -77,8 +76,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap((newBoard: Board) => console.log(`Added new Board: ${JSON.stringify(newBoard)}`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     )
   }
@@ -88,8 +87,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -99,8 +98,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Removed Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -110,8 +109,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((maxLength : Number) => console.log(`Fetched maximum description length for all Boards: (${maxLength})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -121,8 +120,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((maxLength : Number) => console.log(`Fetched maximum description length for all Todos: (${maxLength})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -132,8 +131,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((result : Array<Number>) => console.log(`Fetched phase range for all Todos: (${result})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -143,8 +142,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -154,8 +153,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap(_ => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -165,8 +164,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((readonly : Boolean) => console.log(`Fetched Read-only Tasks settings for Board with ID (${id}): (${readonly})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -176,8 +175,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap(_ => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -187,8 +186,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -198,8 +197,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -209,8 +208,8 @@ export class FfTodoRealRequestService {
         timeout(this.timeoutInterval),
         tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s) from Board with ID (${id})`)),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
+          console.error(error.message);
+          return throwError(error.message);
         })
     );
   }
@@ -220,8 +219,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap((newTodo: Todo) => console.log(`Added new Todo: ${JSON.stringify(newTodo)}`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     )
   }
@@ -231,8 +230,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(() => console.log(`Cloned Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -242,20 +241,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
-      })
-    );
-  }
-
-  shiftTodo(id : number, dir: ShiftDirection): Observable<any> {
-    let dirStr=JSON.stringify(dir).toLowerCase();
-    return this.http.patch(`${this.todoPath}/${id}/shift/${dirStr}`, undefined).pipe(
-      timeout(this.timeoutInterval),
-      tap(_ => console.log(`Shifted Todo with ID (${id}) to the ${dirStr}`)),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -265,8 +252,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Removed Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -276,19 +263,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Removed all Todos from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
-      })
-    );
-  }
-
-  removeAllTodosFromBoard(id: Number): Observable<any> {
-    return this.http.delete(`${this.boardPath}/${id}/clear`).pipe(
-      timeout(this.timeoutInterval),
-      tap(_ => console.log(`Removed all Todos from Board with ID (${id})`)),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -297,8 +273,8 @@ export class FfTodoRealRequestService {
     return this.http.get<Task[]>(`${this.todoTaskPath(todoId)}s`).pipe(
       tap((tasks : Task[]) => console.log(`Fetched ${tasks.length} Task(s) from Todo with ID (${todoId})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -308,8 +284,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap((newTask: Task) => console.log(`Added new Task for Todo with ID (${todoId}): ${JSON.stringify(newTask)}`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     )
   }
@@ -319,19 +295,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
-      })
-    );
-  }
-
-  checkTask(id: number): Observable<any> {
-    return this.http.patch(`${this.taskPath}/${id}/check`, undefined).pipe(
-      timeout(this.timeoutInterval),
-      tap(_ => console.log(`Checked Task with ID (${id})`)),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -341,8 +306,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Removed Task with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
@@ -352,8 +317,8 @@ export class FfTodoRealRequestService {
       timeout(this.timeoutInterval),
       tap(_ => console.log(`Removed all Tasks from Todo with ID (${todoId})`)),
       catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
+        console.error(error.message);
+        return throwError(error.message);
       })
     );
   }
