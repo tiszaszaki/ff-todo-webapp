@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Todo } from './todo';
 import { Task } from './task';
-import { ShiftDirection } from './shift-direction';
 import { FfTodoCommonService } from './ff-todo-common.service';
 import { Board } from './board';
 
@@ -150,32 +149,10 @@ export class FfTodoMockRequestService {
 
   setBoardReadonlyTasksSetting(id : number, readonly: Boolean) : Observable<void> {
     return of();
-    /*
-    return this.http.patch<void>(`${this.boardPath}/${id}/readonly-tasks/${readonly}`, undefined).pipe(
-        tap(_ => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(error);
-        })
-    );
-    */
   }
 
   getTodo(id : number) : Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
-        map((todo : Todo) => {
-          todo.tasks = [];
-          this.getTasksFromTodo(id).subscribe(tasks => {
-            for (let task of tasks)
-            {
-              if (task.todoId == id)
-              {
-                //todo.tasks.push(task);
-              }
-            }
-          });
-          return todo;
-        }),
         tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
         catchError((error: HttpErrorResponse) => {
           console.error(error);
@@ -259,10 +236,17 @@ export class FfTodoMockRequestService {
     return of([]);
   }
 
-  private getTasksFromTodo(todoId: number): Observable<Task[]> {
-    return this.http.get<Task[]>(this.taskPath).pipe(
+  getTasksFromTodo(todoId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       map((tasks : Task[]) => {
-        let filtered_tasks = tasks;
+        let filtered_tasks: Task[] = [];
+        for (let task of tasks)
+        {
+          if (task.todoId == todoId)
+          {
+            filtered_tasks.push(task);
+          }
+        }
         console.log(`Fetched ${filtered_tasks.length} Task(s) from Todo with ID (${todoId})`);
         return filtered_tasks;
       }),
@@ -274,7 +258,7 @@ export class FfTodoMockRequestService {
   }
 
   addTask(task: Task, todoId: number): Observable<Task> {
-    return this.http.post<Task>(this.taskPath, task, this.httpOptions).pipe(
+    return this.http.post<Task>(`this.taskPath`, task, this.httpOptions).pipe(
       tap((newTask: Task) => console.log(`Added new Task for Todo with ID (${todoId}): ${JSON.stringify(newTask)}`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
@@ -284,7 +268,7 @@ export class FfTodoMockRequestService {
   }
 
   editTask(patchedTask: Task): Observable<any> {
-    return this.http.put(this.taskPath + patchedTask.id, patchedTask).pipe(
+    return this.http.put(`this.taskPath/patchedTask.id`, patchedTask).pipe(
       tap(_ => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
@@ -298,7 +282,7 @@ export class FfTodoMockRequestService {
   }
 
   removeTask(id: number): Observable<any> {
-    return this.http.delete(this.taskPath + id).pipe(
+    return this.http.delete(`this.taskPath/id`).pipe(
       tap(_ => console.log(`Removed Task with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error);

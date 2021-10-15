@@ -21,7 +21,8 @@
                 There are no Boards.
             </div>
             <div class="text-danger" *ngIf="!boardQuerySuccess">
-                Cannot query Board list.
+                <div>Cannot query Board list.</div>
+                <small>Cause: {{ dumpErrorMessage }}</small>
             </div>
         </div>
     </div>

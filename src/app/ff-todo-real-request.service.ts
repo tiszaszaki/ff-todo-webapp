@@ -293,6 +293,16 @@ export class FfTodoRealRequestService {
     );
   }
 
+  getTasksFromTodo(todoId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.todoTaskPath(todoId)}s`).pipe(
+      tap((tasks : Task[]) => console.log(`Fetched ${tasks.length} Task(s) from Todo with ID (${todoId})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
   addTask(task: Task, todoId: number): Observable<Task> {
     return this.http.put<Task>(`${this.todoTaskPath(todoId)}`, task, this.httpOptions).pipe(
       timeout(this.timeoutInterval),

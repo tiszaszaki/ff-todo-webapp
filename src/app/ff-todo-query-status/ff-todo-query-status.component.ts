@@ -12,6 +12,8 @@ export class FfTodoQueryStatusComponent implements OnInit {
   @Input() todoQueryFinished!: Boolean;
   @Input() todoQuerySuccess!: Boolean;
 
+  @Input() message!: String;
+
   ngOnInit(): void {
   }
 

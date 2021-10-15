@@ -10,7 +10,10 @@
     </div>
 
     <div *ngIf="todoQueryFinished && !todoQuerySuccess">
-        <p class="mt-3 text-danger">Cannot query Todo list</p>
+        <div class="mt-3 text-danger">
+            <div>Cannot query Todo list</div>
+            <small>Cause: {{ message }}</small>
+        </div>
         <div class="display-1 text-danger">
             <i class="far fa-folder-open"></i>
             <i class="fas fa-exclamation"></i>

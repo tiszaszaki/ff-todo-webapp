@@ -19,6 +19,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public boardQueryFinished!: Boolean;
   public boardQuerySuccess!: Boolean;
 
+  public dumpErrorMessage!: String;
+
   constructor(
       private todoServ: FfTodoMockRequestService,
       private common: FfTodoCommonService) {
@@ -65,18 +67,22 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
       this.common.clearBoardNames();
 
-      this.boardQueryFinished = true;
-      this.boardQuerySuccess = true;
-
       for (let id of results)
       {
         this.todoServ.getBoard(id as number).subscribe(result => {
           this.common.addBoardName(id, result.name);
         });
+        idx++;
+        if (idx == results.length)
+        {
+          this.boardQueryFinished = true;
+          this.boardQuerySuccess = true;
+        }
       }
     }, errorMsg => {
       this.boardQueryFinished = true;
       this.boardQuerySuccess = false;
+      this.dumpErrorMessage = JSON.stringify(errorMsg);
     });
   }
 

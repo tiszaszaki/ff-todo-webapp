@@ -47,6 +47,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public todoQueryFinished!: Boolean;
   public todoQuerySuccess!: Boolean;
 
+  public dumpErrorMessage!: String;
+
   public boardContent!: Board;
 
   public boardSelected!: Number;
@@ -60,6 +62,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   
   public todoCount!: number;
   public todoCountListener!: Subscription;
+  private todoCountTaskQuerySuccessful!: number;
   
   public todo_list!: Todo[][];
   public task_count!: number[];
@@ -97,7 +100,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   private getTodos(phase?: Set<Number>): void {
     var todo_results: Observable<Todo[]>;
-    let todoCountTemp = 0;
 
     if (!phase)
     {
@@ -125,6 +127,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     todo_results.subscribe(records => {
       let todo_records = records;
 
+      this.common.updateTodoCount(todo_records.length);
+      this.todoCountTaskQuerySuccessful = 0;
+
       if (!todo_records)
         todo_records = [];
 
@@ -146,15 +151,22 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       for (let todo_idx in todo_records)
       {
         let todo=todo_records[todo_idx];
-        let taskCountPerPhase=0;
 
-        if (todo.tasks)
+        if (this.common.getRealServiceStatus())
         {
-          taskCountPerPhase = todo.tasks.length;
+          if (!todo.tasks)
+            todo.tasks = [];
+
+          this.task_count[todo.phase as number] += todo.tasks.length;
+          this.todoCountTaskQuerySuccessful++;
         }
         else
         {
-          todo.tasks = [];
+          this.todoServ.getTasksFromTodo(todo.id).subscribe(tasks => {
+            //todo.tasks = tasks;
+            this.task_count[todo.phase as number] += tasks.length;
+            this.todoCountTaskQuerySuccessful++;
+          });
         }
 
         if (!todo.description)
@@ -167,40 +179,15 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         {
           let _phase = todo.phase;
           this.todo_list[_phase].push(todo);
-          this.task_count[_phase] += taskCountPerPhase;
         }
         else
         {
           for (let _phase of phase) {
             if ((_phase >= this.phaseMin) && (_phase <= this.phaseMax) && (todo.phase == _phase)) {
               this.todo_list[_phase as number].push(todo);
-              this.task_count[_phase as number] += taskCountPerPhase;
             }
           }
         }
-
-        for (let todo_phase of this.todo_list)
-        {
-          todoCountTemp += todo_phase.length;
-        }
-
-        this.common.updateTodoCount(todoCountTemp);
-
-        /*
-        if (phase)
-        if (phase.size == 0)
-        {
-          console.log('Filled Todo list in all phases.');
-        }
-        if (phase)
-        if (phase.size > 0)
-        {
-          let phase_arr = [];
-          for (let _phase of phase) { phase_arr.push(_phase); }
-          phase_arr.sort();
-          console.log(`Tried to fill Todo list only in phases (${phase_arr}).`);
-        }
-        */
       }
 
       this.todoQuerySuccess = true;
@@ -208,7 +195,16 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     }, errorMsg => {
       this.todoQuerySuccess = false;
       this.todoQueryFinished = true;
+
+      this.dumpErrorMessage = JSON.stringify(errorMsg);
     });
+  }
+
+  checkIfTodoQueryFinished() {
+    let result = this.todoQueryFinished;
+    if (this.todoCount > 0)
+      result &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
+    return result;
   }
 
   prepareSortTodoForm(phase_idx: number) {
