@@ -3,10 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
-import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
-import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { Todo } from '../todo';
 
 @Component({
@@ -17,7 +16,7 @@ import { Todo } from '../todo';
 export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoAbstractRequestService,
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
@@ -223,7 +222,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     let id = board.id;
     console.log(`Trying to update Board with ID (${id}) to (${JSON.stringify(board)})...`);
     this.todoServ.editBoard(id, board)
-    .subscribe(_ => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Board with ID (${id}) to (${JSON.stringify(board)}).`});
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Board with ID (${id}). See browser console for details.`});
@@ -234,7 +233,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     let id = board.id;
     console.log(`Trying to remove Board with ID (${id})...`);
     this.todoServ.removeBoard(id)
-    .subscribe(_ => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Board with ID (${id}).`});
       this.common.deleteBoardName(id);
     }, errorMsg => {

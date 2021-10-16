@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+import { AppRoutingModule } from './app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AppComponent } from './app.component';
 import { FfTodoListComponent } from './ff-todo-list/ff-todo-list.component';
 import { FfTodoCardComponent } from './ff-todo-card/ff-todo-card.component';
@@ -22,18 +25,22 @@ import { FfTodoGenericTaskFormComponent } from './ff-todo-generic-task-form/ff-t
 import { FfTodoSearchingFormComponent } from './ff-todo-searching-form/ff-todo-searching-form.component';
 import { TiszaSzakiSearchPipe } from './tsz-search.pipe';
 import { TiszaSzakiFocusDirective } from './tszfocus.directive';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FfTodoAlertListComponent } from './ff-todo-alert-list/ff-todo-alert-list.component';
 import { FfTodoSearchNoResultsComponent } from './ff-todo-search-no-results/ff-todo-search-no-results.component';
 import { FfTodoGenericBoardFormComponent } from './ff-todo-generic-board-form/ff-todo-generic-board-form.component';
 import { FfTodoBoardListComponent } from './ff-todo-board-list/ff-todo-board-list.component';
-import { AppRoutingModule } from './app-routing.module';
 import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/ff-todo-page-does-not-exist.component';
 import { FfTodoQueryStatusComponent } from './ff-todo-query-status/ff-todo-query-status.component';
 import { FfTodoCardRefreshingComponent } from './ff-todo-card-refreshing/ff-todo-card-refreshing.component';
 import { FfTodoBootstrapDateTimePickerComponent } from './ff-todo-bootstrap-date-time-picker/ff-todo-bootstrap-date-time-picker.component'
+
+import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
+
+import { FfTodoRealRequestService } from './ff-todo-real-request.service';
+
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
+import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
 
 @NgModule({
   declarations: [
@@ -67,9 +74,9 @@ import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule,
-    //HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
+    HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
   ],
-  providers: [],
+  providers: [{provide: FfTodoAbstractRequestService, useClass: FfTodoMockRequestService}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

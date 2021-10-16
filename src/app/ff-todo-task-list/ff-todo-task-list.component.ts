@@ -1,10 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
+import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
-import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
-import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
 
@@ -18,9 +17,9 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   constructor(
       private highlighter: DomSanitizer,
       private common: FfTodoCommonService,
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoAbstractRequestService,
       private alertServ: FfTodoAlertService) {
-    this.displayDateFormat = this.common.displayDateFormat;
+    this.displayDateFormat = this.common.displayDateFormat;     
   }
 
   @Input() todoId!: number;
@@ -148,7 +147,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     let id = patchedTask.id;
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${this.todoId})...`);
     this.todoServ.editTask(patchedTask)
-    .subscribe(_=> {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${this.todoId}).`});
       this.common.updateTodo(this.todoId);
     }, errorMsg => {
@@ -162,7 +161,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     checkedTask.done = !checkedTask.done;
     console.log(`Trying to check Task with ID (${id}) for Todo with ID (${this.todoId})...`);
     this.todoServ.editTask(checkedTask)
-    .subscribe(_=> {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully checked Task with ID (${id}) for Todo with ID (${this.todoId}).`});
       this.common.updateTodo(this.todoId);
     }, errorMsg => {
@@ -174,7 +173,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     let id = task.id;
     console.log(`Trying to remove Task with ID (${id}) for Todo with ID (${this.todoId}})...`);
     this.todoServ.removeTask(id)
-    .subscribe(_ => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Task with ID (${id}) from Todo with ID (${this.todoId}).`});
       this.common.updateTodo(this.todoId);
     }, errorMsg => {

@@ -1,8 +1,7 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
-import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
-import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 
 @Component({
   selector: 'app-ff-todo-board-list',
@@ -22,7 +21,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public dumpErrorMessage!: String;
 
   constructor(
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoAbstractRequestService,
       private common: FfTodoCommonService) {
   }
 

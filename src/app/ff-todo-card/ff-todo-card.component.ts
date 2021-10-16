@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
+import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
-import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
-import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { ShiftDirection } from '../shift-direction';
 import { Task } from '../task';
 import { TaskOperator } from '../task-operator';
@@ -21,7 +20,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
       private highlighter: DomSanitizer,
       private common: FfTodoCommonService,
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoAbstractRequestService,
       private alertServ: FfTodoAlertService) {
 
     this.displayDateFormat = this.common.displayDateFormat;
@@ -265,7 +264,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     let id = todo.id;
     console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
     this.todoServ.editTodo(id, todo)
-    .subscribe(_ => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
       this.common.updateTodoList(new Set([this.oldPhase, todo.phase]));
     }, errorMsg => {
@@ -294,7 +293,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     let id = todo.id;
     console.log(`Trying to remove Todo with ID (${id})...`);
     this.todoServ.removeTodo(id)
-    .subscribe(_ => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Todo with ID (${id}).`});
       this.common.updateTodoList(new Set([todo.phase]));
     }, errorMsg => {
@@ -311,7 +310,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     if ((new_phase >= this.phaseMin) && (new_phase <= this.phaseMax))
     {
       this.todoServ.editTodo(id, this.content)
-      .subscribe(_ => {
+      .subscribe(() => {
         this.alertServ.addAlertMessage({type: 'success', message: `Successfully shifted Todo with ID (${id}) to phase (${new_phase})...`});
         this.common.updateTodoList(new Set([this.oldPhase, new_phase]));
       }, errorMsg => {
@@ -339,7 +338,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   removeAllTasks() {
     this.todoServ.removeAllTasks(this.content.id)
-    .subscribe(_ => {
+    .subscribe(() => {
         console.log(`Successfully removed all Tasks from Todo with ID (${(this.content.id)}).`);
         this.todoServ.getTodo(this.content.id)
         .subscribe(todo => {

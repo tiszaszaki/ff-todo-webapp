@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.stage';
 import { Board } from './board';
+import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoCommonService } from './ff-todo-common.service';
 import { Task } from './task';
 import { Todo } from './todo';
@@ -11,7 +12,7 @@ import { Todo } from './todo';
 @Injectable({
   providedIn: 'root'
 })
-export class FfTodoRealRequestService {
+export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
 
   private backendUrl!: string;
   private boardPath!: string;
@@ -85,7 +86,7 @@ export class FfTodoRealRequestService {
   editBoard(id : number, patchedBoard: Board): Observable<any> {
     return this.http.patch(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
+      tap(() => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -96,7 +97,7 @@ export class FfTodoRealRequestService {
   removeBoard(id: number): Observable<any> {
     return this.http.delete(`${this.boardPath}/${id}`).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Removed Board with ID (${id})`)),
+      tap(() => console.log(`Removed Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -151,7 +152,7 @@ export class FfTodoRealRequestService {
   setBoardReadonlyTodosSetting(id : number, readonly: Boolean) : Observable<void> {
     return this.http.patch<void>(`${this.boardPath}/${id}/readonly-todos/${readonly}`, undefined).pipe(
         timeout(this.timeoutInterval),
-        tap(_ => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
+        tap(() => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
         catchError((error: HttpErrorResponse) => {
           console.error(error.message);
           return throwError(error.message);
@@ -173,7 +174,7 @@ export class FfTodoRealRequestService {
   setBoardReadonlyTasksSetting(id : number, readonly: Boolean) : Observable<void> {
     return this.http.patch<void>(`${this.boardPath}/${id}/readonly-tasks/${readonly}`, undefined).pipe(
         timeout(this.timeoutInterval),
-        tap(_ => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
+        tap(() => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
         catchError((error: HttpErrorResponse) => {
           console.error(error.message);
           return throwError(error.message);
@@ -239,7 +240,7 @@ export class FfTodoRealRequestService {
   editTodo(id : number, patchedTodo: Todo): Observable<any> {
     return this.http.patch(`${this.todoPath}/${patchedTodo.id}`, patchedTodo).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
+      tap(() => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -250,7 +251,7 @@ export class FfTodoRealRequestService {
   removeTodo(id: number): Observable<any> {
     return this.http.delete(`${this.todoPath}/${id}`).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Removed Todo with ID (${id})`)),
+      tap(() => console.log(`Removed Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -261,7 +262,7 @@ export class FfTodoRealRequestService {
   removeAllTodos(id: number): Observable<any> {
     return this.http.delete(`${this.boardTodoPath(id)}/clear`).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Removed all Todos from Board with ID (${id})`)),
+      tap(() => console.log(`Removed all Todos from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -293,7 +294,7 @@ export class FfTodoRealRequestService {
   editTask(patchedTask: Task): Observable<any> {
     return this.http.patch(`${this.taskPath}/${patchedTask.id}`, patchedTask).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
+      tap(() => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -304,7 +305,7 @@ export class FfTodoRealRequestService {
   removeTask(id: number): Observable<any> {
     return this.http.delete(`${this.taskPath}/${id}`).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Removed Task with ID (${id})`)),
+      tap(() => console.log(`Removed Task with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -315,7 +316,7 @@ export class FfTodoRealRequestService {
   removeAllTasks(todoId: number): Observable<any> {
     return this.http.delete(`${this.todoTaskPath(todoId)}/clear`).pipe(
       timeout(this.timeoutInterval),
-      tap(_ => console.log(`Removed all Tasks from Todo with ID (${todoId})`)),
+      tap(() => console.log(`Removed all Tasks from Todo with ID (${todoId})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);

@@ -3,10 +3,9 @@ import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
-import { FfTodoMockRequestService } from '../ff-todo-mock-request.service';
-import { FfTodoRealRequestService } from '../ff-todo-real-request.service';
 import { Todo } from '../todo';
 import { TodoOperator } from '../todo-operator';
 
@@ -52,7 +51,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public readonly REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
 
   constructor(
-      private todoServ: FfTodoRealRequestService,
+      private todoServ: FfTodoAbstractRequestService,
       private common: FfTodoCommonService,
       private router: Router,
       private alertServ: FfTodoAlertService) {
@@ -215,7 +214,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   removeAllTodos() {
     console.log(`Trying to remove all Todos from Board with ID (${this.boardSelected})...`);
     this.todoServ.removeAllTodos(this.boardSelected as number)
-    .subscribe(_ => {
+    .subscribe(() => {
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected}).`});
       this.common.updateTodoList();
     }, errorMsg => {
