@@ -47,16 +47,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
 
   getBoards() : Observable<Number[]> {
     return this.http.get<Board[]>(`${this.boardPath}`).pipe(
-        map((boards : Board[]) => {
-          let results: Number[] = [];
-
-          for (let board of boards)
-          {
-            results.push(board.id);
-          }
-
-          return results;
-        }),
+        map((boards : Board[]) => boards.map(board => board.id)),
         tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
         catchError((error: HttpErrorResponse) => {
           console.error(error.message);
@@ -164,9 +155,6 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
 
   getTodos() : Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.todoPath}`).pipe(
-        map((todos : Todo[]) => {
-          return todos;
-        }),
         tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
         catchError((error: HttpErrorResponse) => {
           console.error(error.message);
@@ -178,19 +166,13 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
   getTodosFromBoard(id : number) : Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.todoPath}`).pipe(
       map((todos : Todo[]) => {
-        let results: Todo[] = [];
-
-        for (let todo of todos)
+        let filtered_todos = todos.filter(todo => todo.boardId == id);
+        if (filtered_todos.length)
         {
-          if (todo.boardId == id)
-          {
-            results.push(todo);
-          }
+          console.log(`Fetched ${filtered_todos.length} Todo(s) from Board with ID (${id})`);
         }
-
-        return results;
+        return filtered_todos;
       }),
-      tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s) from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -272,14 +254,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
   getTasksFromTodo(todoId: number): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       map((tasks : Task[]) => {
-        let filtered_tasks: Task[] = [];
-        for (let task of tasks)
-        {
-          if (task.todoId == todoId)
-          {
-            filtered_tasks.push(task);
-          }
-        }
+        let filtered_tasks = tasks.filter(task => task.todoId == todoId);
         if (filtered_tasks.length)
         {
           console.log(`Fetched ${filtered_tasks.length} Task(s) from Todo with ID (${todoId})`);

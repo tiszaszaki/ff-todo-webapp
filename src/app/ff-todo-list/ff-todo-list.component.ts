@@ -190,8 +190,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       }
 
       this.todoQueryFinished = true;
-      if (this.todoCount > 0)
+      if (this.common.getRealServiceStatus())
+      {
+        if (this.todoCount > 0)
         this.todoQueryFinished &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
+      }
 
       this.todoQuerySuccess = true;
     }, errorMsg => {
