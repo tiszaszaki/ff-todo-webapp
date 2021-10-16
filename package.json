@@ -26,6 +26,7 @@
     "angular-in-memory-web-api": "^0.11.0",
     "bootstrap": "^4.5.0",
     "firebase": "^9.0.2",
+    "karma-edge-launcher": "^0.4.2",
     "moment": "^2.29.1",
     "parse5": "^6.0.1",
     "rxfire": "^6.0.0",
