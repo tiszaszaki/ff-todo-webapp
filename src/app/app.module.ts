@@ -74,9 +74,9 @@ import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule,
-    HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
+    //HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
   ],
-  providers: [{provide: FfTodoAbstractRequestService, useClass: FfTodoMockRequestService}],
+  providers: [{provide: FfTodoAbstractRequestService, useClass: FfTodoRealRequestService}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

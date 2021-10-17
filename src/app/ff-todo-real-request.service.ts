@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.stage';
 import { Board } from './board';
@@ -271,13 +271,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
   }
 
   getTasksFromTodo(todoId: number): Observable<Task[]> {
-    return this.http.get<Task[]>(`${this.todoTaskPath(todoId)}s`).pipe(
-      tap((tasks : Task[]) => console.log(`Fetched ${tasks.length} Task(s) from Todo with ID (${todoId})`)),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error.message);
-        return throwError(error.message);
-      })
-    );
+    return of([]);
   }
 
   addTask(task: Task, todoId: number): Observable<Task> {
