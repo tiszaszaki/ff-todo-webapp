@@ -162,10 +162,6 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
     this.preparingFormListener.unsubscribe();
   }
 
-  dismissForm() {
-    this.resetModel();
-  }
-
   submitForm(condition?: Boolean) {
     if ((condition === undefined) || condition)
     {
@@ -181,7 +177,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
       {
         this.submitEvent.emit();
       }
-      this.dismissForm();
+      setTimeout(() => this.resetModel(), 1000);
     }
   }
 }

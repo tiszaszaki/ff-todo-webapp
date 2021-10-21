@@ -86,9 +86,11 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   getTodoPhaseLabel(idx: number) {
     let result=this.common.getTodoPhaseLabel(idx);
 
+    /*
     if (this.isOperatorIncluded(this.CLONE))
     if (idx == this.model.phase)
       result += " (default)";
+    */
 
     return result;
   }
@@ -234,10 +236,6 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.updateDisplay();
   }
 
-  dismissForm() {
-    this.resetModel();
-  }
-
   submitForm(condition?: Boolean) {
     if ((condition === undefined) || condition)
     {
@@ -253,7 +251,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       {
         this.submitEvent.emit();
       }
-      this.dismissForm();
+      setTimeout(() => this.resetModel(), 1000);
     }
   }
 }

@@ -166,10 +166,6 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
     this.preparingFormListener.unsubscribe();
   }
 
-  dismissForm() {
-    this.resetModel();
-  }
-
   submitForm(condition?: Boolean) {
     if ((condition === undefined) || condition)
     {
@@ -181,7 +177,7 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
       {
         this.submitEvent.emit();
       }
-      this.dismissForm();
+      setTimeout(() => this.resetModel(), 1000);
     }
   }
 }
