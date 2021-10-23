@@ -17,10 +17,10 @@
             Loading Boards...
         </div>
         <div *ngIf="boardQueryFinished">
-            <div class="text-muted" *ngIf="boardQuerySuccess">
+            <div class="text-muted user-select-none" *ngIf="boardQuerySuccess">
                 There are no Boards.
             </div>
-            <div class="text-danger" *ngIf="!boardQuerySuccess">
+            <div class="text-danger user-select-none" *ngIf="!boardQuerySuccess">
                 <div>Cannot query Board list.</div>
                 <small>Reason: {{ dumpErrorMessage }}</small>
             </div>

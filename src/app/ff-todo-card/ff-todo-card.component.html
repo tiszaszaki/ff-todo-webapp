@@ -31,16 +31,16 @@
 				<li ngbNavItem>
 					<a ngbNavLink>Description</a>
 					<ng-template ngbNavContent>
-						<div *ngIf="descriptionLength">
-							<div class="list-group-item rounded border border-secondary mt-1"
+						<div *ngIf="descriptionLength" class="mt-1 mb-1">
+							<div class="p-2 rounded border border-secondary"
 									data-toggle="tooltip" data-placement="bottom" title="Todo description">
 								<p class="card-text" [innerHTML]="highlightedDescription">{{ content.description }}</p>
 							</div>
-							<div class="list-group-item" *ngIf="isDescriptionLengthShown()">
+							<div class="p-2" *ngIf="isDescriptionLengthShown()">
 								<p class="card-text">Description length: {{ descriptionLength }}</p>
 							</div>
 						</div>
-						<div *ngIf="!descriptionLength" class="text-muted">
+						<div *ngIf="!descriptionLength" class="p-1 text-muted user-select-none">
 							There is no description for this Todo.
 						</div>
 					</ng-template>
@@ -103,12 +103,21 @@
 			</div>
 		</div>
 		<div class="border border-secondary rounded mt-2 p-2" *ngIf="content.deadline">
-			Deadline: {{ content.deadline | date:displayDateFormat }}
+			<p>
+				<span class="user-select-none">Deadline:&nbsp;</span>
+				<span>{{ content.deadline | date:displayDateFormat }}</span>
+			</p>
 		</div>
     </div>
     <div class="card-footer text-muted">
-        <p>Date updated: {{ content.dateModified | date:displayDateFormat }}</p>
-        <p *ngIf="isDateCreatedShown()">Date created: {{ content.dateCreated | date:displayDateFormat }}</p>
+        <p>
+			<span class="user-select-none">Date updated:&nbsp;</span>
+			<span>{{ content.dateModified | date:displayDateFormat }}</span>
+		</p>
+        <p *ngIf="isDateCreatedShown()">
+			<span class="user-select-none">Date created:&nbsp;</span>
+			<span>{{ content.dateCreated | date:displayDateFormat }}</span>
+		</p>
     </div>
 </div>
 <app-ff-todo-card-invalid *ngIf="!todoRefreshing && !isCardValid"></app-ff-todo-card-invalid>

@@ -17,7 +17,7 @@
     </ng-template>
     <ng-template #deadlinePicker>
         <div *ngIf="readonlyModel">
-            <p class="text-muted">This date-time picker is disabled.</p>
+            <p class="text-muted user-select-none">This date-time picker is disabled.</p>
         </div>
         <div *ngIf="!readonlyModel">
             <ngb-datepicker [(ngModel)]="dateModel" (dateSelect)="updateDeadlineDate($event)" name="dateModel"></ngb-datepicker>

@@ -25,14 +25,20 @@
 			<div *ngIf="boardContent.name">
 				<div *ngIf="boardContent.description" class="border border-secondary rounded w-75"
 						data-toggle="tooltip" data-placement="bottom" title="Board description">{{ boardContent.description }}</div>
-				<div class="text-muted" *ngIf="!boardContent.description">No description added</div>
+				<div class="text-muted user-select-none" *ngIf="!boardContent.description">No description added</div>
 			</div>
 			<div *ngIf="boardContent.name">
-				<div *ngIf="boardContent.author">Author: {{ boardContent.author }}</div>
-				<div class="text-muted" *ngIf="!boardContent.author">Unknown author</div>
+				<div *ngIf="boardContent.author">
+					<span class="user-select-none">Author:&nbsp;</span>
+					<span>{{ boardContent.author }}</span>
+				</div>
+				<div class="text-muted user-select-none" *ngIf="!boardContent.author">Unknown author</div>
 			</div>
 			<div *ngIf="boardContent.name">
-				<div *ngIf="boardContent.dateCreated">Date created: {{ boardContent.dateCreated | date:displayDateFormat }}</div>
+				<div *ngIf="boardContent.dateCreated">
+					<span class="user-select-none">Date created:&nbsp;</span>
+					<span>{{ boardContent.dateCreated | date:displayDateFormat }}</span>
+				</div>
 			</div>
 			<div *ngIf="boardContent.name">
 				<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"

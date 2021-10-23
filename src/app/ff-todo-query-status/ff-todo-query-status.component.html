@@ -2,7 +2,7 @@
         [ngClass]="{'border-info': !todoQueryFinished, 'border-danger': todoQueryFinished && !todoQuerySuccess,
         'border rounded text-muted text-center': true}">
 
-    <div *ngIf="!todoQueryFinished">
+    <div class="user-select-none" *ngIf="!todoQueryFinished">
         <div class="display-3 fa-3x">
             <i class="fas fa-sync fa-spin"></i>
         </div>
@@ -11,10 +11,13 @@
 
     <div *ngIf="todoQueryFinished && !todoQuerySuccess">
         <div class="mt-3 text-danger">
-            <div>Cannot query Todo list</div>
-            <small>Reason: {{ message }}</small>
+            <div class="user-select-none">Cannot query Todo list</div>
+            <small>
+                <span class="user-select-none">Reason:&nbsp;</span>
+                <span>{{ message }}</span>
+            </small>
         </div>
-        <div class="display-1 text-danger">
+        <div class="display-1 text-danger user-select-none">
             <i class="far fa-folder-open"></i>
             <i class="fas fa-exclamation"></i>
         </div>
