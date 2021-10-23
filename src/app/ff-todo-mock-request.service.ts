@@ -99,44 +99,15 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
   }
 
   getBoardReadonlyTodosSetting(id : number) : Observable<Boolean> {
-    return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
-      map((board : Board) => { return board.readonlyTodos; }),
-      tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error.message);
-        return throwError(error.message);
-      })
-    );
+    return of();
   }
 
   setBoardReadonlyTodosSetting(id : number, readonly: Boolean) : Observable<void> {
-    return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
-      map((board : Board) => {
-        let patchedBoard = board;
-        patchedBoard.readonlyTodos = readonly;
-        this.http.put(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
-          tap(() => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
-          catchError((error: HttpErrorResponse) => {
-            console.error(error.message);
-            return throwError(error.message);
-          })
-        );
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error.message);
-        return throwError(error.message);
-      })
-    );
+    return of();
   }
 
   getBoardReadonlyTasksSetting(id : number) : Observable<Boolean> {
-    return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
-      map((board : Board) => { return board.readonlyTasks; }),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error.message);
-        return throwError(error.message);
-      })
-  );
+    return of();
   }
 
   setBoardReadonlyTasksSetting(id : number, readonly: Boolean) : Observable<void> {

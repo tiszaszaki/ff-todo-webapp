@@ -162,27 +162,73 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   queryReadonlyTodo() {
-    this.todoServ.getBoardReadonlyTodosSetting(this.boardSelected as number).subscribe(result => this.common.updateReadonlyTodo(result));
+    if (this.common.getRealServiceStatus())
+    {
+      this.todoServ.getBoardReadonlyTodosSetting(this.boardSelected as number).subscribe(result => this.common.updateReadonlyTodo(result));
+    }
+    else
+    {
+      this.todoServ.getBoard(this.boardSelected as number).subscribe(result => {
+        this.common.updateReadonlyTodo(result.readonlyTodos);
+      });
+    }
   }
 
   queryReadonlyTask() {
-    this.todoServ.getBoardReadonlyTasksSetting(this.boardSelected as number).subscribe(result => this.common.updateReadonlyTask(result));
+    if (this.common.getRealServiceStatus())
+    {
+      this.todoServ.getBoardReadonlyTasksSetting(this.boardSelected as number).subscribe(result => this.common.updateReadonlyTask(result));
+    }
+    else
+    {
+      this.todoServ.getBoard(this.boardSelected as number).subscribe(result => {
+        this.common.updateReadonlyTask(result.readonlyTasks);
+      });
+    }
   }
 
   updateReadonlyTodo() {
-    this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, this.common.updateReadonlyTodo()).subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
-    }, () => {
-      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
-    });
+    if (this.common.getRealServiceStatus())
+    {
+      this.todoServ.setBoardReadonlyTodosSetting(this.boardSelected as number, this.common.updateReadonlyTodo()).subscribe(() => {
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
+      }, () => {
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
+      });
+    }
+    else
+    {
+      this.todoServ.getBoard(this.boardSelected as number).subscribe(result => {
+        result.readonlyTodos = this.common.updateReadonlyTodo();
+        this.todoServ.editBoard(this.boardSelected as number, result).subscribe(() => {
+          this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
+        }, () => {
+          this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Todos setting for Board with ID (${this.boardSelected}).`});
+        });
+      });
+    }
   }
 
   updateReadonlyTask() {
-    this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, this.common.updateReadonlyTask()).subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
-    }, () => {
-      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
-    });
+    if (this.common.getRealServiceStatus())
+    {
+      this.todoServ.setBoardReadonlyTasksSetting(this.boardSelected as number, this.common.updateReadonlyTask()).subscribe(() => {
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
+      }, () => {
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
+      });
+    }
+    else
+    {
+      this.todoServ.getBoard(this.boardSelected as number).subscribe(result => {
+        result.readonlyTasks = this.common.updateReadonlyTask();
+        this.todoServ.editBoard(this.boardSelected as number, result).subscribe(() => {
+          this.alertServ.addAlertMessage({type: 'success', message: `Successfully set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
+        }, () => {
+          this.alertServ.addAlertMessage({type: 'danger', message: `Failed to set Read-only Tasks setting for Board with ID (${this.boardSelected}).`});
+        });
+      });
+    }
   }
 
   restoreTodoList() {

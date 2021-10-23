@@ -89,7 +89,7 @@
           <span *ngIf="!readonlyTodo"><i class="fas fa-unlock"></i></span>
           &nbsp;Todos
         </button>
-        <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTask()"
+        <button type="button" class="btn btn-warning w-25" (click)="updateReadonlyTask()" [disabled]="readonlyTodo"
             data-toggle="tooltip" data-placement="bottom" title="{{ readonlyTask ? 'Unlock' : 'Lock' }} Tasks">
           <span *ngIf="readonlyTask"><i class="fas fa-lock"></i></span>
           <span *ngIf="!readonlyTask"><i class="fas fa-unlock"></i></span>

@@ -25,10 +25,13 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
     const todos : Todo[] = [
       {id:0, name:'Sonic', description:'Fejlesztése', phase:0, dateCreated: new Date(), dateModified: new Date(), boardId: 0},
       {id:1, name:'Álláskeresés', description:'Folyamatban', phase:1, dateCreated: new Date(), dateModified: new Date(), boardId: 0},
-      {id:2, name:'Nevem', description:'Kiíratása', phase:2, dateCreated: new Date(), dateModified: new Date(), boardId: 0}
+      {id:2, name:'Nevem', description:'Kiíratása', phase:2, dateCreated: new Date(), dateModified: new Date(), boardId: 0},
+
+      {id:3, name:'Titkos!', description:'???', phase:1, dateCreated: new Date(), dateModified: new Date(), boardId: 1}
     ];
     const boards: Board[] = [
-      {id:0, name:'Első tábla', description:'', author:'', dateCreated: new Date(), readonlyTodos: false, readonlyTasks: false}
+      {id:0, name:'Első tábla', description:'', author:'', dateCreated: new Date(), readonlyTodos: false, readonlyTasks: false},
+      {id:1, name:'Második tábla', description:'', author:'Fekete János', dateCreated: new Date(), readonlyTodos: true, readonlyTasks: false}
     ];
 
     let genStr = 'FeketeJános';
