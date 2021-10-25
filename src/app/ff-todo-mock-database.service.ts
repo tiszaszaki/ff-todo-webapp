@@ -29,7 +29,7 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
       {id:1, name:'Álláskeresés', description:'Folyamatban', phase:1, dateCreated: new Date(), dateModified: new Date(), boardId: 0},
       {id:2, name:'Nevem', description:'Kiíratása', phase:2, dateCreated: new Date(), dateModified: new Date(), boardId: 0},
 
-      {id:3, name:'Titkos!', description:'???', phase:1, dateCreated: new Date(), dateModified: new Date(), boardId: 1}
+      {id:3, name:'Titkos!', description:'???', phase:1, dateCreated: new Date(), dateModified: new Date(), deadline: new Date(), boardId: 1}
     ];
     const boards: Board[] = [
       {id:0, name:'Első tábla', description:'', author:'', dateCreated: new Date(), readonlyTodos: false, readonlyTasks: false},

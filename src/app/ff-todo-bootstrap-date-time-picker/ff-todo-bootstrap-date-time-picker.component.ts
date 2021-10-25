@@ -18,8 +18,8 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
 
   @Input() customPopoverTitle!: String;
 
-  public dateModel!: NgbDateStruct;
-  public timeModel!: NgbTimeStruct;
+  public dateModel!: NgbDateStruct | undefined;
+  public timeModel!: NgbTimeStruct | undefined;
 
   public modelStr!: String;
 
@@ -43,7 +43,6 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
     {
       this.model = undefined;
       this.modelChange.emit(this.model);
-      this.fetchDeadline();
     }
   }
 
@@ -52,7 +51,6 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
     {
       this.model = new Date();
       this.modelChange.emit(this.model);
-      this.fetchDeadline();
     }
   }
 
@@ -69,8 +67,8 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
     }
     else
     {
-      this.dateModel = {year: -1, month: -1, day: -1};
-      this.timeModel = {hour: -1, minute: -1, second: -1};
+      this.dateModel = undefined;
+      this.timeModel = undefined;
     }
   }
 
@@ -100,8 +98,11 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
     }
     else
     {
-      this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
-        this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
+      if (this.dateModel)
+      {
+        this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
+          this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
+      }
     }
 
     this.model = new Date(this.modelStr as string);
@@ -122,8 +123,11 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
     }
     else
     {
-      this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
-        this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
+      if (this.timeModel)
+      {
+        this.modelStr = this.formatDeadlineStr(this.dateModel.year,this.dateModel.month,this.dateModel.day,
+          this.timeModel.hour,this.timeModel.minute,this.timeModel.second);
+      }
     }
 
     this.model = new Date(this.modelStr as string);
