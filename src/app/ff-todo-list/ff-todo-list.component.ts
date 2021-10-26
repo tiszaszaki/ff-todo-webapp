@@ -147,12 +147,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
 
-      for (let todo_idx in todo_records)
+      for (let todo of todo_records)
       {
-        let todo=todo_records[todo_idx];
-
         if (this.common.getRealServiceStatus())
         {
+          todo.boardId = this.boardSelected as number;
           if (!todo.tasks)
             todo.tasks = [];
 
@@ -172,6 +171,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         {
           todo.description = '';
         }
+
+        console.log(todo);
 
         if (phase)
         if (phase.size == 0)
@@ -260,7 +261,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.route.queryParams.subscribe(params => {
-      this.common.setBoardSelected(params.id);
+      this.common.setBoardSelected(Number.parseInt(params.id));
 
       this.common.changeRouteStatus(true);
     });
