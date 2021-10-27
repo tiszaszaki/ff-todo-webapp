@@ -226,10 +226,10 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     )
   }
 
-  cloneTodo(id : number, phase: number, boardId: number): Observable<void> {
-    return this.http.patch<void>(`${this.todoPath}/${id}/clone/${phase}/${boardId}`, undefined).pipe(
+  cloneTodo(id : number, phase: number, boardId: number): Observable<Todo> {
+    return this.http.get<Todo>(`${this.todoPath}/${id}/clone/${phase}/${boardId}`, undefined).pipe(
       timeout(this.timeoutInterval),
-      tap(() => console.log(`Cloned Todo with ID (${id})`)),
+      tap((clonedTodo: Todo) => console.log(`Cloned Todo with ID (${id}): ${JSON.stringify(clonedTodo)}`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);

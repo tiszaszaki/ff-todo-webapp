@@ -27,7 +27,7 @@ export abstract class FfTodoAbstractRequestService {
   abstract getTodosFromBoard(id : number) : Observable<Todo[]>;
   abstract addTodo(id : number, todo: Todo): Observable<Todo>;
   abstract editTodo(id : number, patchedTodo: Todo): Observable<any>;
-  abstract cloneTodo(id : number, phase : number, boardId : number): Observable<void>;
+  abstract cloneTodo(id : number, phase : number, boardId : number): Observable<Todo>;
   abstract removeTodo(id: number): Observable<any>;
   abstract removeAllTodos(id: number): Observable<any>;
 

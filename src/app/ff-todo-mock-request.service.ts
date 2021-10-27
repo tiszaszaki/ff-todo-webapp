@@ -174,18 +174,22 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  cloneTodo(id : number, phase : number, boardId : number): Observable<void> {
+  cloneTodo(id : number, phase : number, boardId : number): Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
       map((todo: Todo) => {
         let clonedTodo = todo;
 
+        clonedTodo.id = NaN;
         clonedTodo.name += " (cloned)";
         clonedTodo.phase = phase;
         clonedTodo.boardId = boardId;
 
-        this.addTodo(boardId, clonedTodo).subscribe();   
+        this.addTodo(boardId, clonedTodo).subscribe();
+
+        console.log(`Cloned Todo with ID (${id}): ${JSON.stringify(clonedTodo)}`);
+
+        return clonedTodo;
       }),
-      tap(() => console.log(`Cloned Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);

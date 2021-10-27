@@ -278,8 +278,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     let boardId = todo.boardId;
     console.log(`Trying to clone Todo with ID (${id}) to phase (${phase}) on board with ID (${boardId})...`);
     this.todoServ.cloneTodo(id, phase as number, boardId as number)
-    .subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}).`});
+    .subscribe(todo => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}): ${JSON.stringify(todo)}.`});
       if (boardId == this.common.getBoardSelected())
         this.common.updateTodoList(new Set([todo.phase]));
       else
