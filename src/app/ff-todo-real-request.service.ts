@@ -52,23 +52,23 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
 
   getBoard(id : number) : Observable<Board> {
     return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
-        timeout(this.timeoutInterval),
-        tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getBoards() : Observable<Number[]> {
     return this.http.get<Number[]>(`${this.boardPath}`).pipe(
-        timeout(this.timeoutInterval),
-        tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
@@ -107,23 +107,23 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
 
   getBoardDescriptionMaxLength() : Observable<Number> {
     return this.http.get<Number>(`${this.boardPath}/description-max-length`).pipe(
-        timeout(this.timeoutInterval),
-        tap((maxLength : Number) => console.log(`Fetched maximum description length for all Boards: (${maxLength})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum description length for all Boards: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getTodoDescriptionMaxLength() : Observable<Number> {
     return this.http.get<Number>(`${this.todoPath}/description-max-length`).pipe(
-        timeout(this.timeoutInterval),
-        tap((maxLength : Number) => console.log(`Fetched maximum description length for all Todos: (${maxLength})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum description length for all Todos: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
@@ -140,78 +140,78 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
 
   getBoardReadonlyTodosSetting(id : number) : Observable<Boolean> {
     return this.http.get<Boolean>(`${this.boardPath}/${id}/readonly-todos`).pipe(
-        timeout(this.timeoutInterval),
-        tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((readonly : Boolean) => console.log(`Fetched Read-only Todos settings for Board with ID (${id}): (${readonly})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   setBoardReadonlyTodosSetting(id : number, readonly: Boolean) : Observable<void> {
     return this.http.patch<void>(`${this.boardPath}/${id}/readonly-todos/${readonly}`, undefined).pipe(
-        timeout(this.timeoutInterval),
-        tap(() => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap(() => console.log(`Set Read-only Todos settings for Board with ID (${id}) to (${readonly})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getBoardReadonlyTasksSetting(id : number) : Observable<Boolean> {
     return this.http.get<Boolean>(`${this.boardPath}/${id}/readonly-tasks`).pipe(
-        timeout(this.timeoutInterval),
-        tap((readonly : Boolean) => console.log(`Fetched Read-only Tasks settings for Board with ID (${id}): (${readonly})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((readonly : Boolean) => console.log(`Fetched Read-only Tasks settings for Board with ID (${id}): (${readonly})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   setBoardReadonlyTasksSetting(id : number, readonly: Boolean) : Observable<void> {
     return this.http.patch<void>(`${this.boardPath}/${id}/readonly-tasks/${readonly}`, undefined).pipe(
-        timeout(this.timeoutInterval),
-        tap(() => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap(() => console.log(`Set Read-only Tasks settings for Board with ID (${id}) to (${readonly})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getTodo(id : number) : Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
-        timeout(this.timeoutInterval),
-        tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getTodos() : Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.todoPath}`).pipe(
-        timeout(this.timeoutInterval),
-        tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getTodosFromBoard(id : number) : Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.boardTodoPath(id)}s`).pipe(
-        timeout(this.timeoutInterval),
-        tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s) from Board with ID (${id})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      timeout(this.timeoutInterval),
+      tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s) from Board with ID (${id})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 

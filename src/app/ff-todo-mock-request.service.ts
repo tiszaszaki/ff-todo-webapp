@@ -36,23 +36,23 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
 
   getBoard(id : number) : Observable<Board> {
     return this.http.get<Board>(`${this.boardPath}/${id}`).pipe(
-        map((board : Board) => { return board; }),
-        tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      map((board : Board) => { return board; }),
+      tap((board : Board) => console.log(`Fetched Board: (${JSON.stringify(board)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getBoards() : Observable<Number[]> {
     return this.http.get<Board[]>(`${this.boardPath}`).pipe(
-        map((boards : Board[]) => boards.map(board => board.id)),
-        tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      map((boards : Board[]) => boards.map(board => board.id)),
+      tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
@@ -116,21 +116,21 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
 
   getTodo(id : number) : Observable<Todo> {
     return this.http.get<Todo>(`${this.todoPath}/${id}`).pipe(
-        tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      tap((todo : Todo) => console.log(`Fetched Todo: (${JSON.stringify(todo)})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 
   getTodos() : Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.todoPath}`).pipe(
-        tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
+      tap((todos : Todo[]) => console.log(`Fetched ${todos.length} Todo(s)`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
     );
   }
 

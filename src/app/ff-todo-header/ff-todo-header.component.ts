@@ -77,7 +77,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
 
-    this.router.navigate(["/"], undefined);
+    this.router.navigate(["/"]);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -162,7 +162,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         {
           this.todoServ.getTasksFromTodo(todo.id).subscribe(tasks => {
             //todo.tasks = tasks;
-            this.task_count[todo.phase as number] += tasks.length;
+
+            if (!todo.tasks)
+              todo.tasks = [];
+
+            this.task_count[todo.phase as number] += todo.tasks.length;
             this.todoCountTaskQuerySuccessful++;
           });
         }
@@ -171,8 +175,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         {
           todo.description = '';
         }
-
-        console.log(todo);
 
         if (phase)
         if (phase.size == 0)
@@ -194,7 +196,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       if (this.common.getRealServiceStatus())
       {
         if (this.todoCount > 0)
-        this.todoQueryFinished &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
+          this.todoQueryFinished &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
       }
 
       this.todoQuerySuccess = true;
