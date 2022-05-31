@@ -98,16 +98,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     return of(128);
   }
 
-  getTodoDescriptionMaxLength() : Observable<Number> {
-    return of(1024);
-  }
-
-  getTodoPhaseRange() : Observable< Array<Number> > {
-    return of([0,2]);
-  }
-
   getBoardReadonlyTodosSetting(id : number) : Observable<Boolean> {
-    return of();
+    return of(false);
   }
 
   setBoardReadonlyTodosSetting(id : number, readonly: Boolean) : Observable<void> {
@@ -115,7 +107,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
   }
 
   getBoardReadonlyTasksSetting(id : number) : Observable<Boolean> {
-    return of();
+    return of(false);
   }
 
   setBoardReadonlyTasksSetting(id : number, readonly: Boolean) : Observable<void> {
@@ -234,6 +226,18 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
+  getTodoNameMaxLength() : Observable<Number> {
+    return of(128);
+  }
+
+  getTodoDescriptionMaxLength() : Observable<Number> {
+    return of(1024);
+  }
+
+  getTodoPhaseRange() : Observable< Array<Number> > {
+    return of([0,2]);
+  }
+
   getTasksFromTodo(todoId: number): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       map((tasks : Task[]) => {
@@ -301,4 +305,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
+  getTaskNameMaxLength() : Observable<Number> {
+    return of(32);
+  }
 }

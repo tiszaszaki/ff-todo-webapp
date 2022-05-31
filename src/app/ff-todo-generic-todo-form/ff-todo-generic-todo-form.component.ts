@@ -29,6 +29,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public deadlineTemp!: NgbDateStruct;
 
+  public nameMaxLength!: number;
+  public nameMaxLengthListener!: Subscription;
   public descriptionMaxLength!: number;
   public descriptionMaxLengthListener!: Subscription;
 
@@ -201,12 +203,17 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.modeStr = TodoOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}TodoForm`;
 
+    this.nameMaxLengthListener = this.common.todoNameMaxLengthChange.subscribe(result => {
+      result = this.nameMaxLength = result as number;
+    });
+
     this.descriptionMaxLengthListener = this.common.todoDescriptionMaxLengthChange.subscribe(result => {
       result = this.descriptionMaxLength = result as number;
     });
 
     if (this.isOperatorIncluded(this.ADD,this.EDIT))
     {
+      this.common.updateTodoNameMaxLength();
       this.common.updateTodoDescriptionMaxLength();
       
       this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
@@ -223,6 +230,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnDestroy(): void {
+    this.nameMaxLengthListener.unsubscribe();
     this.descriptionMaxLengthListener.unsubscribe();
 
     this.preparingFormListener.unsubscribe();

@@ -29,6 +29,9 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   public modeStr!: String;
   public formId!: String;
 
+  public nameMaxLength!: number;
+  public nameMaxLengthListener!: Subscription;
+
   public inputDateFormat!: string;
   public inputDateFormatDisp!: String;
 
@@ -138,9 +141,13 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
     this.modeStr = TaskOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}TaskForm`;
 
+    this.nameMaxLengthListener = this.common.taskNameMaxLengthChange.subscribe(result => {
+      result = this.nameMaxLength = result as number;
+    });
+
     if (this.isOperatorIncluded(this.ADD,this.EDIT))
     {
-      this.common.updateTodoDescriptionMaxLength();
+      this.common.updateTaskNameMaxLength();
       
       this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
     }
@@ -159,6 +166,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnDestroy() {
+    this.nameMaxLengthListener.unsubscribe();
+
     this.preparingFormListener.unsubscribe();
   }
 

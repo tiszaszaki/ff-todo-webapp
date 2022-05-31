@@ -154,7 +154,10 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.todoServ.getBoardDescriptionMaxLength().subscribe(result => this.common.updateBoardDescriptionMaxLength(result));
     this.todoServ.getBoardAuthorMaxLength().subscribe(result => this.common.updateBoardAuthorMaxLength(result));
 
+    this.todoServ.getTodoNameMaxLength().subscribe(result => this.common.updateTodoNameMaxLength(result));
     this.todoServ.getTodoDescriptionMaxLength().subscribe(result => this.common.updateTodoDescriptionMaxLength(result));
+
+    this.todoServ.getTaskNameMaxLength().subscribe(result => this.common.updateTaskNameMaxLength(result));
   }
 
   queryTodoPhaseRange() {

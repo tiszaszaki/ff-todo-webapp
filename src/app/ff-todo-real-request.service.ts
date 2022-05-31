@@ -138,28 +138,6 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     );
   }
 
-  getTodoDescriptionMaxLength() : Observable<Number> {
-    return this.http.get<Number>(`${this.todoPath}/description-max-length`).pipe(
-      timeout(this.timeoutInterval),
-      tap((maxLength : Number) => console.log(`Fetched maximum description length for all Todos: (${maxLength})`)),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error.message);
-        return throwError(error.message);
-      })
-    );
-  }
-
-  getTodoPhaseRange() : Observable< Array<Number> > {
-    return this.http.get< Array<Number> >(`${this.todoPath}/phase-val-range`).pipe(
-        timeout(this.timeoutInterval),
-        tap((result : Array<Number>) => console.log(`Fetched phase range for all Todos: (${result})`)),
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.message);
-          return throwError(error.message);
-        })
-    );
-  }
-
   getBoardReadonlyTodosSetting(id : number) : Observable<Boolean> {
     return this.http.get<Boolean>(`${this.boardPath}/${id}/readonly-todos`).pipe(
       timeout(this.timeoutInterval),
@@ -292,6 +270,39 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     );
   }
 
+  getTodoNameMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.todoPath}/name-max-length`).pipe(
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum name length for all Todos: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  getTodoDescriptionMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.todoPath}/description-max-length`).pipe(
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum description length for all Todos: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  getTodoPhaseRange() : Observable< Array<Number> > {
+    return this.http.get< Array<Number> >(`${this.todoPath}/phase-val-range`).pipe(
+        timeout(this.timeoutInterval),
+        tap((result : Array<Number>) => console.log(`Fetched phase range for all Todos: (${result})`)),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error.message);
+          return throwError(error.message);
+        })
+    );
+  }
+
   getTasksFromTodo(todoId: number): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.todoTaskPath(todoId)}s`).pipe(
       timeout(this.timeoutInterval),
@@ -347,4 +358,14 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     );
   }
 
+  getTaskNameMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.taskPath}/name-max-length`).pipe(
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum name length for all Tasks: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
 }

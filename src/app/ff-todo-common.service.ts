@@ -37,8 +37,13 @@ export class FfTodoCommonService {
   private boardAuthorMaxLength! : Number;
   public boardAuthorMaxLengthChange = new EventEmitter<Number>();
 
+  private todoNameMaxLength! : Number;
+  public todoNameMaxLengthChange = new EventEmitter<Number>();
   private todoDescriptionMaxLength! : Number;
   public todoDescriptionMaxLengthChange = new EventEmitter<Number>();
+
+  private taskNameMaxLength! : Number;
+  public taskNameMaxLengthChange = new EventEmitter<Number>();
 
   private enableRestoreTodos!: Boolean;
   public enableRestoreTodosChange = new EventEmitter<Boolean>();
@@ -346,10 +351,22 @@ export class FfTodoCommonService {
     this.boardAuthorMaxLengthChange.emit(this.boardAuthorMaxLength);
   }
 
+  updateTodoNameMaxLength(val: Number = 0) {
+    if (val > 0)
+      this.todoNameMaxLength = val;
+    this.todoNameMaxLengthChange.emit(this.todoNameMaxLength);
+  }
+
   updateTodoDescriptionMaxLength(val: Number = 0) {
     if (val > 0)
       this.todoDescriptionMaxLength = val;
     this.todoDescriptionMaxLengthChange.emit(this.todoDescriptionMaxLength);
+  }
+
+  updateTaskNameMaxLength(val: Number = 0) {
+    if (val > 0)
+      this.taskNameMaxLength = val;
+    this.taskNameMaxLengthChange.emit(this.taskNameMaxLength);
   }
 
   updateTodoPhaseValRange(minVal: Number, maxVal: Number) {
