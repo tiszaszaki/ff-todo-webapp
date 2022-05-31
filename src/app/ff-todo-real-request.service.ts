@@ -271,7 +271,14 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
   }
 
   getTasksFromTodo(todoId: number): Observable<Task[]> {
-    return of([]);
+    return this.http.get<Task[]>(`${this.todoTaskPath(todoId)}s`).pipe(
+      timeout(this.timeoutInterval),
+      tap((tasks : Task[]) => console.log(`Fetched ${tasks.length} Task(s) from Todo with ID (${todoId})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
   }
 
   addTask(task: Task, todoId: number): Observable<Task> {

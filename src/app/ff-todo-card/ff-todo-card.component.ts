@@ -82,7 +82,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public descriptionLength!: Number;
 
-  public tasklistStr! : String;
   public taskCount!: Number;
 
   public readonly LEFT = ShiftDirection.LEFT;
@@ -164,8 +163,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.content.tasks = [];
       this.taskCount = 0;
     }
-
-    this.tasklistStr = JSON.stringify(this.content.tasks);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -253,8 +250,6 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
         this.content.tasks = [];
         this.taskCount = 0;
       }
-
-      this.tasklistStr = JSON.stringify(this.content.tasks);
 
       this.todoRefreshing = false;
     }), 250);

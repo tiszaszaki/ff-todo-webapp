@@ -25,8 +25,6 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   @Input() todoId!: number;
   @Input() phase_idx!: number;
 
-  @Input('tasks') tasklistString! : String;
-
   public prepareEditTaskFormTrigger = new Subject<void>();
   public prepareRemoveTaskFormTrigger = new Subject<void>();
 
@@ -91,29 +89,33 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.tasks = JSON.parse(this.tasklistString as string);
-    this.tasks.sort((a: Task, b: Task) => {
-      let res;
-      if (a.id < b.id) {
-        res = -1;
-      } else if (a.id > b.id) {
-        res = 1;
-      } else {
-        res = 0;
+    this.todoServ.getTasksFromTodo(this.todoId).subscribe(tasks => {
+      this.tasks = tasks;
+
+      this.tasks.sort((a: Task, b: Task) => {
+        let res;
+        if (a.id < b.id) {
+          res = -1;
+        } else if (a.id > b.id) {
+          res = 1;
+        } else {
+          res = 0;
+        }
+        return res;
+      });
+  
+      this.taskCount = this.tasks.length;
+  
+      this.taskChecked = 0;
+  
+      for (let task of this.tasks)
+      {
+        this.taskChecked += (task.done ? 1 : 0);
+  
+        this.highlightedNames.set(task.id, this.highlighter.bypassSecurityTrustHtml(task.name as string));
       }
-      return res;
     });
 
-    this.taskCount = this.tasks.length;
-
-    this.taskChecked = 0;
-
-    for (let task of this.tasks)
-    {
-      this.taskChecked += (task.done ? 1 : 0);
-
-      this.highlightedNames.set(task.id, this.highlighter.bypassSecurityTrustHtml(task.name as string));
-    }
   }
 
   ngOnDestroy(): void {
