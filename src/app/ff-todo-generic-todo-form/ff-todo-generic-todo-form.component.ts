@@ -207,7 +207,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
     if (this.isOperatorIncluded(this.ADD,this.EDIT))
     {
-      this.common.triggerTodoDescriptionMaxLength();
+      this.common.updateTodoDescriptionMaxLength();
       
       this.inputDateFormatDisp = this.inputDateFormat.toLowerCase();
     }

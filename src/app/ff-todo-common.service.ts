@@ -30,8 +30,13 @@ export class FfTodoCommonService {
   public displayDateFormat!: string;
   public inputDateFormat!: string;
 
+  private boardNameMaxLength! : Number;
+  public boardNameMaxLengthChange = new EventEmitter<Number>();
   private boardDescriptionMaxLength! : Number;
   public boardDescriptionMaxLengthChange = new EventEmitter<Number>();
+  private boardAuthorMaxLength! : Number;
+  public boardAuthorMaxLengthChange = new EventEmitter<Number>();
+
   private todoDescriptionMaxLength! : Number;
   public todoDescriptionMaxLengthChange = new EventEmitter<Number>();
 
@@ -323,27 +328,27 @@ export class FfTodoCommonService {
     this.updateTodoList();
   }
 
-  updateBoardDescriptionMaxLength(val: Number) {
+  updateBoardNameMaxLength(val: Number = 0) {
     if (val > 0)
-    {
-      this.boardDescriptionMaxLength = val;
-      this.boardDescriptionMaxLengthChange.emit(this.boardDescriptionMaxLength);
-    }
+      this.boardNameMaxLength = val;
+    this.boardNameMaxLengthChange.emit(this.boardNameMaxLength);
   }
 
-  triggerBoardDescriptionMaxLength() {
+  updateBoardDescriptionMaxLength(val: Number = 0) {
+    if (val > 0)
+      this.boardDescriptionMaxLength = val;
     this.boardDescriptionMaxLengthChange.emit(this.boardDescriptionMaxLength);
   }
 
-  updateTodoDescriptionMaxLength(val: Number) {
+  updateBoardAuthorMaxLength(val: Number = 0) {
     if (val > 0)
-    {
-      this.todoDescriptionMaxLength = val;
-      this.todoDescriptionMaxLengthChange.emit(this.todoDescriptionMaxLength);
-    }
+      this.boardAuthorMaxLength = val;
+    this.boardAuthorMaxLengthChange.emit(this.boardAuthorMaxLength);
   }
 
-  triggerTodoDescriptionMaxLength() {
+  updateTodoDescriptionMaxLength(val: Number = 0) {
+    if (val > 0)
+      this.todoDescriptionMaxLength = val;
     this.todoDescriptionMaxLengthChange.emit(this.todoDescriptionMaxLength);
   }
 
@@ -361,7 +366,7 @@ export class FfTodoCommonService {
       this.taskSortDir.push(false);
     }
 
-    this.todoPhaseValRangeChange.emit(this.phaseRange);
+    this.triggerTodoPhaseValRange();
   }
 
   triggerTodoPhaseValRange() {

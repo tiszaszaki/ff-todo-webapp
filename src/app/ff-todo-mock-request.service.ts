@@ -86,8 +86,16 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
+  getBoardNameMaxLength() : Observable<Number> {
+    return of(64);
+  }
+
   getBoardDescriptionMaxLength() : Observable<Number> {
     return of(1024);
+  }
+
+  getBoardAuthorMaxLength() : Observable<Number> {
+    return of(128);
   }
 
   getTodoDescriptionMaxLength() : Observable<Number> {

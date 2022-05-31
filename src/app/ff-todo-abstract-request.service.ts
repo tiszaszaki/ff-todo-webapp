@@ -14,9 +14,12 @@ export abstract class FfTodoAbstractRequestService {
   abstract editBoard(id : number, patchedBoard: Board): Observable<any>;
   abstract removeBoard(id: number): Observable<any>;
 
+  abstract getBoardNameMaxLength() : Observable<Number>;
   abstract getBoardDescriptionMaxLength() : Observable<Number>;
+  abstract getBoardAuthorMaxLength() : Observable<Number>;
   abstract getTodoDescriptionMaxLength() : Observable<Number>;
   abstract getTodoPhaseRange() : Observable< Array<Number> >;
+
   abstract getBoardReadonlyTodosSetting(id : number) : Observable<Boolean>;
   abstract setBoardReadonlyTodosSetting(id : number, readonly: Boolean) : Observable<void>;
   abstract getBoardReadonlyTasksSetting(id : number) : Observable<Boolean>;

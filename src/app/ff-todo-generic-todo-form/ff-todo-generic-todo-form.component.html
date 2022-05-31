@@ -53,7 +53,7 @@
                     <div class="form-group" *ngIf="isOperatorIncluded(CLONE)">
                         <label for="board">Board</label>
                         <div class="input-group">
-                            <div class="btn-group btn-group-toggle" ngbRadioGroup id="board" [(ngModel)]="model.boardId" name="board"
+                            <div class="btn-group-vertical btn-group-toggle" ngbRadioGroup id="board" [(ngModel)]="model.boardId" name="board"
                                     #board="ngModel" required>
                                 <label ngbButtonLabel class="btn-primary" *ngFor="let board of iterateBoardList()"
                                         data-toggle="tooltip" data-placement="bottom" title="{{ getBoardTooltip(board) }}">

@@ -27,8 +27,14 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   public modeStr!: String;
   public formId!: String;
 
+  public nameMaxLength!: number;
+  public nameMaxLengthListener!: Subscription;
+
   public descriptionMaxLength!: number;
   public descriptionMaxLengthListener!: Subscription;
+
+  public authorMaxLength!: number;
+  public authorMaxLengthListener!: Subscription;
 
   public formTitle!: String;
 
@@ -138,13 +144,23 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
     this.modeStr = BoardOperator[this.mode].toLowerCase();
     this.formId = `${this.modeStr}BoardForm`;
 
+    this.nameMaxLengthListener = this.common.boardNameMaxLengthChange.subscribe(result => {
+      result = this.nameMaxLength = result as number;
+    });
+
     this.descriptionMaxLengthListener = this.common.boardDescriptionMaxLengthChange.subscribe(result => {
       result = this.descriptionMaxLength = result as number;
     });
 
+    this.authorMaxLengthListener = this.common.boardAuthorMaxLengthChange.subscribe(result => {
+      result = this.authorMaxLength = result as number;
+    });
+
     if (this.isOperatorIncluded(this.ADD,this.EDIT))
     {
-      this.common.triggerBoardDescriptionMaxLength();
+      this.common.updateBoardNameMaxLength();
+      this.common.updateBoardDescriptionMaxLength();
+      this.common.updateBoardAuthorMaxLength();
     }
 
     this.resetModel();
@@ -161,7 +177,9 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   }
 
   ngOnDestroy() {
+    this.nameMaxLengthListener.unsubscribe();
     this.descriptionMaxLengthListener.unsubscribe();
+    this.authorMaxLengthListener.unsubscribe();
 
     this.preparingFormListener.unsubscribe();
   }

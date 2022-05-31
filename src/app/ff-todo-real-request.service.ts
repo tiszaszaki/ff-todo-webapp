@@ -105,10 +105,32 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     );
   }
 
+  getBoardNameMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.boardPath}/name-max-length`).pipe(
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum name length for all Boards: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
   getBoardDescriptionMaxLength() : Observable<Number> {
     return this.http.get<Number>(`${this.boardPath}/description-max-length`).pipe(
       timeout(this.timeoutInterval),
       tap((maxLength : Number) => console.log(`Fetched maximum description length for all Boards: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  getBoardAuthorMaxLength() : Observable<Number> {
+    return this.http.get<Number>(`${this.boardPath}/author-max-length`).pipe(
+      timeout(this.timeoutInterval),
+      tap((maxLength : Number) => console.log(`Fetched maximum author length for all Boards: (${maxLength})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
