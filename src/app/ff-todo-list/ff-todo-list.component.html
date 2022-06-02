@@ -56,12 +56,12 @@
 	<table class="table mt-3" *ngIf="todoQueryFinished && todoQuerySuccess && boardSelected">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
-				<td class="col border border-secondary" *ngFor="let phase of iterateTodoPhases()">
+				<td class="col-4 border border-secondary" *ngFor="let phase of iterateTodoPhases()">
 					<h2 class="mt-1 mb-3">{{ getTodoPhaseLabel(phase) }}</h2>
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
-				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
+				<td class="col-4 border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<div class="d-flex">
 						<button type="button w-50" (click)="prepareSortTodoForm(idx)" [disabled]="!todo_phase.length"
 								[ngClass]="{'btn': true, 'btn-success': getTodoSortingButtonStatus(idx), 'btn-secondary': !getTodoSortingButtonStatus(idx)}">
@@ -80,7 +80,7 @@
 				</td>
 			</tr>
 			<tr class="row border border-2 border-secondary">
-				<td class="col border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
+				<td class="col-4 border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"></app-ff-todo-list-per-phase>
 				</td>
 			</tr>

@@ -20,7 +20,7 @@
     <div class="card-header">
         <h5 class="card-title">
 			<div class="text-muted text-center" data-toggle="tooltip" data-placement="bottom" title="Todo ID">{{ content.id }}</div>
-			<div class="text-center" data-toggle="tooltip" data-placement="bottom" title="Todo name" [innerHTML]="highlightedName">
+			<div class="text-center text-truncate" data-toggle="tooltip" data-placement="bottom" title="{{ content.name }}" [innerHTML]="highlightedName">
 				{{ content.name }}
 			</div>
         </h5>
