@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { Todo } from '../todo';
+import { TodoOperator } from '../todo-operator';
 
 @Component({
   selector: 'app-ff-todo-index',
@@ -10,20 +14,27 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
 })
 export class FfTodoIndexComponent implements OnInit {
 
-  private todoNameMapping!: Map<Number, String>;
-  private todoParentMapping!: Map<Number, Number>;
+  public todoList!: Todo[];
 
   public todoQueryFinished!: Boolean;
   public todoQuerySuccess!: Boolean;
 
   public dumpErrorMessage!: String;
 
+  public todoSelected!: Todo;
+
+  public readonly VIEW_TODO = TodoOperator.VIEW;
+  public readonly REMOVE_TODO = TodoOperator.REMOVE;
+
+  public prepareViewTodoFormTrigger = new Subject<void>();
+  public prepareRemoveTodoFormTrigger = new Subject<void>();
+
   constructor(
       private todoServ: FfTodoAbstractRequestService,
       private route: ActivatedRoute,
-      private common: FfTodoCommonService) {
-    this.todoNameMapping = new Map<Number,String>();
-    this.todoParentMapping = new Map<Number,Number>();
+      private common: FfTodoCommonService,
+      private alertServ: FfTodoAlertService) {
+    this.todoList = [];
   }
 
   ngOnInit(): void {
@@ -34,57 +45,40 @@ export class FfTodoIndexComponent implements OnInit {
     this.updateTodoList();
   }
 
+  prepareViewTodoForm(todo: Todo) {
+    this.todoSelected = todo;
+    this.prepareViewTodoFormTrigger.next();
+  }
+
+  prepareRemoveTodoForm(todo: Todo) {
+    this.todoSelected = todo;
+    this.prepareRemoveTodoFormTrigger.next();
+  }
+
+  removeTodo(todo: Todo) {
+    let id = todo.id;
+    console.log(`Trying to remove Todo with ID (${id})...`);
+    this.todoServ.removeTodo(id)
+    .subscribe(() => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Todo with ID (${id}).`});
+      this.updateTodoList();
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove Todo with ID (${id}). See browser console for details.`});
+    });
+  }
+
   getTodoListSize() {
-    return this.todoNameMapping.size;
-  }
-
-  iterateTodoList(): Array<number> {
-    let result: Array<number> = [];
-
-    for (let id of this.todoNameMapping.keys())
-    {
-      result.push(id as number);
-    }
-
-    return result.sort();
-  }
-
-  hasTodoParent(id: Number): Boolean {
-    return this.todoParentMapping.has(id);
-  }
-
-  getTodoName(id: Number): String {
-    let result: String = "<unknown todo>";
-
-    if (this.todoNameMapping.has(id))
-    {
-      result = this.todoNameMapping.get(id)!;
-    }
-
-    return result;
-  }
-
-  getTodoParent(id: Number): Number {
-    let result: Number = -1;
-
-    if (this.todoNameMapping.has(id))
-    {
-      result = this.todoParentMapping.get(id)!;
-    }
-
-    return result;
+    return this.todoList.length;
   }
 
   clearTodoNames()
   {
-    this.todoNameMapping.clear();
+    this.todoList = [];
   }
 
-  addTodoEntry(id: Number, name: String, boardId?: Number)
+  addTodoEntry(todo: Todo)
   {
-    this.todoNameMapping.set(id, name);
-    if (boardId)
-      this.todoParentMapping.set(id, boardId);
+    this.todoList.push(todo);
   }
 
   private updateTodoList()
@@ -99,7 +93,7 @@ export class FfTodoIndexComponent implements OnInit {
 
       for (let todo of results)
       {
-        this.addTodoEntry(todo.id, todo.name, todo.boardId);
+        this.addTodoEntry(todo);
         idx++;
       }
 

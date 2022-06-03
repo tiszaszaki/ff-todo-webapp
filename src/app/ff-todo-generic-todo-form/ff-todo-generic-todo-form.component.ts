@@ -52,6 +52,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public readonly ADD = TodoOperator.ADD;
   public readonly EDIT = TodoOperator.EDIT;
+  public readonly VIEW = TodoOperator.VIEW;
   public readonly CLONE = TodoOperator.CLONE;
   public readonly SHIFT = TodoOperator.SHIFT;
   public readonly REMOVE = TodoOperator.REMOVE;
@@ -74,6 +75,11 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     if (idx == this.common.getBoardSelected())
       result += " (default)";
 
+    if (this.isOperatorIncluded(this.VIEW))
+    if (this.model.boardId)
+    if (idx == this.model.boardId)
+      result += " (selected)";
+  
     return result;
   }
 
@@ -88,11 +94,9 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   getTodoPhaseLabel(idx: number) {
     let result=this.common.getTodoPhaseLabel(idx);
 
-    /*
-    if (this.isOperatorIncluded(this.CLONE))
+    if (this.isOperatorIncluded(this.VIEW))
     if (idx == this.model.phase)
-      result += " (default)";
-    */
+      result += " (selected)";
 
     return result;
   }
@@ -106,7 +110,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.name = '';
     this.model.description = '';
     this.model.phase = 0;
-    this.model.boardId = this.common.getBoardSelected() as number;
+    if (this.isOperatorIncluded(this.CLONE))
+      this.model.boardId = this.common.getBoardSelected() as number;
   }
 
   private updateDisplay() {
@@ -141,14 +146,26 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
           this.submitButtonCaption = "Update";
         }
       } break;
+      case this.VIEW: {
+        if (this.model)
+        {
+          let id=this.model.id;
+          this.formTitle = `View details of Todo with ID ${id}`;
+
+          this.placeholderName = "No name defined for this Todo.";
+          this.placeholderDescription = "No description defined for this Todo.";
+
+          this.submitButtonCaption = "<no submit action>";
+        }
+      } break;
       case this.CLONE: {
         if (this.model)
         {
           let id=this.model.id;
           this.formTitle = `Clone Todo with ID ${id}`;
 
-          this.placeholderName = "Name for this Todo left blank...";
-          this.placeholderDescription = "Description for this Todo left blank...";
+          this.placeholderName = "Name for this Todo left blank.";
+          this.placeholderDescription = "Description for this Todo left blank.";
 
           this.submitButtonCaption = "Clone";
         }
@@ -247,7 +264,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   submitForm(condition?: Boolean) {
     if ((condition === undefined) || condition)
     {
-      if (this.isOperatorIncluded(this.ADD,this.EDIT,this.CLONE,this.REMOVE))
+      if (this.isOperatorIncluded(this.ADD,this.EDIT,this.VIEW,this.CLONE,this.REMOVE))
       {
         this.submitDataEvent.emit(this.model);
       }

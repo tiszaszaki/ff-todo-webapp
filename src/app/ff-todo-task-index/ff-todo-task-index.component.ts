@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { TaskOperator } from '../task-operator';
+import { Task } from '../task';
+import { Subject } from 'rxjs';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 
 @Component({
   selector: 'app-ff-todo-task-index',
@@ -10,8 +14,7 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
 })
 export class FfTodoTaskIndexComponent implements OnInit {
 
-  private taskNameMapping!: Map<Number, String>;
-  private taskParentMapping!: Map<Number, Number>;
+  public taskList!: Task[];
 
   private queryIdx!: number;
 
@@ -22,12 +25,20 @@ export class FfTodoTaskIndexComponent implements OnInit {
 
   public dumpErrorMessage!: String;
 
+  public taskSelected!: Task;
+
+  public readonly VIEW_TASK = TaskOperator.VIEW;
+  public readonly REMOVE_TASK = TaskOperator.REMOVE;
+
+  public prepareViewTaskFormTrigger = new Subject<void>();
+  public prepareRemoveTaskFormTrigger = new Subject<void>();
+
   constructor(
       private todoServ: FfTodoAbstractRequestService,
       private route: ActivatedRoute,
-      private common: FfTodoCommonService) {
-    this.taskNameMapping = new Map<Number,String>();
-    this.taskParentMapping = new Map<Number,Number>();
+      private common: FfTodoCommonService,
+      private alertServ: FfTodoAlertService) {
+    this.taskList = [];
 
     this.todoParentMapping = new Map<Number,Number>();
   }
@@ -40,69 +51,51 @@ export class FfTodoTaskIndexComponent implements OnInit {
     this.updateTaskList();
   }
 
+  prepareViewTaskForm(task: Task) {
+    this.taskSelected = task;
+    this.prepareViewTaskFormTrigger.next();
+  }
+
+  prepareRemoveTaskForm(task: Task) {
+    this.taskSelected = task;
+    this.prepareRemoveTaskFormTrigger.next();
+  }
+
+  removeTask(task : Task) {
+    let id = task.id;
+    console.log(`Trying to remove Task with ID (${id})...`);
+    this.todoServ.removeTask(id)
+    .subscribe(() => {
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed Task with ID (${id}).`});
+      this.updateTaskList();
+    }, errorMsg => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove Task with ID (${id}). See browser console for details.`});
+    });
+  }
+
   getTaskListSize() {
-    return this.taskNameMapping.size;
+    return this.taskList.length;
   }
 
-  iterateTaskList(): Array<number> {
-    let result: Array<number> = [];
-
-    for (let id of this.taskNameMapping.keys())
-    {
-      result.push(id as number);
-    }
-
-    return result.sort();
+  hasTaskGrandparent(task: Task): Boolean {
+    if (task.todoId)
+      return (this.todoParentMapping.has(task.todoId));
+    else
+      return false;
   }
 
-  getTaskName(id: Number): String {
-    let result: String = "<unknown task>";
-
-    if (this.taskNameMapping.has(id))
-    {
-      result = this.taskNameMapping.get(id)!;
-    }
-
-    return result;
-  }
-
-  hasTaskGrandparent(id: Number): Boolean {
-    var result=this.hasTaskParent(id);
-
-    if (result)
-    {
-      result &&= (this.todoParentMapping.has(this.getTaskParent(id)));
-    }
-
-    return result;
-  }
-
-  hasTaskParent(id: Number): Boolean {
-    return this.taskParentMapping.has(id);
-  }
-
-  getTaskGrandparent(id: Number): Number {
+  getTaskGrandparent(task: Task): Number {
     let result: Number = -1;
 
-    result = this.todoParentMapping.get(this.getTaskParent(id))!;
-
-    return result;
-  }
-
-  getTaskParent(id: Number): Number {
-    let result: Number = -1;
-
-    if (this.taskNameMapping.has(id))
-    {
-      result = this.taskParentMapping.get(id)!;
-    }
+    if (task.todoId)
+      result = this.todoParentMapping.get(task.todoId)!;
 
     return result;
   }
 
   clearTaskNames()
   {
-    this.taskNameMapping.clear();
+    this.taskList = [];
   }
 
   addTodoParent(todoId: Number)
@@ -114,14 +107,9 @@ export class FfTodoTaskIndexComponent implements OnInit {
     });
   }
 
-  addTaskEntry(id: Number, name: String, todoId?: Number)
+  addTaskEntry(task: Task)
   {
-    this.taskNameMapping.set(id, name);
-    if (todoId)
-    {
-      this.taskParentMapping.set(id, todoId);
-      this.addTodoParent(todoId);
-    }
+    this.taskList.push(task);
   }
 
   private updateTaskList()
@@ -136,7 +124,7 @@ export class FfTodoTaskIndexComponent implements OnInit {
 
       for (let task of results)
       {
-        this.addTaskEntry(task.id, task.name, task.todoId);
+        this.addTaskEntry(task);
         this.queryIdx++;
       }
 

@@ -8,12 +8,12 @@
         </div>
 
         <div class="modal-body">
-            <div *ngIf="isOperatorIncluded(ADD,EDIT)">
+            <div *ngIf="isOperatorIncluded(ADD,EDIT,VIEW)">
                 <div class="form-group">
                     <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
                                 #name="ngModel" [placeholder]="placeholderName" (keyup.enter)="modal.close('Saved by pressing Enter')"
-                                maxlength="{{ nameMaxLength }}" required ngbAutoFocus>
+                                maxlength="{{ nameMaxLength }}" [readonly]="isOperatorIncluded(VIEW)" required ngbAutoFocus>
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                             Name is required
                         </div>
@@ -25,12 +25,12 @@
                     <div class="form-group form-check d-flex justify-content-begin">
                         <label class="form-check-label" for="done">Checked</label>
                         <input class="form-check-input" type="checkbox" id="done" [(ngModel)]="model.done" name="done"
-                                value="model.done" #checked="ngModel">
+                                value="model.done" #checked="ngModel" [disabled]="isOperatorIncluded(VIEW)">
                     </div>
 
                     <label for="deadline">Deadline</label>
                     <div class="input-group">
-                        <app-ff-todo-bootstrap-date-time-picker [(model)]="model.deadline" [readonlyModel]="false"
+                        <app-ff-todo-bootstrap-date-time-picker [(model)]="model.deadline" [readonlyModel]="isOperatorIncluded(VIEW)"
                                 [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
                                 (modelChange)="changedDeadline = true" customPopoverTitle="Deadline of Task">
                         </app-ff-todo-bootstrap-date-time-picker>
@@ -51,10 +51,13 @@
                 <button type="button" class="btn btn-danger" (click)="modal.close('Confirmed')">{{ confirmButtonCaption }}</button>
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Dismissed')">Cancel</button>
             </div>
+            <div *ngIf="isOperatorIncluded(VIEW)">
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
+            </div>
         </div>
     </form>
 
-    <div *ngIf="!isOperatorIncluded(ADD,EDIT,REMOVE,REMOVE_ALL)">
+    <div *ngIf="!isOperatorIncluded(ADD,EDIT,VIEW,REMOVE,REMOVE_ALL)">
         <app-ff-todo-form-invalid></app-ff-todo-form-invalid>
     </div>
 </ng-template>

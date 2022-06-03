@@ -48,6 +48,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
 
   public readonly ADD = TaskOperator.ADD;
   public readonly EDIT = TaskOperator.EDIT;
+  public readonly VIEW = TaskOperator.VIEW;
   public readonly REMOVE = TaskOperator.REMOVE;
   public readonly CHECK = TaskOperator.CHECK;
   public readonly REMOVE_ALL = TaskOperator.REMOVE_ALL;
@@ -88,6 +89,16 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
           this.placeholderName = "Change name for this Task...";
 
           this.submitButtonCaption = "Update";
+        }
+      } break;
+      case this.VIEW: {
+        if (this.model)
+        {
+          let id=this.model.id;
+          this.formTitle = `View Task details with ID ${id}`;
+          this.placeholderName = "No name defined for this Todo.";
+
+          this.submitButtonCaption = "<no submit action>";
         }
       } break;
       case this.REMOVE: {

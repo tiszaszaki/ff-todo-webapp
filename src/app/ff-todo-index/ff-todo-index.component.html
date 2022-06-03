@@ -1,16 +1,32 @@
 <div class="container">
+	<div>
+		<app-ff-todo-generic-todo-form #viewTodoForm [mode]="VIEW_TODO" [(model)]="todoSelected"
+				[preparingFormEvent]="prepareViewTodoFormTrigger.asObservable()">
+		</app-ff-todo-generic-todo-form>
+		<app-ff-todo-generic-todo-form #removeTodoForm [mode]="REMOVE_TODO" [(model)]="todoSelected"
+				[preparingFormEvent]="prepareRemoveTodoFormTrigger.asObservable()" (submitDataEvent)="removeTodo($event)">
+		</app-ff-todo-generic-todo-form>
+    </div>
     <div *ngIf="getTodoListSize()">
-        <h1>Todo list</h1>
+        <h1>Index of Todos</h1>
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let field of iterateTodoList()">
+            <li class="list-group-item" *ngFor="let todo of todoList">
                 <button type="button" class="btn btn-primary"
-                        [routerLink]="['/list-todos']" [queryParams]="{id:getTodoParent(field)}" fragment="todo_{{ field }}">
+                        [routerLink]="['/list-todos']" [queryParams]="{id:todo.boardId}" fragment="todo_{{ todo.id }}">
                     <i class="fas fa-share"></i>
                 </button>
-                <span class="mx-1 text-muted" *ngIf="hasTodoParent(field)">{{ getTodoParent(field) }}</span>
-                <span class="mx-1 text-danger" *ngIf="!hasTodoParent(field)">missing board ID</span>
-                <span class="mx-1 text-muted">{{ field }}</span>
-                <span>{{ getTodoName(field) }}</span>
+                <span class="ml-1 text-muted" *ngIf="todo.boardId">{{ todo.boardId }}</span>
+                <span class="ml-1 text-danger" *ngIf="!todo.boardId">missing board ID</span>
+                <span class="ml-3 text-muted">{{ todo.id }}</span>
+                <span class="ml-1 mr-5">{{ todo.name }}</span>
+                <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTodoForm(todo)"
+                        data-toggle="tooltip" data-placement="bottom" title="View Todo">
+                    <i class="far fa-eye"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTodoForm(todo)"
+                        data-toggle="tooltip" data-placement="bottom" title="Remove Todo">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
             </li>
         </ul>
     </div>
