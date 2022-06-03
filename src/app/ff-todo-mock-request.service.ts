@@ -45,7 +45,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  getBoards() : Observable<Number[]> {
+  getBoardIds() : Observable<Number[]> {
     return this.http.get<Board[]>(`${this.boardPath}`).pipe(
       map((boards : Board[]) => boards.map(board => board.id)),
       tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),

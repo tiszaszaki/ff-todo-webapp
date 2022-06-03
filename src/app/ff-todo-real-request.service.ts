@@ -61,7 +61,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     );
   }
 
-  getBoards() : Observable<Number[]> {
+  getBoardIds() : Observable<Number[]> {
     return this.http.get<Number[]>(`${this.boardPath}`).pipe(
       timeout(this.timeoutInterval),
       tap((todos : Number[]) => console.log(`Fetched ${todos.length} Board ID(s)`)),

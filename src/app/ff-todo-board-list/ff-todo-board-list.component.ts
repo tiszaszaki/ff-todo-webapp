@@ -65,7 +65,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.common.changeRouteStatus(false, false);
 
-    this.todoServ.getBoards().subscribe(results => {
+    this.todoServ.getBoardIds().subscribe(results => {
       let idx=0;
 
       this.common.clearBoardNames();

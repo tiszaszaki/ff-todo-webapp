@@ -9,7 +9,7 @@ import { Task } from './task';
 })
 export abstract class FfTodoAbstractRequestService {
   abstract getBoard(id : number) : Observable<Board>;
-  abstract getBoards() : Observable<Number[]>;
+  abstract getBoardIds() : Observable<Number[]>;
   abstract addBoard(board: Board): Observable<Board>;
   abstract editBoard(id : number, patchedBoard: Board): Observable<any>;
   abstract removeBoard(id: number): Observable<any>;
