@@ -11,24 +11,30 @@
         <h1>Index of Tasks</h1>
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let task of taskList">
-                <button type="button" class="btn btn-primary"
-                        [routerLink]="['/list-todos']" [queryParams]="{id:getTaskGrandparent(task)}" fragment="todo_{{ task.todoId }}">
-                    <i class="fas fa-share"></i>
-                </button>
-                <span class="ml-1 text-muted" *ngIf="hasTaskGrandparent(task)">{{ getTaskGrandparent(task) }}</span>
-                <span class="ml-1 text-danger" *ngIf="!hasTaskGrandparent(task)">missing board ID</span>
-                <span class="ml-1 text-muted" *ngIf="task.todoId">{{ task.todoId }}</span>
-                <span class="ml-1 text-danger" *ngIf="!task.todoId">missing todo ID</span>
-                <span class="ml-2 text-muted">{{ task.id }}</span>
-                <span class="ml-1 mr-5">{{ task.name }}</span>
-                <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTaskForm(task)"
-                        data-toggle="tooltip" data-placement="bottom" title="View Task">
-                    <i class="far fa-eye"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTaskForm(task)"
-                        data-toggle="tooltip" data-placement="bottom" title="Remove Task">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-primary"
+                                [routerLink]="['/list-todos']" [queryParams]="{id:getTaskGrandparent(task)}" fragment="todo_{{ task.todoId }}">
+                            <i class="fas fa-share"></i>
+                        </button>
+                        <span class="ml-2 text-muted" *ngIf="hasTaskGrandparent(task)">{{ getTaskGrandparent(task) }}</span>
+                        <span class="ml-2 text-danger" *ngIf="!hasTaskGrandparent(task)">missing board ID</span>
+                        <span class="ml-2 text-muted" *ngIf="task.todoId">{{ task.todoId }}</span>
+                        <span class="ml-2 text-danger" *ngIf="!task.todoId">missing todo ID</span>
+                        <span class="ml-2 text-muted">{{ task.id }}</span>
+                        <span class="ml-1 mr-5">{{ task.name }}</span>               
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTaskForm(task)"
+                                data-toggle="tooltip" data-placement="top" title="View Task">
+                            <i class="far fa-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTaskForm(task)"
+                                data-toggle="tooltip" data-placement="top" title="Remove Task">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>

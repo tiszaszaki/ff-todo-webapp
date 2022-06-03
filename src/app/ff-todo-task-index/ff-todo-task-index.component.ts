@@ -98,11 +98,12 @@ export class FfTodoTaskIndexComponent implements OnInit {
     this.taskList = [];
   }
 
-  addTodoParent(todoId: Number)
+  addTodoParent(todoId?: Number)
   {
     this.todoServ.getTodo(Number(todoId)).subscribe(todo => {
       let _boardId=(todo.boardId ? todo.boardId : -1);
-      this.todoParentMapping.set(todoId, _boardId);
+      if (todoId)
+        this.todoParentMapping.set(todoId, _boardId);
       this.queryIdx++;
     });
   }
@@ -110,6 +111,7 @@ export class FfTodoTaskIndexComponent implements OnInit {
   addTaskEntry(task: Task)
   {
     this.taskList.push(task);
+    this.addTodoParent(task.todoId);
   }
 
   private updateTaskList()

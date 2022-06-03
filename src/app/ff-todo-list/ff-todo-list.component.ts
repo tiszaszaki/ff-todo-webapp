@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
@@ -18,6 +18,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
       private todoServ: FfTodoAbstractRequestService,
       private route: ActivatedRoute,
+      private router: Router,
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
     this.displayDateFormat = this.common.displayDateFormat;
@@ -276,9 +277,19 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.route.queryParams.subscribe(params => {
-      this.common.setBoardSelected(Number.parseInt(params.id));
-
+      var id=Number.parseInt(params.id);
       this.common.changeRouteStatus(true, false);
+
+      if (id)
+      {
+        this.common.setBoardSelected(id);
+      }
+      else
+      {
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to redirect to Board with ID (${id}).`});
+        this.common.changeRouteStatus(false, false);
+        this.router.navigate([""]);
+      }
     });
   }
 
