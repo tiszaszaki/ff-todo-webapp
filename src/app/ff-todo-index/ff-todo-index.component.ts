@@ -49,6 +49,10 @@ export class FfTodoIndexComponent implements OnInit {
     return result.sort();
   }
 
+  hasTodoParent(id: Number): Boolean {
+    return this.todoParentMapping.has(id);
+  }
+
   getTodoName(id: Number): String {
     let result: String = "<unknown todo>";
 
@@ -78,9 +82,9 @@ export class FfTodoIndexComponent implements OnInit {
 
   addTodoEntry(id: Number, name: String, boardId?: Number)
   {
-    let _boardId=(boardId ? boardId : -1);
     this.todoNameMapping.set(id, name);
-    this.todoParentMapping.set(id, _boardId);
+    if (boardId)
+      this.todoParentMapping.set(id, boardId);
   }
 
   private updateTodoList()

@@ -1,3 +1,31 @@
 <div class="container">
-    <p>ff-todo-task-index works!</p>
+    <div *ngIf="getTaskListSize()">
+        <h1>Task list</h1>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let field of iterateTaskList()">
+                <button type="button" class="btn btn-primary"
+                        [routerLink]="['/list-todos']" [queryParams]="{id:getTaskGrandparent(field)}">
+                    <i class="fas fa-share"></i>
+                </button>
+                <span class="mx-1 text-muted" *ngIf="hasTaskGrandparent(field)">{{ getTaskGrandparent(field) }}</span>
+                <span class="mx-1 text-muted" *ngIf="hasTaskParent(field)">{{ getTaskParent(field) }}</span>
+                <span class="mx-1 text-muted">{{ field }}</span>
+                <span>{{ getTaskName(field) }}</span>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="!getTaskListSize()">
+        <div *ngIf="!taskQueryFinished">
+            Loading Tasks...
+        </div>
+        <div *ngIf="taskQueryFinished">
+            <div class="text-muted user-select-none" *ngIf="taskQuerySuccess">
+                There are no Tasks.
+            </div>
+            <div class="text-danger user-select-none" *ngIf="!taskQuerySuccess">
+                <div>Cannot query Task list.</div>
+                <small>Reason: {{ dumpErrorMessage }}</small>
+            </div>
+        </div>
+    </div>
 </div>
