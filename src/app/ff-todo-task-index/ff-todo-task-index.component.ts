@@ -13,6 +13,8 @@ export class FfTodoTaskIndexComponent implements OnInit {
   private taskNameMapping!: Map<Number, String>;
   private taskParentMapping!: Map<Number, Number>;
 
+  private queryIdx!: number;
+
   private todoParentMapping!: Map<Number, Number>;
 
   public taskQueryFinished!: Boolean;
@@ -108,6 +110,7 @@ export class FfTodoTaskIndexComponent implements OnInit {
     this.todoServ.getTodo(Number(todoId)).subscribe(todo => {
       let _boardId=(todo.boardId ? todo.boardId : -1);
       this.todoParentMapping.set(todoId, _boardId);
+      this.queryIdx++;
     });
   }
 
@@ -127,17 +130,17 @@ export class FfTodoTaskIndexComponent implements OnInit {
     this.taskQuerySuccess = false;
 
     this.todoServ.getTasks().subscribe(results => {
-      let idx=0;
+      this.queryIdx = 0;
 
       this.clearTaskNames();
 
       for (let task of results)
       {
         this.addTaskEntry(task.id, task.name, task.todoId);
-        idx++;
+        this.queryIdx++;
       }
 
-      if (idx == results.length)
+      if (this.queryIdx == results.length * 2)
       {
         this.taskQueryFinished = true;
         this.taskQuerySuccess = true;

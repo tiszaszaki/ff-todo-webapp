@@ -4,11 +4,13 @@
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let field of iterateTaskList()">
                 <button type="button" class="btn btn-primary"
-                        [routerLink]="['/list-todos']" [queryParams]="{id:getTaskGrandparent(field)}">
+                        [routerLink]="['/list-todos']" [queryParams]="{id:getTaskGrandparent(field)}" fragment="todo_{{ getTaskParent(field) }}">
                     <i class="fas fa-share"></i>
                 </button>
-                <span class="mx-1 text-muted" *ngIf="hasTaskGrandparent(field)">{{ getTaskGrandparent(field) }}</span>
+                <span class="mx-2 text-muted" *ngIf="hasTaskGrandparent(field)">{{ getTaskGrandparent(field) }}</span>
+                <span class="mx-2 text-danger" *ngIf="!hasTaskGrandparent(field)">missing board ID</span>
                 <span class="mx-1 text-muted" *ngIf="hasTaskParent(field)">{{ getTaskParent(field) }}</span>
+                <span class="mx-1 text-danger" *ngIf="!hasTaskParent(field)">missing todo ID</span>
                 <span class="mx-1 text-muted">{{ field }}</span>
                 <span>{{ getTaskName(field) }}</span>
             </li>
