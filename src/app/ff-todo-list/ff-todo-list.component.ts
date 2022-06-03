@@ -278,7 +278,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.route.queryParams.subscribe(params => {
       this.common.setBoardSelected(Number.parseInt(params.id));
 
-      this.common.changeRouteStatus(true);
+      this.common.changeRouteStatus(true, false);
     });
   }
 

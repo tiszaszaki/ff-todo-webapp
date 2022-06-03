@@ -12,6 +12,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   public isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListListener!: Subscription;
+  public isRoutedToIndex!: Boolean;
+  public isRoutedToIndexListener!: Subscription;
 
   public updateBoardListTrigger!: Subscription;
 
@@ -27,6 +29,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
+    this.isRoutedToIndexListener = this.common.isRoutedToIndexChange.subscribe(result => this.isRoutedToIndex = result);
 
     this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
 
@@ -38,6 +41,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.isRoutedToTodoListListener.unsubscribe();
+    this.isRoutedToIndexListener.unsubscribe();
 
     this.updateBoardListTrigger.unsubscribe();
   }
@@ -59,7 +63,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.boardQueryFinished = false;
     this.boardQuerySuccess = false;
 
-    this.common.changeRouteStatus(false);
+    this.common.changeRouteStatus(false, false);
 
     this.todoServ.getBoards().subscribe(results => {
       let idx=0;

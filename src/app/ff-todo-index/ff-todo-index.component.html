@@ -1,0 +1,30 @@
+<div class="container">
+    <div *ngIf="getTodoListSize()">
+        <h1>Board list</h1>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let field of iterateTodoList()">
+                <button type="button" class="btn btn-primary"
+                        [routerLink]="['/list-todos']" [queryParams]="{id:getTodoParent(field)}">
+                    <i class="fas fa-share"></i>
+                </button>
+                <span class="mx-1 text-muted">{{ getTodoParent(field) }}</span>
+                <span class="mx-1 text-muted">{{ field }}</span>
+                <span>{{ getTodoName(field) }}</span>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="!getTodoListSize()">
+        <div *ngIf="!todoQueryFinished">
+            Loading Boards...
+        </div>
+        <div *ngIf="todoQueryFinished">
+            <div class="text-muted user-select-none" *ngIf="todoQuerySuccess">
+                There are no Boards.
+            </div>
+            <div class="text-danger user-select-none" *ngIf="!todoQuerySuccess">
+                <div>Cannot query Board list.</div>
+                <small>Reason: {{ dumpErrorMessage }}</small>
+            </div>
+        </div>
+    </div>
+</div>

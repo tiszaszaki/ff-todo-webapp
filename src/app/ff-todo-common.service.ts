@@ -18,6 +18,8 @@ export class FfTodoCommonService {
 
   private isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListChange = new EventEmitter<Boolean>();
+  private isRoutedToIndex!: Boolean;
+  public isRoutedToIndexChange = new EventEmitter<Boolean>();
 
   private isRealService!: Boolean;
 
@@ -431,9 +433,11 @@ export class FfTodoCommonService {
     this.todoCountChange.emit(this.todoCount);
   }
 
-  changeRouteStatus(val: Boolean) {
-    this.isRoutedToTodoList = val;
+  changeRouteStatus(val1: Boolean, val2: Boolean) {
+    this.isRoutedToTodoList = val1;
     this.isRoutedToTodoListChange.emit(this.isRoutedToTodoList);
+    this.isRoutedToIndex = val2;
+    this.isRoutedToIndexChange.emit(this.isRoutedToIndex);
   }
 
   setRealServiceStatus(val: Boolean) {

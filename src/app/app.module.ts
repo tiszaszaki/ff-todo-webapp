@@ -41,6 +41,8 @@ import { FfTodoRealRequestService } from './ff-todo-real-request.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
 import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
+import { FfTodoIndexComponent } from './ff-todo-index/ff-todo-index.component';
+import { FfTodoTaskIndexComponent } from './ff-todo-task-index/ff-todo-task-index.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
     FfTodoPageDoesNotExistComponent,
     FfTodoQueryStatusComponent,
     FfTodoCardRefreshingComponent,
-    FfTodoBootstrapDateTimePickerComponent
+    FfTodoBootstrapDateTimePickerComponent,
+    FfTodoIndexComponent,
+    FfTodoTaskIndexComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule,

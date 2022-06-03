@@ -20,6 +20,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   public isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListListener!: Subscription;
+  public isRoutedToIndex!: Boolean;
+  public isRoutedToIndexListener!: Subscription;
 
   public readonlyTodo!: Boolean;
   public readonlyTodoListener!: Subscription;
@@ -76,6 +78,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result);
 
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
+    this.isRoutedToIndexListener = this.common.isRoutedToIndexChange.subscribe(result => this.isRoutedToIndex = result);
 
     this.router.navigate(["/"]);
   }
@@ -92,6 +95,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.readonlyTaskListener.unsubscribe();
 
     this.isRoutedToTodoListListener.unsubscribe();
+    this.isRoutedToIndexListener.unsubscribe();
   }
 
   public defRealService() {

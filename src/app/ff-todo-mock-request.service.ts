@@ -238,6 +238,16 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     return of([0,2]);
   }
 
+  getTasks() : Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.taskPath}`).pipe(
+      tap((tasks : Task[]) => console.log(`Fetched ${tasks.length} Task(s)`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
   getTasksFromTodo(todoId: number): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       map((tasks : Task[]) => {

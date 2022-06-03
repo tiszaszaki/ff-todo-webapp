@@ -50,7 +50,7 @@
             data-toggle="tooltip" data-placement="bottom" title="Add new Board">
           <i class="fas fa-plus"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-warning w-25" (click)="updateBoardList()" [disabled]="isRoutedToTodoList"
+        <button type="button" class="btn btn-warning w-25" (click)="updateBoardList()" [disabled]="isRoutedToTodoList || isRoutedToIndex"
             data-toggle="tooltip" data-placement="bottom" title="Refresh Board list">
           <i class="fas fa-sync-alt"></i>&nbsp;Boards
         </button>
@@ -60,9 +60,19 @@
             [disabled]="!isRoutedToTodoList || !boardSelected">
           <i class="fas fa-sync-alt"></i>&nbsp;Board
         </button>
-        <button type="button" class="btn btn-secondary w-25" [routerLink]="['']" [disabled]="!isRoutedToTodoList"
+        <button type="button" class="btn btn-secondary w-25" [routerLink]="['']" [disabled]="!isRoutedToTodoList && !isRoutedToIndex"
             data-toggle="tooltip" data-placement="bottom" title="Return to Board list">
             <i class="fas fa-home"></i>&nbsp;
+        </button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary w-50" [routerLink]="['todo-index']" [disabled]="isRoutedToTodoList || isRoutedToIndex"
+            data-toggle="tooltip" data-placement="bottom" title="Index of Todos">
+          <i class="far fa-address-book"></i>&nbsp;Todos
+        </button>
+        <button type="button" class="btn btn-warning w-50" [routerLink]="['task-index']" [disabled]="isRoutedToTodoList || isRoutedToIndex"
+            data-toggle="tooltip" data-placement="bottom" title="Index of Tasks">
+          <i class="far fa-address-book"></i>&nbsp;Tasks
         </button>
       </div>
       <div class="btn-group" *ngIf="isRoutedToTodoList">

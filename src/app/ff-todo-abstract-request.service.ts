@@ -36,6 +36,7 @@ export abstract class FfTodoAbstractRequestService {
   abstract getTodoDescriptionMaxLength() : Observable<Number>;
   abstract getTodoPhaseRange() : Observable< Array<Number> >;
 
+  abstract getTasks() : Observable<Task[]>;
   abstract getTasksFromTodo(todoId: number): Observable<Task[]>;
   abstract addTask(task: Task, todoId: number): Observable<Task>;
   abstract editTask(patchedTask: Task): Observable<any>;
