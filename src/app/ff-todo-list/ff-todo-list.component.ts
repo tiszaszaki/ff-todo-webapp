@@ -291,6 +291,12 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         this.router.navigate([""]);
       }
     });
+    this.route.fragment.subscribe(fragment => {
+      if (fragment)
+      {
+        document.querySelector('#' + fragment)?.scrollIntoView();
+      }
+    });
   }
 
   ngOnChanges(): void {
