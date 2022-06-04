@@ -3,7 +3,9 @@ import { ModalDismissReasons, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-b
 import { Observable, Subscription } from 'rxjs';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { Todo } from '../todo';
+import { Task } from '../task';
 import { TodoOperator } from '../todo-operator';
+import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 
 @Component({
   selector: 'app-ff-todo-generic-todo-form',
@@ -26,6 +28,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   public modeStr!: String;
   public formId!: String;
+
+  public taskList!: Task[];
 
   public deadlineTemp!: NgbDateStruct;
 
@@ -60,6 +64,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
 
   constructor(
       private modalService: NgbModal,
+      private todoServ: FfTodoAbstractRequestService,
       private common: FfTodoCommonService) {
     this.inputDateFormat = this.common.inputDateFormat;
   }
@@ -112,6 +117,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
     this.model.phase = 0;
     if (this.isOperatorIncluded(this.CLONE))
       this.model.boardId = this.common.getBoardSelected() as number;
+    if (this.isOperatorIncluded(this.VIEW))
+      this.todoServ.getTasksFromTodo(this.model.id).subscribe(tasks => this.taskList = tasks);
   }
 
   private updateDisplay() {

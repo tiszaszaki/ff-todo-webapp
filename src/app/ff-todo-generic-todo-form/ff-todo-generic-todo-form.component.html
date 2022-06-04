@@ -76,6 +76,12 @@
                                 (modelChange)="changedDeadline = true" customPopoverTitle="Deadline of Todo">
                         </app-ff-todo-bootstrap-date-time-picker>
                     </div>
+
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="tasks">Task list</label>
+                        <app-ff-todo-task-list name="tasks" [phase_idx]="model.phase" [todoId]="model.id" [readonly]="true">
+                        </app-ff-todo-task-list>
+                    </div>
                 </div>
             <div *ngIf="isOperatorIncluded(REMOVE,REMOVE_ALL)">
                 <div class="modal-text">{{ confirmMessage }}</div>

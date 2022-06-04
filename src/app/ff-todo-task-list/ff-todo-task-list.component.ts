@@ -24,6 +24,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
 
   @Input() todoId!: number;
   @Input() phase_idx!: number;
+  @Input() readonly!: boolean;
 
   public prepareEditTaskFormTrigger = new Subject<void>();
   public prepareRemoveTaskFormTrigger = new Subject<void>();
@@ -58,7 +59,10 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   public readonly REMOVE_TASK = TaskOperator.REMOVE;
 
   ngOnInit(): void {
-    this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result as boolean);
+    if (this.readonly)
+      this.readonlyTask = this.readonly;
+    else
+      this.readonlyTaskListener = this.common.readonlyTaskChange.subscribe(result => this.readonlyTask = result as boolean);
 
     this.showTaskCount = [false, false];
 
@@ -119,7 +123,8 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.readonlyTaskListener.unsubscribe();
+    if (!this.readonly)
+      this.readonlyTaskListener.unsubscribe();
 
     this.todoSortingSettingsListener.unsubscribe();
     this.todoSearchingRulesListener.unsubscribe();
