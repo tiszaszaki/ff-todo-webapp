@@ -84,6 +84,14 @@
 					<app-ff-todo-list-per-phase [content]="todo_phase" [phase_idx]="idx"></app-ff-todo-list-per-phase>
 				</td>
 			</tr>
+			<tr class="row border border-2 border-secondary" *ngIf="todoCount">
+				<td class="col-4 border border-secondary" *ngFor="let todo_phase of todo_list; let idx=index">
+					<div class="d-flex justify-content-end">
+						Number of Todos in phase "{{ getTodoPhaseLabel(idx) }}":&nbsp;
+						<span class="badge badge-pill bg-secondary">{{ todo_phase.length }} / {{ todoCount }}</span>
+					</div>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>

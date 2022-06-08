@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -13,6 +14,7 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
   constructor(     
       private common: FfTodoCommonService,
+      private route: ActivatedRoute,
       private alertServ: FfTodoAlertService) { }
 
   @Input() content! : Todo[];
@@ -62,6 +64,14 @@ export class FfTodoListPerPhaseComponent implements OnInit, OnDestroy {
 
     this.todoSearchingRulesListener = this.common.todoSearchingRulesChange.subscribe(results => {
       this.todoSearchRules = results;
+    });
+
+    this.route.fragment.subscribe(fragment => {
+      if (fragment)
+      {
+        var element = document.querySelector('#' + fragment);
+        if (element) element.scrollIntoView();
+      }
     });
   }
 
