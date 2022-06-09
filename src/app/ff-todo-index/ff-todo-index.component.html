@@ -8,33 +8,34 @@
 		</app-ff-todo-generic-todo-form>
     </div>
     <div *ngIf="getTodoListSize()">
-        <h1>Index of Todos</h1>
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let todo of todoList">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <button type="button" class="btn btn-primary"
-                                [routerLink]="['/list-todos']" [queryParams]="{id:todo.boardId}" fragment="todo_{{ todo.id }}">
-                            <i class="fas fa-share"></i>
-                        </button>
-                        <span class="ml-1 text-muted" *ngIf="todo.boardId">{{ todo.boardId }}</span>
-                        <span class="ml-1 text-danger" *ngIf="!todo.boardId">missing board ID</span>
-                        <span class="ml-3 text-muted">{{ todo.id }}</span>
-                        <span class="ml-1 mr-5">{{ todo.name }}</span>
+        <ng-container *ngIf="(todoList | tszSort:todoSortExec:todoSortField:todoSortDir) as searchres">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let todo of searchres">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-primary"
+                                    [routerLink]="['/list-todos']" [queryParams]="{id:todo.boardId}" fragment="todo_{{ todo.id }}">
+                                <i class="fas fa-share"></i>
+                            </button>
+                            <span class="ml-1 text-muted" *ngIf="todo.boardId">{{ todo.boardId }}</span>
+                            <span class="ml-1 text-danger" *ngIf="!todo.boardId">missing board ID</span>
+                            <span class="ml-3 text-muted">{{ todo.id }}</span>
+                            <span class="ml-1 mr-5">{{ todo.name }}</span>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTodoForm(todo)"
+                                    data-toggle="tooltip" data-placement="top" title="View Todo">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTodoForm(todo)"
+                                    data-toggle="tooltip" data-placement="top" title="Remove Todo">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTodoForm(todo)"
-                                data-toggle="tooltip" data-placement="top" title="View Todo">
-                            <i class="far fa-eye"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveTodoForm(todo)"
-                                data-toggle="tooltip" data-placement="top" title="Remove Todo">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </ng-container>
     </div>
     <div *ngIf="!getTodoListSize()">
         <div *ngIf="!todoQueryFinished">

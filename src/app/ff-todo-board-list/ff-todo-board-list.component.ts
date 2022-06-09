@@ -33,6 +33,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
 
+    this.common.changePageTitle("Board list");
+
     this.updateBoardList();
   }
 
@@ -40,6 +42,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.common.changePageTitle("");
+
     this.isRoutedToTodoListListener.unsubscribe();
     this.isRoutedToIndexListener.unsubscribe();
 

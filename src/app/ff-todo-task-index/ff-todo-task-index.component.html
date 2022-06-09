@@ -8,9 +8,8 @@
         </app-ff-todo-generic-task-form>
     </div>
     <div *ngIf="getTaskListSize()">
-        <h1>Index of Tasks</h1>
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let task of taskList">
+            <li class="list-group-item"  *ngFor="let task of taskList | tszSort:tasksortexec:tasksortfield:tasksortdir">
                 <div class="d-flex justify-content-between">
                     <div>
                         <button type="button" class="btn btn-primary"

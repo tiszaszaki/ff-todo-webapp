@@ -16,6 +16,9 @@ export class FfTodoCommonService {
   public updateTodoListEvent = new EventEmitter< Set<Number> >();
   public updateBoardListEvent = new EventEmitter<void>();
 
+  private pageTitle!: String;
+  public pageTitleChange = new EventEmitter<String>();
+
   private isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListChange = new EventEmitter<Boolean>();
   private isRoutedToIndex!: Boolean;
@@ -431,6 +434,11 @@ export class FfTodoCommonService {
   updateTodoCount(val: number) {
     this.todoCount = val;
     this.todoCountChange.emit(this.todoCount);
+  }
+
+  changePageTitle(val: String) {
+    this.pageTitle = val;
+    this.pageTitleChange.emit(this.pageTitle);
   }
 
   changeRouteStatus(val1: Boolean, val2: Boolean) {

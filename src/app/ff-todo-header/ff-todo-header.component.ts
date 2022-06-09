@@ -18,6 +18,9 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() title! : String;
 
+  public pageTitle!: String;
+  public pageTitleListener!: Subscription;
+
   public isRoutedToTodoList!: Boolean;
   public isRoutedToTodoListListener!: Subscription;
   public isRoutedToIndex!: Boolean;
@@ -79,6 +82,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
     this.isRoutedToIndexListener = this.common.isRoutedToIndexChange.subscribe(result => this.isRoutedToIndex = result);
+
+    this.pageTitleListener = this.common.pageTitleChange.subscribe(result => this.pageTitle = result);
 
     this.router.navigate(["/"]);
   }

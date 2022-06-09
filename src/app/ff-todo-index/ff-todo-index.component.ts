@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
@@ -12,9 +12,13 @@ import { TodoOperator } from '../todo-operator';
   templateUrl: './ff-todo-index.component.html',
   styleUrls: ['./ff-todo-index.component.css']
 })
-export class FfTodoIndexComponent implements OnInit {
+export class FfTodoIndexComponent implements OnInit, OnDestroy {
 
   public todoList!: Todo[];
+
+  public todoSortExec!: Boolean;
+  public todoSortField!: String;
+  public todoSortDir!: Boolean;
 
   public todoQueryFinished!: Boolean;
   public todoQuerySuccess!: Boolean;
@@ -42,7 +46,17 @@ export class FfTodoIndexComponent implements OnInit {
       this.common.changeRouteStatus(false, true);
     });
 
+    this.common.changePageTitle("Index of Todos");
+
+    this.todoSortExec = true;
+    this.todoSortField = "id";
+    this.todoSortDir = false;
+
     this.updateTodoList();
+  }
+
+  ngOnDestroy(): void {
+    this.common.changePageTitle("");
   }
 
   prepareViewTodoForm(todo: Todo) {

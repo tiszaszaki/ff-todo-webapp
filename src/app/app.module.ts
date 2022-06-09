@@ -33,16 +33,14 @@ import { FfTodoPageDoesNotExistComponent } from './ff-todo-page-does-not-exist/f
 import { FfTodoQueryStatusComponent } from './ff-todo-query-status/ff-todo-query-status.component';
 import { FfTodoCardRefreshingComponent } from './ff-todo-card-refreshing/ff-todo-card-refreshing.component';
 import { FfTodoBootstrapDateTimePickerComponent } from './ff-todo-bootstrap-date-time-picker/ff-todo-bootstrap-date-time-picker.component'
+import { FfTodoIndexComponent } from './ff-todo-index/ff-todo-index.component';
+import { FfTodoTaskIndexComponent } from './ff-todo-task-index/ff-todo-task-index.component';
 
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
-
 import { FfTodoRealRequestService } from './ff-todo-real-request.service';
-
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
 import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
-import { FfTodoIndexComponent } from './ff-todo-index/ff-todo-index.component';
-import { FfTodoTaskIndexComponent } from './ff-todo-task-index/ff-todo-task-index.component';
 
 @NgModule({
   declarations: [

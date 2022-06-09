@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -12,13 +12,17 @@ import { FfTodoAlertService } from '../ff-todo-alert.service';
   templateUrl: './ff-todo-task-index.component.html',
   styleUrls: ['./ff-todo-task-index.component.css']
 })
-export class FfTodoTaskIndexComponent implements OnInit {
+export class FfTodoTaskIndexComponent implements OnInit, OnDestroy {
 
   public taskList!: Task[];
 
   private queryIdx!: number;
 
   private todoParentMapping!: Map<Number, Number>;
+
+  public tasksortfield!: String;
+  public tasksortdir!: Boolean;
+  public tasksortexec!: Boolean;
 
   public taskQueryFinished!: Boolean;
   public taskQuerySuccess!: Boolean;
@@ -48,7 +52,17 @@ export class FfTodoTaskIndexComponent implements OnInit {
       this.common.changeRouteStatus(false, true);
     });
 
+    this.common.changePageTitle("Index of Tasks");
+
+    this.tasksortexec = true;
+    this.tasksortfield = "id";
+    this.tasksortdir = false;
+
     this.updateTaskList();
+  }
+
+  ngOnDestroy(): void {
+    this.common.changePageTitle("");
   }
 
   prepareViewTaskForm(task: Task) {

@@ -268,6 +268,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
     this.todoCountListener = this.common.todoCountChange.subscribe(result => this.todoCount = result);
     this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => {
       this.boardSelected = result;
+      this.common.changePageTitle(`Todo list for Board with ID (${result})`);
       this.updateBoard();
     });
 
@@ -299,6 +300,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.updateBoardListener.unsubscribe();
     this.updateTodoListListener.unsubscribe();
+
+    this.common.changePageTitle("");
 
     this.todoCountListener.unsubscribe();
     this.boardSelectedListener.unsubscribe();
