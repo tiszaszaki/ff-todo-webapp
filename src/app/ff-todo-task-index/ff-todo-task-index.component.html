@@ -11,19 +11,21 @@
         <ul class="list-group">
             <li class="list-group-item"  *ngFor="let task of taskList | tszSort:tasksortexec:tasksortfield:tasksortdir">
                 <div class="d-flex justify-content-between">
-                    <div>
-                        <button type="button" class="btn btn-primary"
+                    <div class="text-truncate">
+                        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Jump to Todo with ID {{ task.todoId }}"
                                 [routerLink]="['/list-todos']" [queryParams]="{id:getTaskGrandparent(task)}" fragment="todo_{{ task.todoId }}">
                             <i class="fas fa-share"></i>
                         </button>
-                        <span class="ml-2 text-muted" *ngIf="hasTaskGrandparent(task)">{{ getTaskGrandparent(task) }}</span>
+                        <span class="ml-2 text-muted" *ngIf="hasTaskGrandparent(task)"
+                            data-toggle="tooltip" data-placement="bottom" title="Board ID of Todo with this Task">{{ getTaskGrandparent(task) }}</span>
                         <span class="ml-2 text-danger" *ngIf="!hasTaskGrandparent(task)">missing board ID</span>
-                        <span class="ml-2 text-muted" *ngIf="task.todoId">{{ task.todoId }}</span>
+                        <span class="ml-2 text-muted" *ngIf="task.todoId"
+                            data-toggle="tooltip" data-placement="bottom" title="Todo ID of Task">{{ task.todoId }}</span>
                         <span class="ml-2 text-danger" *ngIf="!task.todoId">missing todo ID</span>
-                        <span class="ml-2 text-muted">{{ task.id }}</span>
-                        <span class="ml-1 mr-5">{{ task.name }}</span>               
+                        <span class="ml-2 text-muted" data-toggle="tooltip" data-placement="bottom" title="Task ID">{{ task.id }}</span>
+                        <span class="ml-1 mr-5" data-toggle="tooltip" data-placement="bottom" title="{{ task.name }}">{{ task.name }}</span>               
                     </div>
-                    <div>
+                    <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTaskForm(task)"
                                 data-toggle="tooltip" data-placement="top" title="View Task">
                             <i class="far fa-eye"></i>

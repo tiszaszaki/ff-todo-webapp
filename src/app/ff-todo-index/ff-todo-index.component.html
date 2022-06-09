@@ -12,17 +12,18 @@
             <ul class="list-group">
                 <li class="list-group-item" *ngFor="let todo of searchres">
                     <div class="d-flex justify-content-between">
-                        <div>
-                            <button type="button" class="btn btn-primary"
+                        <div class="text-truncate">
+                            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Jump to Todo with ID {{ todo.id }}"
                                     [routerLink]="['/list-todos']" [queryParams]="{id:todo.boardId}" fragment="todo_{{ todo.id }}">
                                 <i class="fas fa-share"></i>
                             </button>
-                            <span class="ml-1 text-muted" *ngIf="todo.boardId">{{ todo.boardId }}</span>
+                            <span class="ml-1 text-muted" *ngIf="todo.boardId"
+                                data-toggle="tooltip" data-placement="bottom" title="Board ID of Todo">{{ todo.boardId }}</span>
                             <span class="ml-1 text-danger" *ngIf="!todo.boardId">missing board ID</span>
-                            <span class="ml-3 text-muted">{{ todo.id }}</span>
-                            <span class="ml-1 mr-5">{{ todo.name }}</span>
+                            <span class="ml-3 text-muted" data-toggle="tooltip" data-placement="bottom" title="Todo ID">{{ todo.id }}</span>
+                            <span class="ml-1 mr-5" data-toggle="tooltip" data-placement="bottom" title="{{ todo.name }}">{{ todo.name }}</span>
                         </div>
-                        <div>
+                        <div class="btn-group">
                             <button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewTodoForm(todo)"
                                     data-toggle="tooltip" data-placement="top" title="View Todo">
                                 <i class="far fa-eye"></i>

@@ -281,6 +281,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       var id=Number.parseInt(params.id);
       this.common.changeRouteStatus(true, false);
 
+      this.alertServ.addAlertMessage({type: 'primary', message: `Trying to redirect to Board with ID (${id})...`});
+
       if (id)
       {
         this.common.setBoardSelected(id);
