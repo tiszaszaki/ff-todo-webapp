@@ -303,6 +303,17 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
     );
   }
 
+  getTodoPhaseName(idx : number) : Observable<String> {
+    return this.http.get<String>(`${this.todoPath}/phase-name/${idx}`).pipe(
+      timeout(this.timeoutInterval),
+      tap((result : String) => console.log(`Fetched phase name with index (${idx}) for all Todos: (${result})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
   getTasks() : Observable<Task[]> {
     return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       timeout(this.timeoutInterval),

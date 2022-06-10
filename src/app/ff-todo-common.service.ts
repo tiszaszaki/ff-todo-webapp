@@ -79,7 +79,7 @@ export class FfTodoCommonService {
   public todoSearchingRulesChange = new EventEmitter< Map<String,String> >();
 
   constructor(private router: Router) {
-    this.phase_labels = ['Backlog', 'In progress', 'Done'];
+    this.phase_labels = [];
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
     this.displayDateFormat = 'yyyy-MM-dd HH:mm:ss.sss';
@@ -176,6 +176,17 @@ export class FfTodoCommonService {
     }
 
     return result;
+  }
+
+  initTodoPhaseNames(): void {
+    for (var idx of this.iterateTodoPhases()) {
+      this.phase_labels.push("");
+    }
+  }
+
+  updateTodoPhaseName(idx: number, val: String): void {
+    this.phase_labels[idx] = val;
+    console.log(`${idx} => ${val}`);
   }
 
   getTodoPhaseLabel(idx: number) {

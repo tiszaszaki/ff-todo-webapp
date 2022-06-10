@@ -238,6 +238,10 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     return of([0,2]);
   }
 
+  getTodoPhaseName(idx : number) : Observable<String> {
+    return of(`Mock phase ${idx}`);
+  }
+
   getTasks() : Observable<Task[]> {
     return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       tap((tasks : Task[]) => console.log(`Fetched ${tasks.length} Task(s)`)),

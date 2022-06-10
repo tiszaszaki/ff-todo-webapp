@@ -169,10 +169,21 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     this.todoServ.getTaskNameMaxLength().subscribe(result => this.common.updateTaskNameMaxLength(result));
   }
 
+  queryTodoPhaseNames() {
+    for (var idx of this.common.iterateTodoPhases()) {
+      this.todoServ.getTodoPhaseName(idx).subscribe(result => {
+        this.common.updateTodoPhaseName(idx, result);
+      });
+    }
+  }
+
   queryTodoPhaseRange() {
     this.todoServ.getTodoPhaseRange().subscribe(results => {
-      if (results.length == 2)
+      if (results.length == 2) {
         this.common.updateTodoPhaseValRange(results[0], results[1]);
+        this.common.initTodoPhaseNames();
+        this.queryTodoPhaseNames();
+      }
     });
   }
 
