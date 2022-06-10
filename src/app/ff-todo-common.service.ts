@@ -179,7 +179,7 @@ export class FfTodoCommonService {
   }
 
   initTodoPhaseNames(): void {
-    for (var idx of this.iterateTodoPhases()) {
+    for (let idx of this.iterateTodoPhases()) {
       this.phase_labels.push("");
     }
   }

@@ -170,9 +170,12 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   queryTodoPhaseNames() {
-    for (var idx of this.common.iterateTodoPhases()) {
+    for (let idx of this.common.iterateTodoPhases()) {
       this.todoServ.getTodoPhaseName(idx).subscribe(result => {
         this.common.updateTodoPhaseName(idx, result);
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully fetched phase name with index (${idx}).`});
+      }, errorMsg => {
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to fetch phase name with index (${idx}). See browser console for details.`});
       });
     }
   }
