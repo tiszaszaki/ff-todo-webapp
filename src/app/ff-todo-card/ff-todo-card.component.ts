@@ -224,14 +224,10 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.todoRefreshing = true;
 
-    this.content = new Todo();
-
-    this.highlightedName = this.highlighter.bypassSecurityTrustHtml("");
-    this.highlightedDescription = this.highlighter.bypassSecurityTrustHtml("");
-
     setTimeout(() =>
     this.todoServ.getTodo(id)
     .subscribe(todo => {
+
       this.content = todo;
 
       this.common.triggerTodoPhaseValRange();
@@ -251,6 +247,11 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
         this.taskCount = 0;
       }
 
+      this.todoRefreshing = false;
+
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully refreshed Todo with ID (${id}).`});
+    }, error => {
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to refresh Todo with ID (${id}). See browser console for details.`});
       this.todoRefreshing = false;
     }), 250);
   }
