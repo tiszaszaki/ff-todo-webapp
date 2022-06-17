@@ -62,7 +62,6 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   
   public todoCount!: number;
   public todoCountListener!: Subscription;
-  private todoCountTaskQuerySuccessful!: number;
   
   public todo_list!: Todo[][];
   public task_count!: number[];
@@ -126,10 +125,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     todo_results.subscribe(records => {
       let todo_records = records;
-      let todo_idx=0;
 
       this.common.updateTodoCount(todo_records.length);
-      this.todoCountTaskQuerySuccessful = 0;
 
       if (!todo_records)
         todo_records = [];
@@ -171,49 +168,14 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
           }
         }
 
-        if (this.common.getRealServiceStatus())
-        {
+        if (!todo.boardId)
           todo.boardId = this.boardSelected as number;
 
-          if (!todo.tasks)
-            todo.tasks = [];
-
-          this.task_count[todo.phase as number] += todo.tasks.length;
-          this.todoCountTaskQuerySuccessful++;
-
-          todo_idx++;
-          if (todo_idx == todo_records.length)
-          {
-            this.todoQueryFinished = true;
-            if (this.todoCount > 0)
-              this.todoQueryFinished &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
-      
-            this.todoQuerySuccess = true;   
-          }
-        }
-        else
-        {
-          this.todoServ.getTasksFromTodo(todo.id).subscribe(tasks => {
-            //todo.tasks = tasks;
-
-            if (!todo.tasks)
-              todo.tasks = [];
-
-            this.task_count[todo.phase as number] += todo.tasks.length;
-            this.todoCountTaskQuerySuccessful++;
-
-            todo_idx++;
-            if (todo_idx == todo_records.length)
-            {
-              this.todoQueryFinished = true;       
-              if (this.todoCount > 0)
-                this.todoQueryFinished &&= (this.todoCountTaskQuerySuccessful == this.todoCount);
-
-              this.todoQuerySuccess = true;   
-            }
-          });
-        }
+        this.task_count[todo.phase as number] += todo.tasks ? todo.tasks.length : 0;
       }
+
+      this.todoQueryFinished = true;
+      this.todoQuerySuccess = true;
     }, errorMsg => {
       this.todoQueryFinished = true;
       this.todoQuerySuccess = false;
