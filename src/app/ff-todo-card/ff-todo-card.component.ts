@@ -261,7 +261,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     console.log(`Trying to update Todo with ID (${id}) to (${JSON.stringify(todo)})...`);
     this.todoServ.editTodo(id, todo)
     .subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Todo with ID (${id}) to (${JSON.stringify(todo)}).`});
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Todo with ID (${id}).`});
       this.common.updateTodoList(new Set([this.oldPhase, todo.phase]));
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Todo with ID (${id}). See browser console for details.`});
@@ -275,7 +275,8 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     console.log(`Trying to clone Todo with ID (${id}) to phase (${phase}) on board with ID (${boardId})...`);
     this.todoServ.cloneTodo(id, phase as number, boardId as number)
     .subscribe(todo => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}): ${JSON.stringify(todo)}.`});
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully cloned Todo with ID (${id}).`});
+      console.log(`Successfully cloned Todo with ID (${id}): ${JSON.stringify(todo)}.`);
       if (boardId == this.common.getBoardSelected())
         this.common.updateTodoList(new Set([todo.phase]));
       else
@@ -321,7 +322,7 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(task => {
       this.todoServ.getTodo(this.content.id)
       .subscribe(todo => { 
-        this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Task (${JSON.stringify(task)}) for Todo with ID (${todo.id}).`});
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Task (ID: ${task.id}, name: "${task.name}") for Todo with ID (${todo.id}).`});
         this.refreshTodo();
       });
     }, errorMsg => {

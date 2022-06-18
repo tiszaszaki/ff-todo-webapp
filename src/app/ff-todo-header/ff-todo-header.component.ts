@@ -268,7 +268,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     console.log(`Trying to add new Board (${JSON.stringify(board)})...`);
     this.todoServ.addBoard(board)
     .subscribe(board => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (${JSON.stringify(board)}).`});
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Board (ID: ${board.id}, name: "${board.name}").`});
       this.common.updateBoardList();
       this.navigateToBoard(board.id);
     }, errorMsg => {
@@ -280,7 +280,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     console.log(`Trying to add new Todo (${JSON.stringify(todo)}) to Board with ID (${this.boardSelected})...`);
     this.todoServ.addTodo(this.boardSelected as number, todo)
     .subscribe(todo => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Todo (${JSON.stringify(todo)}) to Board with ID (${this.boardSelected}).`});
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully added new Todo (ID: ${todo.id}, name: "${todo.name}") to Board with ID (${this.boardSelected}).`});
       this.common.updateTodoList();
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to add new Todo. See browser console for details.`});

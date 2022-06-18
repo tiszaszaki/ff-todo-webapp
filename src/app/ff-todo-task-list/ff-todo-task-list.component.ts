@@ -155,7 +155,7 @@ export class FfTodoTaskListComponent implements OnInit, OnDestroy {
     console.log(`Trying to update Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${this.todoId})...`);
     this.todoServ.editTask(patchedTask)
     .subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Task with ID (${id}) to (${JSON.stringify(patchedTask)}) for Todo with ID (${this.todoId}).`});
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully updated Task with ID (${id}) for Todo with ID (${this.todoId}).`});
       this.common.updateTodo(this.todoId);
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to update Task with ID (${id}). See browser console for details.`});
