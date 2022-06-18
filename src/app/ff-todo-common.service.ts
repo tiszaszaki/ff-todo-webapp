@@ -26,6 +26,8 @@ export class FfTodoCommonService {
 
   private isRealService!: Boolean;
 
+  private backendIndexRange!: Number[];
+
   private backendSelected!: Number;
   public backendSelectedChange = new EventEmitter<Number>();
 
@@ -83,6 +85,8 @@ export class FfTodoCommonService {
 
   constructor(private router: Router) {
     this.phase_labels = [];
+
+    this.backendIndexRange = [0,1,2];
 
     this.backendSelected = 1;
 
@@ -473,12 +477,12 @@ export class FfTodoCommonService {
   }
 
   getBackendIndexRange() {
-    return [0,1];
+    return this.backendIndexRange;
   }
 
   changeBackend(idx?: Number) : Boolean
   {
-    let res=(!idx || (idx >= 0) && (idx < 2));
+    let res = (!idx || (this.backendIndexRange.find(elem => elem == idx) !== undefined));
     if (res)
     {
       if (idx) this.backendSelected = idx;

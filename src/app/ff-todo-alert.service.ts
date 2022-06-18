@@ -65,7 +65,7 @@ export class FfTodoAlertService implements OnDestroy {
   }
 
   close(alert: TiszaSzakiAlert) {
-    if (this.alerts.find(elem => elem == alert))
+    if (this.alerts.find(elem => elem == alert) !== undefined)
     {
       this.alerts.splice(this.alerts.indexOf(alert), 1);
 
