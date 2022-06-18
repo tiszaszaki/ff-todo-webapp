@@ -18,6 +18,9 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() title! : String;
 
+  public backendSelected!: Number;
+  private backendSelectedListener!: Subscription;
+
   public pageTitle!: String;
   public pageTitleListener!: Subscription;
 
@@ -68,6 +71,10 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.backendSelectedListener = this.common.backendSelectedChange.subscribe(idx => {
+      this.backendSelected = idx;
+    });
+
     this.boardSelectedListener = this.common.boardSelectedChange.subscribe(result => {
       this.boardSelected = result;
 
@@ -85,6 +92,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.pageTitleListener = this.common.pageTitleChange.subscribe(result => this.pageTitle = result);
 
+    this.common.changeBackend();
+
     this.router.navigate(["/"]);
   }
 
@@ -92,6 +101,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.backendSelectedListener.unsubscribe();
+
     this.boardSelectedListener.unsubscribe();
     this.todoCountListener.unsubscribe();
 

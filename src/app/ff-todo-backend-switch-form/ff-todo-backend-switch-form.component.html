@@ -1,0 +1,13 @@
+<div class="d-flex">
+    <span class="form-floating">
+        <select class="form-select form-control" [(ngModel)]="backendSelected" name="field" id="backend_selection_field"
+                data-toggle="tooltip" data-placement="bottom" title="Backend selection field">
+            <option *ngFor="let idx of backendIndexRange" [value]="idx">{{ getBackendName(idx) }}</option>
+        </select>
+        <label for="backend_selection_field">Selected backend</label>
+    </span>
+    <button type="button" class="btn btn-primary" (click)="switchBackend()"
+            data-toggle="tooltip" data-placement="bottom" title="Switch to selected backend">
+        <i class="fas fa-rocket"></i>
+    </button>
+</div>

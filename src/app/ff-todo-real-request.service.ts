@@ -1,8 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.stage';
 import { Board } from './board';
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoCommonService } from './ff-todo-common.service';
@@ -12,7 +11,7 @@ import { Todo } from './todo';
 @Injectable({
   providedIn: 'root'
 })
-export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
+export class FfTodoRealRequestService implements FfTodoAbstractRequestService, OnInit, OnDestroy {
 
   private boardPath!: string;
   private todoPath!: string;
@@ -20,15 +19,19 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
 
   private timeoutInterval!: number;
 
+  public backendSelected!: Number;
+  private backendSelectedListener!: Subscription;
+
   private backendUrl(): string
   {
     let res="";
-    switch (this.common.getBackendSelected())
+    switch (this.backendSelected)
     {
       case 0: res = "http://localhost:8080/ff-todo/"; break; // Spring Boot
       case 1: res = "http://localhost:5257/"; break; // ASP.NET Core
       default: break;
     }
+    console.log(`Selected backend URL: ${res} (${this.common.getBackendName(this.backendSelected)})`);
     return res;
   }
 
@@ -52,9 +55,19 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService {
       private http: HttpClient,
       private common: FfTodoCommonService) {
 
+    this.backendSelectedListener = this.common.backendSelectedChange.subscribe(idx => this.backendSelected = idx); 
+    this.common.changeBackend();
+    
     this.timeoutInterval = 5000;
 
     this.common.setRealServiceStatus(true);
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy() : void {
+    this.backendSelectedListener.unsubscribe();
   }
 
   resetBackend()
