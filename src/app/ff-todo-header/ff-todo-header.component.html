@@ -29,7 +29,7 @@
           <span>Welcome to&nbsp;</span>
           <span class="font-weight-bold">{{title}}</span>
           <span class="text-muted user-select-none" *ngIf="defRealService()">
-            <span *ngIf="isRealService()">&nbsp;&lt;using real service&gt;</span>
+            <span *ngIf="isRealService()">&nbsp;&lt;using real service - {{ getCurrentBackendName() }}&gt;</span>
             <span *ngIf="!isRealService()">&nbsp;&lt;using mock service&gt;</span>
           </span>
           <span class="text-muted user-select-none" *ngIf="!defRealService()">&nbsp;&lt;unknown service&gt;</span>

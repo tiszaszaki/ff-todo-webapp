@@ -107,6 +107,10 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     return (this.common.getRealServiceStatus() !== undefined);
   }
 
+  public getCurrentBackendName() {
+    return this.common.getBackendName(this.common.getBackendSelected());
+  }
+
   public isRealService() {
     return this.common.getRealServiceStatus();
   }

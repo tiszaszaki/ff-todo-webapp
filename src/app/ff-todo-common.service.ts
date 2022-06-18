@@ -26,6 +26,9 @@ export class FfTodoCommonService {
 
   private isRealService!: Boolean;
 
+  private backendSelected!: Number;
+  public backendSelectedChange = new EventEmitter<Number>();
+
   private boardSelected!: Number;
   public boardSelectedChange = new EventEmitter<Number>();
 
@@ -80,6 +83,8 @@ export class FfTodoCommonService {
 
   constructor(private router: Router) {
     this.phase_labels = [];
+
+    this.backendSelected = 0;
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
     this.displayDateFormat = 'yyyy-MM-dd HH:mm:ss.sss';
@@ -465,6 +470,34 @@ export class FfTodoCommonService {
 
   getRealServiceStatus() {
     return this.isRealService;
+  }
+
+  changeBackend(idx?: Number) : Boolean
+  {
+    let res=(!idx || ((idx >= 0) && (idx < 2)));
+    if (res)
+    {
+      if (idx) this.backendSelected = idx;
+      this.backendSelectedChange.emit(this.backendSelected);
+    }
+    return res;
+  }
+
+  getBackendSelected()
+  {
+    return this.backendSelected;
+  }
+
+  getBackendName(idx: Number)
+  {
+    let res="<unknown backend>";
+    switch (idx)
+    {
+      case 0: res = "ff-todo (Spring Boot)"; break;
+      case 1: res = "ff-todo-aspnet (ASP.NET Core)"; break;
+      default: break;
+    }
+    return res;
   }
 
   setBoardSelected(id: Number) {
