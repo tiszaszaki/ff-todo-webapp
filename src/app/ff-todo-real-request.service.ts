@@ -19,21 +19,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
 
   private timeoutInterval!: number;
 
-  public backendSelected!: Number;
+  public backendSelected!: string;
   private backendSelectedListener!: Subscription;
-
-  private backendUrl(): string
-  {
-    let res=""; let idx=this.backendSelected;
-    switch (idx)
-    {
-      case 0: res = "http://localhost:8080/ff-todo/"; break; // Spring Boot
-      case 1: res = "http://localhost:5257/"; break; // ASP.NET Core
-      default: break;
-    }
-    console.log(`Selected backend URL: "${res}" (${idx} -> ${this.common.getBackendName(idx)})`);
-    return res;
-  }
 
   private boardTodoPath(id: number): string
   {
@@ -57,12 +44,12 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
 
     this.timeoutInterval = 5000;
 
-    this.backendSelectedListener = this.common.backendSelectedChange.subscribe(idx => {
-      this.backendSelected = idx;
+    this.backendSelectedListener = this.common.backendSelectedChange.subscribe(id => {
+      this.backendSelected = id;
       this.resetBackend();
-    }); 
+    });
   
-    this.common.changeBackend();
+    this.common.triggerBackend();
     this.common.setRealServiceStatus(true);
   }
 
@@ -75,7 +62,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
 
   resetBackend()
   {
-    let backendUrlTemp = this.backendUrl();
+    let backendUrlTemp = this.common.getCurrentBackendUrl();
     this.boardPath = backendUrlTemp + 'board';
     this.todoPath = backendUrlTemp + 'todo';
     this.taskPath = backendUrlTemp + 'task';

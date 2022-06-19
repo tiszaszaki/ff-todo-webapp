@@ -18,7 +18,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() title! : String;
 
-  public backendSelected!: Number;
+  public backendSelected!: string;
   private backendSelectedListener!: Subscription;
 
   public pageTitle!: String;
@@ -92,7 +92,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.pageTitleListener = this.common.pageTitleChange.subscribe(result => this.pageTitle = result);
 
-    this.common.changeBackend();
+    this.common.triggerBackend();
 
     this.router.navigate(["/"]);
   }
@@ -119,7 +119,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getCurrentBackendName() {
-    return this.common.getBackendName(this.common.getBackendSelected());
+    return this.common.getCurrentBackendName();
   }
 
   public isRealService() {

@@ -11,22 +11,20 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
 })
 export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
 
-  public backendSelected!: Number;
+  public backendSelected!: string;
   private backendSelectedListener!: Subscription;
 
-  public backendIndexRange!: Number[];
+  public backendIds!: string[];
 
   constructor(
       private common: FfTodoCommonService,
       private router: Router,
       private alertServ: FfTodoAlertService) {
-    this.backendSelected = 0;
-
-    this.backendIndexRange = this.common.getBackendIndexRange();
+    this.backendIds = this.common.getBackendIds();
   }
 
-  public getBackendName(idx: Number) {
-    return this.common.getBackendName(idx);
+  public getBackendName(id: string) {
+    return this.common.getBackendName(id);
   }
 
   public switchBackend()
@@ -45,7 +43,7 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.backendSelectedListener = this.common.backendSelectedChange.subscribe(idx => this.backendSelected = idx);
 
-    this.common.changeBackend();
+    this.common.triggerBackend();
   }
 
   ngOnDestroy(): void {

@@ -26,10 +26,13 @@ export class FfTodoCommonService {
 
   private isRealService!: Boolean;
 
-  private backendIndexRange!: Number[];
+  private backendList: Array< {id: string, label: string, url: string} > = [
+    {id: "ff-todo", label: "ff-todo (Spring Boot)", url: "http://localhost:8080/ff-todo/"},
+    {id: "ff-todo-aspnet", label: "ff-todo-aspnet (ASP.NET)", url: "http://localhost:5257/"}
+  ];
 
-  private backendSelected!: Number;
-  public backendSelectedChange = new EventEmitter<Number>();
+  private backendSelected!: string;
+  public backendSelectedChange = new EventEmitter<string>();
 
   private boardSelected!: Number;
   public boardSelectedChange = new EventEmitter<Number>();
@@ -86,9 +89,7 @@ export class FfTodoCommonService {
   constructor(private router: Router) {
     this.phase_labels = [];
 
-    this.backendIndexRange = [0,1,2];
-
-    this.backendSelected = 1;
+    this.backendSelected = "ff-todo";
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
     this.displayDateFormat = 'yyyy-MM-dd HH:mm:ss.sss';
@@ -476,19 +477,26 @@ export class FfTodoCommonService {
     return this.isRealService;
   }
 
-  getBackendIndexRange() {
-    return this.backendIndexRange;
+  getBackendIds() {
+    let res : string[] = [];
+    for (let elem of this.backendList)
+      res.push(elem.id);
+    return res;
   }
 
-  changeBackend(idx?: Number) : Boolean
+  changeBackend(id: string) : Boolean
   {
-    let res = (!idx || (this.backendIndexRange.find(elem => elem == idx) !== undefined));
+    let res = (this.backendList.find(elem => elem.id == id) !== undefined);
     if (res)
     {
-      if (idx) this.backendSelected = idx;
-      this.backendSelectedChange.emit(this.backendSelected);
+      this.backendSelected = id;
+      this.triggerBackend();
     }
     return res;
+  }
+
+  triggerBackend() {
+    this.backendSelectedChange.emit(this.backendSelected);
   }
 
   getBackendSelected()
@@ -496,16 +504,33 @@ export class FfTodoCommonService {
     return this.backendSelected;
   }
 
-  getBackendName(idx: Number)
+  getBackendName(id: string)
   {
     let res="<unknown backend>";
-    switch (idx)
+    let elem=this.backendList.find(elem => elem.id == id);
+    if (elem !== undefined)
+      res = elem.label;
+    return res;
+  }
+
+  getBackendUrl(id: string): string
+  {
+    let res="";
+    let elem=this.backendList.find(elem => elem.id == id);
+    if (elem !== undefined)
     {
-      case 0: res = "ff-todo (Spring Boot)"; break;
-      case 1: res = "ff-todo-aspnet (ASP.NET Core)"; break;
-      default: break;
+      res = elem.url;
+      console.log(`Selected backend URL: "${res}" (${id} -> ${this.getBackendName(id)})`);
     }
     return res;
+  }
+
+  getCurrentBackendName() {
+    return this.getBackendName(this.backendSelected);
+  }
+
+  getCurrentBackendUrl() {
+    return this.getBackendUrl(this.backendSelected);
   }
 
   setBoardSelected(id: Number) {

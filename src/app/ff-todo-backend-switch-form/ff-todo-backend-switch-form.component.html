@@ -2,7 +2,7 @@
     <span class="form-floating">
         <select class="form-select form-control" [(ngModel)]="backendSelected" name="field" id="backend_selection_field"
                 data-toggle="tooltip" data-placement="bottom" title="Backend selection field">
-            <option *ngFor="let idx of backendIndexRange" [value]="idx">{{ getBackendName(idx) }}</option>
+            <option *ngFor="let idx of backendIds" [value]="idx">{{ getBackendName(idx) }}</option>
         </select>
         <label for="backend_selection_field">Selected backend</label>
     </span>
