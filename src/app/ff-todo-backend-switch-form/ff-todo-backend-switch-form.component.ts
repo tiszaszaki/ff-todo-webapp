@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -19,7 +20,8 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
   constructor(
       private common: FfTodoCommonService,
       private router: Router,
-      private alertServ: FfTodoAlertService) {
+      private alertServ: FfTodoAlertService,
+      private cookies: CookieService) {
     this.backendIds = this.common.getBackendIds();
   }
 
@@ -31,6 +33,7 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
   {
     if (this.common.changeBackend(this.backendSelected))
     {
+      this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected);
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched backend: (${this.getBackendName(this.backendSelected)}).`});
       this.router.navigate(["/"]);
     }

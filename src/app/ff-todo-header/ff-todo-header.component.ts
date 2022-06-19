@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
@@ -62,7 +63,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
       private todoServ: FfTodoAbstractRequestService,
       private common: FfTodoCommonService,
       private router: Router,
-      private alertServ: FfTodoAlertService) {
+      private alertServ: FfTodoAlertService,
+      private cookies: CookieService) {
 
     this.queryFieldMaxLengths();
     this.queryTodoPhaseRange();
@@ -92,7 +94,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.pageTitleListener = this.common.pageTitleChange.subscribe(result => this.pageTitle = result);
 
-    this.common.triggerBackend();
+    this.common.changeBackend(this.cookies.get(this.common.cookies.selectedBackend));
 
     this.router.navigate(["/"]);
   }

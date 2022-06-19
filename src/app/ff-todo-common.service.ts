@@ -26,6 +26,8 @@ export class FfTodoCommonService {
 
   private isRealService!: Boolean;
 
+  public readonly cookies = { selectedBackend: "selected-backend" };
+
   private backendList: Array< {id: string, label: string, url: string} > = [
     {id: "ff-todo", label: "ff-todo (Spring Boot)", url: "http://localhost:8080/ff-todo/"},
     {id: "ff-todo-aspnet", label: "ff-todo-aspnet (ASP.NET)", url: "http://localhost:5257/"}
@@ -89,7 +91,7 @@ export class FfTodoCommonService {
   constructor(private router: Router) {
     this.phase_labels = [];
 
-    this.backendSelected = "ff-todo";
+    this.backendSelected = "ff-todo-aspnet";
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
     this.displayDateFormat = 'yyyy-MM-dd HH:mm:ss.sss';
@@ -196,7 +198,6 @@ export class FfTodoCommonService {
 
   updateTodoPhaseName(idx: number, val: String): void {
     this.phase_labels[idx] = val;
-    console.log(`${idx} => ${val}`);
   }
 
   getTodoPhaseLabel(idx: number) {

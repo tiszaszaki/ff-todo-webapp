@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { FfTodoListComponent } from './ff-todo-list/ff-todo-list.component';
@@ -39,9 +40,6 @@ import { FfTodoBackendSwitchFormComponent } from './ff-todo-backend-switch-form/
 
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoRealRequestService } from './ff-todo-real-request.service';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
-import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
 
 @NgModule({
   declarations: [
@@ -77,10 +75,10 @@ import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
     FfTodoBackendSwitchFormComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule,
+    BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule
     //HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
   ],
-  providers: [{provide: FfTodoAbstractRequestService, useClass: FfTodoRealRequestService}],
+  providers: [{provide: FfTodoAbstractRequestService, useClass: FfTodoRealRequestService}, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
