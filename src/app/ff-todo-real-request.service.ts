@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, throwError } from 'rxjs';
-import { catchError, tap, timeout } from 'rxjs/operators';
+import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { Board } from './board';
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoCommonService } from './ff-todo-common.service';
@@ -322,9 +322,10 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
   }
 
   getTodoPhaseName(idx : number) : Observable<String> {
-    return this.http.get<String>(`${this.todoPath}/phase-name/${idx}`).pipe(
+    return this.http.get<{phase:String}>(`${this.todoPath}/phase-name/${idx}`).pipe(
       timeout(this.timeoutInterval),
-      tap((result : String) => console.log(`Fetched phase name with index (${idx}) for all Todos: (${result})`)),
+      tap((result : {phase: String}) => console.log(`Fetched phase name with index (${idx}) for all Todos: (${result.phase})`)),
+      map((result : {phase: String}) => result.phase),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
