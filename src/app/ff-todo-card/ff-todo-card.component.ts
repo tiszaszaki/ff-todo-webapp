@@ -339,8 +339,15 @@ export class FfTodoCardComponent implements OnInit, OnChanges, OnDestroy {
         console.log(`Successfully removed all Tasks from Todo with ID (${(this.content.id)}).`);
         this.todoServ.getTodo(this.content.id)
         .subscribe(todo => {
-          this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Tasks from Todo with ID (${todo.id}).`});
-          this.refreshTodo();
+          if (this.taskCount > 0)
+          {
+            this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Tasks from Todo with ID (${todo.id}).`});
+            this.refreshTodo();
+          }
+          else
+          {
+            this.alertServ.addAlertMessage({type: 'warning', message: `No Tasks were removed from Todo with ID (${todo.id}).`});
+          }
         });
     }, errorMsg => {
       this.todoServ.getTodo(this.content.id)

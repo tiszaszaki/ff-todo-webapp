@@ -308,8 +308,15 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     console.log(`Trying to remove all Todos from Board with ID (${this.boardSelected})...`);
     this.todoServ.removeAllTodos(this.boardSelected as number)
     .subscribe(() => {
-      this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected}).`});
-      this.common.updateTodoList();
+      if (this.todoCount > 0)
+      {
+        this.alertServ.addAlertMessage({type: 'success', message: `Successfully removed all Todos from the Board with ID (${this.boardSelected}).`});
+        this.common.updateTodoList();
+      }
+      else
+      {
+        this.alertServ.addAlertMessage({type: 'warning', message: `No Todos were removed from the Board with ID (${this.boardSelected}).`});
+      }
     }, errorMsg => {
       this.alertServ.addAlertMessage({type: 'danger', message: `Failed to remove all Todos. See browser console for details.`});
     });

@@ -36,6 +36,7 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
       this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected);
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched backend: (${this.getBackendName(this.backendSelected)}).`});
       this.router.navigate(["/"]);
+      this.common.updateBoardList();
     }
     else
     {
