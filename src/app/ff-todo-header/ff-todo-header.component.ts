@@ -53,7 +53,11 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   public prepareRemoveAllTodosFormTrigger = new Subject<void>();
 
+  public preparePivotFormTrigger = new Subject<String>();
+
   public toolbar_collapse_status = false;
+
+  public readonly PIVOT_LABEL_1 = "board-readiness";
 
   public readonly ADD_TODO = TodoOperator.ADD;
   public readonly ADD_BOARD = BoardOperator.ADD;
@@ -152,6 +156,10 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   prepareRemovingAllTodos() {
     this.prepareRemoveAllTodosFormTrigger.next();
+  }
+
+  preparePivotForm(pivotId: String) {
+    this.preparePivotFormTrigger.next(pivotId);
   }
 
   isTodoSearchExec() {

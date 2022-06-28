@@ -37,6 +37,7 @@ import { FfTodoBootstrapDateTimePickerComponent } from './ff-todo-bootstrap-date
 import { FfTodoIndexComponent } from './ff-todo-index/ff-todo-index.component';
 import { FfTodoTaskIndexComponent } from './ff-todo-task-index/ff-todo-task-index.component';
 import { FfTodoBackendSwitchFormComponent } from './ff-todo-backend-switch-form/ff-todo-backend-switch-form.component';
+import { FfTodoGenericPivotFormComponent } from './ff-todo-generic-pivot-form/ff-todo-generic-pivot-form.component';
 
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoRealRequestService } from './ff-todo-real-request.service';
@@ -72,7 +73,8 @@ import { FfTodoRealRequestService } from './ff-todo-real-request.service';
     FfTodoBootstrapDateTimePickerComponent,
     FfTodoIndexComponent,
     FfTodoTaskIndexComponent,
-    FfTodoBackendSwitchFormComponent
+    FfTodoBackendSwitchFormComponent,
+    FfTodoGenericPivotFormComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule

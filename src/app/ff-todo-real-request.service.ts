@@ -16,6 +16,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
   private boardPath!: string;
   private todoPath!: string;
   private taskPath!: string;
+  private pivotPath!: string;
 
   private timeoutInterval!: number;
 
@@ -66,6 +67,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     this.boardPath = backendUrlTemp + 'board';
     this.todoPath = backendUrlTemp + 'todo';
     this.taskPath = backendUrlTemp + 'task';
+    this.pivotPath = backendUrlTemp + 'pivot';
   }
 
   getBoard(id : number) : Observable<Board> {
@@ -403,6 +405,17 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     return this.http.get<Number>(`${this.taskPath}/name-max-length`).pipe(
       timeout(this.timeoutInterval),
       tap((maxLength : Number) => console.log(`Fetched maximum name length for all Tasks: (${maxLength})`)),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.message);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  pivotQuery(pivotId: String) : Observable<object[]> {
+    return this.http.get<object[]>(`${this.pivotPath}/${pivotId}`).pipe(
+      timeout(this.timeoutInterval),
+      tap((records : object[]) => console.log(`Fetched pivot table with ID (${pivotId}) which has (${records.length}) records`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);

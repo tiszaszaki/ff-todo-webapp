@@ -322,4 +322,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
   getTaskNameMaxLength() : Observable<Number> {
     return of(32);
   }
+
+  pivotQuery(pivotId: String) : Observable<object[]> {
+    return of([{pivotId}]);
+  }
 }

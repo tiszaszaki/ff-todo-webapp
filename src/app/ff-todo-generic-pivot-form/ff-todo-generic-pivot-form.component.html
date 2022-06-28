@@ -1,0 +1,23 @@
+<ng-template #genericPivotForm let-modal>
+    <form #pivotForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="{{ formId }}-title">{{ formTitle }}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Closed by cross')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="border border-primary rounded">
+                <table class="table">
+                    <tr *ngFor="let record of model">
+                        <td>{{ objectToString(record) }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed by button click')">Close</button>
+        </div>
+    </form>
+</ng-template>
