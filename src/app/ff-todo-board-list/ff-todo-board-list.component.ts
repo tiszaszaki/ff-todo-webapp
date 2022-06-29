@@ -23,6 +23,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   public dumpErrorMessage!: String;
 
+  public readonly BACKEND_QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
   public readonly BACKEND_QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
   public readonly BACKEND_QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
   public readonly BACKEND_QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
@@ -95,6 +96,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
         this.boardQueryFinished = true;
         this.boardQuerySuccess = true;
+
+        setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);
       }
     }, errorMsg => {
       this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_FAILURE);
@@ -102,6 +105,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
       this.boardQueryFinished = true;
       this.boardQuerySuccess = false;
       this.dumpErrorMessage = JSON.stringify(errorMsg);
+
+      setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);
     });
   }
 

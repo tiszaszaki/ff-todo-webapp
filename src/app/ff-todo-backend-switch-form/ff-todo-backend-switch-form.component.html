@@ -6,9 +6,9 @@
         </select>
         <label for="backend_selection_field">Selected backend</label>
     </span>
-    <button type="button" [ngClass]="{'btn': true, 'btn-primary': ((backendRefreshStatus == BACKEND_QUERY_STANDBY) || (backendRefreshStatus == BACKEND_QUERY_INPROGRESS)),
-            'btn-warning': (backendRefreshStatus == BACKEND_QUERY_WARNING), 'btn-success': (backendRefreshStatus == BACKEND_QUERY_SUCCESS),
-            'btn-danger': (backendRefreshStatus == BACKEND_QUERY_FAILURE)}" (click)="switchBackend()"
+    <button type="button" [ngClass]="{'btn': true, 'btn-secondary': (backendRefreshStatus == QUERY_STANDBY),
+            'btn-primary': (backendRefreshStatus == QUERY_INPROGRESS), 'btn-warning': (backendRefreshStatus == QUERY_WARNING),
+            'btn-success': (backendRefreshStatus == QUERY_SUCCESS), 'btn-danger': (backendRefreshStatus == QUERY_FAILURE)}" (click)="switchBackend()"
             data-toggle="tooltip" data-placement="bottom" title="Switch to selected backend">
         <i class="fas fa-rocket"></i>
     </button>

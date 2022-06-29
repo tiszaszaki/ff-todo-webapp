@@ -22,11 +22,11 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
 
   public backendIds!: string[];
 
-  public readonly BACKEND_QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
-  public readonly BACKEND_QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
-  public readonly BACKEND_QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
-  public readonly BACKEND_QUERY_WARNING = GenericQueryStatus.QUERY_WARNING;
-  public readonly BACKEND_QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
+  public readonly QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
+  public readonly QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
+  public readonly QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
+  public readonly QUERY_WARNING = GenericQueryStatus.QUERY_WARNING;
+  public readonly QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
 
   constructor(
       private common: FfTodoCommonService,
@@ -34,7 +34,7 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
       private alertServ: FfTodoAlertService,
       private todoServ: FfTodoAbstractRequestService,
       private cookies: CookieService) {
-    this.backendRefreshStatus = this.BACKEND_QUERY_STANDBY;
+    this.backendRefreshStatus = this.QUERY_STANDBY;
 
     this.backendIds = this.common.getBackendIds();
   }
@@ -45,7 +45,7 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
 
   public switchBackend()
   {
-    this.backendRefreshStatus = this.BACKEND_QUERY_INPROGRESS;
+    this.backendRefreshStatus = this.QUERY_INPROGRESS;
     if (this.common.changeBackend(this.backendSelected))
     {
       setTimeout(() =>
@@ -54,16 +54,22 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
         this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched to backend with ID (${this.backendSelected}): (${this.getBackendName(this.backendSelected)}).`});
         this.router.navigate(["/"]);
         this.common.updateBoardList();
-        this.backendRefreshStatus = this.BACKEND_QUERY_SUCCESS;
+        this.backendRefreshStatus = this.QUERY_SUCCESS;
+
+        setTimeout(() => this.common.changeBackendRefreshStatus(this.QUERY_STANDBY), 5000);
       }, error => {
         this.alertServ.addAlertMessage({type: 'danger', message: `Failed to switch to backend with ID (${this.backendSelected}). See browser console for details.`});
-        this.backendRefreshStatus = this.BACKEND_QUERY_FAILURE;
+        this.backendRefreshStatus = this.QUERY_FAILURE;
+
+        setTimeout(() => this.common.changeBackendRefreshStatus(this.QUERY_STANDBY), 5000);
       }), 250);
     }
     else
     {
       this.alertServ.addAlertMessage({type: 'warning', message: `Backend with ID (${this.backendSelected}) does not exist.`});
-      this.backendRefreshStatus = this.BACKEND_QUERY_WARNING;
+      this.backendRefreshStatus = this.QUERY_WARNING;
+
+      setTimeout(() => this.common.changeBackendRefreshStatus(this.QUERY_STANDBY), 5000);
     }
   }
 
