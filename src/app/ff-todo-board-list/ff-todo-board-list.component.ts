@@ -2,6 +2,7 @@ import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { GenericQueryStatus } from '../generic-query-status';
 
 @Component({
   selector: 'app-ff-todo-board-list',
@@ -21,6 +22,10 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public boardQuerySuccess!: Boolean;
 
   public dumpErrorMessage!: String;
+
+  public readonly BACKEND_QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
+  public readonly BACKEND_QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
+  public readonly BACKEND_QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
 
   constructor(
       private todoServ: FfTodoAbstractRequestService,
@@ -69,6 +74,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.common.changeRouteStatus(false, false);
 
+    this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_INPROGRESS);
+
     this.todoServ.getBoardIds().subscribe(results => {
       let idx=0;
 
@@ -84,10 +91,14 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
       if (idx == results.length)
       {
+        this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_SUCCESS);
+
         this.boardQueryFinished = true;
         this.boardQuerySuccess = true;
       }
     }, errorMsg => {
+      this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_FAILURE);
+
       this.boardQueryFinished = true;
       this.boardQuerySuccess = false;
       this.dumpErrorMessage = JSON.stringify(errorMsg);

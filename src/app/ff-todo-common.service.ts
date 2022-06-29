@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { GenericQueryStatus } from './generic-query-status';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,9 @@ export class FfTodoCommonService {
 
   private backendSelected!: string;
   public backendSelectedChange = new EventEmitter<string>();
+
+  private backendRefreshStatus!: Number;
+  public backendRefreshStatusChange = new EventEmitter<Number>();
 
   private boardSelected!: Number;
   public boardSelectedChange = new EventEmitter<Number>();
@@ -88,10 +92,13 @@ export class FfTodoCommonService {
   private todoSearchingRules!: Map<String,String>;
   public todoSearchingRulesChange = new EventEmitter< Map<String,String> >();
 
+  public readonly BACKEND_QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
+
   constructor(private router: Router) {
     this.phase_labels = [];
 
     this.backendSelected = "ff-todo-aspnet";
+    this.backendRefreshStatus = this.BACKEND_QUERY_STANDBY;
 
     this.inputDateFormat = 'yyyy-MM-dd HH:mm:ss';
     this.displayDateFormat = 'yyyy-MM-dd HH:mm:ss.sss';
@@ -494,6 +501,12 @@ export class FfTodoCommonService {
       this.triggerBackend();
     }
     return res;
+  }
+
+  changeBackendRefreshStatus(val: number)
+  {
+    this.backendRefreshStatus = val;
+    this.backendRefreshStatusChange.emit(val);
   }
 
   triggerBackend() {
