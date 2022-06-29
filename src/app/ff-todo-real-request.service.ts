@@ -43,7 +43,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
       private http: HttpClient,
       private common: FfTodoCommonService) {
 
-    this.timeoutInterval = 5000;
+    this.timeoutInterval = 8000;
 
     this.backendSelectedListener = this.common.backendSelectedChange.subscribe(id => {
       this.backendSelected = id;
