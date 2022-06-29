@@ -176,11 +176,15 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
       this.todoQueryFinished = true;
       this.todoQuerySuccess = true;
+
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully fetched Todos from Board with ID (${this.boardSelected}).`});
     }, errorMsg => {
       this.todoQueryFinished = true;
       this.todoQuerySuccess = false;
 
       this.dumpErrorMessage = JSON.stringify(errorMsg);
+
+      this.alertServ.addAlertMessage({type: 'danger', message: `Failed to fetch Todos from Board with ID (${this.boardSelected}).`});
     });
   }
 
