@@ -16,7 +16,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('genericPivotForm') formElement!: ElementRef;
 
-  public pivotId: String = "board-readiness";
+  public pivotId: String = "";
 
   private queryStatus: Boolean = false;
 
@@ -30,6 +30,12 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   private preparingFormListener!: Subscription;
 
+  public readonly pivotLabels = [
+    {name: '', display: '(no pivot query)'},
+    {name: 'board-readiness', display: 'Readiness of Boards'},
+    {name: 'todo-readiness', display: 'Readiness of Todo cards'}
+  ];
+
   constructor(
       private modalService: NgbModal,
       private common: FfTodoCommonService,
@@ -42,15 +48,19 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateDisplay() {
-    this.formTitle = '<Form title to be filled>';
-    this.pivotMessage = '<Confirm message to be filled>';
+  public updateDisplay() {
+    this.formTitle = 'No pivot table';
+    this.pivotMessage = 'This form needs to be set up properly to show pivot table.';
+
+    this.model = {fields: new Map<string,string>(), records: []};
+    this.pivotId = this.pivotId.trim();
+    this.formId = "default-pivot";
 
     if (this.pivotId != "")
     {
       this.formId = this.pivotId;
       this.formTitle = `Pivot with ID '${this.pivotId}'`;
-      this.pivotMessage = `This pivot is showing records queried from backend using ID '${this.pivotId}.'`;
+      this.pivotMessage = `This table is showing pivot records queried from backend using ID '${this.pivotId}.'`;
       this.updateQuery();
     }
   }
@@ -87,11 +97,10 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
+    this.updateDisplay();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.queryStatus)
-      this.updateDisplay();
   }
 
   ngOnDestroy() {

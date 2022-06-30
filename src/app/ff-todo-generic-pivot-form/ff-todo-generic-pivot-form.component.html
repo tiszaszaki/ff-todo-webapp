@@ -8,13 +8,26 @@
         </div>
 
         <div class="modal-body">
+            <div class="d-flex justify-content-between">
+                <span class="form-floating">
+                    <select class="form-select form-control" [(ngModel)]="pivotId" name="label" id="pivot_table_label"
+                            data-toggle="tooltip" data-placement="bottom" title="Pivot table label" #label="ngModel" required>
+                        <option *ngFor="let label of pivotLabels" [value]="label.name">{{ label.display }}</option>
+                    </select>
+                    <label for="pivot_table_label">Selected pivot</label>
+                </span>
+                <button type="button" class="btn btn-primary" (click)="updateDisplay()"
+                        [disabled]="pivotId.trim() == ''">Query</button>
+            </div>
+            <div class="modal-text mb-3">{{ pivotMessage }}</div>
             <div class="border border-primary rounded">
-                <table class="table">
+                <table class="table" *ngIf="model.records.length">
                     <tr>{{ objectToString(model.fields) }}</tr>
                     <tr *ngFor="let record of model.records">
-                        <td>{{ objectToString(record) }}</td>
+                        <td class="text-truncate">{{ objectToString(record) }}</td>
                     </tr>
                 </table>
+                <span *ngIf="!model.records.length">No records.</span>
             </div>
         </div>
         <div class="modal-footer">
