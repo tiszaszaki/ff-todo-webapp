@@ -5,6 +5,7 @@ import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { Board } from './board';
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoCommonService } from './ff-todo-common.service';
+import { PivotResponse } from './pivot-response';
 import { Task } from './task';
 import { Todo } from './todo';
 
@@ -412,10 +413,10 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  pivotQuery(pivotId: String) : Observable<object[]> {
-    return this.http.get<object[]>(`${this.pivotPath}/${pivotId}`).pipe(
+  pivotQuery(pivotId: String) : Observable<PivotResponse> {
+    return this.http.get<PivotResponse>(`${this.pivotPath}/${pivotId}`).pipe(
       timeout(this.timeoutInterval),
-      tap((records : object[]) => console.log(`Fetched pivot table with ID (${pivotId}) which has (${records.length}) records`)),
+      tap((result : PivotResponse) => console.log(`Fetched pivot table with ID (${pivotId}) which has (${result.records.length}) records`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);

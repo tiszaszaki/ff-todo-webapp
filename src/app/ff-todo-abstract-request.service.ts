@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Board } from './board';
 import { Todo } from './todo';
 import { Task } from './task';
+import { PivotResponse } from './pivot-response';
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +47,5 @@ export abstract class FfTodoAbstractRequestService {
 
   abstract getTaskNameMaxLength() : Observable<Number>;
 
-  abstract pivotQuery(pivotId: String) : Observable<object[]>;
+  abstract pivotQuery(pivotId: String) : Observable<PivotResponse>;
 }

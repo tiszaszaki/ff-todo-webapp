@@ -3,6 +3,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { PivotResponse } from '../pivot-response';
 
 @Component({
   selector: 'app-ff-todo-generic-pivot-form',
@@ -11,11 +12,11 @@ import { FfTodoCommonService } from '../ff-todo-common.service';
 })
 export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
-  @Input() preparingFormEvent!: Observable<String>;
+  @Input() preparingFormEvent!: Observable<void>;
 
   @ViewChild('genericPivotForm') formElement!: ElementRef;
 
-  private pivotId: String = "";
+  public pivotId: String = "board-readiness";
 
   private queryStatus: Boolean = false;
 
@@ -25,7 +26,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   public pivotMessage!: String;
 
-  public model: object[] = [];
+  public model!: PivotResponse;
 
   private preparingFormListener!: Subscription;
 
@@ -44,8 +45,6 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   private updateDisplay() {
     this.formTitle = '<Form title to be filled>';
     this.pivotMessage = '<Confirm message to be filled>';
-
-    this.pivotId = this.pivotId.trim();
 
     if (this.pivotId != "")
     {
@@ -87,11 +86,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.preparingFormListener = this.preparingFormEvent.subscribe(pivotId => 
-    {
-      this.pivotId = pivotId;
-      this.showModal();
-    });
+    this.preparingFormListener = this.preparingFormEvent.subscribe(() => this.showModal());
   }
 
   ngOnChanges(changes: SimpleChanges) {

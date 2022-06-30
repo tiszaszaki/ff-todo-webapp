@@ -10,7 +10,8 @@
         <div class="modal-body">
             <div class="border border-primary rounded">
                 <table class="table">
-                    <tr *ngFor="let record of model">
+                    <tr>{{ objectToString(model.fields) }}</tr>
+                    <tr *ngFor="let record of model.records">
                         <td>{{ objectToString(record) }}</td>
                     </tr>
                 </table>

@@ -9,6 +9,7 @@ import { Task } from './task';
 import { FfTodoCommonService } from './ff-todo-common.service';
 import { Board } from './board';
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
+import { PivotResponse } from './pivot-response';
 
 @Injectable({
   providedIn: 'root'
@@ -323,7 +324,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     return of(32);
   }
 
-  pivotQuery(pivotId: String) : Observable<object[]> {
-    return of([{pivotId}]);
+  pivotQuery(pivotId: String) : Observable<PivotResponse> {
+    return of();
   }
 }
