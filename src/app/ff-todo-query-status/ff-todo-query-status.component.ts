@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { GenericQueryStatus } from '../generic-query-status';
 
 @Component({
   selector: 'app-ff-todo-query-status',
@@ -9,8 +10,12 @@ export class FfTodoQueryStatusComponent implements OnInit {
 
   constructor() { }
 
-  @Input() todoQueryFinished!: Boolean;
-  @Input() todoQuerySuccess!: Boolean;
+  public readonly TODO_QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
+  public readonly TODO_QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
+  public readonly TODO_QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
+  public readonly TODO_QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
+
+  @Input() todoQueryStatus!: GenericQueryStatus;
 
   @Input() message!: String;
 

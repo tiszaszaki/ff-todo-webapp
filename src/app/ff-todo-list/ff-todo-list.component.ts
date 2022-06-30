@@ -6,6 +6,7 @@ import { BoardOperator } from '../board-operator';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { GenericQueryStatus } from '../generic-query-status';
 import { Todo } from '../todo';
 
 @Component({
@@ -22,7 +23,9 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private common: FfTodoCommonService,
       private alertServ: FfTodoAlertService) {
     this.displayDateFormat = this.common.displayDateFormat;
-    
+
+    this.todoQueryStatus = this.TODO_QUERY_STANDBY;
+
     this.prepareSortTodoFormTrigger = [];
     this.prepareSortTaskFormTrigger = [];
 
@@ -44,8 +47,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public board_details_collapse_status = false;
 
-  public todoQueryFinished!: Boolean;
-  public todoQuerySuccess!: Boolean;
+  public todoQueryStatus!: GenericQueryStatus;
 
   public dumpErrorMessage!: String;
 
@@ -68,6 +70,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   public readonly EDIT_BOARD = BoardOperator.EDIT;
   public readonly REMOVE_BOARD = BoardOperator.REMOVE;
+
+  public readonly TODO_QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
+  public readonly TODO_QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
+  public readonly TODO_QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
+  public readonly TODO_QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
 
   iterateTodoPhases() {
     return this.common.iterateTodoPhases();
@@ -107,8 +114,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
     todo_results = this.todoServ.getTodosFromBoard(this.boardSelected as number);
 
-    this.todoQuerySuccess = false;
-    this.todoQueryFinished = false;
+    this.todoQueryStatus = this.TODO_QUERY_INPROGRESS;
 
     if (phase.size == 0) {
       this.todo_list = [];
@@ -174,13 +180,11 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
         this.task_count[todo.phase as number] += todo.tasks ? todo.tasks.length : 0;
       }
 
-      this.todoQueryFinished = true;
-      this.todoQuerySuccess = true;
+      this.todoQueryStatus = this.TODO_QUERY_SUCCESS;
 
       this.alertServ.addAlertMessage({type: 'success', message: `Successfully fetched Todos from Board with ID (${this.boardSelected}).`});
     }, errorMsg => {
-      this.todoQueryFinished = true;
-      this.todoQuerySuccess = false;
+      this.todoQueryStatus = this.TODO_QUERY_FAILURE;
 
       this.dumpErrorMessage = JSON.stringify(errorMsg);
 

@@ -52,8 +52,8 @@
 			</div>
 		</div>
 	</div>
-	<app-ff-todo-query-status [todoQueryFinished]="todoQueryFinished" [todoQuerySuccess]="todoQuerySuccess" [message]="dumpErrorMessage"></app-ff-todo-query-status>
-	<table class="table mt-3" *ngIf="todoQueryFinished && todoQuerySuccess && boardSelected">
+	<app-ff-todo-query-status [todoQueryStatus]="todoQueryStatus" [message]="dumpErrorMessage"></app-ff-todo-query-status>
+	<table class="table mt-3" *ngIf="boardSelected && (todoQueryStatus != TODO_QUERY_STANDBY)">
 		<tbody>
 			<tr class="row border border-2 border-secondary">
 				<td class="col-4 border border-secondary" *ngFor="let phase of iterateTodoPhases()">
