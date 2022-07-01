@@ -33,6 +33,7 @@ export class FfTodoCommonService {
   };
 
   private backendList: Array< {id: string, label: string, url: string} > = [
+    {id: "", label: "no backend selected", url: ""},
     {id: "ff-todo", label: "ff-todo (Spring Boot)", url: "http://localhost:8080/ff-todo/"},
     {id: "ff-todo-aspnet", label: "ff-todo-aspnet (ASP.NET)", url: "http://localhost:5257/"}
   ];
@@ -495,15 +496,16 @@ export class FfTodoCommonService {
     return res;
   }
 
-  changeBackend(id: string) : Boolean
+  doesBackendExist(id: String) : Boolean
   {
     let res = (this.backendList.find(elem => elem.id == id) !== undefined);
-    if (res)
-    {
-      this.backendSelected = id;
-      this.triggerBackend();
-    }
     return res;
+  }
+
+  changeBackend(id: string)
+  {
+    this.backendSelected = id;
+    this.triggerBackend();
   }
 
   changeBackendRefreshStatus(val: number)

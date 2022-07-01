@@ -48,22 +48,32 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
     if (this.backendRefreshStatus == this.QUERY_STANDBY)
     {
       this.backendRefreshStatus = this.QUERY_INPROGRESS;
-      if (this.common.changeBackend(this.backendSelected))
+      if (this.common.doesBackendExist(this.backendSelected))
       {
+        this.common.changeBackend(this.backendSelected);
+
         setTimeout(() =>
         this.todoServ.getBoardIds().subscribe(() => {
-          this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected);
-          this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched to backend with ID (${this.backendSelected}): (${this.getBackendName(this.backendSelected)}).`});
-          this.router.navigate(["/"]);
-          this.common.updateBoardList();
-          this.backendRefreshStatus = this.QUERY_SUCCESS;
+          setTimeout(() => {
+            this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected);
 
+            this.router.navigate(["/"]);
+            this.common.updateBoardList();
+
+            this.backendRefreshStatus = this.QUERY_SUCCESS;
+          }, 250);
           setTimeout(() => this.common.changeBackendRefreshStatus(this.QUERY_STANDBY), 5000);
+
+          this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched to backend with ID (${this.backendSelected}): (${this.getBackendName(this.backendSelected)}).`});
         }, error => {
-          this.alertServ.addAlertMessage({type: 'danger', message: `Failed to switch to backend with ID (${this.backendSelected}). See browser console for details.`});
           this.backendRefreshStatus = this.QUERY_FAILURE;
 
-          setTimeout(() => this.common.changeBackendRefreshStatus(this.QUERY_STANDBY), 5000);
+          setTimeout(() => { 
+            this.common.changeBackendRefreshStatus(this.QUERY_STANDBY);
+            this.common.changeBackend('');
+          }, 5000);
+
+          this.alertServ.addAlertMessage({type: 'danger', message: `Failed to switch to backend with ID (${this.backendSelected}). See browser console for details.`});
         }), 250);
       }
       else

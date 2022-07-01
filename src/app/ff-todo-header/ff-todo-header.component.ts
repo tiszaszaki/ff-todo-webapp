@@ -97,7 +97,12 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.pageTitleListener = this.common.pageTitleChange.subscribe(result => this.pageTitle = result);
 
-    this.common.changeBackend(this.cookies.get(this.common.cookies.selectedBackend));
+    if (this.cookies.check(this.common.cookies.selectedBackend))
+    {
+      let cookieBackend = this.cookies.get(this.common.cookies.selectedBackend);
+      if (this.common.doesBackendExist(cookieBackend))
+        this.common.changeBackend(cookieBackend);
+    }
 
     let currentRoute: CurrentRoutingStatus = JSON.parse(this.cookies.get(this.common.cookies.currentRoute));
 
@@ -113,6 +118,8 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
     }
     else
       this.router.navigate(["/"]);
+
+    setTimeout(() => this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected), 250);  
   }
 
   ngOnChanges(changes: SimpleChanges): void {

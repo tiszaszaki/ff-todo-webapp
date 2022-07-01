@@ -112,7 +112,10 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
       this.dumpErrorMessage = JSON.stringify(errorMsg);
 
-      setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);
+      setTimeout(() => {
+        this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY);
+        this.common.changeBackend('');
+      }, 5000);
     });
   }
 
