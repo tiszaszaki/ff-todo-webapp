@@ -1,8 +1,10 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { CurrentRoutingStatus } from '../current-routing-status';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -21,7 +23,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
       private route: ActivatedRoute,
       private router: Router,
       private common: FfTodoCommonService,
-      private alertServ: FfTodoAlertService) {
+      private alertServ: FfTodoAlertService,
+      private cookies: CookieService) {
     this.displayDateFormat = this.common.displayDateFormat;
 
     this.todoQueryStatus = this.TODO_QUERY_STANDBY;
@@ -253,6 +256,8 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
       if (id)
       {
+        let currentRoute: CurrentRoutingStatus = { path: "/list-todos", params: [id.toString()]};
+        this.cookies.set(this.common.cookies.currentRoute, JSON.stringify(currentRoute));
         this.common.setBoardSelected(id);
         this.alertServ.addAlertMessage({type: 'success', message: `Successfully redirected to Board with ID (${id}).`});
       }

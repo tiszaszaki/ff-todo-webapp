@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subject, Subscription } from 'rxjs';
 import { Board } from '../board';
 import { BoardOperator } from '../board-operator';
+import { CurrentRoutingStatus } from '../current-routing-status';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -57,8 +58,6 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   public toolbar_collapse_status = false;
 
-  public readonly PIVOT_LABEL_1 = "board-readiness";
-
   public readonly ADD_TODO = TodoOperator.ADD;
   public readonly ADD_BOARD = BoardOperator.ADD;
   public readonly REMOVE_ALL_TODOS = TodoOperator.REMOVE_ALL;
@@ -100,7 +99,20 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
     this.common.changeBackend(this.cookies.get(this.common.cookies.selectedBackend));
 
-    this.router.navigate(["/"]);
+    let currentRoute: CurrentRoutingStatus = JSON.parse(this.cookies.get(this.common.cookies.currentRoute));
+
+    if (currentRoute)
+    {
+      if (currentRoute.path == "/list-todos")
+      {
+        if (currentRoute.params.length == 1)
+          this.router.navigate([currentRoute.path], {queryParams: {id: Number.parseInt(currentRoute.params[0])}});
+      }
+      else
+        this.router.navigate([currentRoute.path]);
+    }
+    else
+      this.router.navigate(["/"]);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -172,7 +184,7 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   navigateToBoard(id: Number) {
     this.common.setBoardSelected(id);
-    this.router.navigate(['/list-todos'], { queryParams: {id:this.boardSelected}});
+    this.router.navigate(['/list-todos'], {queryParams: {id: this.boardSelected}});
   }
 
   updateSelectedBoard() {

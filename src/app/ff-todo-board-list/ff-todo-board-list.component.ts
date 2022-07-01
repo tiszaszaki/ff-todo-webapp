@@ -1,5 +1,8 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
+import { CurrentRoutingStatus } from '../current-routing-status';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { GenericQueryStatus } from '../generic-query-status';
@@ -16,10 +19,10 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public isRoutedToIndex!: Boolean;
   public isRoutedToIndexListener!: Subscription;
 
-  public updateBoardListTrigger!: Subscription;
+  public backendRefreshStatus!: Number;
+  public backendRefreshStatusListener!: Subscription;
 
-  public boardQueryFinished!: Boolean;
-  public boardQuerySuccess!: Boolean;
+  public updateBoardListTrigger!: Subscription;
 
   public dumpErrorMessage!: String;
 
@@ -29,8 +32,10 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public readonly BACKEND_QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
 
   constructor(
+      private route: ActivatedRoute,
       private todoServ: FfTodoAbstractRequestService,
-      private common: FfTodoCommonService) {
+      private common: FfTodoCommonService,
+      private cookies: CookieService) {
   }
 
   ngOnInit(): void {
@@ -38,6 +43,13 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.isRoutedToIndexListener = this.common.isRoutedToIndexChange.subscribe(result => this.isRoutedToIndex = result);
 
     this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
+
+    this.backendRefreshStatusListener = this.common.backendRefreshStatusChange.subscribe(val => this.backendRefreshStatus = val);
+
+    this.route.queryParams.subscribe(() => {
+      let currentRoute: CurrentRoutingStatus = { path: '/list-boards', params: []};
+      this.cookies.set(this.common.cookies.currentRoute, JSON.stringify(currentRoute));
+    });
 
     this.common.changePageTitle("Board list");
 
@@ -54,6 +66,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.isRoutedToIndexListener.unsubscribe();
 
     this.updateBoardListTrigger.unsubscribe();
+
+    this.backendRefreshStatusListener.unsubscribe();
   }
 
   getBoardListSize() {
@@ -70,9 +84,6 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateBoardList()
   {
-    this.boardQueryFinished = false;
-    this.boardQuerySuccess = false;
-
     this.common.changeRouteStatus(false, false);
 
     this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_INPROGRESS);
@@ -94,16 +105,11 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
       {
         this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_SUCCESS);
 
-        this.boardQueryFinished = true;
-        this.boardQuerySuccess = true;
-
         setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);
       }
     }, errorMsg => {
       this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_FAILURE);
 
-      this.boardQueryFinished = true;
-      this.boardQuerySuccess = false;
       this.dumpErrorMessage = JSON.stringify(errorMsg);
 
       setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);

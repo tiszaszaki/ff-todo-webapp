@@ -6,6 +6,8 @@ import { TaskOperator } from '../task-operator';
 import { Task } from '../task';
 import { Subject } from 'rxjs';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
+import { CookieService } from 'ngx-cookie-service';
+import { CurrentRoutingStatus } from '../current-routing-status';
 
 @Component({
   selector: 'app-ff-todo-task-index',
@@ -41,7 +43,8 @@ export class FfTodoTaskIndexComponent implements OnInit, OnDestroy {
       private todoServ: FfTodoAbstractRequestService,
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
-      private alertServ: FfTodoAlertService) {
+      private alertServ: FfTodoAlertService,
+      private cookies: CookieService) {
     this.taskList = [];
 
     this.todoParentMapping = new Map<Number,Number>();
@@ -49,7 +52,10 @@ export class FfTodoTaskIndexComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(_ => {
+      let currentRoute: CurrentRoutingStatus = { path: '/task-index', params: []};
+      this.cookies.set(this.common.cookies.currentRoute, JSON.stringify(currentRoute));
       this.common.changeRouteStatus(false, true);
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully redirected to index of Tasks.`});
     });
 
     this.common.changePageTitle("Index of Tasks");

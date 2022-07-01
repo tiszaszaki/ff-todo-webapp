@@ -3,6 +3,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
+import { GenericQueryStatus } from '../generic-query-status';
 import { PivotResponse } from '../pivot-response';
 
 @Component({
@@ -18,7 +19,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   public pivotId: String = "";
 
-  private queryStatus: Boolean = false;
+  public pivotQueryStatus: GenericQueryStatus = GenericQueryStatus.QUERY_STANDBY;
 
   public formId: String = "";
 
@@ -29,6 +30,11 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   public model!: PivotResponse;
 
   private preparingFormListener!: Subscription;
+
+  public readonly QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
+  public readonly QUERY_INPROGRESS = GenericQueryStatus.QUERY_INPROGRESS;
+  public readonly QUERY_SUCCESS = GenericQueryStatus.QUERY_SUCCESS;
+  public readonly QUERY_FAILURE = GenericQueryStatus.QUERY_FAILURE;
 
   public readonly pivotLabels = [
     {name: '', display: '(no pivot query)'},
@@ -42,10 +48,19 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
       private todoServ: FfTodoAbstractRequestService) { }
 
   private updateQuery() {
-    this.todoServ.pivotQuery(this.pivotId).subscribe(results => {
-      this.model = results;
-      this.queryStatus = true;
-    });
+    if (this.pivotQueryStatus == this.QUERY_STANDBY)
+    {
+      this.pivotQueryStatus = this.QUERY_INPROGRESS;
+      setTimeout(() =>
+      this.todoServ.pivotQuery(this.pivotId).subscribe(results => {
+        this.model = results;
+        this.pivotQueryStatus = GenericQueryStatus.QUERY_SUCCESS;
+        setTimeout(() => this.pivotQueryStatus = this.QUERY_STANDBY, 2000);
+      }, error => {
+        this.pivotQueryStatus = GenericQueryStatus.QUERY_FAILURE;
+        setTimeout(() => this.pivotQueryStatus = this.QUERY_STANDBY, 2000);
+      }), 250);
+    }
   }
 
   public updateDisplay() {
@@ -71,7 +86,9 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   objectToString(obj: object)
   {
-    return JSON.stringify(obj);
+    let result = JSON.stringify(obj);
+    console.log(result);
+    return result;
   }
 
   showModal()

@@ -27,7 +27,10 @@ export class FfTodoCommonService {
 
   private isRealService!: Boolean;
 
-  public readonly cookies = { selectedBackend: "selected-backend" };
+  public readonly cookies = {
+    selectedBackend: "selected-backend",
+    currentRoute: "current-route"
+  };
 
   private backendList: Array< {id: string, label: string, url: string} > = [
     {id: "ff-todo", label: "ff-todo (Spring Boot)", url: "http://localhost:8080/ff-todo/"},

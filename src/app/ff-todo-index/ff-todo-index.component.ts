@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subject } from 'rxjs';
+import { CurrentRoutingStatus } from '../current-routing-status';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
@@ -37,13 +39,17 @@ export class FfTodoIndexComponent implements OnInit, OnDestroy {
       private todoServ: FfTodoAbstractRequestService,
       private route: ActivatedRoute,
       private common: FfTodoCommonService,
-      private alertServ: FfTodoAlertService) {
+      private alertServ: FfTodoAlertService,
+      private cookies: CookieService) {
     this.todoList = [];
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(_ => {
+      let currentRoute: CurrentRoutingStatus = { path: '/todo-index', params: []};
+      this.cookies.set(this.common.cookies.currentRoute, JSON.stringify(currentRoute));
       this.common.changeRouteStatus(false, true);
+      this.alertServ.addAlertMessage({type: 'success', message: `Successfully redirected to index of Todos.`});
     });
 
     this.common.changePageTitle("Index of Todos");

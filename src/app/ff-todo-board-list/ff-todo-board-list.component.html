@@ -11,18 +11,16 @@
             </li>
         </ul>
     </div>
-    <div *ngIf="!getBoardListSize()">
-        <div *ngIf="!boardQueryFinished">
+    <div *ngIf="!getBoardListSize() || (backendRefreshStatus == BACKEND_QUERY_STANDBY)">
+        <div *ngIf="(backendRefreshStatus == BACKEND_QUERY_INPROGRESS)">
             Loading Boards...
         </div>
-        <div *ngIf="boardQueryFinished">
-            <div class="text-muted user-select-none" *ngIf="boardQuerySuccess">
-                There are no Boards.
-            </div>
-            <div class="text-danger user-select-none" *ngIf="!boardQuerySuccess">
-                <div>Cannot query Board list.</div>
-                <small>Reason: {{ dumpErrorMessage }}</small>
-            </div>
+        <div class="text-muted user-select-none" *ngIf="(backendRefreshStatus == BACKEND_QUERY_SUCCESS)">
+            There are no Boards.
+        </div>
+        <div class="text-danger user-select-none" *ngIf="(backendRefreshStatus == BACKEND_QUERY_FAILURE)">
+            <div>Cannot query Board list.</div>
+            <small>Reason: {{ dumpErrorMessage }}</small>
         </div>
     </div>
 </div>

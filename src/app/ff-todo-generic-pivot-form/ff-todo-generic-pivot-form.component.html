@@ -16,15 +16,16 @@
                     </select>
                     <label for="pivot_table_label">Selected pivot</label>
                 </span>
-                <button type="button" class="btn btn-primary" (click)="updateDisplay()"
+                <button type="button" [ngClass]="{'btn': true, 'btn-secondary': (pivotQueryStatus == QUERY_STANDBY),
+                        'btn-primary': (pivotQueryStatus == QUERY_INPROGRESS), 'btn-success': (pivotQueryStatus == QUERY_SUCCESS),
+                        'btn-danger': (pivotQueryStatus == QUERY_FAILURE)}" (click)="updateDisplay()"
                         [disabled]="pivotId.trim() == ''">Query</button>
             </div>
             <div class="modal-text mb-3">{{ pivotMessage }}</div>
             <div class="border border-primary rounded">
                 <table class="table" *ngIf="model.records.length">
-                    <tr>{{ objectToString(model.fields) }}</tr>
                     <tr *ngFor="let record of model.records">
-                        <td class="text-truncate">{{ objectToString(record) }}</td>
+                        <td class="text-truncate" >{{ objectToString(record) }}</td>
                     </tr>
                 </table>
                 <span *ngIf="!model.records.length">No records.</span>

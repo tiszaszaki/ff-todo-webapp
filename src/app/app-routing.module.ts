@@ -8,6 +8,7 @@ import { FfTodoTaskIndexComponent } from './ff-todo-task-index/ff-todo-task-inde
 
 const routes: Routes = [
   { path: '', component: FfTodoBoardListComponent },
+  { path: 'list-boards', component: FfTodoBoardListComponent },
   { path: 'list-todos', component: FfTodoListComponent },
   { path: 'todo-index', component: FfTodoIndexComponent },
   { path: 'task-index', component: FfTodoTaskIndexComponent },
