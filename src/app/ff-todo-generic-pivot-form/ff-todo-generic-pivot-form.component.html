@@ -24,11 +24,22 @@
             <div class="modal-text mb-3">{{ pivotMessage }}</div>
             <div class="border border-primary rounded">
                 <table class="table" *ngIf="model.records.length">
-                    <thead>
-                        <td class="text-truncate" *ngFor="let field of model.fieldOrder">{{ field }}</td>
+                    <thead class="table-header">
+                        <tr>
+                            <th scope="col" class="text-truncate" *ngFor="let field of model.fieldOrder">
+                                <span>{{ field }}</span>
+                                <!-- <span *ngIf="isFieldKey(getFieldType(field))">&nbsp; (key)</span> -->
+                            </th>
+                        </tr>
                     </thead>
-                    <tr *ngFor="let record of model.records">
-                        <td class="text-truncate" *ngFor="let field of model.fieldOrder">{{ record[field] }}</td>
+                    <tr class="table-row" *ngFor="let record of model.records">
+                        <td class="text-truncate" *ngFor="let field of model.fieldOrder">
+                            <span>{{ record[field] }}</span>
+                            <!--
+                            <span *ngIf="isFieldPercent(getFieldType(field))">{{ record[field] | percent }}</span>
+                            <span *ngIf="!isFieldPercent(getFieldType(field))">{{ record[field] }}</span>
+                            -->
+                        </td>
                     </tr>
                 </table>
                 <span *ngIf="!model.records.length">No records.</span>

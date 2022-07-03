@@ -80,6 +80,64 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  isFieldInteger(fieldType: string) {
+    let temp = this.parseFieldTypeRole(fieldType);
+    let types = ["int32", "int64", "integer", "int"];
+    let result = ((temp.length == 1) || (temp.length == 2));
+    result &&= (types.find(e => e == temp[0]) !== undefined);
+    return result;
+  }
+
+  isFieldReal(fieldType: string) {
+    let temp = this.parseFieldTypeRole(fieldType);
+    let types = ["float", "double"];
+    let result = ((temp.length == 1) || (temp.length == 2));
+    result &&= (types.find(e => e == temp[0]) !== undefined);
+    return result;
+  }
+
+  isFieldString(fieldType: string) {
+    let temp = this.parseFieldTypeRole(fieldType);
+    let types = ["str", "string"];
+    let result = ((temp.length == 1) || (temp.length == 2));
+    result &&= (types.find(e => e == temp[0]) !== undefined);
+    return result;
+  }
+
+  isFieldKey(fieldType: string) {
+    let temp = this.parseFieldTypeRole(fieldType);
+    let result = ((temp.length == 1) || (temp.length == 2));
+    result &&= temp[1] == "key";
+    return result;
+  }
+
+  isFieldPercent(fieldType: string) {
+    let temp = this.parseFieldTypeRole(fieldType);
+    let result = ((temp.length == 1) || (temp.length == 2));
+    result &&= this.isFieldReal(fieldType);
+    result &&= temp[1] == "percent";
+    return result;
+  }
+
+  parseFieldTypeRole(fieldType: string) {
+    let result = ["string"];
+    if (fieldType != "")
+    {
+      let temp = fieldType.toLowerCase().split(",");
+      console.log(temp);
+      if (temp.length == 2)
+        result = temp;
+    }
+    console.log(fieldType, " -> ", result);
+    return result;
+  }
+
+  getFieldType(fieldName: string) {
+    let result = this.model.fields.get(fieldName);
+    if (!result) result = "";
+    return result;
+  }
+
   private resetDisplay() {
     this.pivotId = "";
   }
@@ -87,7 +145,6 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   objectToString(obj: object)
   {
     let result = JSON.stringify(obj);
-    console.log(result);
     return result;
   }
 
