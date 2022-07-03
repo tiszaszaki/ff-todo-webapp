@@ -24,8 +24,11 @@
             <div class="modal-text mb-3">{{ pivotMessage }}</div>
             <div class="border border-primary rounded">
                 <table class="table" *ngIf="model.records.length">
+                    <thead>
+                        <td class="text-truncate" *ngFor="let field of model.fieldOrder">{{ field }}</td>
+                    </thead>
                     <tr *ngFor="let record of model.records">
-                        <td class="text-truncate" >{{ objectToString(record) }}</td>
+                        <td class="text-truncate" *ngFor="let field of model.fieldOrder">{{ record[field] }}</td>
                     </tr>
                 </table>
                 <span *ngIf="!model.records.length">No records.</span>

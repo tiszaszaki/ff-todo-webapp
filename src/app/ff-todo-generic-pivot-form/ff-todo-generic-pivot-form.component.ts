@@ -67,7 +67,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     this.formTitle = 'No pivot table';
     this.pivotMessage = 'This form needs to be set up properly to show pivot table.';
 
-    this.model = {fields: new Map<string,string>(), records: []};
+    this.model = {fields: new Map<string,string>(), fieldOrder: [], records: []};
     this.pivotId = this.pivotId.trim();
     this.formId = "default-pivot";
 
