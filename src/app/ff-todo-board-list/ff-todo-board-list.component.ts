@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { CurrentRoutingStatus } from '../current-routing-status';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
+import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { GenericQueryStatus } from '../generic-query-status';
 
@@ -19,6 +20,9 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
   public isRoutedToIndex!: Boolean;
   public isRoutedToIndexListener!: Subscription;
 
+  private backendSelected!: string;
+  private backendSelectedListener!: Subscription;
+
   public backendRefreshStatus!: Number;
   public backendRefreshStatusListener!: Subscription;
 
@@ -33,6 +37,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
       private route: ActivatedRoute,
+      private alertServ: FfTodoAlertService,
       private todoServ: FfTodoAbstractRequestService,
       private common: FfTodoCommonService,
       private cookies: CookieService) {
@@ -42,8 +47,9 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     this.isRoutedToTodoListListener = this.common.isRoutedToTodoListChange.subscribe(result => this.isRoutedToTodoList = result);
     this.isRoutedToIndexListener = this.common.isRoutedToIndexChange.subscribe(result => this.isRoutedToIndex = result);
 
-    this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(() => this.updateBoardList());
+    this.updateBoardListTrigger = this.common.updateBoardListEvent.subscribe(backendIdx => this.updateBoardList(backendIdx));
 
+    this.backendSelectedListener = this.common.backendSelectedChange.subscribe(idx => this.backendSelected = idx);
     this.backendRefreshStatusListener = this.common.backendRefreshStatusChange.subscribe(val => this.backendRefreshStatus = val);
 
     this.route.queryParams.subscribe(() => {
@@ -52,6 +58,8 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.common.changePageTitle("Board list");
+
+    this.common.triggerBackend();
 
     this.updateBoardList();
   }
@@ -67,6 +75,7 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.updateBoardListTrigger.unsubscribe();
 
+    this.backendSelectedListener.unsubscribe();
     this.backendRefreshStatusListener.unsubscribe();
   }
 
@@ -82,41 +91,56 @@ export class FfTodoBoardListComponent implements OnInit, OnChanges, OnDestroy {
     return this.common.getBoardName(idx);
   }
 
-  private updateBoardList()
+  private updateBoardList(backendIdx?: string)
   {
+    let timeoutDuration = 100;
     this.common.changeRouteStatus(false, false);
 
-    this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_INPROGRESS);
+    if (backendIdx !== undefined)
+    {
+      this.common.changeBackend(backendIdx);
+      timeoutDuration = 250;
+    }
 
-    this.todoServ.getBoardIds().subscribe(results => {
-      let idx=0;
+    setTimeout(() => {
+      this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_INPROGRESS);
 
       this.common.clearBoardNames();
 
-      for (let id of results)
-      {
-        this.todoServ.getBoard(id as number).subscribe(result => {
-          this.common.addBoardName(id, result.name);
-        });
-        idx++;
-      }
+      this.todoServ.getBoardIds().subscribe(results => {
+        let idx=0;
 
-      if (idx == results.length)
-      {
-        this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_SUCCESS);
+        for (let id of results)
+        {
+          this.todoServ.getBoard(id as number).subscribe(result => {
+            this.common.addBoardName(id, result.name);
+          });
+          idx++;
+        }
 
-        setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);
-      }
-    }, errorMsg => {
-      this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_FAILURE);
+        if (idx == results.length)
+        {
+          this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected);
 
-      this.dumpErrorMessage = JSON.stringify(errorMsg);
+          this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_SUCCESS);
 
-      setTimeout(() => {
-        this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY);
-        this.common.changeBackend('');
-      }, 5000);
-    });
+          setTimeout(() => this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY), 5000);
+
+          this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched to backend with ID (${this.backendSelected}): (${this.common.getBackendName(this.backendSelected)}).`});
+        }
+      }, errorMsg => {
+        this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_FAILURE);
+
+        this.dumpErrorMessage = JSON.stringify(errorMsg);
+
+        setTimeout(() => {
+          this.common.changeBackendRefreshStatus(this.BACKEND_QUERY_STANDBY);
+          this.common.changeBackend('');
+        }, 5000);
+
+        this.alertServ.addAlertMessage({type: 'danger', message: `Failed to switch to backend with ID (${this.backendSelected}). See browser console for details.`});
+      });
+    }, timeoutDuration);
   }
 
 }

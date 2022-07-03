@@ -1,5 +1,5 @@
 <div class="container">
-    <div *ngIf="getBoardListSize()">
+    <div *ngIf="getBoardListSize() && (backendRefreshStatus != BACKEND_QUERY_INPROGRESS)">
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let field of iterateBoardList()">
                 <button type="button" class="btn btn-primary"
@@ -11,16 +11,17 @@
             </li>
         </ul>
     </div>
-    <div *ngIf="!getBoardListSize() || (backendRefreshStatus == BACKEND_QUERY_STANDBY)">
-        <div *ngIf="(backendRefreshStatus == BACKEND_QUERY_INPROGRESS)">
-            Loading Boards...
-        </div>
-        <div class="text-muted user-select-none" *ngIf="(backendRefreshStatus == BACKEND_QUERY_SUCCESS)">
-            There are no Boards.
-        </div>
-        <div class="text-danger user-select-none" *ngIf="(backendRefreshStatus == BACKEND_QUERY_FAILURE)">
-            <div>Cannot query Board list.</div>
-            <small>Reason: {{ dumpErrorMessage }}</small>
-        </div>
+    <div class="text-muted user-select-none" *ngIf="!getBoardListSize() && (backendRefreshStatus == BACKEND_QUERY_STANDBY)">
+        There is no connection with the backend.
+    </div>
+    <div class="user-select-none" *ngIf="(backendRefreshStatus == BACKEND_QUERY_INPROGRESS)">
+        Loading Boards...
+    </div>
+    <div class="text-muted user-select-none" *ngIf="!getBoardListSize() && (backendRefreshStatus == BACKEND_QUERY_SUCCESS)">
+        There are no Boards.
+    </div>
+    <div class="text-danger user-select-none" *ngIf="(backendRefreshStatus == BACKEND_QUERY_FAILURE)">
+        <div>Cannot query Board list.</div>
+        <small>Reason: {{ dumpErrorMessage }}</small>
     </div>
 </div>

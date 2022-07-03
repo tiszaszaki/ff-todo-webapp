@@ -31,9 +31,7 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
   constructor(
       private common: FfTodoCommonService,
       private router: Router,
-      private alertServ: FfTodoAlertService,
-      private todoServ: FfTodoAbstractRequestService,
-      private cookies: CookieService) {
+      private alertServ: FfTodoAlertService) {
     this.backendRefreshStatus = this.QUERY_STANDBY;
 
     this.backendIds = this.common.getBackendIds();
@@ -47,34 +45,10 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
   {
     if (this.backendRefreshStatus == this.QUERY_STANDBY)
     {
-      this.backendRefreshStatus = this.QUERY_INPROGRESS;
       if (this.common.doesBackendExist(this.backendSelected))
       {
-        this.common.changeBackend(this.backendSelected);
-
-        setTimeout(() =>
-        this.todoServ.getBoardIds().subscribe(() => {
-          setTimeout(() => {
-            this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected);
-
-            this.router.navigate(["/"]);
-            this.common.updateBoardList();
-
-            this.backendRefreshStatus = this.QUERY_SUCCESS;
-          }, 250);
-          setTimeout(() => this.common.changeBackendRefreshStatus(this.QUERY_STANDBY), 5000);
-
-          this.alertServ.addAlertMessage({type: 'success', message: `Successfully switched to backend with ID (${this.backendSelected}): (${this.getBackendName(this.backendSelected)}).`});
-        }, error => {
-          this.backendRefreshStatus = this.QUERY_FAILURE;
-
-          setTimeout(() => { 
-            this.common.changeBackendRefreshStatus(this.QUERY_STANDBY);
-            this.common.changeBackend('');
-          }, 5000);
-
-          this.alertServ.addAlertMessage({type: 'danger', message: `Failed to switch to backend with ID (${this.backendSelected}). See browser console for details.`});
-        }), 250);
+        this.router.navigate(["/"]);
+        this.common.updateBoardList(this.backendSelected);
       }
       else
       {
@@ -89,8 +63,6 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.backendSelectedListener = this.common.backendSelectedChange.subscribe(idx => this.backendSelected = idx);
     this.backendRefreshStatusListener = this.common.backendRefreshStatusChange.subscribe(val => this.backendRefreshStatus = val);
-
-    this.common.triggerBackend();
   }
 
   ngOnDestroy(): void {

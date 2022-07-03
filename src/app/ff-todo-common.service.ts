@@ -15,7 +15,7 @@ export class FfTodoCommonService {
   public updateTodoEvent = new EventEmitter<Number>();
   public updateBoardEvent = new EventEmitter<void>();
   public updateTodoListEvent = new EventEmitter< Set<Number> >();
-  public updateBoardListEvent = new EventEmitter<void>();
+  public updateBoardListEvent = new EventEmitter<string>();
 
   private pageTitle!: String;
   public pageTitleChange = new EventEmitter<String>();
@@ -139,8 +139,8 @@ export class FfTodoCommonService {
     this.updateTodoListEvent.emit(phase);
   }
 
-  updateBoardList() {
-    this.updateBoardListEvent.emit();
+  updateBoardList(backendIdx?: string) {
+    this.updateBoardListEvent.emit(backendIdx);
   }
 
   getBoardListSize() {
