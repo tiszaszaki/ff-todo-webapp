@@ -27,8 +27,8 @@
                     <thead class="table-header">
                         <tr>
                             <th scope="col" class="text-truncate" *ngFor="let field of model.fieldOrder">
-                                <span>{{ field }}</span>
-                                <span *ngIf="isFieldKey(getFieldType(field))">&nbsp; (key)</span>
+                                <span *ngIf="isFieldKey(getFieldType(field))"><u>{{ getFieldDisplay(field) }}</u></span>
+                                <span *ngIf="!isFieldKey(getFieldType(field))">{{ getFieldDisplay(field) }}</span>
                             </th>
                         </tr>
                     </thead>

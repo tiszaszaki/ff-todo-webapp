@@ -67,7 +67,12 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     this.formTitle = 'No pivot table';
     this.pivotMessage = 'This form needs to be set up properly to show pivot table.';
 
-    this.model = {fields: new Set<{key:string,value:string}>(), fieldOrder: [], records: []};
+    this.model = {
+      fields: new Set<{key:string,value:string}>(),
+      fieldDisplay: new Set<{key:string,value:string}>(),
+      fieldOrder: [],
+      records: []
+    };
     this.pivotId = this.pivotId.trim();
     this.formId = "default-pivot";
 
@@ -156,6 +161,19 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   getFieldType(fieldName: string) {
     let result = "";
     for (let elem of this.model.fields)
+    {
+      if (elem.key == fieldName)
+      {
+        result = elem.value;
+        break;
+      }
+    }
+    return result;
+  }
+
+  getFieldDisplay(fieldName: string) {
+    let result = "";
+    for (let elem of this.model.fieldDisplay)
     {
       if (elem.key == fieldName)
       {
