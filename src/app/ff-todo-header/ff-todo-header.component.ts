@@ -104,22 +104,26 @@ export class FfTodoHeaderComponent implements OnInit, OnChanges, OnDestroy {
         this.common.changeBackend(cookieBackend);
     }
 
+    setTimeout(() => this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected), 250);
+
     let currentRoute: CurrentRoutingStatus = JSON.parse(this.cookies.get(this.common.cookies.currentRoute));
 
     if (currentRoute)
     {
-      if (currentRoute.path == "/list-todos")
-      {
-        if (currentRoute.params.length == 1)
-          this.router.navigate([currentRoute.path], {queryParams: {id: Number.parseInt(currentRoute.params[0])}});
-      }
-      else
-        this.router.navigate([currentRoute.path]);
+      setTimeout(() => {
+        this.common.triggerBackend();
+
+        if (currentRoute.path == "/list-todos")
+        {
+          if (currentRoute.params.length == 1)
+            this.router.navigate([currentRoute.path], {queryParams: {id: Number.parseInt(currentRoute.params[0])}});
+        }
+        else
+          this.router.navigate([currentRoute.path]);
+      }, 1000);
     }
     else
       this.router.navigate(["/"]);
-
-    setTimeout(() => this.cookies.set(this.common.cookies.selectedBackend, this.backendSelected), 250);  
   }
 
   ngOnChanges(changes: SimpleChanges): void {
