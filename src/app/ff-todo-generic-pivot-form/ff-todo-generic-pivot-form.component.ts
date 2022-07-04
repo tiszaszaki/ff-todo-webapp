@@ -85,7 +85,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     if (fieldType != "")
     {
       let temp = this.parseFieldTypeRole(fieldType);
-      let types = ["int32", "int64", "integer", "int"];
+      let types = ["int32", "int64", "integer", "int", "long"];
       result = ((temp.length == 1) || (temp.length == 2));
       result &&= (types.find(e => e == temp[0]) !== undefined);
     }
@@ -97,7 +97,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     if (fieldType != "")
     {
       let temp = this.parseFieldTypeRole(fieldType);
-      let types = ["float", "double"];
+      let types = ["float", "double", "real"];
       result = ((temp.length == 1) || (temp.length == 2));
       result &&= (types.find(e => e == temp[0]) !== undefined);
     }
