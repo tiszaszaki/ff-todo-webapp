@@ -184,6 +184,27 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     return result;
   }
 
+  getFieldTooltip(fieldName: string) {
+    let fieldType = this.getFieldType(fieldName);
+    let parsedType: string[] = [];
+    let result = "";
+    if (fieldType != "")
+      parsedType = this.parseFieldTypeRole(fieldType);
+    if ((fieldName != "") && ((parsedType.length == 1) || (parsedType.length == 2)))
+    {
+      result = `Field '${fieldName}' with type '${parsedType[0]}'`;
+      if (this.isFieldKey(fieldType))
+        result += ` which is a key`;
+      else
+      {
+        if (parsedType.length == 2)
+          result += ` and role '${parsedType[1]}'`;
+        result += ` which is an ordinary field`;
+      }
+    }
+    return result;
+  }
+
   private resetDisplay() {
     this.pivotId = "";
   }
@@ -196,7 +217,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   showModal()
   {
-    const tempModal = this.modalService.open(this.formElement, this.common.getCommonModalSettings());
+    const tempModal = this.modalService.open(this.formElement, this.common.getCommonModalSettings("", "xl"));
 
     tempModal.result.then((result) => {
       this.resetDisplay();

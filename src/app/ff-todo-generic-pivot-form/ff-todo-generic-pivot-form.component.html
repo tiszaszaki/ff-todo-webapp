@@ -27,8 +27,10 @@
                     <thead class="table-header">
                         <tr>
                             <th scope="col" class="text-truncate" *ngFor="let field of model.fieldOrder">
-                                <span *ngIf="isFieldKey(getFieldType(field))"><u>{{ getFieldDisplay(field) }}</u></span>
-                                <span *ngIf="!isFieldKey(getFieldType(field))">{{ getFieldDisplay(field) }}</span>
+                                <div data-toggle="tooltip" data-placement="bottom" title="{{ getFieldTooltip(field) }}">
+                                    <span *ngIf="isFieldKey(getFieldType(field))"><u>{{ getFieldDisplay(field) }}</u></span>
+                                    <span *ngIf="!isFieldKey(getFieldType(field))">{{ getFieldDisplay(field) }}</span>
+                                </div>
                             </th>
                         </tr>
                     </thead>

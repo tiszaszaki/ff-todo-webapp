@@ -128,7 +128,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   {
     //console.log(`Trying to open a modal with ID (${this.formId})...`);
 
-    const tempModal = this.modalService.open(this.formElement, this.common.getCommonModalSettings());
+    const tempModal = this.modalService.open(this.formElement, this.common.getCommonModalSettings("", ""));
 
     tempModal.result.then((result) => {
       //console.log(`${this.formId}: ${result}`);

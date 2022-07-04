@@ -111,17 +111,19 @@ export class FfTodoCommonService {
     this.todoSearchingRules = new Map<String,String>();
   }
 
-  getCommonModalSettings(ariaTitleLabel?: String) {
+  getCommonModalSettings(ariaTitleLabel: string, windowSize: string) {
     let result = {
       ariaLabelledBy: "",
       size: "lg",
-      backdropClass: "tsz-modal-backdrop"
+      backdropClass: "tsz-modal-backdrop",
+      windowClass: "tsz-modal-window"
     };
 
-    if (ariaTitleLabel)
-    {
-      result.ariaLabelledBy = ariaTitleLabel as string;
-    }
+    if (ariaTitleLabel != "")
+      result.ariaLabelledBy = ariaTitleLabel;
+
+    if (windowSize != "")
+      result.size = windowSize;
 
     return result;
   }
