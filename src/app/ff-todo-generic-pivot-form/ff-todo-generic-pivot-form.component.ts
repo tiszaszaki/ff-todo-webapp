@@ -67,7 +67,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     this.formTitle = 'No pivot table';
     this.pivotMessage = 'This form needs to be set up properly to show pivot table.';
 
-    this.model = {fields: new Map<string,string>(), fieldOrder: [], records: []};
+    this.model = {fields: new Set<{key:string,value:string}>(), fieldOrder: [], records: []};
     this.pivotId = this.pivotId.trim();
     this.formId = "default-pivot";
 
@@ -81,41 +81,61 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   }
 
   isFieldInteger(fieldType: string) {
-    let temp = this.parseFieldTypeRole(fieldType);
-    let types = ["int32", "int64", "integer", "int"];
-    let result = ((temp.length == 1) || (temp.length == 2));
-    result &&= (types.find(e => e == temp[0]) !== undefined);
+    let result = false;
+    if (fieldType != "")
+    {
+      let temp = this.parseFieldTypeRole(fieldType);
+      let types = ["int32", "int64", "integer", "int"];
+      result = ((temp.length == 1) || (temp.length == 2));
+      result &&= (types.find(e => e == temp[0]) !== undefined);
+    }
     return result;
   }
 
   isFieldReal(fieldType: string) {
-    let temp = this.parseFieldTypeRole(fieldType);
-    let types = ["float", "double"];
-    let result = ((temp.length == 1) || (temp.length == 2));
-    result &&= (types.find(e => e == temp[0]) !== undefined);
+    let result = false;
+    if (fieldType != "")
+    {
+      let temp = this.parseFieldTypeRole(fieldType);
+      let types = ["float", "double"];
+      result = ((temp.length == 1) || (temp.length == 2));
+      result &&= (types.find(e => e == temp[0]) !== undefined);
+    }
     return result;
   }
 
   isFieldString(fieldType: string) {
-    let temp = this.parseFieldTypeRole(fieldType);
-    let types = ["str", "string"];
-    let result = ((temp.length == 1) || (temp.length == 2));
-    result &&= (types.find(e => e == temp[0]) !== undefined);
+    let result = false;
+    if (fieldType != "")
+    {
+      let temp = this.parseFieldTypeRole(fieldType);
+      let types = ["str", "string"];
+      result = ((temp.length == 1) || (temp.length == 2));
+      result &&= (types.find(e => e == temp[0]) !== undefined);
+    }
     return result;
   }
 
   isFieldKey(fieldType: string) {
-    let temp = this.parseFieldTypeRole(fieldType);
-    let result = ((temp.length == 1) || (temp.length == 2));
-    result &&= temp[1] == "key";
+    let result = false;
+    if (fieldType != "")
+    {
+      let temp = this.parseFieldTypeRole(fieldType);
+      result = ((temp.length == 1) || (temp.length == 2));
+      result &&= temp[1] == "key";
+    }
     return result;
   }
 
   isFieldPercent(fieldType: string) {
-    let temp = this.parseFieldTypeRole(fieldType);
-    let result = ((temp.length == 1) || (temp.length == 2));
-    result &&= this.isFieldReal(fieldType);
-    result &&= temp[1] == "percent";
+    let result = false;
+    if (fieldType != "")
+    {
+      let temp = this.parseFieldTypeRole(fieldType);
+      result = ((temp.length == 1) || (temp.length == 2));
+      result &&= this.isFieldReal(fieldType);
+      result &&= temp[1] == "percent";
+    }
     return result;
   }
 
@@ -124,17 +144,25 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     if (fieldType != "")
     {
       let temp = fieldType.toLowerCase().split(",");
-      console.log(temp);
-      if (temp.length == 2)
-        result = temp;
+      if ((temp.length == 1) || (temp.length == 2))
+      {
+        result = [];
+        for (let e of temp) result.push(e);
+      }
     }
-    console.log(fieldType, " -> ", result);
     return result;
   }
 
   getFieldType(fieldName: string) {
-    let result = this.model.fields.get(fieldName);
-    if (!result) result = "";
+    let result = "";
+    for (let elem of this.model.fields)
+    {
+      if (elem.key == fieldName)
+      {
+        result = elem.value;
+        break;
+      }
+    }
     return result;
   }
 

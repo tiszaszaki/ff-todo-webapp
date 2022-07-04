@@ -28,17 +28,19 @@
                         <tr>
                             <th scope="col" class="text-truncate" *ngFor="let field of model.fieldOrder">
                                 <span>{{ field }}</span>
-                                <!-- <span *ngIf="isFieldKey(getFieldType(field))">&nbsp; (key)</span> -->
+                                <span *ngIf="isFieldKey(getFieldType(field))">&nbsp; (key)</span>
                             </th>
                         </tr>
                     </thead>
                     <tr class="table-row" *ngFor="let record of model.records">
                         <td class="text-truncate" *ngFor="let field of model.fieldOrder">
-                            <span>{{ record[field] }}</span>
-                            <!--
-                            <span *ngIf="isFieldPercent(getFieldType(field))">{{ record[field] | percent }}</span>
-                            <span *ngIf="!isFieldPercent(getFieldType(field))">{{ record[field] }}</span>
-                            -->
+                            <div *ngIf="isFieldString(getFieldType(field)) || (record[field] >= 0)">
+                                <span *ngIf="isFieldPercent(getFieldType(field))">{{ record[field] | percent }}</span>
+                                <span *ngIf="!isFieldPercent(getFieldType(field))">{{ record[field] }}</span>
+                            </div>
+                            <div *ngIf="!isFieldString(getFieldType(field)) && !(record[field] >= 0)">
+                                N/A
+                            </div>
                         </td>
                     </tr>
                 </table>
