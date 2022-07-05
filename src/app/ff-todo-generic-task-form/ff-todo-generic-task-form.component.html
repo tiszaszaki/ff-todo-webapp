@@ -13,7 +13,7 @@
                     <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
                                 #name="ngModel" [placeholder]="placeholderName" (keyup.enter)="modal.close('Saved by pressing Enter')"
-                                maxlength="{{ nameMaxLength }}" [readonly]="isOperatorIncluded(VIEW)" required ngbAutoFocus>
+                                maxlength="{{ nameMaxLength }}" [readonly]="isOperatorIncluded(VIEW)" [required]="!isOperatorIncluded(VIEW)" ngbAutoFocus>
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                             Name is required
                         </div>
@@ -28,8 +28,28 @@
                                 value="model.done" #checked="ngModel" [disabled]="isOperatorIncluded(VIEW)">
                     </div>
 
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="date_created">Date created</label>
+                        <div class="input-group" name="date_created">
+                            <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateCreated" [readonlyModel]="true" [hideButtons]="true"
+                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    customPopoverTitle="">
+                            </app-ff-todo-bootstrap-date-time-picker>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="date_modified">Date modified</label>
+                        <div class="input-group" name="date_modified">
+                            <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateModified" [readonlyModel]="true" [hideButtons]="true"
+                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    customPopoverTitle="">
+                            </app-ff-todo-bootstrap-date-time-picker>
+                        </div>
+                    </div>
+
                     <label for="deadline">Deadline</label>
-                    <div class="input-group">
+                    <div class="input-group" name="deadline">
                         <app-ff-todo-bootstrap-date-time-picker [(model)]="model.deadline" [readonlyModel]="isOperatorIncluded(VIEW)"
                                 [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
                                 (modelChange)="changedDeadline = true" customPopoverTitle="Deadline of Task">

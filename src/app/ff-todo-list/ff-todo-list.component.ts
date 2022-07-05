@@ -43,6 +43,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public prepareSortTaskFormTrigger!: Array< Subject<void> >;
 
   public prepareEditBoardFormTrigger = new Subject<void>();
+  public prepareViewBoardFormTrigger = new Subject<void>();
   public prepareRemoveBoardFormTrigger = new Subject<void>();
 
   public updateBoardListener!: Subscription;
@@ -72,6 +73,7 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
   public task_count!: number[];
 
   public readonly EDIT_BOARD = BoardOperator.EDIT;
+  public readonly VIEW_BOARD = BoardOperator.VIEW;
   public readonly REMOVE_BOARD = BoardOperator.REMOVE;
 
   public readonly TODO_QUERY_STANDBY = GenericQueryStatus.QUERY_STANDBY;
@@ -205,6 +207,10 @@ export class FfTodoListComponent implements OnInit, OnDestroy, OnChanges {
 
   prepareEditBoardForm() {
     this.prepareEditBoardFormTrigger.next();
+  }
+
+  prepareViewBoardForm() {
+    this.prepareViewBoardFormTrigger.next();
   }
 
   prepareRemoveBoardForm() {

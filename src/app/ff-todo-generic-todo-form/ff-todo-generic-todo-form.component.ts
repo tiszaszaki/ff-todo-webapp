@@ -235,7 +235,7 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       result = this.descriptionMaxLength = result as number;
     });
 
-    if (this.isOperatorIncluded(this.ADD,this.EDIT))
+    if (this.isOperatorIncluded(this.ADD,this.EDIT,this.VIEW))
     {
       this.common.updateTodoNameMaxLength();
       this.common.updateTodoDescriptionMaxLength();

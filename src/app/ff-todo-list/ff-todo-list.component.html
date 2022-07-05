@@ -4,6 +4,10 @@
 				[preparingFormEvent]="prepareEditBoardFormTrigger.asObservable()" (submitDataEvent)="editBoard($event)">
 		</app-ff-todo-generic-board-form>
 
+		<app-ff-todo-generic-board-form #viewBoardForm [mode]="VIEW_BOARD" [(model)]="boardContent"
+				[preparingFormEvent]="prepareViewBoardFormTrigger.asObservable()">
+		</app-ff-todo-generic-board-form>
+
 		<app-ff-todo-generic-board-form #removeBoardForm [mode]="REMOVE_BOARD" [(model)]="boardContent"
 				[preparingFormEvent]="prepareRemoveBoardFormTrigger.asObservable()" (submitDataEvent)="removeBoard($event)">
 		</app-ff-todo-generic-board-form>
@@ -44,6 +48,10 @@
 				<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareEditBoardForm()"
 						data-toggle="tooltip" data-placement="bottom" title="Edit Board">
 					<i class="fas fa-pencil-alt"></i>&nbsp;Board
+				</button>
+				<button type="button" class="btn btn-primary btn-sm text-end" (click)="prepareViewBoardForm()"
+						data-toggle="tooltip" data-placement="bottom" title="View Board">
+					<i class="far fa-eye"></i>&nbsp;Board
 				</button>
 				<button type="button" class="btn btn-danger btn-sm text-end" (click)="prepareRemoveBoardForm()"
 						data-toggle="tooltip" data-placement="bottom" title="Remove Board">

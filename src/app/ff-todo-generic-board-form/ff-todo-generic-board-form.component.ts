@@ -36,6 +36,9 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
   public authorMaxLength!: number;
   public authorMaxLengthListener!: Subscription;
 
+  public inputDateFormat!: string;
+  public inputDateFormatDisp!: String;
+
   public formTitle!: String;
 
   public placeholderName!: String;
@@ -50,11 +53,14 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
 
   public readonly ADD = BoardOperator.ADD;
   public readonly EDIT = BoardOperator.EDIT;
+  public readonly VIEW = BoardOperator.VIEW;
   public readonly REMOVE = BoardOperator.REMOVE;
 
   constructor(
       private modalService: NgbModal,
-      private common: FfTodoCommonService) { }
+      private common: FfTodoCommonService) {
+    this.inputDateFormat = this.common.inputDateFormat;
+  }
 
   private resetModel() {
     this.model = new Board();
@@ -96,6 +102,18 @@ export class FfTodoGenericBoardFormComponent implements OnInit, OnChanges, OnDes
           this.placeholderAuthor = "Change author's name for this Board...";
 
           this.submitButtonCaption = "Update";
+        }
+      } break;
+      case this.VIEW: {
+        if (this.model)
+        {
+          let id=this.model.id;
+          this.formTitle = `View Board details with ID ${id}`;
+          this.placeholderName = "No name defined for this Board.";
+          this.placeholderDescription = "No description defined for this Board.";
+          this.placeholderAuthor = "No author defined for this Board.";
+
+          this.submitButtonCaption = "<no submit action>";
         }
       } break;
       case this.REMOVE: {

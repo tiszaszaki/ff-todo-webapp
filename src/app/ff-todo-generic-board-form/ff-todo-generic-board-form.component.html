@@ -8,13 +8,13 @@
         </div>
 
         <div class="modal-body">
-            <div *ngIf="isOperatorIncluded(ADD,EDIT)">
+            <div *ngIf="isOperatorIncluded(ADD,EDIT,VIEW)">
                 <div class="form-group">
                     <label for="name">Name</label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="name" [(ngModel)]="model.name" name="name" value="model.name"
                                     #name="ngModel" [placeholder]="placeholderName" (keyup.enter)="modal.close('Saved by pressing Enter')"
-                                    maxlength="{{ nameMaxLength }}" required ngbAutoFocus>
+                                    maxlength="{{ nameMaxLength }}" [readonly]="isOperatorIncluded(VIEW)" [required]="!isOperatorIncluded(VIEW)" ngbAutoFocus>
                         </div>
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                             Name is required
@@ -29,7 +29,7 @@
                         <div class="input-group">
                             <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description" name="description"
                                     #description="ngModel" value="model.description" [placeholder]="placeholderDescription"
-                                    maxlength="{{ descriptionMaxLength }}" [disabled]="!isOperatorIncluded(ADD,EDIT)"></textarea>
+                                    maxlength="{{ descriptionMaxLength }}" [readonly]="!isOperatorIncluded(ADD,EDIT)"></textarea>
                         </div>
                     </div>
                     <div *ngIf="descriptionMaxLength" class="d-flex justify-content-end">
@@ -46,6 +46,26 @@
                     </div>
                     <div *ngIf="authorMaxLength" class="d-flex justify-content-end">
                         <span class="badge badge-pill bg-secondary">{{ model.author.length }} / {{ authorMaxLength }}</span>
+                    </div>
+
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="date_created">Date created</label>
+                        <div class="input-group" name="date_created">
+                            <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateCreated" [readonlyModel]="true" [hideButtons]="true"
+                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    customPopoverTitle="">
+                            </app-ff-todo-bootstrap-date-time-picker>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="date_modified">Date modified</label>
+                        <div class="input-group" name="date_modified">
+                            <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateModified" [readonlyModel]="true" [hideButtons]="true"
+                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    customPopoverTitle="">
+                            </app-ff-todo-bootstrap-date-time-picker>
+                        </div>
                     </div>
                 </div>
             <div *ngIf="isOperatorIncluded(REMOVE)">
@@ -66,7 +86,7 @@
         </div>
     </form>
 
-    <div *ngIf="!isOperatorIncluded(ADD,EDIT,REMOVE)">
+    <div *ngIf="!isOperatorIncluded(ADD,EDIT,VIEW,REMOVE)">
         <app-ff-todo-form-invalid></app-ff-todo-form-invalid>
     </div>
 </ng-template>

@@ -28,8 +28,7 @@
                         <div class="input-group">
                             <textarea type="text" class="form-control" id="description" [(ngModel)]="model.description"
                                     name="description" value="model.description" #description="ngModel" maxlength="{{ descriptionMaxLength }}"
-                                    [placeholder]="placeholderDescription" [disabled]="!isOperatorIncluded(ADD,EDIT,VIEW,CLONE)"
-                                    [readonly]="isOperatorIncluded(VIEW,CLONE)">
+                                    [placeholder]="placeholderDescription" [readonly]="!isOperatorIncluded(ADD,EDIT)">
                             </textarea>
                         </div>
                     </div>
@@ -69,8 +68,28 @@
                         </div>
                     </div>
 
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="date_created">Date created</label>
+                        <div class="input-group" name="date_created">
+                            <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateCreated" [readonlyModel]="true" [hideButtons]="true"
+                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    customPopoverTitle="">
+                            </app-ff-todo-bootstrap-date-time-picker>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="isOperatorIncluded(VIEW)">
+                        <label for="date_modified">Date modified</label>
+                        <div class="input-group" name="date_modified">
+                            <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateModified" [readonlyModel]="true" [hideButtons]="true"
+                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    customPopoverTitle="">
+                            </app-ff-todo-bootstrap-date-time-picker>
+                        </div>
+                    </div>
+
                     <label for="deadline">Deadline</label>
-                    <div class="input-group">
+                    <div class="input-group" name="deadline">
                         <app-ff-todo-bootstrap-date-time-picker [(model)]="model.deadline" [readonlyModel]="isOperatorIncluded(CLONE)"
                                 [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
                                 (modelChange)="changedDeadline = true" customPopoverTitle="Deadline of Todo">

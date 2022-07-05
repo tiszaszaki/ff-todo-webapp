@@ -96,7 +96,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
         {
           let id=this.model.id;
           this.formTitle = `View Task details with ID ${id}`;
-          this.placeholderName = "No name defined for this Todo.";
+          this.placeholderName = "No name defined for this Task.";
 
           this.submitButtonCaption = "<no submit action>";
         }
@@ -156,7 +156,7 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
       result = this.nameMaxLength = result as number;
     });
 
-    if (this.isOperatorIncluded(this.ADD,this.EDIT))
+    if (this.isOperatorIncluded(this.ADD,this.EDIT,this.VIEW))
     {
       this.common.updateTaskNameMaxLength();
       

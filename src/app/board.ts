@@ -5,6 +5,7 @@ export class Board {
     public name!: String;
     public description!: String;
     public author!: String;
+    public dateModified!: Date;
     public dateCreated!: Date;
     public readonlyTodos!: Boolean;
     public readonlyTasks!: Boolean;

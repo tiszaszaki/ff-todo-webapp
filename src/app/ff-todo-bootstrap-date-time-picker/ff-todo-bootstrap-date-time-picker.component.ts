@@ -12,6 +12,7 @@ export class FfTodoBootstrapDateTimePickerComponent implements OnInit, OnChanges
   @Output() modelChange = new EventEmitter<Date>();
 
   @Input() readonlyModel!: Boolean;
+  @Input() hideButtons!: Boolean;
 
   @Input() inputDateFormat!: String;
   @Input() inputDateFormatDisp!: String;
