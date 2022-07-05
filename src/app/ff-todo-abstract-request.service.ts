@@ -12,8 +12,8 @@ export abstract class FfTodoAbstractRequestService {
   abstract getBoard(id : number) : Observable<Board>;
   abstract getBoardIds() : Observable<Number[]>;
   abstract addBoard(board: Board): Observable<Board>;
-  abstract editBoard(id : number, patchedBoard: Board): Observable<any>;
-  abstract removeBoard(id: number): Observable<any>;
+  abstract editBoard(id : number, patchedBoard: Board): Observable<void>;
+  abstract removeBoard(id: number): Observable<void>;
 
   abstract getBoardNameMaxLength() : Observable<Number>;
   abstract getBoardDescriptionMaxLength() : Observable<Number>;
@@ -28,10 +28,10 @@ export abstract class FfTodoAbstractRequestService {
   abstract getTodos() : Observable<Todo[]>;
   abstract getTodosFromBoard(id : number) : Observable<Todo[]>;
   abstract addTodo(id : number, todo: Todo): Observable<Todo>;
-  abstract editTodo(id : number, patchedTodo: Todo): Observable<any>;
+  abstract editTodo(id : number, patchedTodo: Todo): Observable<void>;
   abstract cloneTodo(id : number, phase : number, boardId : number): Observable<Todo>;
-  abstract removeTodo(id: number): Observable<any>;
-  abstract removeAllTodos(id: number): Observable<any>;
+  abstract removeTodo(id: number): Observable<void>;
+  abstract removeAllTodos(id: number): Observable<Number>;
 
   abstract getTodoNameMaxLength() : Observable<Number>;
   abstract getTodoDescriptionMaxLength() : Observable<Number>;
@@ -41,9 +41,9 @@ export abstract class FfTodoAbstractRequestService {
   abstract getTasks() : Observable<Task[]>;
   abstract getTasksFromTodo(todoId: number): Observable<Task[]>;
   abstract addTask(task: Task, todoId: number): Observable<Task>;
-  abstract editTask(patchedTask: Task): Observable<any>;
-  abstract removeTask(id: number): Observable<any>;
-  abstract removeAllTasks(id: number): Observable<any>;
+  abstract editTask(patchedTask: Task): Observable<void>;
+  abstract removeTask(id: number): Observable<void>;
+  abstract removeAllTasks(id: number): Observable<Number>;
 
   abstract getTaskNameMaxLength() : Observable<Number>;
 

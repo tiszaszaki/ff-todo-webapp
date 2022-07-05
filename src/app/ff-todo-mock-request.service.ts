@@ -67,8 +67,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     )
   }
 
-  editBoard(id : number, patchedBoard: Board): Observable<any> {
-    return this.http.put(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
+  editBoard(id : number, patchedBoard: Board): Observable<void> {
+    return this.http.put<void>(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
       tap(() => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
@@ -77,8 +77,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  removeBoard(id: number): Observable<any> {
-    return this.http.delete(`${this.boardPath}/${id}`).pipe(
+  removeBoard(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.boardPath}/${id}`).pipe(
       tap(() => console.log(`Removed Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
@@ -164,9 +164,9 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     )
   }
 
-  editTodo(id : number, patchedTodo: Todo): Observable<any> {
+  editTodo(id : number, patchedTodo: Todo): Observable<void> {
     patchedTodo.dateModified = new Date();
-    return this.http.put(`${this.todoPath}/${id}`, patchedTodo).pipe(
+    return this.http.put<void>(`${this.todoPath}/${id}`, patchedTodo).pipe(
       tap(() => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
@@ -198,8 +198,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  removeTodo(id: number): Observable<any> {
-    return this.http.delete(`${this.todoPath}/${id}`).pipe(
+  removeTodo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.todoPath}/${id}`).pipe(
       tap(() => console.log(`Removed Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
@@ -208,7 +208,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  removeAllTodos(id: number): Observable<any> {
+  removeAllTodos(id: number): Observable<Number> {
     return this.http.get<Todo[]>(`${this.todoPath}`).pipe(
       map((todos : Todo[]) => {
         for (let todo of todos)
@@ -218,6 +218,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
             this.removeTodo(todo.id).subscribe();
           }
         }
+        return todos.length;
       }),
       tap(() => console.log(`Removed all Todos from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
@@ -281,8 +282,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     )
   }
 
-  editTask(patchedTask: Task): Observable<any> {
-    return this.http.put(`${this.taskPath}/${patchedTask.id}`, patchedTask).pipe(
+  editTask(patchedTask: Task): Observable<void> {
+    return this.http.put<void>(`${this.taskPath}/${patchedTask.id}`, patchedTask).pipe(
       tap(() => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
@@ -291,8 +292,8 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  removeTask(id: number): Observable<any> {
-    return this.http.delete(`this.taskPath/id`).pipe(
+  removeTask(id: number): Observable<void> {
+    return this.http.delete<void>(`this.taskPath/id`).pipe(
       tap(() => console.log(`Removed Task with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
@@ -301,7 +302,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     );
   }
 
-  removeAllTasks(id: number): Observable<any> {
+  removeAllTasks(id: number): Observable<Number> {
     return this.http.get<Task[]>(`${this.taskPath}`).pipe(
       map((tasks : Task[]) => {
         for (let task of tasks)
@@ -311,6 +312,7 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
             this.removeTask(task.id).subscribe();
           }
         }
+        return tasks.length;
       }),
       tap(() => console.log(`Removed all Tasks from Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {

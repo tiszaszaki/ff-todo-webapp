@@ -104,8 +104,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     )
   }
 
-  editBoard(id : number, patchedBoard: Board): Observable<any> {
-    return this.http.patch(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
+  editBoard(id : number, patchedBoard: Board): Observable<void> {
+    return this.http.patch<void>(`${this.boardPath}/${patchedBoard.id}`, patchedBoard).pipe(
       timeout(this.timeoutInterval),
       tap(() => console.log(`Edited Board with ID (${patchedBoard.id}) to (${JSON.stringify(patchedBoard)})`)),
       catchError((error: HttpErrorResponse) => {
@@ -115,8 +115,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  removeBoard(id: number): Observable<any> {
-    return this.http.delete(`${this.boardPath}/${id}`).pipe(
+  removeBoard(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.boardPath}/${id}`).pipe(
       timeout(this.timeoutInterval),
       tap(() => console.log(`Removed Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
@@ -258,8 +258,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  editTodo(id : number, patchedTodo: Todo): Observable<any> {
-    return this.http.patch(`${this.todoPath}/${patchedTodo.id}`, patchedTodo).pipe(
+  editTodo(id : number, patchedTodo: Todo): Observable<void> {
+    return this.http.patch<void>(`${this.todoPath}/${patchedTodo.id}`, patchedTodo).pipe(
       timeout(this.timeoutInterval),
       tap(() => console.log(`Edited Todo with ID (${patchedTodo.id}) to (${JSON.stringify(patchedTodo)})`)),
       catchError((error: HttpErrorResponse) => {
@@ -269,8 +269,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  removeTodo(id: number): Observable<any> {
-    return this.http.delete(`${this.todoPath}/${id}`).pipe(
+  removeTodo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.todoPath}/${id}`).pipe(
       timeout(this.timeoutInterval),
       tap(() => console.log(`Removed Todo with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
@@ -280,10 +280,10 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  removeAllTodos(id: number): Observable<any> {
-    return this.http.delete(`${this.boardTodoPath(id)}/clear`).pipe(
+  removeAllTodos(id: number): Observable<Number> {
+    return this.http.delete<Number>(`${this.boardTodoPath(id)}/clear`).pipe(
       timeout(this.timeoutInterval),
-      tap(() => console.log(`Removed all Todos from Board with ID (${id})`)),
+      tap((count : Number) => console.log(`Removed all Todos (${count}) from Board with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
@@ -369,8 +369,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     )
   }
 
-  editTask(patchedTask: Task): Observable<any> {
-    return this.http.patch(`${this.taskPath}/${patchedTask.id}`, patchedTask).pipe(
+  editTask(patchedTask: Task): Observable<void> {
+    return this.http.patch<void>(`${this.taskPath}/${patchedTask.id}`, patchedTask).pipe(
       timeout(this.timeoutInterval),
       tap(() => console.log(`Edited Task with ID (${patchedTask.id}) to (${JSON.stringify(patchedTask)})`)),
       catchError((error: HttpErrorResponse) => {
@@ -380,8 +380,8 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  removeTask(id: number): Observable<any> {
-    return this.http.delete(`${this.taskPath}/${id}`).pipe(
+  removeTask(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.taskPath}/${id}`).pipe(
       timeout(this.timeoutInterval),
       tap(() => console.log(`Removed Task with ID (${id})`)),
       catchError((error: HttpErrorResponse) => {
@@ -391,10 +391,10 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  removeAllTasks(todoId: number): Observable<any> {
-    return this.http.delete(`${this.todoTaskPath(todoId)}/clear`).pipe(
+  removeAllTasks(todoId: number): Observable<Number> {
+    return this.http.delete<Number>(`${this.todoTaskPath(todoId)}/clear`).pipe(
       timeout(this.timeoutInterval),
-      tap(() => console.log(`Removed all Tasks from Todo with ID (${todoId})`)),
+      tap((count) => console.log(`Removed all Tasks (${count}) from Todo with ID (${todoId})`)),
       catchError((error: HttpErrorResponse) => {
         console.error(error.message);
         return throwError(error.message);
