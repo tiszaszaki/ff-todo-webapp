@@ -52,7 +52,7 @@
                         <label for="date_created">Date created</label>
                         <div class="input-group" name="date_created">
                             <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateCreated" [readonlyModel]="true" [hideButtons]="true"
-                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    [inputDateFormat]="displayDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
                                     customPopoverTitle="">
                             </app-ff-todo-bootstrap-date-time-picker>
                         </div>
@@ -62,7 +62,7 @@
                         <label for="date_modified">Date modified</label>
                         <div class="input-group" name="date_modified">
                             <app-ff-todo-bootstrap-date-time-picker [(model)]="model.dateModified" [readonlyModel]="true" [hideButtons]="true"
-                                    [inputDateFormat]="inputDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
+                                    [inputDateFormat]="displayDateFormat" [inputDateFormatDisp]="inputDateFormatDisp"
                                     customPopoverTitle="">
                             </app-ff-todo-bootstrap-date-time-picker>
                         </div>

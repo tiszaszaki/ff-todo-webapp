@@ -36,13 +36,24 @@
                     </thead>
                     <tr class="table-row" *ngFor="let record of model.records">
                         <td class="text-truncate" *ngFor="let field of model.fieldOrder">
-                            <span *ngIf="isFieldPercent(getFieldType(field)) && (record[field] >= 0)">
+                            <span *ngIf="isFieldPercent(getFieldType(field)) && (record[field] >= 0)"
+                                    data-toggle="tooltip" data-placement="bottom" title="{{ record[field] | percent }}">
                                 {{ record[field] | percent }}
                             </span>
-                            <span *ngIf="isFieldPercent(getFieldType(field)) && (record[field] < 0)">
+                            <span *ngIf="isFieldPercent(getFieldType(field)) && (record[field] < 0)"
+                                    data-toggle="tooltip" data-placement="bottom" title="{{ 'unknown percent value' }}">
                                 N/A
                             </span>
-                            <span *ngIf="!isFieldPercent(getFieldType(field))">{{ record[field] }}</span>
+                            <span *ngIf="!isFieldPercent(getFieldType(field))">
+                                <span *ngIf="isFieldDateTime(getFieldType(field))"
+                                        data-toggle="tooltip" data-placement="bottom" title="{{ record[field] | date:displayDateFormat }}">
+                                    {{ record[field] | date:displayDateFormat }}
+                                </span>
+                                <span *ngIf="!isFieldDateTime(getFieldType(field))"
+                                        data-toggle="tooltip" data-placement="bottom" title="{{ record[field] }}">
+                                    {{ record[field] }}
+                                </span>
+                            </span>
                         </td>
                     </tr>
                 </table>

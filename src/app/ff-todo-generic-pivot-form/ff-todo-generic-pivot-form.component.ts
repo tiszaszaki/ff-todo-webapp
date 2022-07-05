@@ -27,6 +27,8 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   public pivotMessage!: String;
 
+  public displayDateFormat!: string;
+
   public model!: PivotResponse;
 
   private preparingFormListener!: Subscription;
@@ -39,13 +41,17 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
   public readonly pivotLabels = [
     {name: '', display: '(no pivot query)'},
     {name: 'board-readiness', display: 'Readiness of Boards'},
-    {name: 'todo-readiness', display: 'Readiness of Todo cards'}
+    {name: 'todo-readiness', display: 'Readiness of Todo cards'},
+    {name: 'board-latest-update', display: 'Latest update information of Boards'},
+    {name: 'todo-latest-update', display: 'Latest update information of Todo cards'}
   ];
 
   constructor(
       private modalService: NgbModal,
       private common: FfTodoCommonService,
-      private todoServ: FfTodoAbstractRequestService) { }
+      private todoServ: FfTodoAbstractRequestService) {
+    this.displayDateFormat = this.common.displayDateFormat;
+  }
 
   private updateQuery() {
     if (this.pivotQueryStatus == this.QUERY_STANDBY)
@@ -83,6 +89,18 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
       this.pivotMessage = `This table is showing pivot records queried from backend using ID '${this.pivotId}.'`;
       this.updateQuery();
     }
+  }
+
+  isFieldDateTime(fieldType: string) {
+    let result = false;
+    if (fieldType != "")
+    {
+      let temp = this.parseFieldTypeRole(fieldType);
+      let types = ["date", "datetime"];
+      result = ((temp.length == 1) || (temp.length == 2));
+      result &&= (types.find(e => e == temp[0]) !== undefined);
+    }
+    return result;
   }
 
   isFieldInteger(fieldType: string) {

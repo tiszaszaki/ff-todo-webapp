@@ -41,6 +41,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
   public inputDateFormat!: string;
   public inputDateFormatDisp!: String;
 
+  public displayDateFormat!: string;
+
   public formTitle!: String;
 
   public placeholderName!: String;
@@ -67,6 +69,8 @@ export class FfTodoGenericTodoFormComponent implements OnInit, OnChanges, OnDest
       private todoServ: FfTodoAbstractRequestService,
       private common: FfTodoCommonService) {
     this.inputDateFormat = this.common.inputDateFormat;
+    this.inputDateFormatDisp = "No datetime set";
+    this.displayDateFormat = this.common.displayDateFormat;
   }
 
   iterateBoardList() {

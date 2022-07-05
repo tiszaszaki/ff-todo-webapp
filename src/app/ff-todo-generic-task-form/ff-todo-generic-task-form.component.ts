@@ -35,6 +35,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
   public inputDateFormat!: string;
   public inputDateFormatDisp!: String;
 
+  public displayDateFormat!: string;
+
   public formTitle!: String;
   public placeholderName!: String;
 
@@ -57,6 +59,8 @@ export class FfTodoGenericTaskFormComponent implements OnInit, OnChanges, OnDest
       private modalService: NgbModal,
       private common: FfTodoCommonService) {
   this.inputDateFormat = this.common.inputDateFormat;
+  this.inputDateFormatDisp = "No datetime set";
+  this.displayDateFormat = this.common.displayDateFormat;
 }
 
   private resetModel() {
