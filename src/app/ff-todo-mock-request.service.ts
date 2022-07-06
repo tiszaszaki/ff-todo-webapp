@@ -9,7 +9,7 @@ import { Task } from './task';
 import { FfTodoCommonService } from './ff-todo-common.service';
 import { Board } from './board';
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
-import { PivotResponse } from './pivot-response';
+import { PivotKeyValuePair, PivotResponse } from './pivot-response';
 
 @Injectable({
   providedIn: 'root'
@@ -326,7 +326,23 @@ export class FfTodoMockRequestService implements FfTodoAbstractRequestService{
     return of(32);
   }
 
-  pivotQuery(pivotId: String) : Observable<PivotResponse> {
-    return of();
+  pivotQuery(pivotId: string) : Observable<PivotResponse> {
+    let mockResult = new PivotResponse;
+
+    mockResult.fieldOrder = ["id", "name", "mockVal"];
+
+    mockResult.fields = new Set<PivotKeyValuePair>();
+    mockResult.fields.add({key: "id", value: "Integer,Key"});
+    mockResult.fields.add({key: "name", value: "String,Key"});
+    mockResult.fields.add({key: "mockVal", value: "Double"});
+
+    mockResult.fieldDisplay = new Set<PivotKeyValuePair>();
+    mockResult.fieldDisplay.add({key: "id", value: "ID"});
+    mockResult.fieldDisplay.add({key: "name", value: "Name"});
+    mockResult.fieldDisplay.add({key: "mockVal", value: "Mock value"});
+
+    mockResult.records = [{id: 0, name: pivotId, mockVal: 1.5}];
+
+    return of(mockResult);
   }
 }

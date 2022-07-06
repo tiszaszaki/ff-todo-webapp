@@ -47,5 +47,5 @@ export abstract class FfTodoAbstractRequestService {
 
   abstract getTaskNameMaxLength() : Observable<Number>;
 
-  abstract pivotQuery(pivotId: String) : Observable<PivotResponse>;
+  abstract pivotQuery(pivotId: string) : Observable<PivotResponse>;
 }

@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { GenericQueryStatus } from '../generic-query-status';
-import { PivotResponse } from '../pivot-response';
+import { PivotKeyValuePair, PivotResponse } from '../pivot-response';
 
 @Component({
   selector: 'app-ff-todo-generic-pivot-form',
@@ -17,7 +17,7 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('genericPivotForm') formElement!: ElementRef;
 
-  public pivotId: String = "";
+  public pivotId: string = "";
 
   public pivotQueryStatus: GenericQueryStatus = GenericQueryStatus.QUERY_STANDBY;
 
@@ -74,8 +74,8 @@ export class FfTodoGenericPivotFormComponent implements OnInit, OnDestroy {
     this.pivotMessage = 'This form needs to be set up properly to show pivot table.';
 
     this.model = {
-      fields: new Set<{key:string,value:string}>(),
-      fieldDisplay: new Set<{key:string,value:string}>(),
+      fields: new Set<PivotKeyValuePair>(),
+      fieldDisplay: new Set<PivotKeyValuePair>(),
       fieldOrder: [],
       records: []
     };

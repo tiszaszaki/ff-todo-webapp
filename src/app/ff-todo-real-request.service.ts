@@ -413,7 +413,7 @@ export class FfTodoRealRequestService implements FfTodoAbstractRequestService, O
     );
   }
 
-  pivotQuery(pivotId: String) : Observable<PivotResponse> {
+  pivotQuery(pivotId: string) : Observable<PivotResponse> {
     return this.http.get<PivotResponse>(`${this.pivotPath}/${pivotId}`).pipe(
       timeout(this.timeoutInterval),
       tap((result : PivotResponse) => console.log(`Fetched pivot table with ID (${pivotId}) which has ${result.records.length} record(s)`)),

@@ -42,6 +42,10 @@ import { FfTodoGenericPivotFormComponent } from './ff-todo-generic-pivot-form/ff
 import { FfTodoAbstractRequestService } from './ff-todo-abstract-request.service';
 import { FfTodoRealRequestService } from './ff-todo-real-request.service';
 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { FfTodoMockDatabaseService } from './ff-todo-mock-database.service';
+import { FfTodoMockRequestService } from './ff-todo-mock-request.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +82,7 @@ import { FfTodoRealRequestService } from './ff-todo-real-request.service';
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, NgbModule, AppRoutingModule
-    //HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
+    //, HttpClientInMemoryWebApiModule.forRoot(FfTodoMockDatabaseService, { dataEncapsulation: false, apiBase: "ff-todo/" })
   ],
   providers: [{provide: FfTodoAbstractRequestService, useClass: FfTodoRealRequestService}, CookieService],
   bootstrap: [AppComponent]

@@ -10,19 +10,19 @@ import { Todo } from './todo';
 export class FfTodoMockDatabaseService implements InMemoryDbService {
   createDb() {
     const tasks : Task[] = [
-      {id: 0, name:'3D mélyvíz', done:false, todoId: 0},
-      {id: 1, name:'Főharcok',   done:false, todoId: 0},
+      {id: 0, name:'3D mélyvíz', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 0},
+      {id: 1, name:'Főharcok',   done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 0},
 
-      {id: 2, name:'MÁV',           done:true,  todoId: 1},
-      {id: 3, name:'DE ISZK',       done:true,  todoId: 1},
-      {id: 4, name:'Inkubátorház?', done:false, todoId: 1},
+      {id: 2, name:'MÁV',           done:true,  dateCreated: new Date(), dateModified: new Date(), todoId: 1},
+      {id: 3, name:'DE ISZK',       done:true,  dateCreated: new Date(), dateModified: new Date(), todoId: 1},
+      {id: 4, name:'Inkubátorház?', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 1},
 
-      {id: 5, name:'J', done:false, todoId: 2},
-      {id: 6, name:'a', done:false, todoId: 2},
-      {id: 7, name:'n', done:false, todoId: 2},
-      {id: 8, name:'c', done:false, todoId: 2},
-      {id: 9, name:'s', done:false, todoId: 2},
-      {id:10, name:'i', done:false, todoId: 2}
+      {id: 5, name:'J', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 2},
+      {id: 6, name:'a', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 2},
+      {id: 7, name:'n', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 2},
+      {id: 8, name:'c', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 2},
+      {id: 9, name:'s', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 2},
+      {id:10, name:'i', done:false, dateCreated: new Date(), dateModified: new Date(), todoId: 2}
     ];
     const todos : Todo[] = [
       {id:0, name:'Sonic', description:'Fejlesztése', phase:0, dateCreated: new Date(), dateModified: new Date(), boardId: 0},
@@ -32,8 +32,8 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
       {id:3, name:'Titkos!', description:'???', phase:1, dateCreated: new Date(), dateModified: new Date(), deadline: new Date(), boardId: 1}
     ];
     const boards: Board[] = [
-      {id:0, name:'Első tábla', description:'', author:'', dateCreated: new Date(), readonlyTodos: false, readonlyTasks: false},
-      {id:1, name:'Második tábla', description:'', author:'Fekete János', dateCreated: new Date(), readonlyTodos: true, readonlyTasks: false}
+      {id:0, name:'Első tábla', description:'', author:'', dateCreated: new Date(), dateModified: new Date(), readonlyTodos: false, readonlyTasks: false},
+      {id:1, name:'Második tábla', description:'', author:'Fekete János', dateCreated: new Date(), dateModified: new Date(), readonlyTodos: true, readonlyTasks: false}
     ];
 
     let genStr = 'FeketeJános';
@@ -47,7 +47,7 @@ export class FfTodoMockDatabaseService implements InMemoryDbService {
       for (var idx2 = 0; idx2 <= idx1; idx2++)
       {
         let c2 = genStr[idx2];
-        const task: Task = {id: this.genId(tasks), name: c2, done: false, todoId: todo.id};
+        const task: Task = {id: this.genId(tasks), name: c2, done: false, dateCreated: new Date(), dateModified: new Date(), todoId: todo.id};
         tasks.push(task);
       }
     }
