@@ -107,5 +107,8 @@
       }
     }
   },
-  "defaultProject": "ff-todo-webapp"
+  "defaultProject": "ff-todo-webapp",
+  "cli": {
+    "analytics": "2671462f-93c9-4160-bc1c-cf1e970de69b"
+  }
 }
