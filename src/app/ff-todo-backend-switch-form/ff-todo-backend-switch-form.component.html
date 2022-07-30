@@ -1,12 +1,13 @@
 <div class="d-flex">
     <span class="form-floating">
         <select class="form-select form-control" [(ngModel)]="backendSelected" name="field" id="backend_selection_field"
-                data-toggle="tooltip" data-placement="bottom" title="Backend selection field">
+                data-toggle="tooltip" data-placement="bottom" title="Backend selection field"
+                [disabled]="!isRealService()">
             <option *ngFor="let idx of backendIds" [value]="idx">{{ getBackendName(idx) }}</option>
         </select>
         <label for="backend_selection_field">Selected backend</label>
     </span>
-    <button type="button" [disabled]="backendSelected == ''" [ngClass]="{'btn': true, 'btn-secondary': (backendRefreshStatus == QUERY_STANDBY),
+    <button type="button" [disabled]="!isRealService() || (backendSelected == '')" [ngClass]="{'btn': true, 'btn-secondary': (backendRefreshStatus == QUERY_STANDBY),
             'btn-primary': (backendRefreshStatus == QUERY_INPROGRESS), 'btn-warning': (backendRefreshStatus == QUERY_WARNING),
             'btn-success': (backendRefreshStatus == QUERY_SUCCESS), 'btn-danger': (backendRefreshStatus == QUERY_FAILURE)}" (click)="switchBackend()"
             data-toggle="tooltip" data-placement="bottom" title="Switch to selected backend">

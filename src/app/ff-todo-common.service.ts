@@ -25,7 +25,7 @@ export class FfTodoCommonService {
   private isRoutedToIndex!: Boolean;
   public isRoutedToIndexChange = new EventEmitter<Boolean>();
 
-  private isRealService!: Boolean;
+  private isRealService!: boolean;
 
   public readonly cookies = {
     selectedBackend: "selected-backend",
@@ -483,7 +483,7 @@ export class FfTodoCommonService {
     this.isRoutedToIndexChange.emit(this.isRoutedToIndex);
   }
 
-  setRealServiceStatus(val: Boolean) {
+  setRealServiceStatus(val: boolean) {
     this.isRealService = val;
   }
 

@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
-import { FfTodoAbstractRequestService } from '../ff-todo-abstract-request.service';
 import { FfTodoAlertService } from '../ff-todo-alert.service';
 import { FfTodoCommonService } from '../ff-todo-common.service';
 import { GenericQueryStatus } from '../generic-query-status';
@@ -35,6 +33,10 @@ export class FfTodoBackendSwitchFormComponent implements OnInit, OnDestroy {
     this.backendRefreshStatus = this.QUERY_STANDBY;
 
     this.backendIds = this.common.getBackendIds();
+  }
+
+  public isRealService() {
+    return this.common.getRealServiceStatus();
   }
 
   public getBackendName(id: string) {
